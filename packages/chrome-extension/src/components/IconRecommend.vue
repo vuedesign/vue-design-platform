@@ -1,0 +1,106 @@
+<template>
+    <i class="icon-recommend">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="14"
+            height="13.516791044776124"
+            viewBox="0 0 14 13.516791044776124"
+            fill="none"
+        >
+            <defs>
+                <rect
+                    id="path_0"
+                    x="0"
+                    y="0"
+                    width="14.000000000000002"
+                    height="13.516791044776124"
+                />
+            </defs>
+            <g
+                opacity="1"
+                transform="translate(-7.283063041541027e-14 1.7763568394002505e-15)  rotate(0 7.000000000000001 6.758395522388062)"
+            >
+                <mask id="bg-mask-0" fill="white">
+                    <use xlink:href="#path_0"></use>
+                </mask>
+                <g mask="url(#bg-mask-0)">
+                    <path
+                        id="路径 1"
+                        fill-rule="evenodd"
+                        style="fill: #ffffff"
+                        transform="translate(0 0)  rotate(0 7.000000000000001 6.758395522388062)"
+                        opacity="0.01"
+                        d="M0,13.52L14,13.52L14,0L0,0L0,13.52Z "
+                    />
+                    <path
+                        id="路径 2"
+                        fill-rule="evenodd"
+                        style="fill: #808080"
+                        transform="translate(3.4999999999999987 1.6895988805970152)  rotate(0 2.041666666666666 1.971198694029851)"
+                        opacity="1"
+                        d="M4.08,1.97C4.08,0.88 3.17,0 2.04,0C0.91,0 0,0.88 0,1.97C0,3.06 0.91,3.94 2.04,3.94C3.17,3.94 4.08,3.06 4.08,1.97Z "
+                    />
+                    <path
+                        id="路径 2"
+                        style="
+                            stroke: #808080;
+                            stroke-width: 1.3333333333333333;
+                            stroke-opacity: 1;
+                            stroke-dasharray: 0 0;
+                        "
+                        transform="translate(3.4999999999999987 1.6895988805970152)  rotate(0 2.041666666666666 1.971198694029851)"
+                        d="M4.08,1.97C4.08,0.88 3.17,0 2.04,0C0.91,0 0,0.88 0,1.97C0,3.06 0.91,3.94 2.04,3.94C3.17,3.94 4.08,3.06 4.08,1.97Z "
+                    />
+                    <path
+                        id="路径 3"
+                        style="
+                            stroke: #808080;
+                            stroke-width: 1.3333333333333333;
+                            stroke-opacity: 1;
+                            stroke-dasharray: 0 0;
+                        "
+                        transform="translate(10.728597622932009 8.301072761194034)  rotate(0 0 1.4079990671641784)"
+                        d="M0,0L0,2.82 "
+                    />
+                    <path
+                        id="路径 4"
+                        style="
+                            stroke: #808080;
+                            stroke-width: 1.3333333333333333;
+                            stroke-opacity: 1;
+                            stroke-dasharray: 0 0;
+                        "
+                        transform="translate(9.625000000000002 8.447994402985076)  rotate(0 1.1666666666666667 0.5631996268656717)"
+                        d="M2.33,1.13L1.17,0L0,1.13 "
+                    />
+                    <path
+                        id="路径 5"
+                        style="
+                            stroke: #808080;
+                            stroke-width: 1.3333333333333333;
+                            stroke-opacity: 1;
+                            stroke-dasharray: 0 0;
+                        "
+                        transform="translate(1.7499999999999978 7.8847947761194055)  rotate(0 3.0625 1.971198694029851)"
+                        d="M6.13,0L3.73,0C2.43,0 1.77,0 1.27,0.25C0.83,0.46 0.48,0.81 0.25,1.23C0,1.71 0,2.34 0,3.6L0,3.94L6.13,3.94 "
+                    />
+                </g>
+            </g>
+        </svg>
+    </i>
+</template>
+
+<script setup lang="ts"></script>
+
+<style lang="scss" scoped>
+.icon-recommend {
+    display: inline-block;
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+    > svg {
+        vertical-align: top;
+    }
+}
+</style>
