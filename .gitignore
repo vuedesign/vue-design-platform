@@ -2,6 +2,7 @@ node_modules
 packages/**/node_modules
 packages/**/dist
 packages/**/src/configs/*.config.ts
+packages/**/uploads
 *.log
 .nuxt
 nuxt.d.ts
