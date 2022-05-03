@@ -8,31 +8,51 @@ import {
   Delete,
   UploadedFile,
   UseInterceptors,
-  Request,
+  Req,
 } from '@nestjs/common';
 import { FileService } from './file.service';
+import { OssService } from './oss.service';
+import { QiniuService } from './qiniu.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from '../../core/decorators/auth.decorator';
+import { ensureDirSync } from 'fs-extra';
+import { Request } from 'express';
+
+const md5 = require('md5');
 
 function resolve(dir) {
   return join(__dirname, dir);
 }
 
+function getFilePath() {
+  const dt = new Date();
+  const month = dt.getMonth() + 1;
+  const day = dt.getDay();
+  return join(
+    'images',
+    `${dt.getFullYear()}`,
+    `${month < 10 ? '0' + month : month}`,
+    `${day < 10 ? '0' + day : day}`,
+  );
+}
+
 const uploadOptions = {
   storage: diskStorage({
-    destination: resolve('../../../../web/public/uploads'),
+    destination: (req, file, cb) => {
+      const filePath = join('uploads', 'images');
+      const destPath = resolve(`../../../${filePath}`);
+      ensureDirSync(destPath);
+      cb(null, destPath);
+    },
     filename: (req, file, cb) => {
-      // Generating a 32 random chars long string
-      const randomName = Array(32)
-        .fill(null)
-        .map(() => Math.round(Math.random() * 16).toString(16))
-        .join('');
-      //Calling the callback passing the random name generated with the original extension name
-      cb(null, `${randomName}${extname(file.originalname)}`);
+      const fileMd5 = md5(file);
+      console.log('md5', fileMd5);
+      cb(null, `${fileMd5}${extname(file.originalname)}`);
     },
   }),
 };
@@ -46,30 +66,44 @@ const fileMap = {
 @ApiTags('公共模块')
 @ApiBearerAuth()
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(
+    private readonly fileService: FileService,
+    private readonly ossService: OssService,
+    private readonly qiniuService: QiniuService,
+  ) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', uploadOptions))
-  async uploadFile(@UploadedFile() file, @Request() req) {
+  async uploadFile(
+    @UploadedFile() file,
+    @Req() req: Request & { user: { id: number } },
+  ) {
     const type: number = this.getFileType(file.mimetype);
+    const filePath = getFilePath();
+    const ossfilename = join(filePath, `${file.filename}`);
+    const destfilename = join(file.destination, `${file.filename}`);
+    console.log('ossfilename', ossfilename);
+    console.log('destfilename', destfilename);
+    const fileRes = await this.qiniuService.putOssFile(
+      ossfilename,
+      destfilename,
+      {
+        mime: file.mimetype,
+      },
+    );
     const createFile = {
       authorId: req.user.id,
       isShow: 1,
       type,
-      originalname: file.originalname,
+      originalname: encodeURIComponent(file.originalname),
       mimetype: file.mimetype,
-      path: file.destination,
+      path: `${fileRes.localhost}${fileRes.key}`,
       filename: file.filename,
       size: file.size,
     };
-    console.log(file, createFile);
     const res = await this.fileService.create(createFile);
-    console.log('uploadFile res', res);
     if (res) {
-      return {
-        ...createFile,
-        filePath: join('uploads', file.filename),
-      };
+      return res;
     }
   }
 

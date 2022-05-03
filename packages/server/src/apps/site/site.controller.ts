@@ -8,7 +8,7 @@ import {
   Delete,
   Query,
   Patch,
-  Request,
+  Req,
   ParseIntPipe,
   DefaultValuePipe,
 } from '@nestjs/common';
@@ -19,6 +19,7 @@ import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { Like } from 'typeorm';
 import { Public } from '../../core/decorators/auth.decorator';
 import { SiteListQueryDto } from './dto/site.dto';
+import { Request } from 'express';
 
 @Controller('sites')
 @ApiTags('项目模块')
@@ -31,7 +32,7 @@ export class SiteController {
     description: '添加项目',
     type: CreateSiteDto,
   })
-  create(@Body() createSite: CreateSiteDto, @Request() req): Promise<any> {
+  create(@Body() createSite: CreateSiteDto, @Req() req: Request): Promise<any> {
     console.log('createSite', createSite, req.user);
     Object.assign(createSite, {
       authorId: 4,
