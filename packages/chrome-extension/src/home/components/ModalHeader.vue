@@ -22,8 +22,12 @@
         </div>
         <div class="vue-design-modal-user">
             <template v-if="state.token && state.user">
-                <a-dropdown :trigger="['click']">
-                    <a-avatar :src="state.user.avatar" size="small">
+                <a-dropdown :trigger="['click']" placement="bottomRight">
+                    <a-avatar
+                        v-if="state.user"
+                        :src="state.user.avatar"
+                        size="small"
+                    >
                         <template #icon><UserOutlined /></template>
                     </a-avatar>
                     <template #overlay>
@@ -46,7 +50,20 @@
                 </a-dropdown>
             </template>
             <template v-else>
-                <a-button type="link" @click="handleGotoLogin">
+                <a-button
+                    type="link"
+                    v-if="state.view !== 'modal-content'"
+                    @click="handleGotoInfo"
+                >
+                    <template #icon>
+                        <arrow-left-outlined />
+                    </template>
+                </a-button>
+                <a-button
+                    type="link"
+                    :disabled="state.view !== 'modal-content'"
+                    @click="handleGotoLogin"
+                >
                     登录/注册
                 </a-button>
             </template>
@@ -59,10 +76,10 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { UserOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
 import { state } from '../uses/useStore';
 import useAuth from '../uses/useAuth';
-const { handleLogout, handleGotoLogin } = useAuth();
+const { handleLogout, handleGotoLogin, handleGotoInfo } = useAuth();
 </script>
 
 <style scoped lang="scss">

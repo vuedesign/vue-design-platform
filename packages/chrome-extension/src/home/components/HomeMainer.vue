@@ -1,15 +1,15 @@
 <template>
     <section class="vue-design-mainer">
         <section class="vue-design-mainer-main">
-            <ul class="vue-design-mainer-list">
-                <li v-for="item in list" :key="item.id">
+            <ul class="vue-design-mainer-list" v-if="site.list">
+                <li v-for="item in site.list" :key="item.id">
                     <div class="vue-design-item">
                         <div class="vue-design-item-inner">
                             <div class="vue-design-item-thumb">
                                 <a
                                     href="#"
                                     :style="{
-                                        backgroundImage: `url(${item.thumb})`,
+                                        backgroundImage: `url(${item.thumbUrl})`,
                                     }"
                                 ></a>
                             </div>
@@ -22,7 +22,10 @@
                                         <icon-down />
                                     </dd>
                                     <dt>
-                                        <img :src="item.user.avatar" />
+                                        <img
+                                            v-if="item.user && item.user.avatar"
+                                            :src="item.user.avatar"
+                                        />
                                     </dt>
                                     <dd>
                                         <icon-like />
@@ -62,7 +65,11 @@ import IconGithub from '../../components/IconGithub.vue';
 import IconLike from '../../components/IconLike.vue';
 import IconUp from '../../components/IconUp.vue';
 import IconDown from '../../components/IconDown.vue';
+import useSite, { site } from '../uses/useSite';
 
+const { findSite } = useSite();
+
+findSite();
 // defineProps<{ msg: string }>();
 
 interface UserData {

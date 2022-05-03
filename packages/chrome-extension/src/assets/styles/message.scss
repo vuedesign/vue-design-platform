@@ -1,4 +1,4 @@
-.vue-design-ant-message {
+.ant-message {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -15,11 +15,11 @@
     width: 100%;
     pointer-events: none;
 }
-.vue-design-ant-message-notice {
+.ant-message-notice {
     padding: 8px;
     text-align: center;
 }
-.vue-design-ant-message-notice-content {
+.ant-message-notice-content {
     display: inline-block;
     padding: 10px 16px;
     background: #fff;
@@ -28,26 +28,26 @@
         0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
     pointer-events: all;
 }
-.vue-design-ant-message-success .anticon {
+.ant-message-success .anticon {
     color: #52c41a;
 }
-.vue-design-ant-message-error .anticon {
+.ant-message-error .anticon {
     color: #ff4d4f;
 }
-.vue-design-ant-message-warning .anticon {
+.ant-message-warning .anticon {
     color: #faad14;
 }
-.vue-design-ant-message-info .anticon,
-.vue-design-ant-message-loading .anticon {
+.ant-message-info .anticon,
+.ant-message-loading .anticon {
     color: #1890ff;
 }
-.vue-design-ant-message .anticon {
+.ant-message .anticon {
     position: relative;
     top: 1px;
     margin-right: 8px;
     font-size: 16px;
 }
-.vue-design-ant-message-notice.ant-move-up-leave.ant-move-up-leave-active {
+.ant-message-notice.ant-move-up-leave.ant-move-up-leave-active {
     -webkit-animation-name: MessageMoveOut;
     animation-name: MessageMoveOut;
     -webkit-animation-duration: 0.3s;
@@ -77,13 +77,13 @@
         opacity: 0;
     }
 }
-.vue-design-ant-message-rtl {
+.ant-message-rtl {
     direction: rtl;
 }
-.vue-design-ant-message-rtl span {
+.ant-message-rtl span {
     direction: rtl;
 }
-.vue-design-ant-message-rtl .anticon {
+.ant-message-rtl .anticon {
     margin-right: 0;
     margin-left: 8px;
 }

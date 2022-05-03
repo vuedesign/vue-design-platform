@@ -31,6 +31,47 @@
                         <div
                             class="vue-design-header-btn vue-design-header-avatar"
                         >
+                            <template v-if="state.token && state.user">
+                                <a-dropdown
+                                    :trigger="['click']"
+                                    placement="bottomRight"
+                                >
+                                    <a-avatar
+                                        v-if="state.user && state.user.avata"
+                                        :src="state.user.avatar"
+                                        size="small"
+                                    >
+                                        <template #icon>
+                                            <UserOutlined />
+                                        </template>
+                                    </a-avatar>
+                                    <template #overlay>
+                                        <a-menu>
+                                            <a-menu-item key="0">
+                                                <span class="username">
+                                                    {{
+                                                        state.user.username ||
+                                                        state.user.nickname ||
+                                                        state.user.phone
+                                                    }}
+                                                </span>
+                                            </a-menu-item>
+                                            <a-menu-divider />
+                                            <a-menu-item
+                                                key="3"
+                                                @click="handleLogout"
+                                            >
+                                                退出登录
+                                            </a-menu-item>
+                                        </a-menu>
+                                    </template>
+                                </a-dropdown>
+                            </template>
+                            <template v-else>
+                                <a-button type="link" @click="handleGotoLogin">
+                                    登录/注册
+                                </a-button>
+                            </template>
                             <!-- <el-dropdown trigger="click">
                                 <img
                                     class="avatar"
@@ -83,8 +124,10 @@
 
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
+import { UserOutlined } from '@ant-design/icons-vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
 import { Wechat, UploadOne } from '@icon-park/vue-next';
+import { state } from '../uses/useStore';
 
 interface SiteItemData {
     id: number;

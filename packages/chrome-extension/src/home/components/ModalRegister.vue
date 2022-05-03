@@ -80,7 +80,6 @@ const { handleRegister, handleGotoLogin } = useAuth();
         margin-left: 0;
     }
     height: 346px;
-    margin-top: 16px;
 }
 
 .vue-design-modal-regiter-inner {
@@ -88,6 +87,7 @@ const { handleRegister, handleGotoLogin } = useAuth();
     margin: 0 auto;
     display: flex;
     min-height: 300px;
+    height: 100%;
 }
 
 .vue-design-modal-regiter-right {

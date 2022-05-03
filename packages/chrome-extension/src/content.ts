@@ -35,7 +35,11 @@ function getImages(doc: Document): Array<string> {
     const imgDoms = doc.querySelectorAll('img');
     const imgs: Array<string> = [];
     imgDoms.forEach((item) => {
-        if (item.currentSrc && item.currentSrc.indexOf(';base64,') <= -1) {
+        if (
+            item.currentSrc &&
+            item.currentSrc.indexOf(';base64,') <= -1 &&
+            !imgs.includes(item.currentSrc)
+        ) {
             item.currentSrc && imgs.push(item.currentSrc);
         }
     });
@@ -70,11 +74,13 @@ function getSiteInfo(doc: Document) {
 function getCodeTags(doc: Document) {
     return Array.from(
         doc.querySelectorAll('.BorderGrid-cell > div > div > a'),
-    ).map((item) => item.innerText);
+    ).map((item: HTMLElement) => item.innerText);
 }
 
 function getCodeUrl(doc: Document): string {
-    const a = doc.querySelector('.BorderGrid-cell > div > span > a');
+    const a = doc.querySelector(
+        '.BorderGrid-cell > div > span > a',
+    ) as HTMLLinkElement;
     if (!a) {
         return '';
     }
@@ -93,18 +99,33 @@ function getCodeInfo(doc: Document) {
     const tags = getCodeTags(doc);
     const codeUrl = getCodeUrl(doc);
     const star = getCodeStar(doc);
+    const description = getAttributeContent(
+        doc,
+        '[name="description"]',
+        'content',
+    );
     return {
         type: 'code',
+        description,
         tags,
         codeUrl,
         star,
     };
 }
 
+interface Info {
+    type: string;
+    description: string;
+    tags: string[];
+    siteUrl?: string;
+    codeUrl?: string;
+    star?: string;
+}
+
 const handlerMessage = (
     request: any,
     sender: chrome.runtime.MessageSender,
-    sendResponse: chrome.tabCapture.sendResponse,
+    sendResponse: (response?: any) => void,
 ) => {
     if (request.type === MessageType.GET_INFO) {
         const doc = document;
@@ -112,13 +133,11 @@ const handlerMessage = (
         const detail = {
             imgs,
         };
+        let info: Info = getSiteInfo(doc);
         if (isCode()) {
-            const codeInfo = getCodeInfo(doc);
-            Object.assign(detail, codeInfo);
-        } else {
-            const siteInfo = getSiteInfo(doc);
-            Object.assign(detail, siteInfo);
+            info = getCodeInfo(doc);
         }
+        Object.assign(detail, info);
         sendResponse(detail);
     }
 };

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateSiteDto } from './create-site.dto';
+import { Transform } from 'class-transformer';
 
-export class SiteListQueryDto extends PartialType(CreateSiteDto) {
+export class SiteListQueryDto {
   @ApiProperty({
     description: '每页数量',
     default: 20,
     required: false,
     type: 'int',
   })
-  size?: number = 20;
+  // @Transform(({ value }) => Number(value), { toClassOnly: true })
+  size?: number;
 
   @ApiProperty({
     description: '当前页数',
@@ -17,7 +17,8 @@ export class SiteListQueryDto extends PartialType(CreateSiteDto) {
     required: false,
     type: 'int',
   })
-  page?: number = 1;
+  // @Transform(({ value }) => Number(value), { toClassOnly: true })
+  page?: number;
 
   @ApiProperty({
     description: '排序',
@@ -33,5 +34,12 @@ export class SiteListQueryDto extends PartialType(CreateSiteDto) {
     required: false,
     type: 'int',
   })
+  // @Transform(
+  //   ({ value }) => {
+  //     console.log('Number(value)', value);
+  //     return Number(value);
+  //   },
+  //   { toClassOnly: true },
+  // )
   tagId?: number;
 }

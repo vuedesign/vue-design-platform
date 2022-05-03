@@ -1,8 +1,13 @@
-ul,
-ol,
-li {
-  list-style: none;
-  margin: 0;
+body {
+  ul,
+  ol,
+  li,
+  dl,
+  dd,
+  dt {
+    list-style: none;
+    margin: 0;
+  }
 }
 
 * {

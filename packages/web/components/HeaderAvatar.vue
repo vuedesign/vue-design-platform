@@ -1,15 +1,28 @@
 <template>
-  <div class="header-btn header-avatar" v-if="profile && profile.username">
+  <div class="header-btn header-avatar" v-if="profile && profile.id">
     <home-popper arrow placement="bottom-end">
-      <img class="avatar" :src="profile.avatar" />
+      <a-avatar size="small" :src="profile.avatar">
+        <template #icon><UserOutlined /></template>
+      </a-avatar>
+      <!-- <img class="avatar" :src="profile.avatar" /> -->
       <template #content>
         <div class="header-popper-content">
           <dl>
             <dt>
-              <img class="avatar" :src="profile.avatar" />
+              <a-avatar :size="48" :src="profile.avatar">
+                <template #icon><UserOutlined /></template>
+              </a-avatar>
+              <!-- <img class="avatar" :src="profile.avatar" /> -->
             </dt>
             <dd>
-              <h4>{{ profile.username }}</h4>
+              <h4>
+                {{
+                  profile.username ||
+                  profile.nickname ||
+                  profile.email ||
+                  profile.phone
+                }}
+              </h4>
               <p>{{ profile.email }}</p>
             </dd>
           </dl>
@@ -37,20 +50,22 @@
       </template>
     </home-popper>
   </div>
+  <div v-else>登录/注册</div>
 </template>
 
 <script lang="ts" setup>
-import { SettingTwo, Power, UploadOne, Like } from "@icon-park/vue-next";
-const globalStore = useGlobalStore();
-const { data: profile, pending } = await globalStore.findProfile();
+import { UserOutlined } from '@ant-design/icons-vue'
+import { SettingTwo, Power, UploadOne, Like } from '@icon-park/vue-next'
+const globalStore = useGlobalStore()
+const { data: profile, pending } = await globalStore.findProfile()
 const handleUpload = () => {
   navigateTo({
-    path: "/mine",
-  });
-};
+    path: '/mine'
+  })
+}
 const handleLogout = () => {
-  globalStore.logout();
-};
+  globalStore.logout()
+}
 </script>
 
 <style lang="scss">
@@ -65,8 +80,8 @@ const handleLogout = () => {
   }
 }
 .header-popper-content {
-  width: 180px;
-  height: 320px;
+  width: 240px;
+  height: auto;
   > dl {
     display: flex;
     padding: 16px;
@@ -84,6 +99,7 @@ const handleLogout = () => {
       width: 48px;
       height: 48px;
       border-radius: 50%;
+      object-fit: cover;
     }
   }
   > ul {

@@ -5,13 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import mod from '@/assets/css/home.module.css';
+import mod from '@/assets/css/home.module.css'
 </script>
 
 <style lang="scss" scoped>
 .vue-design-footer {
   width: 100%;
-  height: 219px;
+  height: 120px;
   background: rgba(229, 234, 237, 1);
 }
 </style>

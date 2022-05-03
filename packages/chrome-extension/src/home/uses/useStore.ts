@@ -1,20 +1,22 @@
 import { reactive, computed, ComputedRef } from 'vue';
+import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
+import useSite, { SiteItem } from './useSite';
 
-interface UserData {
+export interface UserData {
     avatar: string;
     username: string;
 }
-type SiteType = 'site' | 'code';
+export type SiteType = 'site' | 'code';
 export interface Info {
     tabId?: number;
-    thumb: string;
     title: string;
     description: string;
     tags: string[];
     type: SiteType;
     imgs: string[];
-    logo: string;
+    thumbUrl: string;
+    logoUrl: string;
     siteUrl: string;
     codeUrl: string;
     star: string;
@@ -43,7 +45,7 @@ export const imgWrapWidth: ComputedRef<number> = computed(() => {
 });
 
 const handleSelectLogo = (img: string): void => {
-    state.info.logo = img;
+    state.info.logoUrl = img;
 };
 
 const handleRecommend = (): void => {
@@ -51,19 +53,48 @@ const handleRecommend = (): void => {
         message.warning('您未登录，请点击右上角「登录/注册」按钮！');
         return;
     }
-    if (!state.info.logo && state.info.imgs.some((img) => !!img)) {
+    if (!state.info.logoUrl && state.info.imgs.some((img) => !!img)) {
         message.warning('请点击选择下面图片作为网站icon！');
         return;
     }
+
+    const { createSite } = useSite();
     state.loading = true;
+
+    const router = useRouter();
+
     setTimeout(() => {
-        state.loading = false;
-        state.visible = false;
+        console.log('state.info', state.info);
+        const item: SiteItem = {
+            codeUrl: state.info.codeUrl,
+            collections: 0,
+            description: state.info.description,
+            down: 0,
+            iconUrl: '',
+            isShow: 1,
+            logoUrl: state.info.logoUrl,
+            siteUrl: state.info.siteUrl,
+            tagIds: '1,2,3',
+            thumbUrl: 'state.info.thumb',
+            title: state.info.title,
+            top: 0,
+            type: state.info.type,
+            views: 0,
+        };
+        createSite(item).then(() => {
+            router.push({
+                path: '/',
+            });
+            state.loading = false;
+        });
     }, 1500);
 };
 
 const handleCancel = (): void => {
-    state.visible = false;
+    const router = useRouter();
+    router.push({
+        path: '/',
+    });
 };
 
 export default () => {

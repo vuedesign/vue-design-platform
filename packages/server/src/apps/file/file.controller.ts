@@ -1,6 +1,14 @@
 import {
-  Controller, Get, Post, Body, Put, Param, Delete,
-  UploadedFile, UseInterceptors, Request
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  UploadedFile,
+  UseInterceptors,
+  Request,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -16,19 +24,22 @@ function resolve(dir) {
 
 const uploadOptions = {
   storage: diskStorage({
-    destination: resolve('../../../../vue-design-web/public/uploads'),
+    destination: resolve('../../../../web/public/uploads'),
     filename: (req, file, cb) => {
       // Generating a 32 random chars long string
-      const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+      const randomName = Array(32)
+        .fill(null)
+        .map(() => Math.round(Math.random() * 16).toString(16))
+        .join('');
       //Calling the callback passing the random name generated with the original extension name
-      cb(null, `${randomName}${extname(file.originalname)}`)
-    }
-  })
+      cb(null, `${randomName}${extname(file.originalname)}`);
+    },
+  }),
 };
 
 const fileMap = {
   1: ['image/jpeg', 'image/png'],
-  2: ['image/gif']
+  2: ['image/gif'],
 };
 
 @Controller('file')
@@ -49,7 +60,7 @@ export class FileController {
       mimetype: file.mimetype,
       path: file.destination,
       filename: file.filename,
-      size: file.size
+      size: file.size,
     };
     console.log(file, createFile);
     const res = await this.fileService.create(createFile);
@@ -57,13 +68,13 @@ export class FileController {
     if (res) {
       return {
         ...createFile,
-        filePath: join('uploads', file.filename)
+        filePath: join('uploads', file.filename),
       };
     }
   }
 
   getFileType(mimetype) {
-    const item = Object.entries(fileMap).find(([, value ]) => {
+    const item = Object.entries(fileMap).find(([, value]) => {
       return value.includes(mimetype);
     });
     if (item) {

@@ -6,12 +6,12 @@ interface InfoData {
     tags: Array<string>;
 }
 interface MessageValue {
-    thumb: string;
+    thumbUrl: string;
     title: string;
 }
 interface Message {
     type: string;
-    data: MessageValue;
+    data?: MessageValue;
 }
 
 interface MenuListItem {
@@ -72,12 +72,12 @@ const menuList: Array<MenuListItem> = reactive([
 ]);
 
 interface Cache {
-    thumb: string;
+    thumbUrl: string;
     isExecute: boolean;
 }
 
 const cache = reactive({
-    thumb: '',
+    thumbUrl: '',
     isExecute: false,
 });
 
@@ -94,10 +94,10 @@ export default () => {
             return;
         }
         await executeScript(id);
-        const thumb = await captureThumb(windowId);
+        const thumbUrl = await captureThumb(windowId);
         const pageInfo = await getCurrentPageInfo(id);
         const info = {
-            thumb,
+            thumbUrl,
             ...pageInfo,
             favIconUrl,
             title,

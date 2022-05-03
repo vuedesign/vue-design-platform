@@ -28,8 +28,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { state } from '../uses/useStore';
-import useStore from '../uses/useStore';
+import useStore, { state } from '../uses/useStore';
 
 const { handleCancel, handleRecommend } = useStore();
 </script>

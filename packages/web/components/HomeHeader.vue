@@ -1,38 +1,7 @@
 <template>
   <header class="vue-design-header">
     <div class="vue-design-header-wrapper">
-      <div class="vue-design-main vue-design-header-top">
-        <ul class="vue-design-header-nav">
-          <li class="active"><nuxt-link to="/">首页</nuxt-link></li>
-          <li><nuxt-link to="/find">发现</nuxt-link></li>
-        </ul>
-        <ul class="vue-design-header-user">
-          <li>
-            <div class="vue-design-header-btn vue-design-header-wechat">
-              <home-popper arrow placement="bottom">
-                <div class="vue-design-header-wechat-title">
-                  <wechat theme="outline" size="16" fill="#e1e9ed" />
-                  <span class="text">关注公众号</span>
-                </div>
-                <template #content>
-                  <div class="vue-design-header-wechat-popper-content">
-                    <img src="/assets/images/wechat.png" />
-                  </div>
-                </template>
-              </home-popper>
-            </div>
-          </li>
-          <li>
-            <div class="vue-design-header-btn vue-design-header-recommend">
-              <upload-one theme="outline" size="14" fill="#808080" />
-              <span class="text">推荐</span>
-            </div>
-          </li>
-          <li>
-            <header-avatar />
-          </li>
-        </ul>
-      </div>
+      <find-header />
       <div class="vue-design-main vue-design-header-logo">
         <img alt="vue.design logo" src="../assets/images/logo.png" />
       </div>
@@ -55,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { Wechat, UploadOne, SettingTwo, Power } from "@icon-park/vue-next";
-// import FindHeaderAvatar from "./FindHeaderAvatar.vue";
+import { Wechat, UploadOne, SettingTwo, Power } from '@icon-park/vue-next'
+import FindHeader from './FindHeader.vue'
 // import useGlobalStore from '@/store/global';
 
 // const globalStore = useGlobalStore();
@@ -70,7 +39,7 @@ import { Wechat, UploadOne, SettingTwo, Power } from "@icon-park/vue-next";
   background-color: #ddd;
 }
 .vue-design-header-bg {
-  background-image: url("/assets/images/header_bg.png");
+  background-image: url('/assets/images/header_bg.png');
   position: relative;
   z-index: 1;
   height: inherit;
@@ -197,6 +166,7 @@ import { Wechat, UploadOne, SettingTwo, Power } from "@icon-park/vue-next";
     width: auto;
     margin: 0 auto;
     display: block;
+    opacity: 0.5;
   }
 }
 

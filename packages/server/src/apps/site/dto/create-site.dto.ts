@@ -2,9 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateSiteDto {
-  id?: number;
-  uuid?: string;
-
   @ApiProperty({
     description: '项目名称',
   })
@@ -12,25 +9,50 @@ export class CreateSiteDto {
     message: '项目名称不能为空！',
   })
   @IsString()
-  name: string;
+  title: string;
 
-  @IsString()
   @ApiProperty({
     description: '项目描述',
+    required: false,
   })
+  @IsString()
   description?: string;
 
-  @IsString()
   @ApiProperty({
-    description: '封面',
+    description: '封面 url',
   })
-  thumb?: string;
+  @IsString()
+  @IsNotEmpty({
+    message: '项目封面不能为空！',
+  })
+  thumbUrl: string;
 
-  @IsString()
   @ApiProperty({
-    description: '标签',
+    description: 'logo url',
+    required: false,
   })
-  tagIds?: string;
+  @IsString()
+  logoUrl?: string;
+
+  @ApiProperty({
+    description: 'icon url',
+    required: false,
+  })
+  @IsString()
+  iconUrl?: string;
+
+  @ApiProperty({
+    description: '网站 url',
+    required: false,
+  })
+  @IsString()
+  siteUrl?: string;
+
+  @ApiProperty({
+    description: '代码 url',
+  })
+  @IsString()
+  codeUrl?: string;
 
   @ApiProperty({
     default: 2,
@@ -39,10 +61,47 @@ export class CreateSiteDto {
   authorId?: number;
 
   @ApiProperty({
+    description: '标签',
+    required: false,
+  })
+  @IsString()
+  tagIds?: string;
+
+  @ApiProperty({
+    default: 0,
+    description: '浏览量',
+  })
+  views: number;
+
+  @ApiProperty({
+    default: 0,
+    description: '收藏量',
+  })
+  collections: number;
+
+  @ApiProperty({
+    default: 0,
+    description: '顶',
+  })
+  top: number;
+
+  @ApiProperty({
+    default: 0,
+    description: '踩',
+  })
+  down: number;
+
+  @ApiProperty({
+    description: '类型: site code',
+  })
+  @IsString()
+  type: string;
+
+  @ApiProperty({
     default: 1,
     description: '是否可用：1-可用，2-不可用',
   })
-  isShow?: number;
+  isShow: number;
 
   createdAt?: Date;
 

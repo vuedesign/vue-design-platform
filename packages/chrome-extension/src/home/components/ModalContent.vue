@@ -99,8 +99,6 @@ const { handleSelectLogo } = useStore();
 </script>
 
 <style scoped lang="scss">
-.vue-design-modal-content {
-}
 .vue-design-modal-main {
     height: 230px;
     width: 100%;

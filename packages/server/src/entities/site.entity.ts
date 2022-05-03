@@ -15,7 +15,9 @@ export class SiteEntity {
   id: number;
 
   @Column({
-    comment: 'uuid',
+    width: 36,
+    nullable: false,
+    comment: '对外暴露 uuid',
   })
   @Generated('uuid')
   uuid: string;
@@ -24,9 +26,54 @@ export class SiteEntity {
     type: 'varchar',
     width: 255,
     nullable: false,
-    comment: '项目名称',
+    comment: '名称 (标题)',
   })
-  name: string;
+  title: string;
+
+  @Column({
+    type: 'varchar',
+    width: 255,
+    nullable: false,
+    comment: '封面 url',
+    name: 'thumb_url',
+  })
+  thumbUrl: string;
+
+  @Column({
+    type: 'varchar',
+    width: 255,
+    nullable: true,
+    comment: 'logo url',
+    name: 'logo_url',
+  })
+  logoUrl: string;
+
+  @Column({
+    type: 'varchar',
+    width: 255,
+    nullable: true,
+    comment: 'icon url',
+    name: 'icon_url',
+  })
+  iconUrl: string;
+
+  @Column({
+    type: 'varchar',
+    width: 255,
+    nullable: true,
+    comment: '网站 url',
+    name: 'site_url',
+  })
+  siteUrl: string;
+
+  @Column({
+    type: 'varchar',
+    width: 255,
+    nullable: true,
+    comment: '代码 url',
+    name: 'code_url',
+  })
+  codeUrl: string;
 
   @Column({
     type: 'varchar',
@@ -39,7 +86,7 @@ export class SiteEntity {
   @Column({
     type: 'int',
     width: 11,
-    nullable: true,
+    nullable: false,
     comment: '作者id',
     name: 'author_id',
   })
@@ -55,27 +102,58 @@ export class SiteEntity {
   tagIds: string;
 
   @Column({
+    type: 'int',
+    width: 11,
+    nullable: false,
+    comment: '浏览量',
+  })
+  views: number;
+
+  @Column({
+    type: 'int',
+    width: 11,
+    nullable: false,
+    comment: '收藏量',
+  })
+  collections: number;
+
+  @Column({
+    type: 'int',
+    width: 11,
+    nullable: false,
+    comment: '顶',
+  })
+  top: number;
+
+  @Column({
+    type: 'int',
+    width: 11,
+    nullable: false,
+    comment: '踩',
+  })
+  down: number;
+
+  @Column({
+    type: 'varchar',
+    width: 36,
+    nullable: false,
+    comment: '类型: site code',
+  })
+  type: string;
+
+  @Column({
     name: 'is_show',
     type: 'int',
     width: 1,
-    nullable: true,
+    nullable: false,
     comment: '是否可用：1-可用，2-不可用',
   })
   isShow: number;
 
-  @Column({
-    name: 'thumb',
-    type: 'varchar',
-    width: 255,
-    nullable: true,
-    comment: '封面',
-  })
-  thumb: string;
-
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
-    nullable: true,
+    nullable: false,
     comment: '添加时间',
   })
   createdAt: Date;
@@ -83,7 +161,7 @@ export class SiteEntity {
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
-    nullable: true,
+    nullable: false,
     comment: '更新时间',
   })
   updatedAt: Date;

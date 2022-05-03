@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { message } from 'ant-design-vue';
 import ModalHeader from '../components/ModalHeader.vue';
 import ModalFooter from '../components/ModalFooter.vue';
 import ModalContent from '../components/ModalContent.vue';
@@ -29,6 +30,10 @@ import { onExtensionReady } from '../../globals/ajax';
 import useAuth from '../uses/useAuth';
 import { state } from '../uses/useStore';
 import useStore from '../uses/useStore';
+
+message.config({
+    getContainer: () => document.getElementById('vue-design-modal-content'),
+});
 
 const tabs = {
     'modal-content': ModalContent,

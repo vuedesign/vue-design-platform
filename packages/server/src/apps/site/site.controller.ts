@@ -13,11 +13,12 @@ import {
   DefaultValuePipe,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
-import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { Like } from 'typeorm';
 import { Public } from '../../core/decorators/auth.decorator';
+import { SiteListQueryDto } from './dto/site.dto';
 
 @Controller('sites')
 @ApiTags('项目模块')
@@ -31,8 +32,9 @@ export class SiteController {
     type: CreateSiteDto,
   })
   create(@Body() createSite: CreateSiteDto, @Request() req): Promise<any> {
+    console.log('createSite', createSite, req.user);
     Object.assign(createSite, {
-      authorId: req.user.id,
+      authorId: 4,
       isShow: 1,
     });
     return this.siteService.create(createSite);
@@ -40,12 +42,21 @@ export class SiteController {
 
   @Public()
   @Get()
+  // @ApiQuery({
+  //   description: '项目列表',
+  //   // type: SiteListQueryDto,
+  // })
   findAll(
-    @Query('size', new DefaultValuePipe(20), ParseIntPipe) size: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId: number,
-    @Query('order') order: string,
+    @Query('size', new DefaultValuePipe(20), ParseIntPipe) size?: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId?: number,
+    @Query('order') order?: string,
   ) {
+    console.log('size', size);
+    console.log('page', page);
+    console.log('tagId', tagId);
+    console.log('order', order);
+    // const { size, page, order, tagId } = query;
     const options = {
       size,
       page,

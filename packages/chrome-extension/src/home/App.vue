@@ -3,11 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { state } from './uses/useStore';
+import { state, Info } from './uses/useStore';
 chrome.storage.local.get('token', ({ token }: { token: string }) => {
     state.token = token;
 });
-chrome.storage.local.get('info', ({ info }: { info: Record<string, any> }) => {
+chrome.storage.local.get('info', ({ info }: { info: Info }) => {
     console.log('info====', state.info, info);
     state.info = info;
 });

@@ -113,7 +113,7 @@ interface ItemData {
     star: string;
 }
 const props = withDefaults(defineProps<ItemData>(), {
-    thumb: '',
+    thumbUrl: '',
     title: '',
     description: '',
     tags: () => [],
@@ -128,11 +128,11 @@ const props = withDefaults(defineProps<ItemData>(), {
 });
 
 const thumbStyle = computed(() => {
-    if (!props.thumb) {
+    if (!props.thumbUrl) {
         return {};
     }
     return {
-        backgroundImage: `url(${props.thumb})`,
+        backgroundImage: `url(${props.thumbUrl})`,
     };
 });
 </script>

@@ -1,10 +1,16 @@
 <template>
   <header class="find-header">
     <div class="find-header-wrapper">
-      <div class="find-main find-header-top find-header-logo">
+      <div class="find-main find-header-top">
         <ul class="find-header-nav">
-          <li><nuxt-link to="/">首页</nuxt-link></li>
-          <li class="active"><nuxt-link to="/find">发现</nuxt-link></li>
+          <li>
+            <h1 class="find-header-logo">
+              <img src="@/assets/images/logo.png" />
+            </h1>
+          </li>
+          <li v-for="(item, index) in navList">
+            <nuxt-link :to="item.path">{{ item.label }}</nuxt-link>
+          </li>
         </ul>
         <ul class="find-header-user">
           <li>
@@ -38,14 +44,30 @@
 </template>
 
 <script setup lang="ts">
-import { Wechat, UploadOne } from "@icon-park/vue-next";
+import { Ref, ref } from 'vue'
+import { Wechat, UploadOne } from '@icon-park/vue-next'
+
+type NavList = Array<{
+  path: string
+  label: string
+}>
+const navList: Ref<NavList> = ref([
+  {
+    path: '/',
+    label: '首页'
+  },
+  {
+    path: '/find',
+    label: '发现'
+  }
+])
 </script>
 
 <style lang="scss" scoped>
 .find-header {
   width: 100%;
   height: 48px;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .find-header-wrapper {
@@ -83,8 +105,10 @@ import { Wechat, UploadOne } from "@icon-park/vue-next";
     a:hover {
       color: rgba(61, 126, 255, 1);
     }
-    &.active a {
-      color: rgba(61, 126, 255, 1);
+    a {
+      &.router-link-active {
+        color: rgba(61, 126, 255, 1);
+      }
     }
   }
 }
@@ -149,10 +173,14 @@ import { Wechat, UploadOne } from "@icon-park/vue-next";
 }
 
 .find-header-logo {
-  background-image: url(../assets/images/logo.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: auto 24px;
+  margin-bottom: 0;
+  height: 24px;
+  line-height: 24px;
+  img {
+    display: block;
+    height: 24px;
+    width: auto;
+  }
 }
 
 .find-header-mine {
