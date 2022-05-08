@@ -7,7 +7,7 @@ export class TagListQueryDto extends PartialType(CreateTagDto) {
     description: '每页数量',
     default: 20,
     required: false,
-    type: 'int'
+    type: 'int',
   })
   size?: number = 20;
 
@@ -15,15 +15,15 @@ export class TagListQueryDto extends PartialType(CreateTagDto) {
     description: '当前页数',
     default: 1,
     required: false,
-    type: 'int'
+    type: 'int',
   })
-  page?: number = 1
+  page?: number = 1;
 
   @ApiProperty({
     description: '排序',
     default: 'updatedAt DESC',
     required: false,
-    type: 'string'
+    type: 'string',
   })
   order?: string;
 }

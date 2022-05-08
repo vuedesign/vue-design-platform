@@ -38,6 +38,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const { account, password } = body;
+    console.log('account, password', account, password);
     const data = await this.authService.login({
       account,
       password,

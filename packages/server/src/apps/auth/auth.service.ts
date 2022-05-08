@@ -12,6 +12,7 @@ export class AuthService {
   ) {}
 
   async validateUser(formData: LoginParam): Promise<any> {
+    console.log('formData', formData);
     const { password, account } = formData;
     let field: string = getFieldType(account);
     const where = {

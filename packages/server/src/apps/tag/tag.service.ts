@@ -4,10 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from '../../entities/tag.entity';
-import { BaseService, IPaginationResponse, IPaginationQuery } from '@app/globals/services/base.service';
+import {
+  BaseService,
+  IPaginationResponse,
+  IPaginationQuery,
+} from '@app/globals/services/base.service';
 
-interface PaginationQuery extends IPaginationQuery{
-  order: any
+interface PaginationQuery extends IPaginationQuery {
+  order: any;
 }
 
 @Injectable()
@@ -16,7 +20,7 @@ export class TagService extends BaseService {
     @InjectRepository(TagEntity)
     private readonly tagRepository: Repository<TagEntity>,
   ) {
-    super(tagRepository)
+    super(tagRepository);
   }
   create(createTag: CreateTagDto) {
     this.tagRepository.create(createTag);

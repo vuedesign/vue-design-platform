@@ -1,7 +1,9 @@
 import { reactive, computed, ComputedRef } from 'vue';
-import { useRouter } from 'vue-router';
+import router from '../../globals/router';
 import { message } from 'ant-design-vue';
 import useSite, { SiteItem } from './useSite';
+import { uploadFileData } from '../../globals/apis';
+import { base64toFile } from '../../globals/utils';
 
 export interface UserData {
     avatar: string;
@@ -19,6 +21,7 @@ export interface Info {
     logoUrl: string;
     siteUrl: string;
     codeUrl: string;
+    favIconUrl: string;
     star: string;
 }
 
@@ -48,7 +51,14 @@ const handleSelectLogo = (img: string): void => {
     state.info.logoUrl = img;
 };
 
-const handleRecommend = (): void => {
+function uploadFile(base64: string): Promise<any> {
+    const file = base64toFile(base64);
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return uploadFileData<FormData, any>(formData);
+}
+
+const handleRecommend = async (): Promise<void> => {
     if (!state.token || !state.user) {
         message.warning('您未登录，请点击右上角「登录/注册」按钮！');
         return;
@@ -58,40 +68,44 @@ const handleRecommend = (): void => {
         return;
     }
 
-    const { createSite } = useSite();
+    const { createSite, findSite } = useSite();
     state.loading = true;
 
-    const router = useRouter();
+    const fileRes = await uploadFile(state.info.thumbUrl);
 
-    setTimeout(() => {
-        console.log('state.info', state.info);
-        const item: SiteItem = {
-            codeUrl: state.info.codeUrl,
-            collections: 0,
-            description: state.info.description,
-            down: 0,
-            iconUrl: '',
-            isShow: 1,
-            logoUrl: state.info.logoUrl,
-            siteUrl: state.info.siteUrl,
-            tagIds: '1,2,3',
-            thumbUrl: 'state.info.thumb',
-            title: state.info.title,
-            top: 0,
-            type: state.info.type,
-            views: 0,
-        };
-        createSite(item).then(() => {
+    console.log('fileRes', fileRes);
+
+    const item: SiteItem = {
+        codeUrl: state.info.codeUrl,
+        collections: 0,
+        description: state.info.description,
+        down: 0,
+        iconUrl: state.info.favIconUrl,
+        isShow: 1,
+        logoUrl: state.info.logoUrl,
+        siteUrl: state.info.siteUrl,
+        tagIds: '1,2,3',
+        thumbUrl: fileRes.path,
+        title: state.info.title,
+        top: 0,
+        type: state.info.type,
+        views: 0,
+    };
+
+    createSite(item)
+        .then(() => {
             router.push({
                 path: '/',
             });
+            findSite();
+        })
+        .finally(() => {
             state.loading = false;
         });
-    }, 1500);
 };
 
 const handleCancel = (): void => {
-    const router = useRouter();
+    console.log('router', router);
     router.push({
         path: '/',
     });

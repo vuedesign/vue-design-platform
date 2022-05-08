@@ -56,6 +56,7 @@
 <script lang="ts" setup>
 import { UserOutlined } from '@ant-design/icons-vue'
 import { SettingTwo, Power, UploadOne, Like } from '@icon-park/vue-next'
+// import { Avatar } from 'ant-design-vue'
 const globalStore = useGlobalStore()
 const { data: profile, pending } = await globalStore.findProfile()
 const handleUpload = () => {

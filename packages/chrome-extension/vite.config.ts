@@ -16,11 +16,7 @@ export default defineConfig({
         vue(),
         viteESLint(),
         Components({
-            resolvers: [
-                AntDesignVueResolver({
-                    importStyle: 'sass',
-                }),
-            ],
+            resolvers: [AntDesignVueResolver()],
         }),
         ,
     ],

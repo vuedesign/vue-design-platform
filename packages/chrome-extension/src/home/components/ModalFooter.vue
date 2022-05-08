@@ -2,7 +2,7 @@
     <footer class="vue-design-modal-footer">
         <div class="vue-design-modal-info-logo">
             <span>LOGO</span>
-            <img v-if="state.info.logo" :src="state.info.logo" />
+            <img v-if="state.info.logoUrl" :src="state.info.logoUrl" />
         </div>
         <div class="vue-design-modal-footer-btn-group">
             <a-button

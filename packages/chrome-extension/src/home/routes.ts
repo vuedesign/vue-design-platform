@@ -1,11 +1,11 @@
 export default [
     {
         path: '/',
-        component: () => import('./pages/Home.vue'),
+        component: () => import('../home/pages/Home.vue'),
         children: [
             {
                 path: 'modal-push',
-                component: () => import('./pages/ModalPush.vue'),
+                component: () => import('../home/pages/ModalPush.vue'),
             },
         ],
     },

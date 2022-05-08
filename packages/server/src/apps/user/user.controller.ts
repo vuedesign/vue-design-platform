@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,8 +20,8 @@ export class UserController {
 
   @Post()
   @ApiBody({
-      description: '添加用户信息',
-      type: CreateUserDto
+    description: '添加用户信息',
+    type: CreateUserDto,
   })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -27,7 +35,7 @@ export class UserController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne({
-        id: +id
+      id: +id,
     });
   }
 

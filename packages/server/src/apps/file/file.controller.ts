@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
+  Res,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { OssService } from './oss.service';
@@ -21,7 +22,8 @@ import { extname, join } from 'path';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Public } from '../../core/decorators/auth.decorator';
 import { ensureDirSync } from 'fs-extra';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 const md5 = require('md5');
 
@@ -41,6 +43,11 @@ function getFilePath() {
   );
 }
 
+function getExtname(mimetype: string): string {
+  const [, ext] = mimetype.split('/');
+  return `.${ext}`;
+}
+
 const uploadOptions = {
   storage: diskStorage({
     destination: (req, file, cb) => {
@@ -50,9 +57,9 @@ const uploadOptions = {
       cb(null, destPath);
     },
     filename: (req, file, cb) => {
-      const fileMd5 = md5(file);
-      console.log('md5', fileMd5);
-      cb(null, `${fileMd5}${extname(file.originalname)}`);
+      const filename = uuidv4();
+      const ext = extname(file.originalname) || getExtname(file.mimetype);
+      cb(null, `${filename}${ext}`);
     },
   }),
 };
@@ -78,6 +85,7 @@ export class FileController {
     @UploadedFile() file,
     @Req() req: Request & { user: { id: number } },
   ) {
+    console.log('file', file);
     const type: number = this.getFileType(file.mimetype);
     const filePath = getFilePath();
     const ossfilename = join(filePath, `${file.filename}`);
@@ -91,19 +99,23 @@ export class FileController {
         mime: file.mimetype,
       },
     );
+    console.log('fileRes', fileRes);
     const createFile = {
       authorId: req.user.id,
       isShow: 1,
       type,
       originalname: encodeURIComponent(file.originalname),
       mimetype: file.mimetype,
-      path: `${fileRes.localhost}${fileRes.key}`,
+      path: `${fileRes.localhost}/${fileRes.key}`,
       filename: file.filename,
       size: file.size,
     };
-    const res = await this.fileService.create(createFile);
-    if (res) {
-      return res;
+    const createRes = await this.fileService.create(createFile);
+    console.log('upload == res', createRes);
+    // res.send(createRes);
+    // res.json(createRes);
+    if (createRes) {
+      return createRes;
     }
   }
 

@@ -100,14 +100,14 @@ interface UserData {
 type SiteType = 'site' | 'code';
 interface ItemData {
     id?: number;
-    thumb: string;
+    thumbUrl: string;
     title: string;
     description: string;
     tags: string[];
     user: UserData | null;
     type: SiteType;
     imgs?: string[];
-    logo?: string;
+    logoUrl?: string;
     siteUrl: string;
     codeUrl: string;
     star: string;
@@ -123,7 +123,7 @@ const props = withDefaults(defineProps<ItemData>(), {
     }),
     type: 'site',
     imgs: () => [],
-    logo: '',
+    logoUrl: '',
     siteUrl: '',
 });
 

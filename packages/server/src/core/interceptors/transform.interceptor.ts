@@ -28,7 +28,7 @@ export class TransformInterceptor<T>
           retcode: 0,
           message: '请求成功',
         };
-        console.log('res===', res);
+        console.log('intercept ==== res:', res);
         return res;
       }),
     );

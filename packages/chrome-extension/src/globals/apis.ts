@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import ajax from './ajax';
 
 type LoginResult = Promise<{
@@ -22,4 +23,8 @@ export function createSiteData<D, R>(data: D): Promise<R> {
 
 export function findSiteData<O, T>(options: O = {} as O): Promise<T> {
     return ajax.get('/sites', options);
+}
+
+export function uploadFileData<D, R>(data: D): Promise<R> {
+    return ajax.post('/file/upload', data);
 }

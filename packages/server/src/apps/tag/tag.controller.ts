@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -14,7 +23,7 @@ export class TagController {
   @Post()
   @ApiBody({
     description: '添加项目',
-    type: CreateTagDto
+    type: CreateTagDto,
   })
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagService.create(createTagDto);
@@ -24,7 +33,7 @@ export class TagController {
   findAll(@Query() query: TagListQueryDto) {
     const { size, page } = query;
     let order = {
-      updatedAt: 'DESC'
+      updatedAt: 'DESC',
     };
     if (query.order) {
       const [orderKey, orderValue]: Array<string> = query.order.split(' ');

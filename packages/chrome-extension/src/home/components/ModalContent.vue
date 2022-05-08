@@ -67,7 +67,7 @@
                 <li
                     v-for="(img, i) in state.info.imgs"
                     :key="i"
-                    :class="{ active: img === state.info.logo }"
+                    :class="{ active: img === state.info.logoUrl }"
                 >
                     <span @click="handleSelectLogo(img)">
                         <img v-if="img" :src="img" />
