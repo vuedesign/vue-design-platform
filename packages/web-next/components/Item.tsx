@@ -3,7 +3,7 @@ import type { SiteItemType } from '../types/site.d'
 import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react'
 
 const defaultProps = {
-  thumb: '',
+  thumbUrl: '',
   id: 0,
   title: '',
   description: '',
@@ -23,7 +23,7 @@ const Item = (props: SiteItemType) => {
           <a
             href="#"
             style={{
-              backgroundImage: `url('${props.thumb}')`
+              backgroundImage: `url('${props.thumbUrl}')`
             }}
           ></a>
         </div>
@@ -36,7 +36,9 @@ const Item = (props: SiteItemType) => {
               <ThumbsDown theme="outline" size="16" fill="#666" />
             </dd>
             <dt>
-              <img src={props.user.avatar} />
+              {props.user && props.user.avatar && (
+                <img src={props.user.avatar} />
+              )}
             </dt>
             <dd>
               <Like theme="outline" size="16" fill="#666" />

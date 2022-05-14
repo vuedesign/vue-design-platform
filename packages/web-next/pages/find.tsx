@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Find.module.scss'
@@ -5,8 +6,43 @@ import List from '../components/List'
 import Top from '../components/Top'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import { findSite, FindSiteQuery } from '../globals/apis'
+import { SiteListContext } from './hooks/SiteListContext'
+import type { SiteListResponse } from '../types/site'
+import { useSiteList } from '../pages/hooks/useSiteList'
 
-const Find: NextPage = () => {
+const queryDetail: FindSiteQuery = {
+  size: 20,
+  page: 1,
+  type: 'all'
+}
+
+export async function getStaticProps() {
+  const site = await findSite(queryDetail)
+  return {
+    props: {
+      site
+    }
+  }
+}
+
+type FindProps = {
+  site: SiteListResponse
+}
+
+const Find: NextPage<FindProps> = ({ site }: FindProps) => {
+  const [list, setList] = useState(site.list)
+  const [total, setTotal] = useState(site.total)
+  const [query, setQuery] = useState(queryDetail)
+  const context = { list, setList, query, setQuery, total, setTotal }
+  useEffect(() => {
+    findSite(query).then(res => {
+      //   console.log('findSite update:', res)
+      setList(res.list)
+      setTotal(res.total)
+    })
+  }, [query])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,10 +53,12 @@ const Find: NextPage = () => {
       <header className={styles.header}>
         <Top />
       </header>
-      <section className={styles.main}>
-        <Nav />
-      </section>
-      <List />
+      <SiteListContext.Provider value={context}>
+        <section className={styles.main}>
+          <Nav />
+        </section>
+        <List type="find" />
+      </SiteListContext.Provider>
       <Footer />
     </div>
   )
