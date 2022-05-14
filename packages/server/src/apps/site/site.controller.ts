@@ -52,28 +52,46 @@ export class SiteController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
     @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId?: number,
     @Query('order') order?: string,
+    @Query('type') type?: string,
   ) {
     console.log('size', size);
     console.log('page', page);
     console.log('tagId', tagId);
-    console.log('order', order);
+    console.log('order', order); // new | hot | ai
     // const { size, page, order, tagId } = query;
     const options = {
       size,
       page,
       order: {
-        updatedAt: 'DESC',
+        // updatedAt: 'DESC',
       },
       where: {},
     };
 
     if (order) {
-      const [orderKey, orderValue]: Array<string> = order.split(' ');
-      options.order[orderKey] = orderValue;
+      // const [orderKey, orderValue]: Array<string> = order.split(' ');
+      // options.order[orderKey] = orderValue;
+      if (order === 'hot') {
+        options.order = {
+          views: 'DESC',
+        };
+      }
+    } else {
+      options.order = {
+        updatedAt: 'DESC',
+      };
     }
 
     if (tagId) {
       options.where['tagIds'] = Like(`%${tagId}%`);
+    }
+
+    if (type) {
+      if (type === 'all') {
+        delete options.where['type'];
+      } else {
+        options.where['type'] = type;
+      }
     }
 
     return this.siteService.findListAndPage(options);

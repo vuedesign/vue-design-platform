@@ -9,7 +9,7 @@ export class SiteListQueryDto {
     type: 'int',
   })
   // @Transform(({ value }) => Number(value), { toClassOnly: true })
-  size?: number;
+  size: number;
 
   @ApiProperty({
     description: '当前页数',
@@ -18,7 +18,7 @@ export class SiteListQueryDto {
     type: 'int',
   })
   // @Transform(({ value }) => Number(value), { toClassOnly: true })
-  page?: number;
+  page: number;
 
   @ApiProperty({
     description: '排序',
@@ -26,7 +26,7 @@ export class SiteListQueryDto {
     required: false,
     type: 'string',
   })
-  order?: string;
+  order: string;
 
   @ApiProperty({
     description: '标签过滤',
