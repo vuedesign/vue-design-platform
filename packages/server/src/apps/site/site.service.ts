@@ -14,13 +14,13 @@ import {
 export class SiteService extends BaseService {
   constructor(
     @InjectRepository(SiteEntity)
-    private readonly projectRepository: Repository<SiteEntity>,
+    private readonly siteRepository: Repository<SiteEntity>,
   ) {
-    super(projectRepository);
+    super(siteRepository);
   }
   create(createSite: CreateSiteDto) {
-    this.projectRepository.create(createSite);
-    return this.projectRepository.save(createSite);
+    this.siteRepository.create(createSite);
+    return this.siteRepository.save(createSite);
   }
 
   findAll(query: IPaginationQuery): Promise<IPaginationResponse> {
@@ -28,13 +28,13 @@ export class SiteService extends BaseService {
   }
 
   findOne(id: number) {
-    return this.projectRepository.findOne({
+    return this.siteRepository.findOne({
       where: { id },
     });
   }
 
   update(id: number, updateSite: UpdateSiteDto) {
-    return this.projectRepository.update(id, updateSite);
+    return this.siteRepository.update(id, updateSite);
   }
 
   updateField(id: number, updateField: UpdateFieldDto) {
@@ -42,12 +42,12 @@ export class SiteService extends BaseService {
       updateField.type === 'number'
         ? Number(updateField.value)
         : updateField.value;
-    return this.projectRepository.update(id, {
+    return this.siteRepository.update(id, {
       [updateField.field]: value,
     });
   }
 
   remove(id: number) {
-    return this.projectRepository.delete(id);
+    return this.siteRepository.delete(id);
   }
 }

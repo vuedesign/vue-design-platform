@@ -22,7 +22,7 @@ import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 
 @Controller('sites')
-@ApiTags('项目模块')
+@ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
