@@ -1,7 +1,6 @@
-import { Wechat, UploadOne, SettingTwo, Power } from '@icon-park/react'
+import { SettingTwo } from '@icon-park/react'
 import styles from '../styles/header.module.scss'
 import Top from './Top'
-import Image from 'next/image'
 
 // import FindHeader from './FindHeader.vue'
 // import useGlobalStore from '@/store/global';

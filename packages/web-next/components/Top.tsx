@@ -27,12 +27,17 @@ type LinkProps = {
 
 const Top = () => {
   const router = useRouter()
+  const handleGotoHome = () => {
+    router.push({
+      pathname: '/'
+    })
+  }
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <ul className={styles.nav}>
           <li>
-            <h1 className={styles.logo}>
+            <h1 className={styles.logo} onClick={handleGotoHome}>
               <img src="/images/logo.png" />
             </h1>
           </li>
