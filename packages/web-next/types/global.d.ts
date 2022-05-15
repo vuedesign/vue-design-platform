@@ -1,3 +1,7 @@
+import { createContext, Dispatch, SetStateAction } from 'react'
+
+export type SetDispatch<T> = Dispatch<SetStateAction<T>>
+
 export interface Pagination {
   page: number
   size: number

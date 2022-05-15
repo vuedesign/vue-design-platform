@@ -158,26 +158,40 @@
   flex-wrap: wrap;
   padding: 0 8px;
   li {
-    width: 12.5%;
-    padding: 8px 0;
+    width: 256px;
+    height: 64px;
+    padding: 8px;
 
     a {
       color: #fff;
       text-decoration: none;
+      display: block;
+      width: 100%;
+    }
+
+    dl {
+      display: flex;
+    }
+
+    dt {
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      margin-right: 12px;
+    }
+
+    dd {
+      flex: 1;
     }
 
     img {
+      display: block;
       width: 20px;
       height: 20px;
     }
-    span {
-      font-size: 14px;
-      margin-left: 8px;
-    }
-    img,
-    span {
-      display: inline-block;
-      vertical-align: middle;
+
+    p {
+      opacity: 0.4;
     }
   }
 }

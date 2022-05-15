@@ -1,8 +1,8 @@
-import { createContext, Dispatch, SetStateAction } from 'react'
+import { createContext } from 'react'
 import type { SiteListType } from '../../types/site'
+import type { SetDispatch } from '../../types/global'
 import { FindSiteQuery } from '../../globals/apis'
 
-type SetDispatch<T> = Dispatch<SetStateAction<T>>
 export type SiteListContextType = {
   list: SiteListType
   setList: SetDispatch<SiteListType>

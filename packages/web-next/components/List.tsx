@@ -1,7 +1,7 @@
 import styles from '../styles/List.module.scss'
 import Item from './Item'
 import { SiteListContext } from '../pages/hooks/SiteListContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import Link from 'next/link'
 import { Pagination } from './Pagination'
 

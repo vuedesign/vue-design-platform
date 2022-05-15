@@ -8,8 +8,11 @@ export interface User {
 export type SiteType = 'site' | 'code' | 'all'
 
 export interface SiteItemType {
-  thumbUrl: string
   id?: number
+  iconUrl: string
+  thumbUrl: string
+  siteUrl: string
+  codeUrl: string
   title: string
   description: string
   tags: string[]
