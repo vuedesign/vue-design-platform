@@ -1,12 +1,11 @@
 <template>
     <div class="vd-container">
-        <vd-header />
+        <vd-asider />
         <div class="vd-body">
-            <vd-asider />
+            <vd-header />
             <div class="vd-mainer">
                 <router-view />
             </div>
-            <div class="vd-footer"></div>
         </div>
     </div>
 </template>
@@ -26,11 +25,18 @@ import VdAsider from './VdAsider.vue';
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    background-color: #f2f3f5;
 }
 .vd-body {
     flex: 1;
     overflow: hidden;
     width: 100%;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: column;
+}
+.vd-mainer {
+    flex: 1;
+    padding-bottom: 24px;
 }
 </style>

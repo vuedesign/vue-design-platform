@@ -1,32 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "allowJs": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "types": [
-      "node",
-      "vite/client"
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "Node",
+        "strict": true,
+        "allowJs": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "types": ["node", "vite/client", "element-plus/global"],
+        "baseUrl": "..",
+        "paths": {
+            "@": ["./src"]
+        }
+    },
+    "include": [
+        "./types/*.d.ts",
+        "./src/**/*.d.ts",
+        "./src/**/*.ts",
+        "./src/**/*.js",
+        "./src/**/*.vue"
     ],
-    "baseUrl": "..",
-    "paths": {
-        "@": [
-            "./src"
-        ]
-    }
-  },
-  "include": [
-    "./types/*.d.ts",
-    "./src/**/*.d.ts",
-    "./src/**/*.ts",
-    "./src/**/*.js",
-    "./src/**/*.vue",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    "exclude": ["node_modules", "dist"]
 }

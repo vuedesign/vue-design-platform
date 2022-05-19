@@ -2,8 +2,9 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import viteESLint from '@ehutch79/vite-eslint';
-// import myPlugin from './myPlugin';
-import ViteComponents, { VarletUIResolver } from 'vite-plugin-components';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -37,13 +38,23 @@ export default defineConfig({
         },
     },
     plugins: [
-        vue(),
+        vue({
+            template: {
+                compilerOptions: {
+                    // treat all tags with a dash as custom elements
+                    isCustomElement: (tag) => tag.includes('iconpark-icon'),
+                },
+            },
+        }),
         viteESLint({
             include: ['src/**/*.vue', 'src/**/*.js', 'src/**/*.ts'],
             exclude: 'src/assets/fontawesome/js/*.js',
         }),
-        ViteComponents({
-            customComponentResolvers: [VarletUIResolver()],
+        AutoImport({
+            resolvers: [ElementPlusResolver()],
+        }),
+        Components({
+            resolvers: [ElementPlusResolver()],
         }),
     ],
     // hmr: { overlay: true }
