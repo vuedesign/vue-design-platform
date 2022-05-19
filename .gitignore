@@ -8,3 +8,4 @@ packages/**/uploads
 nuxt.d.ts
 .output
 .env
+**/.DS_Store/**
