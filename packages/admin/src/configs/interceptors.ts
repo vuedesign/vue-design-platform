@@ -1,4 +1,4 @@
-import { router, setAuthorization } from '@/core';
+import { router } from '@/core';
 import { storeToRefs } from 'pinia';
 import { SUCCESS_STATUS_CODE } from './constants';
 import {
@@ -11,19 +11,19 @@ import {
     onRouterAfterEach,
     onRouterBeforeResolve,
 } from '@/core/interceptors';
-import useGlobalStore from '../modules/globals/useGlobalStore';
+import useGlobalStore from '@/modules/globals/useGlobalStore';
 
-type Config = Record<string, any>;
+type Context = Record<string, any>;
 
 // 拦截器配置
-onGlobalConfig((config: Config) => {
+onGlobalConfig((context: Context) => {
+    console.log('context', context);
     // 时间戳注入开关
-    config.isTimestampDisabled = false;
+    context.isTimestampDisabled = false;
     const globalStore = useGlobalStore();
     const { token } = storeToRefs(globalStore);
-    console.log('token', token);
     if (token.value) {
-        setAuthorization(`Bearer ${token.value}`);
+        context.$setAuthorization(`Bearer ${token.value}`);
     }
 });
 
@@ -50,7 +50,12 @@ onHttpResponseSuccess((response: Config) => {
 onHttpResponseFailure((error: any) => Promise.reject(error));
 
 // 路由进入之前
-onRouterBeforeEach(({ next }) => {
+onRouterBeforeEach(({ next, to }) => {
+    if (to.name === 'home') {
+        const globalStore = useGlobalStore();
+        globalStore.resetActive(to.name);
+        globalStore.resetBreadcrumb();
+    }
     next();
 });
 

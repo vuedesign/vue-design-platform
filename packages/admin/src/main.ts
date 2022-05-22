@@ -1,12 +1,9 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-// import ElementPlus from 'element-plus';
-import { router } from '@/core';
-import App from './App.vue';
+import { router, store, interceptors, http } from '@/core';
+import App from '@/App.vue';
 
 const app = createApp(App);
-// app.config.productionTip = false;
-app.use(createPinia());
+app.use(store);
 app.use(router);
-// app.use(ElementPlus);
+app.use(http);
+app.use(interceptors);
 app.mount('#app');

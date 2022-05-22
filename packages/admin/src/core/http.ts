@@ -1,6 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { HttpSetAuthorizationKey, HttpKey } from './keys';
 
-let instance: AxiosInstance = null;
+let instance: AxiosInstance = axios;
 
 export function setAuthorization(Authorization: string): void {
     instance.defaults.headers.common['Authorization'] = Authorization;
@@ -10,7 +11,7 @@ export function setAuthorization(Authorization: string): void {
  * 在api请求时注入时间戳
  * @param config
  */
-function injectionTimestamp(config) {
+function injectionTimestamp(config: AxiosRequestConfig) {
     const timestamp = new Date().getTime();
     const { params = {} } = config;
     Object.assign(params, {
@@ -18,7 +19,7 @@ function injectionTimestamp(config) {
     });
 }
 
-export default (interceptors) => {
+export default (interceptors: any) => {
     console.log(
         'import.meta.env.VITE_API_BASE_URL',
         import.meta.env.VITE_API_BASE_URL,
@@ -28,7 +29,7 @@ export default (interceptors) => {
             import.meta.env.VITE_API_BASE_URL || interceptors.baseURL || '',
     });
 
-    const requestSuccess = (config) => {
+    const requestSuccess = (config: AxiosRequestConfig) => {
         // 在 interceptors.js 关闭时间戳注入
         // export const isTimestampDisabled = false;
         if (!interceptors.isTimestampDisabled) {
@@ -39,19 +40,19 @@ export default (interceptors) => {
         }
         return config;
     };
-    const requestError = (error) => {
+    const requestError = (error: Error) => {
         if (interceptors.httpRequestFailure) {
             return interceptors.httpRequestFailure(error);
         }
         return Promise.reject(error);
     };
-    const responseSuccess = (response) => {
+    const responseSuccess = (response: { data: Record<string, any> }) => {
         if (interceptors.httpResponseSuccess) {
             return interceptors.httpResponseSuccess(response.data);
         }
         return response.data;
     };
-    const responseError = (error) => {
+    const responseError = (error: Error) => {
         if (interceptors.httpResponseFailure) {
             return interceptors.httpResponseFailure(error);
         }
@@ -60,6 +61,11 @@ export default (interceptors) => {
 
     instance.interceptors.request.use(requestSuccess, requestError);
     instance.interceptors.response.use(responseSuccess, responseError);
-
+    instance.install = (app, context) => {
+        app.config.globalProperties.$http = instance;
+        app.config.globalProperties.$setAuthorization = setAuthorization;
+        app.provide(HttpKey, instance);
+        app.provide(HttpSetAuthorizationKey, setAuthorization);
+    };
     return instance;
 };

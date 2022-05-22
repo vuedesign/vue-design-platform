@@ -7,7 +7,7 @@
             isOpen && 'is-open',
         ]"
     >
-        <dt>
+        <dt @click="handleClick">
             <div class="title">
                 <iconpark-icon :name="icon" class="title-icon"></iconpark-icon>
                 <span class="title-label">{{ label }}</span>
@@ -27,6 +27,7 @@
                     v-for="(item, index) in children"
                     :key="index"
                     v-bind="item"
+                    @goto="handlGoto"
                 />
             </template>
         </dd>
@@ -39,8 +40,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { defineProps, withDefaults } from 'vue';
-
 interface Props {
     label: string;
     value: string;
@@ -58,10 +57,20 @@ const props = withDefaults(defineProps<Props>(), {
     children: () => [],
 });
 
-const emit = defineEmits(['toggle']);
+const emit = defineEmits(['toggle', 'goto']);
 
 const handleToggle = () => {
     emit('toggle', props.value);
+};
+
+const handleClick = () => {
+    if (!props.children || !props.children.length) {
+        emit('goto', props);
+    }
+};
+
+const handlGoto = (props: Props) => {
+    emit('goto', props);
 };
 </script>
 
@@ -95,9 +104,12 @@ const handleToggle = () => {
 .vd-type-menu {
     padding: 5px 8px 5px 12px;
     margin-top: 8px;
-    border-radius: 4px;
+    border-radius: 32px;
+    background-color: transparent;
+    transition: all 0.5s;
     &:hover {
         background-color: rgba(#3d7eff, 0.2);
+        border-radius: 4px;
         cursor: pointer;
         .title-icon,
         .title-label,
@@ -107,6 +119,7 @@ const handleToggle = () => {
     }
     &.vd-active {
         background-color: #3d7eff;
+        border-radius: 4px;
         .title-icon,
         .title-label,
         .icon > iconpark-icon {
@@ -122,12 +135,12 @@ const handleToggle = () => {
         .title {
             .title-icon,
             .title-label {
-                color: #777;
+                color: #666;
             }
         }
         .icon {
             > iconpark-icon {
-                color: #777;
+                color: #666;
             }
             &:hover {
                 > iconpark-icon {

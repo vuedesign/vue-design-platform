@@ -6,23 +6,30 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from '../../entities/user.entity';
 import { findUserItemQuery } from './dto/user.dto';
 import { PartialType } from '@nestjs/mapped-types';
+import {
+  BaseService,
+  IPaginationResponse,
+  IPaginationQuery,
+} from '@app/globals/services/base.service';
 
 export class CreateUser extends PartialType(CreateUserDto) {}
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  ) {
+    super(userRepository);
+  }
 
   create(createUser: CreateUser) {
     this.userRepository.create(createUser);
     return this.userRepository.save(createUser);
   }
 
-  findAll(): Promise<any> {
-    return this.userRepository.find();
+  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
+    return this.findListAndPage(query);
   }
 
   findOne(query: findUserItemQuery): Promise<UserEntity | undefined> {
@@ -32,10 +39,10 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.delete(id);
   }
 }

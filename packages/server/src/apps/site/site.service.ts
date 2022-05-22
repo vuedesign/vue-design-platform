@@ -23,7 +23,7 @@ export class SiteService extends BaseService {
     return this.siteRepository.save(createSite);
   }
 
-  findAll(query: IPaginationQuery): Promise<IPaginationResponse> {
+  findListAndPage(query: IPaginationQuery): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 

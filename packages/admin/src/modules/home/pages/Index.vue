@@ -1,26 +1,10 @@
 <template>
     <vd-card class="page-home">
-        <template #header>
-            <div class="page-home-filter">
-                <el-input
-                    v-model="input"
-                    placeholder="Please input"
-                    style="width: 200px"
-                />
-                <el-select v-model="value" placeholder="Select">
-                    <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        :disabled="item.disabled"
-                    />
-                </el-select>
-                <el-button type="primary">Primary</el-button>
-            </div>
-        </template>
+        <!-- <template #header>
+            <div class="page-home-container">home</div>
+        </template> -->
         <template #default>
-            <div class="page-home-container">====</div>
+            <div class="page-home-container">home</div>
         </template>
     </vd-card>
 </template>
@@ -31,39 +15,6 @@ export default {
 </script>
 <script lang="ts" setup>
 import VdCard from '../../globals/components/VdCard.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-const router = useRouter();
-const handleReport = () => {
-    router.push({
-        name: 'manage',
-    });
-};
-const input = ref('');
-const value = ref('');
-const options = [
-    {
-        value: 'Option1',
-        label: 'Option1',
-    },
-    {
-        value: 'Option2',
-        label: 'Option2',
-        disabled: true,
-    },
-    {
-        value: 'Option3',
-        label: 'Option3',
-    },
-    {
-        value: 'Option4',
-        label: 'Option4',
-    },
-    {
-        value: 'Option5',
-        label: 'Option5',
-    },
-];
 </script>
 
 <style scoped lang="scss">

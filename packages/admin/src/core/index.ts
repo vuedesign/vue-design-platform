@@ -1,11 +1,14 @@
-import router from './router';
-import createHttp, { setAuthorization } from './http';
-import interceptors from './interceptors';
+import '@/configs/interceptors';
+import routes from '@/configs/routes';
+import createRouter from './router';
+import createHttp from './http';
+import createInterceptors from './interceptors';
+import { createPinia, Pinia } from 'pinia';
+export * from './keys';
 
+const interceptors = createInterceptors();
 const http = createHttp(interceptors);
-import('@/configs/interceptors').then(() => {
-    interceptors.onGlobalConfigCallback &&
-        interceptors.onGlobalConfigCallback(http);
-});
+const router = createRouter(routes, interceptors);
+const store: Pinia = createPinia();
 
-export { router, http, setAuthorization };
+export { router, http, interceptors, store };

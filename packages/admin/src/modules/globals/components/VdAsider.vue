@@ -9,6 +9,7 @@
                 :key="index"
                 v-bind="item"
                 @toggle="handleToggle"
+                @goto="handleGoto"
             />
         </div>
     </div>
@@ -21,56 +22,35 @@ export default {
 </script>
 <script setup lang="ts">
 import logo from '@/assets/images/logo.png';
-import { ref, Ref } from 'vue';
 import VdMenuItem from './VdMenuItem.vue';
+import useGlobalStore, { MenuNode } from '../useGlobalStore';
 
-type MenuNode = {
-    label: string;
-    value: string;
-    active?: boolean;
-    icon?: string;
-    children?: MenuNode[];
-    isOpen?: boolean;
-};
+const globalStore = useGlobalStore();
+const { menuList } = storeToRefs(globalStore);
 
-const menuList: Ref<MenuNode[]> = ref([
-    {
-        label: '用户管理',
-        value: 'user',
-        active: true,
-        icon: 'user',
-    },
-    {
-        label: '素材管理',
-        value: 'material',
-        icon: 'picture-one',
-    },
-    {
-        label: '埋点管理',
-        value: 'buried',
-        icon: 'broadcast',
-    },
-    {
-        label: '配置管理',
-        value: 'config',
-        icon: 'folder-open',
-        isOpen: true,
-        children: [
-            {
-                label: '首页导航管理',
-                value: 'home-nav',
-                icon: 'navigation',
-            },
-        ],
-    },
-]);
-
-const handleToggle = (value) => {
-    const item = menuList.value.find((item) => item.value === value);
+const handleToggle = (value: string) => {
+    const item: MenuNode = menuList.value.find(
+        (item: MenuNode) => item.value === value,
+    );
     if (item) {
         item.isOpen = !item.isOpen;
     }
     console.log('value', value);
+};
+
+const router = useRouter();
+const route = useRoute();
+
+globalStore.resetActive(route.name as string);
+globalStore.pushBreadcrumb(route.name as string);
+
+const handleGoto = (props: MenuNode) => {
+    const name = props.value;
+    globalStore.resetActive(name);
+    globalStore.pushBreadcrumb(name);
+    router.push({
+        name,
+    });
 };
 </script>
 

@@ -1,4 +1,5 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
+import { NavigationGuard } from 'vue-router';
 
 export type FnCallback<T> = (config: T) => T;
 export type HttpRequestSuccess =
@@ -7,6 +8,7 @@ export type HttpRequestSuccess =
 export type HttpRequestFailure = FnCallback<any> | any;
 export type HttpResponseSuccess = FnCallback<any> | any;
 export type HttpResponseFailure = FnCallback<any> | any;
+export type RouterBeforeEach = FnCallback<any> | any;
 
 export interface Interceptors {
     isTimestampDisabled: boolean;
@@ -14,7 +16,9 @@ export interface Interceptors {
     httpRequestFailure?: HttpRequestFailure;
     httpResponseSuccess?: HttpResponseSuccess;
     httpResponseFailure?: HttpResponseFailure;
-    onGlobalConfigCallback: (http: AxiosInstance) => void;
+    routerBeforeEach?: RouterBeforeEach;
+    install: (app: App) => void;
+    onGlobalConfigCallback: (context: Record<string, any>) => void;
 }
 
 const interceptors: Interceptors = Object.create({
@@ -24,7 +28,6 @@ const interceptors: Interceptors = Object.create({
 export const onHttpRequestSuccess = (
     fn?: FnCallback<AxiosRequestConfig>,
 ): void => {
-    // interceptors.httpRequestSuccess = (config: AxiosRequestConfig) => fn ? fn(config) : config;
     Object.assign(interceptors, {
         httpRequestSuccess: (config: AxiosRequestConfig) =>
             fn ? fn(config) : config,
@@ -35,46 +38,55 @@ export const onHttpRequestFailure = (fn?: FnCallback<any>): void => {
     Object.assign(interceptors, {
         httpRequestFailure: (error: any) => (fn ? fn(error) : error),
     });
-    // interceptors.httpRequestFailure = error => fn ? fn(error) : error;
 };
 
 export const onHttpResponseSuccess = (fn?: FnCallback<any>): void => {
-    // interceptors.httpResponseSuccess = fn;
-    // Object.assign(interceptors, {
-    //     httpResponseSuccess: fn
-    // });
-    interceptors.httpResponseSuccess = (res) => (fn ? fn(res) : res);
+    Object.assign(interceptors, {
+        httpResponseSuccess: (res) => (fn ? fn(res) : res),
+    });
 };
 
 export const onHttpResponseFailure = (fn?: FnCallback<any>): void => {
     Object.assign(interceptors, {
         httpResponseFailure: (error: any) => (fn ? fn(error) : error),
     });
-    // interceptors.httpResponseFailure = error => fn ? fn(error) : error;
 };
 
-export const onRouterBeforeEach = (fn?: FnCallback<any>): void => {
+export const onRouterBeforeEach = (fn?: FnCallback<NavigationGuard>): void => {
     Object.assign(interceptors, {
-        routerBeforeEach: (options: any) => (fn ? fn(options) : options),
+        routerBeforeEach: (options: NavigationGuard) => {
+            return fn ? fn(options) : options;
+        },
     });
-    // interceptors.routerBeforeEach = options => fn ? fn(options) : options;
 };
 
-export const onRouterAfterEach = (fn?: FnCallback<any>): void => {
+export const onRouterAfterEach = (fn?: FnCallback<NavigationGuard>): void => {
     Object.assign(interceptors, {
-        routerAfterEach: (options: any) => (fn ? fn(options) : options),
+        routerAfterEach: (options: NavigationGuard) =>
+            fn ? fn(options) : options,
     });
-    // interceptors.routerAfterEach = options => fn ? fn(options) : options;
 };
 
-export const onRouterBeforeResolve = (fn?: FnCallback<any>): void => {
+export const onRouterBeforeResolve = (
+    fn?: FnCallback<NavigationGuard>,
+): void => {
     Object.assign(interceptors, {
-        routerBeforeResolve: (options: any) => (fn ? fn(options) : options),
+        routerBeforeResolve: (options: NavigationGuard) =>
+            fn ? fn(options) : options,
     });
-    // interceptors.routerBeforeResolve = options => fn ? fn(options) : options;
 };
 
-export const onGlobalConfig = (fn: (http: AxiosInstance) => void): void => {
+export const onGlobalConfig = (
+    fn: (context: Record<string, any>) => void,
+): void => {
     interceptors.onGlobalConfigCallback = fn;
 };
-export default interceptors;
+
+export default () => {
+    interceptors.install = (app) => {
+        app.config.globalProperties.$interceptors = interceptors;
+        interceptors.onGlobalConfigCallback &&
+            interceptors.onGlobalConfigCallback(app.config.globalProperties);
+    };
+    return interceptors;
+};

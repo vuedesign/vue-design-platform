@@ -37,6 +37,7 @@ import VdAsider from './VdAsider.vue';
 }
 .vd-mainer {
     flex: 1;
-    padding-bottom: 24px;
+    padding-bottom: 16px;
+    overflow: hidden;
 }
 </style>

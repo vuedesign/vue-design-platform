@@ -1,5 +1,67 @@
 <template>
-    <div>login</div>
+    <div class="page-login">
+        <div class="page-login-inner">
+            <div class="page-login-left">
+                <div class="page-login-left-inner">
+                    <el-divider content-position="left">登录</el-divider>
+                    <el-form layout="horizontal" :model="formData">
+                        <el-form-item class="login-item">
+                            <el-input
+                                v-model:value="formData.account"
+                                placeholder="用户名/手机号/邮箱"
+                            >
+                                <template #prefix>
+                                    <el-icon>
+                                        <iconpark-icon
+                                            name="user"
+                                        ></iconpark-icon>
+                                    </el-icon>
+                                </template>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item class="login-item">
+                            <el-input
+                                v-model:value="formData.password"
+                                type="password"
+                                placeholder="密码"
+                            >
+                                <template #prefix>
+                                    <el-icon>
+                                        <iconpark-icon
+                                            name="lock"
+                                        ></iconpark-icon>
+                                    </el-icon>
+                                </template>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item class="login-item">
+                            <el-button
+                                class="btn-block"
+                                type="primary"
+                                :disabled="
+                                    formData.account === '' ||
+                                    formData.password === ''
+                                "
+                                @click="handleLogin"
+                            >
+                                登 录
+                            </el-button>
+                        </el-form-item>
+                        <el-form-item class="login-item">
+                            <el-button
+                                class="btn-block"
+                                text
+                                @click="handleGotoRegister"
+                            >
+                                注 册
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            <div class="page-login-right" />
+        </div>
+    </div>
 </template>
 <script lang="ts">
 export default {
@@ -7,13 +69,33 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { reactive, defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
+import useGlobalStore from '../useGlobalStore';
+
+const globalStore = useGlobalStore();
+const router = useRouter();
+
+const formData = reactive({
+    account: '18602042482',
+    password: 'string',
+});
+
+const handleLogin = () => {
+    globalStore.login(formData);
+};
+
+const handleGotoRegister = () => {
+    router.push({
+        path: '/register',
+    });
+};
 </script>
 
 <style scoped lang="scss">
 .page-login {
     padding: 100px;
+    .btn-block {
+        width: 100%;
+    }
 }
 
 .page-login-inner {
