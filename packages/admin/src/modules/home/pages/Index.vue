@@ -12,7 +12,7 @@
                 <span class="title">{{ item.title }}</span>
             </dt>
             <dd>
-                <p>{{ item.number }}</p>
+                <p>{{ item.default }}</p>
             </dd>
         </dl>
     </div>
