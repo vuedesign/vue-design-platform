@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { findProfileData, loginData } from './api';
 import { router } from '@/core';
 import { setAuthorization } from '@/core/http';
+import menuTree, { MenuNode } from '@/configs/menuTree';
 
 const TOKEN_KEY = 'DESIGN_TOKEN';
 
@@ -32,14 +33,14 @@ interface Breadcrumb {
     value: string;
 }
 
-export type MenuNode = {
-    label: string;
-    value: string;
-    active?: boolean;
-    icon?: string;
-    children?: MenuNode[];
-    isOpen?: boolean;
-};
+// export type MenuNode = {
+//     label: string;
+//     value: string;
+//     active?: boolean;
+//     icon?: string;
+//     children?: MenuNode[];
+//     isOpen?: boolean;
+// };
 
 export default defineStore('global', () => {
     const profile: Profile = reactive({});
@@ -70,45 +71,19 @@ export default defineStore('global', () => {
     };
 
     const breadcrumbList: Ref<Breadcrumb[]> = ref([]);
-    const menuList: Ref<MenuNode[]> = ref([
-        {
-            label: '用户管理',
-            value: 'user',
-            active: true,
-            icon: 'user',
-        },
-        {
-            label: '素材管理',
-            value: 'material',
-            icon: 'picture-one',
-        },
-        {
-            label: '埋点管理',
-            value: 'buried',
-            icon: 'broadcast',
-        },
-        {
-            label: '配置管理',
-            value: 'config',
-            icon: 'folder-open',
-            isOpen: true,
-            children: [
-                {
-                    label: '首页导航管理',
-                    value: 'navigation',
-                    icon: 'navigation',
-                },
-            ],
-        },
-    ]);
+    const menuList: Ref<MenuNode[]> = ref(menuTree);
 
     function setBreadcrumb(
         menuList: MenuNode[],
         breadcrumbList: Breadcrumb[],
         name: string,
+        parent?: MenuNode,
     ) {
         const item = menuList.find((item: MenuNode) => item.value === name);
         if (item) {
+            if (parent) {
+                breadcrumbList.push(parent);
+            }
             breadcrumbList.push({
                 label: item.label,
                 value: item.value,
@@ -116,11 +91,7 @@ export default defineStore('global', () => {
         } else {
             menuList.forEach((item) => {
                 if (item.children) {
-                    breadcrumbList.push({
-                        label: item.label,
-                        value: item.value,
-                    });
-                    setBreadcrumb(item.children, breadcrumbList, name);
+                    setBreadcrumb(item.children, breadcrumbList, name, item);
                 }
             });
         }

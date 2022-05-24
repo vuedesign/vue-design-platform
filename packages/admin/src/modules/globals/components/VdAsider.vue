@@ -35,7 +35,6 @@ const handleToggle = (value: string) => {
     if (item) {
         item.isOpen = !item.isOpen;
     }
-    console.log('value', value);
 };
 
 const router = useRouter();
