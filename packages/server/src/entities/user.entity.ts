@@ -69,13 +69,13 @@ export class UserEntity {
   avatar: string;
 
   @Column({
-    name: 'is_show',
+    name: 'status',
     type: 'int',
     width: 1,
     nullable: true,
     comment: '是否可用：1-可用，2-不可用',
   })
-  isShow: number;
+  status: number;
 
   @Column({
     type: 'int',

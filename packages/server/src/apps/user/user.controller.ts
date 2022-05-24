@@ -38,7 +38,7 @@ export class UserController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
     @Query('search') search?: string,
     @Query('order') order?: string,
-    @Query('isShow', new DefaultValuePipe(0), ParseIntPipe) isShow?: number,
+    @Query('status', new DefaultValuePipe(0), ParseIntPipe) status?: number,
     @Query('rule', new DefaultValuePipe(0), ParseIntPipe) rule?: number,
   ) {
     const options = {
@@ -62,11 +62,11 @@ export class UserController {
       }
     }
 
-    if (isShow !== undefined) {
-      if (isShow === 1 || isShow === 2) {
-        options.where['isShow'] = isShow;
+    if (status !== undefined) {
+      if (status === 1 || status === 2) {
+        options.where['status'] = status;
       } else {
-        delete options.where['isShow'];
+        delete options.where['status'];
       }
     }
 
