@@ -1,20 +1,31 @@
 <template>
     <div class="page-home-container">
-        <dl
-            v-for="(item, index) in homeCardList"
-            :key="index"
-            :style="{ backgroundColor: `${item.bgColor}` }"
-        >
-            <dt>
-                <span :style="{ color: item.fontColor }">
-                    <iconpark-icon :name="item.icon" :size="32"></iconpark-icon>
-                </span>
-                <span class="title">{{ item.title }}</span>
-            </dt>
-            <dd>
-                <p>{{ item.default }}</p>
-            </dd>
-        </dl>
+        <div class="page-home-header">
+            <dl
+                v-for="(item, index) in homeCardList"
+                :key="index"
+                :style="{ backgroundColor: `${item.bgColor}` }"
+            >
+                <dt>
+                    <span :style="{ color: item.fontColor }">
+                        <iconpark-icon
+                            :name="item.icon"
+                            :size="32"
+                        ></iconpark-icon>
+                    </span>
+                    <span class="title">{{ item.title }}</span>
+                </dt>
+                <dd>
+                    <p>{{ item.default }}</p>
+                </dd>
+            </dl>
+            <dl class="tow left"></dl>
+            <dl class="tow right"></dl>
+        </div>
+        <div class="page-home-body">
+            <vd-card class="page-home-left">left</vd-card>
+            <vd-card class="page-home-right">right</vd-card>
+        </div>
     </div>
     <!-- <vd-card class="page-home">
         <template #default>
@@ -28,7 +39,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-// import VdCard from '../../globals/components/VdCard.vue';
+import VdCard from '../../globals/components/VdCard.vue';
 interface HomeCardList {
     timer: any;
     title: string;
@@ -108,15 +119,36 @@ runNumberTick(homeCardList);
     height: 100%;
 }
 .page-home-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.page-home-header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-content: space-between;
     grid-column-gap: 16px;
+    grid-row-gap: 16px;
     dl {
         border-radius: 8px;
         padding: 24px;
         height: 160px;
         box-sizing: border-box;
+        flex: 1;
+        &.tow {
+            background-color: #fff;
+            grid-row: 2;
+            grid-template-rows: auto;
+        }
+        &.left {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+        &.right {
+            grid-column-start: 3;
+            grid-column-end: 5;
+        }
     }
 
     dt {
@@ -145,5 +177,18 @@ runNumberTick(homeCardList);
             text-align: right;
         }
     }
+}
+.page-home-body {
+    flex: 1;
+    width: 100%;
+    margin-top: 16px;
+    display: grid;
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
+    grid-template-columns: 2fr 2fr;
+}
+.page-home-left,
+.page-home-right {
+    background-color: #fff;
 }
 </style>

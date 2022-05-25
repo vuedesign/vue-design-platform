@@ -39,5 +39,6 @@ import VdAsider from './VdAsider.vue';
     flex: 1;
     padding-bottom: 16px;
     overflow: hidden;
+    display: flex;
 }
 </style>

@@ -24,6 +24,7 @@ const slots = useSlots();
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.02);
+    width: 100%;
 }
 .vd-card-header {
     border-top-left-radius: 8px;
