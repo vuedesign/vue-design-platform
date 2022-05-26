@@ -1,4 +1,4 @@
-import globals from '../modules/globals/routes';
+import globals from '../modules/global/routes';
 import homeRoutes from '../modules/home/routes';
 import userRoutes from '../modules/user/routes';
 import buriedRoutes from '../modules/buried/routes';
@@ -12,7 +12,7 @@ export default [
         redirect: {
             name: 'home',
         },
-        component: () => import(`@/modules/globals/components/VdContainer.vue`),
+        component: () => import(`@/modules/global/components/VdContainer.vue`),
         children: [
             ...homeRoutes,
             ...userRoutes,

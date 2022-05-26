@@ -39,7 +39,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../globals/components/VdCard.vue';
+import VdCard from '../../global/components/VdCard.vue';
 interface HomeCardList {
     timer: any;
     title: string;

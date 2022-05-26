@@ -11,7 +11,7 @@ import {
     onRouterAfterEach,
     onRouterBeforeResolve,
 } from '@/core/interceptors';
-import useGlobalStore from '@/modules/globals/useGlobalStore';
+import useGlobalStore from '@/modules/global/useGlobalStore';
 
 type Context = Record<string, any>;
 

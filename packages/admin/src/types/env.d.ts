@@ -1,7 +1,7 @@
+import { Ref } from 'vue';
 /// <reference types="vite/client" />
 
 import { AxiosInstance } from 'axios';
-import { Canvas } from 'fabric/fabric-impl';
 import { Router } from 'vue-router';
 declare module '@/core' {
     export const http: AxiosInstance;
@@ -11,10 +11,8 @@ declare module '@/core' {
 
 declare module '@/core/interceptors';
 
-declare global {
-    interface Window {
-         __editor__: undefined | Canvas;
-    }
+declare module '@/utils/useTable' {
+    const useTableMaxHeight: Ref<number>;
 }
 
 export {};

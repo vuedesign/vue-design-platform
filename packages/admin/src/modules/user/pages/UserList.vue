@@ -68,13 +68,13 @@
             </div>
         </template>
         <template #default>
-            <div class="page-user-container" ref="pageContainer">
+            <div class="page-user-container" ref="pageContainerRef">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
                     :key="tabelMaxheight"
-                    :max-height="tabelMaxheight"
+                    :height="tabelMaxheight"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="id" label="ID" width="48" />
@@ -84,6 +84,7 @@
                                 shape="square"
                                 :size="40"
                                 :src="scope.row.avatar"
+                                style="display: block"
                             />
                         </template>
                     </el-table-column>
@@ -98,18 +99,18 @@
                     <el-table-column label="状态" width="80">
                         <template #default="scope">
                             <el-tag
-                                v-if="scope.row.isShow === STATUS.AVAILABLE"
+                                v-if="scope.row.status === STATUS.AVAILABLE"
                             >
                                 {{
                                     statusMap.get(
-                                        scope.row.isShow || STATUS.AVAILABLE,
+                                        scope.row.status || STATUS.AVAILABLE,
                                     )
                                 }}
                             </el-tag>
                             <el-tag v-else type="info">
                                 {{
                                     statusMap.get(
-                                        scope.row.isShow || STATUS.DISABLE,
+                                        scope.row.status || STATUS.DISABLE,
                                     )
                                 }}
                             </el-tag>
@@ -179,16 +180,15 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../globals/components/VdCard.vue';
+import VdCard from '../../global/components/VdCard.vue';
 import useUserStore from '../useUserStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
 import DialogUserUpdate from '../components/DialogUserUpdate.vue';
-
-import { useTableMaxHeight } from '../../../utils/useTable';
+import { useTableMaxHeight } from '@/utils/useTable';
 
 const userStore = useUserStore();
-const pageContainer = ref(document.createElement('div'));
-const tabelMaxheight = useTableMaxHeight(pageContainer);
+const pageContainerRef = ref(document.createElement('div'));
+const tabelMaxheight = useTableMaxHeight(pageContainerRef);
 
 const headerCellStyle = () => {
     return {

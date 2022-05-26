@@ -1,6 +1,10 @@
+import { App } from 'vue';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { HttpSetAuthorizationKey, HttpKey } from './keys';
 
+export interface PluginAxiosInstance extends AxiosInstance {
+    install: (app: App) => void;
+}
 let instance: AxiosInstance = axios;
 
 export function setAuthorization(Authorization: string): void {
@@ -19,15 +23,11 @@ function injectionTimestamp(config: AxiosRequestConfig) {
     });
 }
 
-export default (interceptors: any) => {
-    console.log(
-        'import.meta.env.VITE_API_BASE_URL',
-        import.meta.env.VITE_API_BASE_URL,
-    );
+export default (interceptors: Record<string, any>) => {
     instance = axios.create({
         baseURL:
             import.meta.env.VITE_API_BASE_URL || interceptors.baseURL || '',
-    });
+    }) as PluginAxiosInstance;
 
     const requestSuccess = (config: AxiosRequestConfig) => {
         // 在 interceptors.js 关闭时间戳注入
@@ -61,7 +61,7 @@ export default (interceptors: any) => {
 
     instance.interceptors.request.use(requestSuccess, requestError);
     instance.interceptors.response.use(responseSuccess, responseError);
-    instance.install = (app, context) => {
+    instance.install = (app: App) => {
         app.config.globalProperties.$http = instance;
         app.config.globalProperties.$setAuthorization = setAuthorization;
         app.provide(HttpKey, instance);

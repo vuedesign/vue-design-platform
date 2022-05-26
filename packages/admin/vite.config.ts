@@ -5,7 +5,6 @@ import viteESLint from '@ehutch79/vite-eslint';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-// import ElementPlus from 'unplugin-element-plus/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -76,7 +75,7 @@ export default defineConfig({
                     importStyle: 'sass',
                 }),
             ],
-            dts: 'types/auto-imports.d.ts',
+            dts: 'src/types/auto-imports.d.ts',
         }),
         Components({
             resolvers: [
@@ -84,12 +83,7 @@ export default defineConfig({
                     importStyle: 'sass',
                 }),
             ],
-            dts: 'types/components.d.ts',
+            dts: 'src/types/components.d.ts',
         }),
-
-        // ElementPlus({
-        //     useSource: true,
-        // }),
     ],
-    // hmr: { overlay: true }
 });

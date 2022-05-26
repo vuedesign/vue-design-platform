@@ -1,9 +1,9 @@
-import { reactive, ref, computed } from 'vue';
-import { defineStore } from 'pinia';
+import { ComputedRef, Ref } from 'vue';
 import { findProfileData, loginData } from './api';
 import { router } from '@/core';
 import { setAuthorization } from '@/core/http';
 import menuTree, { MenuNode } from '@/configs/menuTree';
+import { GLOBAL_STORE_KEY } from '@/configs/storeKeys';
 
 const TOKEN_KEY = 'DESIGN_TOKEN';
 
@@ -42,7 +42,7 @@ interface Breadcrumb {
 //     isOpen?: boolean;
 // };
 
-export default defineStore('global', () => {
+export default defineStore(GLOBAL_STORE_KEY, () => {
     const profile: Profile = reactive({});
     const findProfile = async () => {
         const res = await findProfileData();
@@ -50,7 +50,7 @@ export default defineStore('global', () => {
         console.log('findProfile', res);
     };
 
-    const token: ComputedGetter<string> = computed(
+    const token: ComputedRef<string> = computed(
         () => window.localStorage.getItem(TOKEN_KEY) || '',
     );
     const setToken = (token: string): void => {

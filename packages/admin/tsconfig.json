@@ -8,13 +8,12 @@
         "noEmit": true,
         "resolveJsonModule": true,
         "types": ["node", "vite/client", "element-plus/global"],
-        "baseUrl": "..",
+        "baseUrl": ".",
         "paths": {
             "@": ["./src"]
         }
     },
     "include": [
-        "./types/*.d.ts",
         "./src/**/*.d.ts",
         "./src/**/*.ts",
         "./src/**/*.js",

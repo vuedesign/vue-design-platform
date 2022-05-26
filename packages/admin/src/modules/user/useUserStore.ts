@@ -1,5 +1,4 @@
 import { reactive, Ref, ref } from 'vue';
-import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash-es';
 import {
     findData,
@@ -10,21 +9,21 @@ import {
     destroyData,
 } from './api';
 import { STATUS, RULE } from './constants';
-// import { ElMessage, ElMessageBox } from 'element-plus';
+import { USER_STORE_KEY } from '@/configs/storeKeys';
 
 export interface UserItem {
     id?: number;
-    uuid: string;
+    uuid?: string;
     username: string;
     nickname: string;
     email: string;
     phone: string;
     password: string;
     avatar: string;
-    isShow: number;
+    status: number;
     rule: number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 export type UserList = Array<UserItem>;
 export interface UserFilter {
@@ -48,7 +47,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore('user', () => {
+export default defineStore(USER_STORE_KEY, () => {
     const dialogType = ref('create');
     const detail: UserItem = reactive({
         id: undefined,
@@ -59,7 +58,7 @@ export default defineStore('user', () => {
         phone: '',
         password: '',
         avatar: '',
-        isShow: STATUS.DISABLE,
+        status: STATUS.DISABLE,
         rule: RULE.USER,
         createdAt: undefined,
         updatedAt: undefined,
@@ -88,13 +87,13 @@ export default defineStore('user', () => {
         Object.assign(detail, res);
     };
 
-    const create = async (data = {}) => {
+    const create = async (data: UserItem) => {
         const res = await createData(data);
         await find(filter);
         return res;
     };
 
-    const update = async (data = {}) => {
+    const update = async (data: UserItem) => {
         const res = await updateData(data);
         await find(filter);
         return !!res.affected;
@@ -136,11 +135,12 @@ export default defineStore('user', () => {
     };
 
     const openDialogUser = (type: string, id?: number) => {
-        isDialogUpdateVisible.value = true;
         dialogType.value = type;
         if (type === 'create') {
+            isDialogUpdateVisible.value = true;
             resetDetail();
         } else if (type === 'update' && id) {
+            isDialogUpdateVisible.value = true;
             findOne(id);
         } else if (type === 'delete' && id) {
             del(id);
