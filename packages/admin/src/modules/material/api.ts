@@ -1,5 +1,5 @@
 import { http } from '@/core';
-import { UserList, UserItem } from './useUserStore';
+import { UserList, UserItem } from './useMaterialStore';
 
 export type PromiseList<T> = Promise<{
     list: T;

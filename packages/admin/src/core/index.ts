@@ -5,11 +5,11 @@ import { createRouter } from './router';
 import { createHttp } from './http';
 import { createPinia } from 'pinia';
 
-const interceptors = createInterceptors();
-const http = createHttp({ interceptors });
-const router = createRouter({ routes, interceptors });
+const http = createHttp({});
+const router = createRouter({ routes });
 const store = createPinia();
+const interceptors = createInterceptors();
 
 export * from './interceptors';
 export * from './keys';
-export { router, http, interceptors, store };
+export { router, http, store, interceptors };

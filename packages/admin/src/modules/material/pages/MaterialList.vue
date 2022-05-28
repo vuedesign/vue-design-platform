@@ -18,28 +18,29 @@ export default {
 </script>
 <script lang="ts" setup>
 import VdCard from '../../global/components/VdCard.vue';
-import useUserStore from '../useUserStore';
+import useMaterialStore from '../useMaterialStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
 import DialogUserUpdate from '../components/DialogUserUpdate.vue';
 
-const userStore = useUserStore();
-const { filter, total, list, isDialogUpdateVisible } = storeToRefs(userStore);
+const materiaStore = useMaterialStore();
+const { filter, total, list, isDialogUpdateVisible } =
+    storeToRefs(materiaStore);
 
-userStore.find();
+materiaStore.find();
 
 const handleSearch = (id: number) => {
-    userStore.find(filter.value);
+    materiaStore.find(filter.value);
 };
 const handleUpdate = (id: number) => {
-    userStore.findOne(id);
+    materiaStore.findOne(id);
     isDialogUpdateVisible.value = true;
 };
 const handleDel = (id: number) => {
     console.log('id', id);
-    userStore.del(id);
+    materiaStore.del(id);
 };
 const handleCreate = () => {
-    userStore.resetDetail();
+    materiaStore.resetDetail();
     isDialogUpdateVisible.value = true;
 };
 </script>

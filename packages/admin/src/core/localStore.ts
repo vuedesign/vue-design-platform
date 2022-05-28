@@ -25,11 +25,3 @@ export function clearItem() {
 export function removeItem(key: string) {
     ls.removeItem(key);
 }
-
-export default {
-    setItem,
-    getItem,
-    hasItem,
-    clearItem,
-    removeItem,
-};

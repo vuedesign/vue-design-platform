@@ -1,7 +1,7 @@
 import { App } from 'vue';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { HttpKey } from './keys';
-import { Interceptors } from './interceptors';
+import interceptors from './interceptors';
 
 export interface PluginAxiosInstance extends AxiosInstance {
     install: (app: App) => void;
@@ -21,12 +21,12 @@ function injectionTimestamp(config: AxiosRequestConfig) {
 }
 
 export interface CreateHttpOptions {
-    interceptors: Interceptors;
+    // interceptors: Interceptors;
     baseURL?: string;
 }
 
 export function createHttp({
-    interceptors,
+    // interceptors,
     baseURL,
 }: CreateHttpOptions): PluginAxiosInstance {
     const instance = axios.create({

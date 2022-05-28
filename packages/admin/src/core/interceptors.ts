@@ -114,3 +114,5 @@ export function createInterceptors(): Interceptors {
     };
     return interceptors;
 }
+
+export default interceptors;

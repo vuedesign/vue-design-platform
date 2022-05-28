@@ -4,16 +4,12 @@ import {
     RouteRecordRaw,
     Router,
 } from 'vue-router';
-import { Interceptors } from './interceptors';
+import interceptors from './interceptors';
 
 export interface CreateRouterOptions {
     routes: RouteRecordRaw[];
-    interceptors: Interceptors;
 }
-export function createRouter({
-    routes,
-    interceptors,
-}: CreateRouterOptions): Router {
+export function createRouter({ routes }: CreateRouterOptions): Router {
     const router = _createRouter({
         history: createWebHistory(),
         routes,

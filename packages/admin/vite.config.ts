@@ -65,7 +65,6 @@ export default defineConfig({
                 'pinia',
                 {
                     axios: [
-                        // default imports
                         ['default', 'axios'], // import { default as axios } from 'axios',
                     ],
                 },

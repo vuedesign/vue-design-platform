@@ -1,4 +1,4 @@
-import { router, store, interceptors, http } from '@/core';
+import { router, store, http, interceptors } from '@/core';
 import App from '@/App.vue';
 
 const app = createApp(App);
