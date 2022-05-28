@@ -40,6 +40,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import VdCard from '../../global/components/VdCard.vue';
+// import styles from '../styles/Home.module.scss';
 interface HomeCardList {
     timer: any;
     title: string;
@@ -113,11 +114,6 @@ runNumberTick(homeCardList);
 </script>
 
 <style scoped lang="scss">
-.page-home {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
 .page-home-container {
     display: flex;
     flex-direction: column;

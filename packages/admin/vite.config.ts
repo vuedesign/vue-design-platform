@@ -39,6 +39,9 @@ export default defineConfig({
         },
     },
     css: {
+        modules: {
+            localsConvention: 'camelCaseOnly',
+        },
         preprocessorOptions: {
             scss: {
                 additionalData: `@use "~/assets/styles/element/index.scss" as *;`,
