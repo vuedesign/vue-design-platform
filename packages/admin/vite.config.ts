@@ -76,6 +76,12 @@ export default defineConfig({
                 }),
             ],
             dts: 'src/types/auto-imports.d.ts',
+            // dirs: ['src/configs'],
+            eslintrc: {
+                enabled: false, // Default `false`
+                filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
+                globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+            },
         }),
         Components({
             resolvers: [

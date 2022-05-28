@@ -1,8 +1,5 @@
-import { router } from '@/core';
-import { storeToRefs } from 'pinia';
-import { SUCCESS_STATUS_CODE } from './constants';
 import {
-    onGlobalConfig,
+    router,
     onHttpRequestSuccess,
     onHttpRequestFailure,
     onHttpResponseSuccess,
@@ -10,31 +7,31 @@ import {
     onRouterBeforeEach,
     onRouterAfterEach,
     onRouterBeforeResolve,
-} from '@/core/interceptors';
+    onGlobalConfig,
+} from '@/core';
+import { storeToRefs } from 'pinia';
+import { SUCCESS_STATUS_CODE } from './constants';
 import useGlobalStore from '@/modules/global/useGlobalStore';
 
-type Context = Record<string, any>;
-
 // 拦截器配置
-onGlobalConfig((context: Context) => {
-    console.log('context', context);
+onGlobalConfig((context) => {
     // 时间戳注入开关
     context.isTimestampDisabled = false;
     const globalStore = useGlobalStore();
     const { token } = storeToRefs(globalStore);
     if (token.value) {
-        context.$setAuthorization(`Bearer ${token.value}`);
+        context.$http.setAuthorization(`Bearer ${token.value}`);
     }
 });
 
 // 请求成功
-onHttpRequestSuccess((config: Config) => config);
+onHttpRequestSuccess((config) => config);
 
 // 请求失败
-onHttpRequestFailure((error: any) => Promise.reject(error));
+onHttpRequestFailure((error) => Promise.reject(error));
 
 // 返回成功
-onHttpResponseSuccess((response: Config) => {
+onHttpResponseSuccess((response) => {
     if (response.retcode === SUCCESS_STATUS_CODE) {
         return response.data;
     } else if (response.retcode === 1 && response.data.status === 401) {
@@ -47,7 +44,7 @@ onHttpResponseSuccess((response: Config) => {
 });
 
 // 返回失败
-onHttpResponseFailure((error: any) => Promise.reject(error));
+onHttpResponseFailure((error) => Promise.reject(error));
 
 // 路由进入之前
 onRouterBeforeEach(({ next, to }) => {

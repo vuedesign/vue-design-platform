@@ -1,7 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
 import { findProfileData, loginData } from './api';
-import { router } from '@/core';
-import { setAuthorization } from '@/core/http';
+import { router, http } from '@/core';
 import menuTree, { MenuNode } from '@/configs/menuTree';
 import { GLOBAL_STORE_KEY } from '@/configs/storeKeys';
 
@@ -64,7 +63,7 @@ export default defineStore(GLOBAL_STORE_KEY, () => {
     const login = async (formData: LoginFormData): Promise<void> => {
         const res = await loginData(formData);
         setToken(res.token);
-        setAuthorization(`Bearer ${res.token}`);
+        http.setAuthorization(`Bearer ${res.token}`);
         router.push({
             name: 'home',
         });

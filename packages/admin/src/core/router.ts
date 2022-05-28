@@ -1,16 +1,20 @@
 import {
-    createRouter,
+    createRouter as _createRouter,
     createWebHistory,
     RouteRecordRaw,
     Router,
 } from 'vue-router';
 import { Interceptors } from './interceptors';
 
-export default (
-    routes: RouteRecordRaw[],
-    interceptors: Interceptors,
-): Router => {
-    const router = createRouter({
+export interface CreateRouterOptions {
+    routes: RouteRecordRaw[];
+    interceptors: Interceptors;
+}
+export function createRouter({
+    routes,
+    interceptors,
+}: CreateRouterOptions): Router {
+    const router = _createRouter({
         history: createWebHistory(),
         routes,
     });
@@ -27,8 +31,8 @@ export default (
     router.beforeResolve((to, from, next) => {
         console.log('afterEach');
         interceptors.routerBeforeResolve &&
-            interceptors.routerBeforeResolve({ next });
+            interceptors.routerBeforeResolve({ to, from, next });
     });
 
     return router;
-};
+}

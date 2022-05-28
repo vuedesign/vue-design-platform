@@ -8,9 +8,15 @@
         "noEmit": true,
         "resolveJsonModule": true,
         "types": ["node", "vite/client", "element-plus/global"],
-        "baseUrl": ".",
+        "baseUrl": "./",
         "paths": {
-            "@": ["./src"]
+            "@": ["src"],
+            "@/*": ["src/*"],
+            // "@/core": ["@/core/index"]
+            "@/core": ["src/core"],
+            "@/core/*": ["src/core/*"]
+            // "@/configs/*": ["src/configs/*"]
+            // "@/configs/routes": ["./src/configs/routes"]
         }
     },
     "include": [
