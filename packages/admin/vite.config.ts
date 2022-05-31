@@ -9,14 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 // https://vitejs.dev/config/
 export default defineConfig({
     // hmr: { overlay: false },
-    build: {
-        rollupOptions: {
-            input: {
-                main: resolve(__dirname, 'index.html'),
-                mobile: resolve(__dirname, 'mobile.html'),
-            },
-        },
-    },
+    build: {},
     server: {
         open: '/',
         proxy: {

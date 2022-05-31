@@ -16,15 +16,61 @@
         <div class="vd-header-user" v-if="profile && profile.id">
             <ul>
                 <li>
-                    <iconpark-icon
-                        name="messages-one"
-                        :size="16"
-                    ></iconpark-icon>
+                    <el-popover placement="bottom" :width="300" trigger="click">
+                        <template #reference>
+                            <iconpark-icon
+                                name="messages-one"
+                                :size="16"
+                            ></iconpark-icon>
+                        </template>
+                        <el-table :data="gridData">
+                            <el-table-column
+                                width="auto"
+                                property="message"
+                                label="系统消息"
+                            >
+                                <template #default="{ row }">
+                                    <router-link :to="{ path: '/' }">
+                                        {{ row.message }}
+                                    </router-link>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                width="110"
+                                property="date"
+                                label="时间"
+                            />
+                        </el-table>
+                    </el-popover>
                 </li>
                 <li>
-                    <el-avatar :size="32" :src="profile.avatar">
-                        <iconpark-icon name="me" :size="16"></iconpark-icon>
-                    </el-avatar>
+                    <el-dropdown
+                        placement="bottom-end"
+                        trigger="click"
+                        popper-class="vd-profile"
+                    >
+                        <el-avatar :size="32" :src="profile.avatar">
+                            <iconpark-icon name="me" :size="16"></iconpark-icon>
+                        </el-avatar>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item>
+                                    <iconpark-icon
+                                        name="id-card"
+                                    ></iconpark-icon>
+                                    <span class="menu-text">个人中心</span>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <iconpark-icon name="share"></iconpark-icon>
+                                    <span class="menu-text">分享</span>
+                                </el-dropdown-item>
+                                <el-dropdown-item divided>
+                                    <iconpark-icon name="power"></iconpark-icon>
+                                    <span class="menu-text">退出</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </li>
             </ul>
         </div>
@@ -41,6 +87,25 @@ import useGlobalStore from '../useGlobalStore';
 const globalStore = useGlobalStore();
 const { breadcrumbList, profile } = storeToRefs(globalStore);
 globalStore.findProfile();
+
+const gridData = [
+    {
+        date: '2016-05-02',
+        message: 'New York City',
+    },
+    {
+        date: '2016-05-04',
+        message: 'New York City',
+    },
+    {
+        date: '2016-05-01',
+        message: 'New York City',
+    },
+    {
+        date: '2016-05-03',
+        message: 'New York City',
+    },
+];
 </script>
 
 <style scoped lang="scss">
@@ -86,6 +151,13 @@ globalStore.findProfile();
                 color: #3d7eff;
             }
         }
+    }
+}
+
+.vd-profile {
+    .menu-text {
+        margin-left: 8px;
+        display: inline-block;
     }
 }
 </style>

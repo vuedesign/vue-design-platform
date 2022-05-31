@@ -18,7 +18,6 @@ export interface Tag {
 export type Profile = Record<string, any>;
 export interface GlobalState {
     profile: Profile;
-    tag: Tag;
 }
 
 export interface LoginFormData {
