@@ -3,12 +3,27 @@
 // @use 'element-plus/theme-chalk/src/common/var.scss';
 @use 'element-plus/theme-chalk/src/mixins/function.scss' as *;
 
+$drawer: () !default;
+$drawer: map.merge(
+    (
+        'bg-color':
+            var(
+                #{getCssVarName('dialog', 'bg-color')},
+                #{getCssVar('bg-color')}
+            ),
+        'padding-primary':
+            var(#{getCssVarName('dialog', 'padding-primary')}, 20px),
+    ),
+    $drawer
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
     $colors: (
         'primary': (
             'base': #3d7eff,
         ),
     ),
+    $drawer: $drawer,
     // Background
     // $bg-color: () !default,
     // $bg-color:

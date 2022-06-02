@@ -9,7 +9,16 @@
     >
         <dt @click="handleClick">
             <div class="title">
-                <iconpark-icon :name="icon" class="title-icon"></iconpark-icon>
+                <iconpark-icon
+                    :name="
+                        Array.isArray(icon)
+                            ? isOpen
+                                ? icon[0]
+                                : icon[1]
+                            : icon
+                    "
+                    class="title-icon"
+                ></iconpark-icon>
                 <span class="title-label">{{ label }}</span>
             </div>
             <div class="icon">
@@ -44,7 +53,7 @@ interface Props {
     label: string;
     value: string;
     active?: boolean;
-    icon?: string;
+    icon?: string | string[];
     isOpen?: boolean;
     children?: Props[];
 }
@@ -52,8 +61,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     label: '',
     value: '',
-    icon: '',
     active: false,
+    icon: '',
+    isOpen: false,
     children: () => [],
 });
 

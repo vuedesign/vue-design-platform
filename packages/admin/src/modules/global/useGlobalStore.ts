@@ -31,15 +31,6 @@ interface Breadcrumb {
     value: string;
 }
 
-// export type MenuNode = {
-//     label: string;
-//     value: string;
-//     active?: boolean;
-//     icon?: string;
-//     children?: MenuNode[];
-//     isOpen?: boolean;
-// };
-
 export default defineStore(GLOBAL_STORE_KEY, () => {
     const profile: Profile = reactive({});
     const findProfile = async () => {

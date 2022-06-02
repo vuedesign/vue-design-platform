@@ -3,7 +3,8 @@
         <div class="vd-header-breadcrumb">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/' }">
-                    首页
+                    <iconpark-icon name="home"></iconpark-icon>
+                    <span class="label">首页</span>
                 </el-breadcrumb-item>
                 <el-breadcrumb-item
                     v-for="item in breadcrumbList"
@@ -118,6 +119,15 @@ const gridData = [
 }
 .vd-header-breadcrumb {
     flex: 1;
+
+    .label,
+    iconpark-icon {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .label {
+        margin-left: 3px;
+    }
 }
 .vd-header-user {
     height: 32px;

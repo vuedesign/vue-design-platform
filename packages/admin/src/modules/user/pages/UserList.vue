@@ -158,7 +158,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <dialog-user-update />
+            <drawer-user-update />
         </template>
         <template #footer>
             <div class="page-user-pagination">
@@ -183,7 +183,7 @@ export default {
 import VdCard from '../../global/components/VdCard.vue';
 import useUserStore from '../useUserStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
-import DialogUserUpdate from '../components/DialogUserUpdate.vue';
+import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
 import { useTableMaxHeight } from '@/utils/useTable';
 
 const userStore = useUserStore();
@@ -216,11 +216,6 @@ const handleCreate = () => {
 </script>
 
 <style scoped lang="scss">
-.page-user {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
 .page-user-header {
     display: flex;
     padding: 16px 24px;

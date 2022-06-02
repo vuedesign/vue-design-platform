@@ -2,7 +2,7 @@ export type MenuNode = {
     label: string;
     value: string;
     active?: boolean;
-    icon?: string;
+    icon?: string | string[];
     children?: MenuNode[];
     isOpen?: boolean;
 };
@@ -11,7 +11,7 @@ export default <MenuNode[]>[
     {
         label: '内容管理',
         value: 'content',
-        icon: 'folder-open',
+        icon: ['folder-open', 'folder-close'],
         isOpen: true,
         children: [
             {
@@ -40,7 +40,7 @@ export default <MenuNode[]>[
     {
         label: '数据分析',
         value: 'data',
-        icon: 'folder-open',
+        icon: ['folder-open', 'folder-close'],
         isOpen: true,
         children: [
             {
@@ -53,7 +53,7 @@ export default <MenuNode[]>[
     {
         label: '配置管理',
         value: 'config',
-        icon: 'folder-open',
+        icon: ['folder-open', 'folder-close'],
         isOpen: true,
         children: [],
     },

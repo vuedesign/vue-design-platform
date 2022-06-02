@@ -23,13 +23,14 @@ export default {
 <script setup lang="ts">
 import logo from '@/assets/images/logo.png';
 import VdMenuItem from './VdMenuItem.vue';
-import useGlobalStore, { MenuNode } from '../useGlobalStore';
+import { MenuNode } from '@/configs/menuTree';
+import useGlobalStore from '../useGlobalStore';
 
 const globalStore = useGlobalStore();
 const { menuList } = storeToRefs(globalStore);
 
 const handleToggle = (value: string) => {
-    const item: MenuNode = menuList.value.find(
+    const item: MenuNode | undefined = menuList.value.find(
         (item: MenuNode) => item.value === value,
     );
     if (item) {
