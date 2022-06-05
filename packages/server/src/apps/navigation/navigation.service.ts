@@ -29,7 +29,7 @@ export class NavigationService extends BaseService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} navigation`;
+    return this.navigationRepository.findOne(id);
   }
 
   update(id: number, updateNavigationDto: UpdateNavigationDto) {
