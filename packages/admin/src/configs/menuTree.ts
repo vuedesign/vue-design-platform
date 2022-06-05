@@ -38,7 +38,7 @@ export default <MenuNode[]>[
         icon: 'user',
     },
     {
-        label: '数据分析',
+        label: '数据中心',
         value: 'data',
         icon: ['folder-open', 'folder-close'],
         isOpen: true,

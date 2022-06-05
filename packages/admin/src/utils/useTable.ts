@@ -1,5 +1,6 @@
 import { Ref } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
+import { dateFormat } from './index';
 
 export const useTableMaxHeight = (pageContainer: Ref<HTMLDivElement>) => {
     const tabelMaxheight = ref(0);
@@ -14,4 +15,10 @@ export const useTableMaxHeight = (pageContainer: Ref<HTMLDivElement>) => {
         }
     });
     return tabelMaxheight;
+};
+
+export const tableDateFormatter = (dateType: string) => {
+    return (row: Record<string, string>): string => {
+        return dateFormat(row[dateType]);
+    };
 };

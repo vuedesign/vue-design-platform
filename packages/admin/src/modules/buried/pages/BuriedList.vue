@@ -18,11 +18,11 @@ export default {
 </script>
 <script lang="ts" setup>
 import VdCard from '../../global/components/VdCard.vue';
-import useUserStore from '../useUserStore';
+import useBuriedStore from '../useBuriedStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
-import DialogUserUpdate from '../components/DialogUserUpdate.vue';
+import DialogBuriedUpdate from '../components/DialogBuriedUpdate.vue';
 
-const userStore = useUserStore();
+const userStore = useBuriedStore();
 const { filter, total, list, isDialogUpdateVisible } = storeToRefs(userStore);
 
 userStore.find();
