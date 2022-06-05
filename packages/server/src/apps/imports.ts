@@ -4,6 +4,7 @@ import { SiteModule } from './site/site.module';
 import { TagModule } from './tag/tag.module';
 import { FileModule } from './file/file.module';
 import { NavigationModule } from './navigation/navigation.module';
+import { HomeModule } from './home/home.module';
 
 export default [
   AuthModule,
@@ -12,4 +13,5 @@ export default [
   TagModule,
   FileModule,
   NavigationModule,
+  HomeModule,
 ];

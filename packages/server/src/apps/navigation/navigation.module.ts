@@ -8,5 +8,6 @@ import { NavigationEntity } from '../../entities/navigation.entity';
   imports: [TypeOrmModule.forFeature([NavigationEntity])],
   controllers: [NavigationController],
   providers: [NavigationService],
+  exports: [NavigationService],
 })
 export class NavigationModule {}

@@ -45,4 +45,8 @@ export class UserService extends BaseService {
   remove(id: number) {
     return this.userRepository.delete(id);
   }
+
+  count() {
+    return this.userRepository.count();
+  }
 }

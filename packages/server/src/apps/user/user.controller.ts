@@ -83,6 +83,11 @@ export class UserController {
     return this.userService.findList(options);
   }
 
+  @Get('count')
+  count() {
+    return this.userService.count();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOne({

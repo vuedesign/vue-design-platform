@@ -50,4 +50,8 @@ export class SiteService extends BaseService {
   remove(id: number) {
     return this.siteRepository.delete(id);
   }
+
+  count() {
+    return this.siteRepository.count();
+  }
 }

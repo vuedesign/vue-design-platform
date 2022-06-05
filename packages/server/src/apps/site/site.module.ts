@@ -8,5 +8,6 @@ import { SiteEntity } from '../../entities/site.entity';
   imports: [TypeOrmModule.forFeature([SiteEntity])],
   controllers: [SiteController],
   providers: [SiteService],
+  exports: [SiteService],
 })
 export class SiteModule {}
