@@ -143,7 +143,7 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'dialog-user-update',
+    name: 'dialog-site-update',
 };
 </script>
 <script lang="ts" setup>
@@ -151,6 +151,7 @@ import useSiteStore from '../useSiteStore';
 import { typeMap } from '../constants';
 import VdCard from '../../global/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
+import { watting } from '@/utils';
 
 const siteStore = useSiteStore();
 const { isDrawerUpdateVisible, detail } = storeToRefs(siteStore);
@@ -163,12 +164,23 @@ const handleUpdateClick = async () => {
     loading.value = true;
     await siteStore.update(detail.value);
     loading.value = false;
+    ElNotification({
+        title: '编辑',
+        message: '编辑站点信息成功',
+        type: 'success',
+    });
+    await watting(1000);
     siteStore.$patch({
         isDrawerUpdateVisible: false,
     });
 };
 
 const handleCancelClick = () => {
+    ElNotification({
+        title: '取消',
+        message: '取消编辑站点信息',
+        type: 'info',
+    });
     siteStore.$patch({
         isDrawerUpdateVisible: false,
     });
