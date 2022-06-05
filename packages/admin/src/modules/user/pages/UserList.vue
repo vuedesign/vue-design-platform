@@ -75,14 +75,14 @@
                 </div>
             </div>
         </template>
-        <template #default>
-            <div class="page-user-container" ref="pageContainerRef">
+        <template #default="{ height }">
+            <div class="page-user-container">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
-                    :key="tabelMaxheight"
-                    :height="tabelMaxheight"
+                    :key="height"
+                    :height="height"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="id" label="ID" width="48" />
@@ -192,15 +192,13 @@ export default {
 <script lang="ts" setup>
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
-import { useTableMaxHeight, tableDateFormatter } from '@/utils/useTable';
+import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
 import useUserStore from '../useUserStore';
 import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
 
 const userStore = useUserStore();
-const pageContainerRef = ref(document.createElement('div'));
-const tabelMaxheight = useTableMaxHeight(pageContainerRef);
 const { filter, total, list } = storeToRefs(userStore);
 
 userStore.find(filter.value);

@@ -3,73 +3,62 @@
         v-model="isDrawerUpdateVisible"
         :title="title"
         :with-header="true"
-        custom-class="drawer-user-update"
+        custom-class="drawer-navigation-update"
         modal
     >
         <vd-card>
-            <div class="drawer-user-update-card">
+            <div class="drawer-navigation-update-card">
                 <el-form
                     :model="detail"
                     label-position="left"
                     label-width="60px"
                 >
-                    <el-divider content-position="left">用户信息</el-divider>
-                    <el-form-item label="头像">
-                        <el-avatar :src="detail.avatar" />
+                    <el-divider content-position="left">基础</el-divider>
+
+                    <el-form-item label="Icon">
+                        <el-avatar shape="square" :src="detail.iconUrl" />
                     </el-form-item>
-                    <el-form-item label="邮箱">
+                    <el-form-item label="标题">
                         <el-input
-                            v-model="detail.email"
+                            v-model="detail.title"
                             autocomplete="off"
                             class="form-item-width"
                         />
                     </el-form-item>
-                    <el-form-item label="电话">
+                    <el-form-item label="描述">
                         <el-input
-                            v-model="detail.phone"
+                            v-model="detail.description"
+                            autocomplete="off"
+                            :autosize="{ minRows: 2, maxRows: 10 }"
+                            type="textarea"
+                            class="form-item-width"
+                        />
+                    </el-form-item>
+                    <el-form-item label="排序">
+                        <el-input-number
+                            v-model="detail.order"
                             autocomplete="off"
                             class="form-item-width"
                         />
                     </el-form-item>
-                    <el-form-item label="名称">
+                    <el-form-item label="网站">
                         <el-input
-                            v-model="detail.nickname"
+                            v-model="detail.siteUrl"
                             autocomplete="off"
                             class="form-item-width"
                         />
                     </el-form-item>
-                    <el-form-item label="昵称">
-                        <el-input
-                            v-model="detail.username"
-                            autocomplete="off"
-                            class="form-item-width"
-                        />
-                    </el-form-item>
-                    <el-divider content-position="left">用户属性</el-divider>
                     <el-form-item label="状态">
                         <el-switch
-                            v-model="detail.isShow"
-                            :active-value="1"
-                            :inactive-value="2"
+                            v-model="detail.status"
+                            :active-value="STATUS.AVAILABLE"
+                            :inactive-value="STATUS.DISABLE"
                         />
-                    </el-form-item>
-                    <el-form-item label="角色">
-                        <el-select
-                            v-model="detail.rule"
-                            placeholder="Please select a zone"
-                        >
-                            <el-option
-                                v-for="[key, value] in ruleMap"
-                                :key="key"
-                                :label="value"
-                                :value="key"
-                            />
-                        </el-select>
                     </el-form-item>
                 </el-form>
             </div>
             <template #footer>
-                <div class="drawer-user-update-footer">
+                <div class="drawer-navigation-update-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
                             <iconpark-icon name="close-one"></iconpark-icon>
@@ -94,24 +83,20 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'dialog-user-update',
+    name: 'dialog-navigation-update',
 };
 </script>
 <script lang="ts" setup>
+import { STATUS, statusMap } from '@/configs/constants';
 import useNavigationStore from '../useNavigationStore';
 import { ruleMap } from '../constants';
 import VdCard from '../../global/components/VdCard.vue';
 
 const navigaitonStore = useNavigationStore();
-const { isDrawerUpdateVisible, detail, drawerType } =
-    storeToRefs(navigaitonStore);
+const { isDrawerUpdateVisible, detail } = storeToRefs(navigaitonStore);
 
 const title = computed(() => {
-    if (drawerType.value === 'create') {
-        return '新增用户';
-    } else if (drawerType.value === 'update') {
-        return '编辑用户信息';
-    }
+    return '编辑用户信息';
 });
 
 const loading = ref(false);
@@ -119,20 +104,16 @@ const loading = ref(false);
 const handleUpdateClick = async () => {
     console.log('detail', detail.value);
     loading.value = true;
-    if (dialogType.value === 'create') {
-        await userStore.create(detail.value);
-    } else if (dialogType.value === 'update') {
-        await userStore.update(detail.value);
-    }
+    navigaitonStore.update(detail.value);
     loading.value = false;
-    userStore.$patch({
-        isDialogUpdateVisible: false,
+    navigaitonStore.$patch({
+        isDrawerUpdateVisible: false,
     });
 };
 
 const handleCancelClick = () => {
-    userStore.$patch({
-        isDialogUpdateVisible: false,
+    navigaitonStore.$patch({
+        isDrawerUpdateVisible: false,
     });
 };
 </script>
@@ -146,15 +127,15 @@ const handleCancelClick = () => {
 }
 </style>
 <style lang="scss">
-.drawer-user-update {
+.drawer-navigation-update {
     width: 500px !important;
     background-color: #f2f3f5;
 }
-.drawer-user-update-card {
+.drawer-navigation-update-card {
     width: 100%;
     padding: 24px;
 }
-.drawer-user-update-footer {
+.drawer-navigation-update-footer {
     display: flex;
     padding: 16px 24px;
     justify-content: flex-end;

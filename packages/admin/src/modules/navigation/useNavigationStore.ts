@@ -14,7 +14,7 @@ export interface NavigationItem {
     siteUrl: string;
     iconUrl: string;
     order: number;
-    isShow: number;
+    status: number;
     createdAt: string;
     updatedAt: string;
 }
@@ -50,7 +50,7 @@ export default defineStore(NAVIGATION_STORE_KEY, () => {
         siteUrl: '',
         iconUrl: '',
         order: 0,
-        isShow: 1,
+        status: 1,
         createdAt: '',
         updatedAt: '',
     });
@@ -93,6 +93,10 @@ export default defineStore(NAVIGATION_STORE_KEY, () => {
         Object.assign(detail, defaultCache);
     };
 
+    const update = (detail: NavigationItem) => {
+        // findOne(id);
+    };
+
     const del = (id: number) => {
         ElMessageBox.confirm('你将永久删除该用户，是否持续？', '删除提示', {
             confirmButtonText: '确认',
@@ -126,6 +130,6 @@ export default defineStore(NAVIGATION_STORE_KEY, () => {
         updateDrawerUpdateVisibleState,
         resetDetail,
         del,
-        drawerType,
+        update,
     };
 });

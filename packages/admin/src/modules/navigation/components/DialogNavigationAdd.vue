@@ -1,68 +1,82 @@
 <template>
-    <el-dialog v-model="isDialogAddVisible" :title="title" :width="600">
+    <el-dialog v-model="isDialogAddVisible" :title="title" :width="800">
         <el-table
             :data="siteList"
             stripe
             style="width: 100%"
-            :key="tabelMaxheight"
-            :height="tabelMaxheight"
+            :height="400"
             :header-cell-style="headerCellStyle"
+            ref="navigationMultipleTableRef"
+            @selection-change="handleSelectionChange"
         >
+            <el-table-column
+                type="selection"
+                width="48"
+                :selectable="selectable"
+            />
             <el-table-column prop="id" label="ID" width="48" />
-            <el-table-column label="头像" width="64">
-                <template #default="scope">
+            <el-table-column label="封面" width="100">
+                <template #default="{ row }">
+                    <el-image
+                        :src="row.thumbUrl"
+                        :style="{
+                            'width': '80px',
+                            'height': '40px',
+                            'display': 'block',
+                            'border-radius': '4px',
+                        }"
+                    />
+                </template>
+            </el-table-column>
+            <el-table-column label="Icon" width="64">
+                <template #default="{ row }">
                     <el-avatar
                         shape="square"
                         :size="40"
-                        :src="scope.row.avatar"
+                        :src="row.iconUrl"
                         style="display: block"
                     />
                 </template>
             </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="200" />
-            <el-table-column prop="phone" label="电话" width="120" />
-            <el-table-column prop="nickname" label="昵称" width="100" />
-            <el-table-column prop="username" label="用户名" width="100" />
-            <el-table-column label="状态" width="80">
-                <template #default="scope">
-                    <el-tag v-if="scope.row.status === STATUS.AVAILABLE">
-                        {{
-                            statusMap.get(scope.row.status || STATUS.AVAILABLE)
-                        }}
+            <el-table-column label="标题" width="300">
+                <template #default="{ row }">
+                    <a :href="row.siteUrl" target="_blank">
+                        {{ row.title }}
+                    </a>
+                </template>
+            </el-table-column>
+
+            <el-table-column prop="views" label="浏览量" width="70" />
+            <el-table-column prop="collections" label="收藏量" width="70" />
+            <el-table-column prop="top" label="顶" width="70" />
+            <el-table-column prop="down" label="踩" width="70" />
+            <el-table-column label="状态" width="70">
+                <template #default="{ row }">
+                    <el-tag v-if="row.status === STATUS.AVAILABLE">
+                        {{ statusMap.get(row.status || STATUS.AVAILABLE) }}
                     </el-tag>
                     <el-tag v-else type="info">
-                        {{ statusMap.get(scope.row.status || STATUS.DISABLE) }}
+                        {{ statusMap.get(row.status || STATUS.DISABLE) }}
                     </el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="角色" width="100">
-                <template #default="scope">
-                    {{ ruleMap.get(scope.row.rule) }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="createdAt" label="注册时间" width="200" />
-            <el-table-column prop="updatedAt" label="登录时间" width="200" />
-            <el-table-column fixed="right" label="操作" width="210">
+            <el-table-column label="类型" width="70">
                 <template #default="{ row }">
-                    <span class="btn-switch">
-                        <el-switch
-                            v-model="row.status"
-                            :active-value="STATUS.AVAILABLE"
-                            :inactive-value="STATUS.DISABLE"
-                        />
-                    </span>
-                    <el-button
-                        type="primary"
-                        text
-                        @click="handleUpdate(row.id)"
-                    >
-                        编辑
-                    </el-button>
-                    <el-button type="primary" text @click="handleDel(row.id)">
-                        删除
-                    </el-button>
+                    {{ typeMap.get(row.type) }}
                 </template>
             </el-table-column>
+            <el-table-column
+                prop="createdAt"
+                label="创建时间"
+                width="160"
+                :formatter="tableDateFormatter('createdAt')"
+            />
+            <el-table-column
+                prop="updatedAt"
+                label="更改时间"
+                width="160"
+                :formatter="tableDateFormatter('updatedAt')"
+            />
         </el-table>
         <template #footer>
             <span class="dialog-footer">
@@ -89,32 +103,73 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'dialog-user-update',
+    name: 'dialog-navigation-add',
 };
 </script>
 <script lang="ts" setup>
+import { Ref } from 'vue';
+import { STATUS, statusMap } from '@/configs/constants';
+import { headerCellStyle } from '@/configs/styles';
+import { tableDateFormatter } from '@/utils/useTable';
 import useNavigationStore from '../useNavigationStore';
+import useSiteStore, { SiteItem } from '../../site/useSiteStore';
+import { typeMap } from '../../site/constants';
 import { ruleMap } from '../constants';
 
 const navigationStore = useNavigationStore();
-const { isDialogAddVisible, detail } = storeToRefs(navigationStore);
+const siteStore = useSiteStore();
+const { isDialogAddVisible, list } = storeToRefs(navigationStore);
+const { list: siteList } = storeToRefs(siteStore);
 
-const headerCellStyle = () => {
-    return {
-        backgroundColor: '#ecf2ff',
-    };
-};
+siteStore.find({ size: 999 });
 
 const title = computed(() => {
-    return '新增用户';
+    return '推荐导航';
 });
 
-const siteList = ref([]);
+const row: Ref<SiteItem[]> = ref([]);
+watch([list, siteList], ([navList, siteList]) => {
+    if (navList.length > 0 && siteList.length > 0) {
+        navList.forEach((item) => {
+            console.log('item', item);
+            const select = siteList.find((i) => i.id === item.siteId);
+            if (select) {
+                console.log('select', select);
+                row.value.push(select);
+            }
+        });
+    }
+    console.log('===', row);
+});
+
+console.log('row', row.value);
+const navigationMultipleTableRef = ref(null);
+onMounted(() => {
+    navigationMultipleTableRef.value &&
+        navigationMultipleTableRef.value.toggleRowSelection(
+            row.value,
+            undefined,
+        );
+});
 
 const loading = ref(false);
 
+const handleSelectionChange = (val: any) => {
+    console.log('val', val);
+    console.log(
+        'navigationMultipleTableRef',
+        navigationMultipleTableRef.value,
+        navigationMultipleTableRef.value.getSelectionRows(),
+    );
+};
+
+const selectable = (row, index) => {
+    // console.log('row, index', row, index);
+    return true;
+};
+
 const handleUpdateClick = async () => {
-    console.log('detail', detail.value);
+    // console.log('detail', detail.value);
     loading.value = true;
     // await navigationStore.create(detail.value);
     loading.value = false;

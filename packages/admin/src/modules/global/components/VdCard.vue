@@ -3,11 +3,11 @@
         <header v-if="slots.header" class="vd-card-header">
             <slot name="header"></slot>
         </header>
-        <el-scrollbar v-if="scroll" height="100%">
-            <slot />
+        <el-scrollbar v-if="scroll" height="100%" ref="vdCardRef">
+            <slot :height="cardBodyHeight" />
         </el-scrollbar>
-        <section v-else class="vd-card-body">
-            <slot />
+        <section v-else class="vd-card-body" ref="vdCardRef">
+            <slot :height="cardBodyHeight" />
         </section>
         <footer v-if="slots.footer" class="vd-card-footer">
             <slot name="footer"></slot>
@@ -21,17 +21,27 @@ export default {
 };
 </script>
 <script setup lang="ts">
+import { Ref } from 'vue';
 const slots = useSlots();
 
 interface Props {
-    scroll: boolean;
+    scroll?: boolean;
 }
 withDefaults(defineProps<Props>(), {
     scroll: false,
 });
+
+const vdCardRef: Ref<HTMLDivElement | null> = ref(null);
+const cardBodyHeight = ref(0);
+
+onMounted(() => {
+    if (vdCardRef.value && vdCardRef.value.clientHeight) {
+        cardBodyHeight.value = vdCardRef.value.clientHeight;
+    }
+});
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .vd-card {
     height: 100%;
     background-color: #fff;
@@ -40,6 +50,7 @@ withDefaults(defineProps<Props>(), {
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 8px;
 }
 .vd-card-header {
     border-top-left-radius: 8px;

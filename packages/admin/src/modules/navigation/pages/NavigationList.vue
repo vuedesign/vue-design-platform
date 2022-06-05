@@ -5,7 +5,7 @@
                 <div class="page-navigation-filter">
                     <el-input
                         v-model="filter.search"
-                        placeholder="请输入用户名或电话"
+                        placeholder="请输入站点名称"
                         style="width: 200px"
                     >
                         <template #prefix>
@@ -56,14 +56,14 @@
                 </div>
             </div>
         </template>
-        <template #default>
-            <div class="page-navigation-container" ref="pageContainerRef">
+        <template #default="{ height }">
+            <div class="page-navigation-container">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
-                    :key="tabelMaxheight"
-                    :height="tabelMaxheight"
+                    :key="height"
+                    :height="height"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="id" label="ID" width="48" />
@@ -86,7 +86,7 @@
                     <el-table-column
                         prop="description"
                         label="站点描述"
-                        width="200"
+                        width="300"
                     />
                     <el-table-column label="状态" width="80">
                         <template #default="scope">
@@ -132,7 +132,7 @@
                             <el-button
                                 type="primary"
                                 text
-                                @click="handleUpdate(row.id)"
+                                @click="handleEidt(row.id)"
                             >
                                 编辑
                             </el-button>
@@ -167,7 +167,7 @@ import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
 
 const navigationStore = useNavigationStore();
-const { filter, total, list, isDrawerUpdateVisible, isDialogAddVisible } =
+const { filter, list, isDrawerUpdateVisible, isDialogAddVisible } =
     storeToRefs(navigationStore);
 
 navigationStore.find();
@@ -175,7 +175,7 @@ navigationStore.find();
 const handleSearch = (id: number) => {
     navigationStore.find(filter.value);
 };
-const handleUpdate = (id: number) => {
+const handleEidt = (id: number) => {
     navigationStore.findOne(id);
     isDrawerUpdateVisible.value = true;
 };

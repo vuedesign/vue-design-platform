@@ -64,14 +64,14 @@
                 <div class="page-site-btn-group"></div>
             </div>
         </template>
-        <template #default>
-            <div class="page-site-container" ref="pageContainerRef">
+        <template #default="{ height }">
+            <div class="page-site-container">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
-                    :key="tabelMaxheight"
-                    :height="tabelMaxheight"
+                    :key="height"
+                    :height="height"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="id" label="ID" width="48" />
@@ -198,15 +198,13 @@ export default {
 <script lang="ts" setup>
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
-import { useTableMaxHeight, tableDateFormatter } from '@/utils/useTable';
+import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
 import useSiteStore from '../useSiteStore';
 import { typeMap } from '../constants';
 import DrawerSiteUpdate from '../components/DrawerSiteUpdate.vue';
 
 const siteStore = useSiteStore();
-const pageContainerRef = ref(document.createElement('div'));
-const tabelMaxheight = useTableMaxHeight(pageContainerRef);
 const { filter, total, list } = storeToRefs(siteStore);
 
 siteStore.find(filter.value);
