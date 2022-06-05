@@ -2,7 +2,7 @@
     <div class="page-home-container">
         <div class="page-home-header">
             <dl
-                v-for="(item, index) in homeCardList"
+                v-for="(item, index) in homeCountList"
                 :key="index"
                 :style="{ backgroundColor: `${item.bgColor}` }"
             >
@@ -40,77 +40,12 @@ export default {
 </script>
 <script lang="ts" setup>
 import VdCard from '../../global/components/VdCard.vue';
+import userHomeStore from '../useHomeStore';
+
+const homeStore = userHomeStore();
+const { homeCountList } = storeToRefs(homeStore);
+homeStore.findCount();
 // import styles from '../styles/Home.module.scss';
-interface HomeCardList {
-    timer: any;
-    title: string;
-    default: number;
-    number: number;
-    icon: string;
-    bgColor: string;
-    fontColor: string;
-}
-const homeCardList: HomeCardList[] = reactive([
-    {
-        timer: null,
-        title: '用户数',
-        default: 0,
-        number: 988,
-        icon: 'data-user',
-        bgColor: '#C7D9FC',
-        fontColor: '#316EE8',
-    },
-    {
-        timer: null,
-        title: '分享数',
-        default: 0,
-        number: 1918,
-        icon: 'share',
-        bgColor: '#BDEBB0',
-        fontColor: '#2DAB0A',
-    },
-    {
-        timer: null,
-        title: '推荐数',
-        default: 0,
-        number: 44,
-        icon: 'trophy',
-        bgColor: '#FCE2C2',
-        fontColor: '#D97C0B',
-    },
-    {
-        timer: null,
-        title: '浏览量',
-        default: 0,
-        number: 22983,
-        icon: 'preview-open',
-        bgColor: '#FCC2F6',
-        fontColor: '#DB1AC8',
-    },
-]);
-
-function runNumberTick(homeCardList: HomeCardList[]) {
-    homeCardList.forEach((item) => {
-        item.timer = setInterval(() => {
-            const len = item.number.toString().length;
-            const num = Number(
-                new Array(len)
-                    .fill(1)
-                    .map((item, index) => (index > 0 ? 0 : 1))
-                    .join(''),
-            );
-            if (item.number > num - 1) {
-                item.default = item.default + num;
-                item.number = item.number - num;
-            }
-            if (item.number === 0) {
-                clearInterval(item.timer);
-            }
-        }, 50);
-    });
-}
-
-runNumberTick(homeCardList);
 </script>
 
 <style scoped lang="scss">

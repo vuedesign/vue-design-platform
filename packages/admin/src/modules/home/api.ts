@@ -1,16 +1,19 @@
 import { http } from '@/core';
-import { ProjectList, ProjectItem } from './useHomeStore';
 
 export type PromiseList<T> = Promise<{
     list: T;
     total: number;
 }>;
 
-export function findData(params = {}): PromiseList<ProjectList> {
-    return http.get('/api/v1/projects', { params });
+export interface CountMap {
+    [key: string]: number;
 }
 
-export function findOneData(id: number): Promise<ProjectItem> {
+export function findCountData(): Promise<CountMap> {
+    return http.get('/api/v1/home/count');
+}
+
+export function findOneData(id: number): Promise<HomeItem> {
     return http.get(`/api/v1/projects/${id}`);
 }
 
