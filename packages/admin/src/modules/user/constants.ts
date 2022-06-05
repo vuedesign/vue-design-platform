@@ -12,16 +12,3 @@ export const ruleMap = new Map([
     [RULE.ADMIN, '管理员'],
     [RULE.USER, '普通用户'],
 ]);
-
-// 状态
-export enum STATUS {
-    ALL = 0,
-    AVAILABLE = 1,
-    DISABLE = 2,
-}
-
-export const statusMap = new Map([
-    [STATUS.ALL, '全部状态'],
-    [STATUS.AVAILABLE, '可用'],
-    [STATUS.DISABLE, '禁用'],
-]);

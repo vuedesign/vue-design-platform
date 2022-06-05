@@ -14,7 +14,11 @@
                             </el-icon>
                         </template>
                     </el-input>
-                    <el-select v-model="filter.rule" placeholder="Select">
+                    <el-select
+                        v-model="filter.rule"
+                        placeholder="Select"
+                        style="width: 200px"
+                    >
                         <template #prefix>
                             <el-icon>
                                 <iconpark-icon
@@ -29,7 +33,11 @@
                             :value="key"
                         />
                     </el-select>
-                    <el-select v-model="filter.status" placeholder="Select">
+                    <el-select
+                        v-model="filter.status"
+                        placeholder="Select"
+                        style="width: 200px"
+                    >
                         <template #prefix>
                             <el-icon>
                                 <iconpark-icon name="broadcast"></iconpark-icon>
@@ -135,7 +143,7 @@
                         <template #default="{ row }">
                             <span class="btn-switch">
                                 <el-switch
-                                    v-model="row.isShow"
+                                    v-model="row.status"
                                     :active-value="STATUS.AVAILABLE"
                                     :inactive-value="STATUS.DISABLE"
                                 />
@@ -176,26 +184,21 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'user-index',
+    name: 'user-list',
 };
 </script>
 <script lang="ts" setup>
+import { STATUS, statusMap } from '@/configs/constants';
+import { headerCellStyle } from '@/configs/styles';
+import { useTableMaxHeight } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
 import useUserStore from '../useUserStore';
-import { STATUS, statusMap, ruleMap } from '../constants';
+import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
-import { useTableMaxHeight } from '@/utils/useTable';
 
 const userStore = useUserStore();
 const pageContainerRef = ref(document.createElement('div'));
 const tabelMaxheight = useTableMaxHeight(pageContainerRef);
-
-const headerCellStyle = () => {
-    return {
-        backgroundColor: '#ecf2ff',
-    };
-};
-
 const { filter, total, list } = storeToRefs(userStore);
 
 userStore.find(filter.value);
@@ -204,14 +207,14 @@ const handleSearch = () => {
     userStore.find(filter.value);
 };
 const handleUpdate = (id: number) => {
-    userStore.openDialogUser('update', id);
+    userStore.openDrawerUser('update', id);
 };
 const handleDel = (id: number) => {
     console.log('id', id);
-    userStore.openDialogUser('delete', id);
+    userStore.openDrawerUser('delete', id);
 };
 const handleCreate = () => {
-    userStore.openDialogUser('create');
+    userStore.openDrawerUser('create');
 };
 </script>
 
@@ -226,9 +229,12 @@ const handleCreate = () => {
     .el-select,
     .el-button {
         vertical-align: middle;
-        margin-right: 12px;
+        margin-right: 8px;
+        margin-bottom: 12px;
     }
+    margin-bottom: -12px;
 }
+
 .page-user-btn-group {
     width: auto;
 }
@@ -236,7 +242,7 @@ const handleCreate = () => {
     width: 80px;
 }
 .page-user-container {
-    padding: 16px 24px 0;
+    // padding: 16px 24px 0;
     flex: 1;
     overflow: hidden;
     overflow-y: auto;

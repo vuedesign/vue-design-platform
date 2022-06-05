@@ -9,6 +9,7 @@ import {
     destroyData,
 } from './api';
 import { STATUS, RULE } from './constants';
+import { MATERIAL_STORE_KEY } from '@/configs/storeKeys';
 
 export interface UserItem {
     id?: number;
@@ -46,7 +47,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore('user', () => {
+export default defineStore(MATERIAL_STORE_KEY, () => {
     const detail: UserItem = reactive({
         id: undefined,
         uuid: 'string',

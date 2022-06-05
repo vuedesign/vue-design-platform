@@ -1,43 +1,35 @@
 import { reactive, Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash-es';
-import {
-    findData,
-    findOneData,
-    updateFieldData,
-    createData,
-    updateData,
-    destroyData,
-} from './api';
+import { findData, findOneData } from './api';
 import { STATUS, RULE } from './constants';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { NAVIGATION_STORE_KEY } from '@/configs/storeKeys';
 
-export interface UserItem {
+export interface NavigationItem {
     id?: number;
-    uuid: string;
-    username: string;
-    nickname: string;
-    email: string;
-    phone: string;
-    password: string;
-    avatar: string;
+    siteId: number;
+    title: string;
+    descrition: string;
+    siteUrl: string;
+    iconUrl: string;
+    order: number;
     isShow: number;
-    rule: number;
     createdAt: string;
     updatedAt: string;
 }
-export type UserList = Array<UserItem>;
-export interface UserFilter {
+export type NavigationList = Array<NavigationItem>;
+export interface NavigationFilter {
     page: number;
     size: number;
     order: string;
     status: number;
     search: string;
 }
-export interface UserState {
-    detail: UserItem;
-    list: UserList;
-    filter: UserFilter;
+export interface NavigationState {
+    detail: NavigationItem;
+    list: NavigationList;
+    filter: NavigationFilter;
     total: number;
 }
 
@@ -48,24 +40,24 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore('user', () => {
-    const detail: UserItem = reactive({
+export default defineStore(NAVIGATION_STORE_KEY, () => {
+    const drawerType = ref('create');
+    const detail: NavigationItem = reactive({
         id: undefined,
-        uuid: 'string',
-        username: '',
-        nickname: '',
-        email: '',
-        phone: '',
-        password: '',
-        avatar: '',
-        isShow: 0,
-        rule: 0,
+        siteId: 0,
+        title: '',
+        descrition: '',
+        siteUrl: '',
+        iconUrl: '',
+        order: 0,
+        isShow: 1,
         createdAt: '',
         updatedAt: '',
     });
     const defaultCache = cloneDeep(detail);
-    const list: Ref<UserItem[]> = ref([]);
-    const filter: UserFilter = reactive({
+
+    const list: Ref<NavigationItem[]> = ref([]);
+    const filter: NavigationFilter = reactive({
         page: 1,
         size: 20,
         order: 'updatedAt DESC',
@@ -87,9 +79,14 @@ export default defineStore('user', () => {
         Object.assign(detail, res);
     };
 
-    const isDialogUpdateVisible = ref(false);
-    const updateDialogUpdateVisibleState = (visible: boolean) => {
-        isDialogUpdateVisible.value = visible;
+    const isDialogAddVisible = ref(false);
+    const updateIDialogUpdateVisibleState = (visible: boolean) => {
+        isDialogAddVisible.value = visible;
+    };
+
+    const isDrawerUpdateVisible = ref(false);
+    const updateDrawerUpdateVisibleState = (visible: boolean) => {
+        isDrawerUpdateVisible.value = visible;
     };
 
     const resetDetail = () => {
@@ -103,6 +100,7 @@ export default defineStore('user', () => {
             type: 'warning',
         })
             .then(() => {
+                console.log(id);
                 ElMessage({
                     type: 'success',
                     message: 'Delete completed',
@@ -123,9 +121,11 @@ export default defineStore('user', () => {
         filter,
         find,
         findOne,
-        isDialogUpdateVisible,
-        updateDialogUpdateVisibleState,
+        isDrawerUpdateVisible,
+        isDialogAddVisible,
+        updateDrawerUpdateVisibleState,
         resetDetail,
         del,
+        drawerType,
     };
 });

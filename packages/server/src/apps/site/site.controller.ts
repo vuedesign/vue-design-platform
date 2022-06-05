@@ -50,13 +50,13 @@ export class SiteController {
   findAll(
     @Query('size', new DefaultValuePipe(20), ParseIntPipe) size?: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
-    @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId?: number,
+    // @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId?: number,
     @Query('order') order?: string,
     @Query('type') type?: string,
   ) {
     console.log('size', size);
     console.log('page', page);
-    console.log('tagId', tagId);
+    // console.log('tagId', tagId);
     console.log('order', order); // new | hot | ai
     // const { size, page, order, tagId } = query;
     const options = {
@@ -71,9 +71,14 @@ export class SiteController {
     if (order) {
       // const [orderKey, orderValue]: Array<string> = order.split(' ');
       // options.order[orderKey] = orderValue;
+      console.log('order', order);
       if (order === 'hot') {
         options.order = {
           views: 'DESC',
+        };
+      } else {
+        options.order = {
+          updatedAt: 'DESC',
         };
       }
     } else {
@@ -82,9 +87,9 @@ export class SiteController {
       };
     }
 
-    if (tagId) {
-      options.where['tagIds'] = Like(`%${tagId}%`);
-    }
+    // if (tagId) {
+    //   options.where['tagIds'] = Like(`%${tagId}%`);
+    // }
 
     if (type) {
       if (type === 'all') {
@@ -93,8 +98,8 @@ export class SiteController {
         options.where['type'] = type;
       }
     }
-
-    return this.siteService.findListAndPage(options);
+    console.log('options', options);
+    return this.siteService.findList(options);
   }
 
   @Get(':id')

@@ -47,13 +47,12 @@ export class TagEntity {
   authorId: number;
 
   @Column({
-    name: 'is_show',
     type: 'int',
     width: 1,
     nullable: true,
     comment: '是否可用：1-可用，2-不可用',
   })
-  isShow: number;
+  status: number;
 
   @CreateDateColumn({
     name: 'created_at',

@@ -4,7 +4,8 @@ import { resolve } from 'path';
 import viteESLint from '@ehutch79/vite-eslint';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { ElementPlusResolver } from '@vue-design/resolver-2n';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -60,9 +61,7 @@ export default defineConfig({
                 'vue-router',
                 'pinia',
                 {
-                    axios: [
-                        ['default', 'axios'], // import { default as axios } from 'axios',
-                    ],
+                    axios: [['default', 'axios']],
                 },
             ],
             resolvers: [

@@ -98,12 +98,13 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import useUserStore from '../useUserStore';
+import useNavigationStore from '../useNavigationStore';
 import { ruleMap } from '../constants';
 import VdCard from '../../global/components/VdCard.vue';
 
-const userStore = useUserStore();
-const { isDrawerUpdateVisible, detail, drawerType } = storeToRefs(userStore);
+const navigaitonStore = useNavigationStore();
+const { isDrawerUpdateVisible, detail, drawerType } =
+    storeToRefs(navigaitonStore);
 
 const title = computed(() => {
     if (drawerType.value === 'create') {

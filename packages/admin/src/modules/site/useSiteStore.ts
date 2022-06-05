@@ -8,36 +8,43 @@ import {
     destroyData,
 } from './api';
 import { Ref } from 'vue';
-import { USER_STORE_KEY } from '@/configs/storeKeys';
+import { SITE_STORE_KEY } from '@/configs/storeKeys';
 import { STATUS } from '@/configs/constants';
-import { RULE } from './constants';
+import { TYPE } from './constants';
 
-export interface UserItem {
+export interface SiteItem {
     id?: number;
     uuid?: string;
-    username: string;
-    nickname: string;
-    email: string;
-    phone: string;
-    password: string;
-    avatar: string;
-    status: number;
-    rule: number;
+    authorId: number;
+    codeUrl: string;
+    collections: number;
+    description: string;
+    down: number;
+    iconUrl: string;
+    logoUrl: string;
+    siteUrl: string;
+    tagIds: string;
+    thumbUrl: string;
+    title: string;
+    top: number;
+    type: string;
+    views: number;
+    status: STATUS.DISABLE;
     createdAt?: string;
     updatedAt?: string;
 }
-export type UserList = Array<UserItem>;
-export interface UserFilter {
+export type SiteList = Array<SiteItem>;
+export interface SiteFilter {
     page: number;
     size: number;
     order: string;
     status: number;
     search: string;
 }
-export interface UserState {
-    detail: UserItem;
-    list: UserList;
-    filter: UserFilter;
+export interface SiteState {
+    detail: SiteItem;
+    list: SiteList;
+    filter: SiteFilter;
     total: number;
 }
 
@@ -48,30 +55,37 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore(USER_STORE_KEY, () => {
+export default defineStore(SITE_STORE_KEY, () => {
     const drawerType = ref('create');
-    const detail: UserItem = reactive({
-        id: undefined,
-        uuid: undefined,
-        username: '',
-        nickname: '',
-        email: '',
-        phone: '',
-        password: '',
-        avatar: '',
+    const detail: SiteItem = reactive({
+        id: 0,
+        authorId: 0,
+        codeUrl: '',
+        collections: 0,
+        description: '',
+        down: 0,
+        iconUrl: '',
+        logoUrl: '',
+        siteUrl: '',
+        tagIds: '',
+        thumbUrl: '',
+        title: '',
+        top: 0,
+        type: '',
+        uuid: '',
+        views: 0,
         status: STATUS.DISABLE,
-        rule: RULE.USER,
         createdAt: undefined,
         updatedAt: undefined,
     });
-    const defaultCache = cloneDeep(detail);
-    const list: Ref<UserItem[]> = ref([]);
-    const filter: UserFilter = reactive({
+
+    const list: Ref<SiteItem[]> = ref([]);
+    const filter: SiteFilter = reactive({
         page: 1,
         size: 20,
         order: 'updatedAt DESC',
         status: STATUS.ALL,
-        rule: RULE.ALL,
+        type: TYPE.ALL,
         search: '',
     });
     const total = ref(0);
@@ -79,22 +93,23 @@ export default defineStore(USER_STORE_KEY, () => {
     const find = async (query?: Record<string, any>) => {
         Object.assign(filter, query);
         const res = await findData(filter);
-        console.log('res', res);
+        console.log('res====site=====find', res);
         list.value = res.list;
         total.value = res.total;
     };
     const findOne = async (id: number) => {
         const res = await findOneData(id);
+        console.log('findOne res', res);
         Object.assign(detail, res);
     };
 
-    const create = async (data: UserItem) => {
+    const create = async (data: SiteItem) => {
         const res = await createData(data);
         await find(filter);
         return res;
     };
 
-    const update = async (data: UserItem) => {
+    const update = async (data: SiteItem) => {
         const res = await updateData(data);
         await find(filter);
         return !!res.affected;
@@ -108,10 +123,6 @@ export default defineStore(USER_STORE_KEY, () => {
     };
 
     const isDrawerUpdateVisible = ref(false);
-
-    const resetDetail = () => {
-        Object.assign(detail, defaultCache);
-    };
 
     const del = (id: number) => {
         ElMessageBox.confirm('你将永久删除该用户，是否持续？', '删除提示', {
@@ -135,12 +146,9 @@ export default defineStore(USER_STORE_KEY, () => {
             });
     };
 
-    const openDrawerUser = (type: string, id?: number) => {
+    const openDrawerSite = (type: string, id?: number) => {
         drawerType.value = type;
-        if (type === 'create') {
-            isDrawerUpdateVisible.value = true;
-            resetDetail();
-        } else if (type === 'update' && id) {
+        if (type === 'update' && id) {
             isDrawerUpdateVisible.value = true;
             findOne(id);
         } else if (type === 'delete' && id) {
@@ -159,7 +167,7 @@ export default defineStore(USER_STORE_KEY, () => {
         update,
         destroy,
         isDrawerUpdateVisible,
-        openDrawerUser,
+        openDrawerSite,
         drawerType,
     };
 });

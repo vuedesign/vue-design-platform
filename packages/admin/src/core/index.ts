@@ -1,15 +1,14 @@
-import { createInterceptors } from './interceptors';
+import { createInterceptors } from '@vue-design/core';
 import '@/configs/interceptors';
-import routes from '@/configs/routes';
-import { createRouter } from './router';
-import { createHttp } from './http';
+import { createRouter } from '@vue-design/core';
+import { createHttp } from '@vue-design/core';
 import { createPinia } from 'pinia';
+import routes from '@/configs/routes';
 
-const http = createHttp({});
-const router = createRouter({ routes });
-const store = createPinia();
-const interceptors = createInterceptors();
-
-export * from './interceptors';
-export * from './keys';
-export { router, http, store, interceptors };
+export * from '@vue-design/core';
+export const http = createHttp({
+    baseURL: '',
+});
+export const router = createRouter({ routes });
+export const store = createPinia();
+export const interceptors = createInterceptors();

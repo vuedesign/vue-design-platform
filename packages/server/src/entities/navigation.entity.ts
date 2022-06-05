@@ -19,6 +19,7 @@ export class NavigationEntity {
     width: 11,
     nullable: false,
     comment: '站点id',
+    name: 'site_id',
   })
   siteId: number;
 
@@ -65,13 +66,12 @@ export class NavigationEntity {
   order: number;
 
   @Column({
-    name: 'is_show',
     type: 'int',
     width: 1,
     nullable: false,
     comment: '是否可用：1-可用，2-不可用',
   })
-  isShow: number;
+  status: number;
 
   @CreateDateColumn({
     name: 'created_at',

@@ -4,6 +4,7 @@ import userRoutes from '../modules/user/routes';
 import buriedRoutes from '../modules/buried/routes';
 import materialRoutes from '../modules/material/routes';
 import navigationRoutes from '../modules/navigation/routes';
+import siteRoutes from '../modules/site/routes';
 
 export default [
     {
@@ -19,6 +20,7 @@ export default [
             ...buriedRoutes,
             ...materialRoutes,
             ...navigationRoutes,
+            ...siteRoutes,
         ],
     },
     ...globals,

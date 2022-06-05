@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'user-index',
+    name: 'material-list',
 };
 </script>
 <script lang="ts" setup>
