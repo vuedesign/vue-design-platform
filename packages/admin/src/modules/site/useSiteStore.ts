@@ -39,7 +39,7 @@ export interface SiteFilter {
     size: number;
     order: string;
     status: number;
-    search: string;
+    title: string;
 }
 export interface SiteState {
     detail: SiteItem;
@@ -86,7 +86,7 @@ export default defineStore(SITE_STORE_KEY, () => {
         order: 'updatedAt DESC',
         status: STATUS.ALL,
         type: TYPE.ALL,
-        search: '',
+        title: '',
     });
     const total = ref(0);
 

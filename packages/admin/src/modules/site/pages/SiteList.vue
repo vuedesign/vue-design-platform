@@ -4,8 +4,8 @@
             <div class="page-site-header">
                 <div class="page-site-filter">
                     <el-input
-                        v-model="filter.search"
-                        placeholder="请输入用户名或电话"
+                        v-model="filter.title"
+                        placeholder="请输入标题"
                         style="width: 200px"
                     >
                         <template #prefix>
@@ -268,7 +268,18 @@ const handleDel = (id: number) => {
     console.log('id', id);
     siteStore.openDrawerSite('delete', id);
 };
-const handleMoreCommand = (command: string) => {
+const handleRecommend = (id: number) => {
+    console.log('handleRecommend', id);
+};
+const handleMoreCommand = (command: string, id: number) => {
+    switch (command) {
+        case 'delete':
+            handleDel(id);
+            break;
+        case 'recommend':
+            handleRecommend(id);
+            break;
+    }
     console.log('command', command);
 };
 </script>
@@ -323,6 +334,6 @@ const handleMoreCommand = (command: string) => {
 .btn-recommend-text,
 .btn-delete-text {
     display: inline-block;
-    margin-left: 6px;
+    margin-left: 8px;
 }
 </style>
