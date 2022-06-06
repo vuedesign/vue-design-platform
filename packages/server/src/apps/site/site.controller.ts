@@ -50,9 +50,10 @@ export class SiteController {
   findAll(
     @Query('size', new DefaultValuePipe(20), ParseIntPipe) size?: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
-    // @Query('tagId', new DefaultValuePipe(0), ParseIntPipe) tagId?: number,
+    @Query('status', new DefaultValuePipe(0), ParseIntPipe) status?: number,
     @Query('order') order?: string,
     @Query('type') type?: string,
+    @Query('title') title?: string,
   ) {
     console.log('size', size);
     console.log('page', page);
@@ -87,9 +88,13 @@ export class SiteController {
       };
     }
 
-    // if (tagId) {
-    //   options.where['tagIds'] = Like(`%${tagId}%`);
-    // }
+    if (status) {
+      options.where['status'] = status;
+    }
+
+    if (title) {
+      options.where['title'] = Like(`%${title}%`);
+    }
 
     if (type) {
       if (type === 'all') {
