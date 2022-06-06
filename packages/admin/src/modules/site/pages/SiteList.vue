@@ -147,15 +147,28 @@
                         width="160"
                         :formatter="tableDateFormatter('updatedAt')"
                     />
-                    <el-table-column fixed="right" label="操作" width="210">
+
+                    <el-table-column
+                        fixed="right"
+                        label="审核"
+                        align="center"
+                        width="64"
+                    >
                         <template #default="{ row }">
-                            <span class="btn-switch">
-                                <el-switch
-                                    v-model="row.status"
-                                    :active-value="STATUS.AVAILABLE"
-                                    :inactive-value="STATUS.DISABLE"
-                                />
-                            </span>
+                            <el-switch
+                                v-model="row.status"
+                                :active-value="STATUS.AVAILABLE"
+                                :inactive-value="STATUS.DISABLE"
+                            />
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="84"
+                        align="center"
+                    >
+                        <template #default="{ row }">
                             <el-button
                                 type="primary"
                                 text
@@ -163,13 +176,49 @@
                             >
                                 编辑
                             </el-button>
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleDel(row.id)"
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        fixed="right"
+                        label="更多"
+                        width="64"
+                        align="center"
+                    >
+                        <template #default="{ row }">
+                            <el-dropdown
+                                trigger="click"
+                                @command="
+                                    (command) =>
+                                        handleMoreCommand(command, row.id)
+                                "
                             >
-                                删除
-                            </el-button>
+                                <span class="btn-more">
+                                    <iconpark-icon
+                                        name="more-one"
+                                        size="16"
+                                    ></iconpark-icon>
+                                </span>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item command="recommend">
+                                            <iconpark-icon
+                                                name="trophy"
+                                            ></iconpark-icon>
+                                            <span class="btn-recommend-text">
+                                                推荐
+                                            </span>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item command="delete">
+                                            <iconpark-icon
+                                                name="delete"
+                                            ></iconpark-icon>
+                                            <span class="btn-delete-text">
+                                                删除
+                                            </span>
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -219,6 +268,9 @@ const handleDel = (id: number) => {
     console.log('id', id);
     siteStore.openDrawerSite('delete', id);
 };
+const handleMoreCommand = (command: string) => {
+    console.log('command', command);
+};
 </script>
 
 <style scoped lang="scss">
@@ -249,6 +301,11 @@ const handleDel = (id: number) => {
     overflow: hidden;
     overflow-y: auto;
     margin-bottom: -1px;
+    .btn-more {
+        height: 32px;
+        display: flex;
+        cursor: pointer;
+    }
 }
 
 .btn-switch {
@@ -260,5 +317,12 @@ const handleDel = (id: number) => {
     display: flex;
     justify-content: flex-end;
     padding: 8px 24px;
+}
+</style>
+<style lang="scss">
+.btn-recommend-text,
+.btn-delete-text {
+    display: inline-block;
+    margin-left: 6px;
 }
 </style>
