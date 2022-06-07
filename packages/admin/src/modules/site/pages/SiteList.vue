@@ -159,6 +159,9 @@
                                 v-model="row.status"
                                 :active-value="STATUS.AVAILABLE"
                                 :inactive-value="STATUS.DISABLE"
+                                @change="
+                                    (status) => handleStatus(status, row.id)
+                                "
                             />
                         </template>
                     </el-table-column>
@@ -260,6 +263,14 @@ siteStore.find(filter.value);
 
 const handleSearch = () => {
     siteStore.find(filter.value);
+};
+const handleStatus = (status: number, id: number) => {
+    siteStore.updateStatus({
+        id,
+        type: 'number',
+        field: 'status',
+        value: status,
+    });
 };
 const handleUpdate = (id: number) => {
     siteStore.openDrawerSite('update', id);

@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash-es';
 import {
     findData,
     findOneData,
-    // updateFieldData,
+    updateFieldData,
     createData,
     updateData,
     destroyData,
@@ -122,6 +122,16 @@ export default defineStore(SITE_STORE_KEY, () => {
         });
     };
 
+    const updateStatus = async (data: UpdateFieldPamas) => {
+        const { id, field, value, type } = data;
+        const res = await updateFieldData(id, {
+            type,
+            field,
+            value,
+        });
+        return !!res.affected;
+    };
+
     const isDrawerUpdateVisible = ref(false);
 
     const del = (id: number) => {
@@ -165,6 +175,7 @@ export default defineStore(SITE_STORE_KEY, () => {
         findOne,
         create,
         update,
+        updateStatus,
         destroy,
         isDrawerUpdateVisible,
         openDrawerSite,

@@ -1,5 +1,6 @@
 import { http } from '@/core';
 import { SiteList, SiteItem } from './useSiteStore';
+import { UpdateResult } from 'typeorm';
 
 export type PromiseList<T> = Promise<{
     list: T;
@@ -14,7 +15,10 @@ export function findOneData(id: number): Promise<SiteItem> {
     return http.get(`/api/v1/sites/${id}`);
 }
 
-export function updateFieldData(id: number, data: Record<string, any>) {
+export function updateFieldData(
+    id: number,
+    data: Record<string, any>,
+): Promise<UpdateResult> {
     return http.patch(`/api/v1/sites/${id}`, data);
 }
 
@@ -22,7 +26,7 @@ export function createData(data: SiteItem) {
     return http.post(`/api/v1/sites`, data);
 }
 
-export function updateData(data: SiteItem) {
+export function updateData(data: SiteItem): Promise<UpdateResult> {
     return http.put(`/api/v1/sites/${data.id}`, data);
 }
 
