@@ -125,7 +125,6 @@ export class SiteController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateField: UpdateFieldDto,
   ) {
-    console.log('updateField', id, updateField);
     return this.siteService.updateField(id, updateField);
   }
 
