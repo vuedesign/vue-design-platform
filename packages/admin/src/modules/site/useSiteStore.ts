@@ -88,38 +88,85 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     });
     const total = ref(0);
 
+    /**
+     * 站点列表
+     * @param query
+     */
     const find = async (query?: Record<string, any>) => {
         Object.assign(filter, query);
         const res = await findData(filter);
-        console.log('res====site=====find', res);
         list.value = res.list;
         total.value = res.total;
     };
+
+    /**
+     * 站点详情
+     * @param id 站点Id
+     */
     const findOne = async (id: number) => {
         const res = await findOneData(id);
         console.log('findOne res', res);
         Object.assign(detail, res);
     };
 
+    /**
+     * 创建站点
+     * @param data
+     * @returns
+     */
     const create = async (data: SiteItem) => {
         const res = await createData(data);
         await find(filter);
         return res;
     };
 
+    /**
+     * 编辑站点
+     * @param data
+     * @returns
+     */
     const update = async (data: SiteItem) => {
         const res = await updateData(data);
         await find(filter);
         return !!res.affected;
     };
 
+    /**
+     * 删除站点
+     * @param id
+     * @returns
+     */
     const destroy = (id: number) => {
-        return destroyData(id).then((res) => {
-            find(filter);
-            return res;
-        });
+        ElMessageBox.confirm('你将永久删除该站点，是否持续？', '删除提示', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+        })
+            .then(() => {
+                destroyData(id)
+                    .then((res) => {
+                        find(filter);
+                        return res;
+                    })
+                    .then(() => {
+                        ElMessage({
+                            type: 'success',
+                            message: '删除成功',
+                        });
+                    });
+            })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '取消删除',
+                });
+            });
     };
 
+    /**
+     * 更改站点状态
+     * @param data
+     */
     const updateStatus = async (data: UpdateFieldPamas) => {
         const { id, field, value, type } = data;
         updateFieldData(id, {
@@ -142,36 +189,9 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
 
     const isDrawerUpdateVisible = ref(false);
 
-    const del = (id: number) => {
-        ElMessageBox.confirm('你将永久删除该站点，是否持续？', '删除提示', {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-        })
-            .then(() => {
-                destroy(id).then(() => {
-                    ElMessage({
-                        type: 'success',
-                        message: '删除成功',
-                    });
-                });
-            })
-            .catch(() => {
-                ElMessage({
-                    type: 'info',
-                    message: '取消删除',
-                });
-            });
-    };
-
-    const openDrawerSite = (type: string, id?: number) => {
-        drawerType.value = type;
-        if (type === 'update' && id) {
-            isDrawerUpdateVisible.value = true;
-            findOne(id);
-        } else if (type === 'delete' && id) {
-            del(id);
-        }
+    const openDrawerSite = (id: number) => {
+        isDrawerUpdateVisible.value = true;
+        findOne(id);
     };
 
     return {

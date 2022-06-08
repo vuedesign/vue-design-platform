@@ -273,19 +273,16 @@ const handleStatus = (status: number, id: number) => {
     });
 };
 const handleUpdate = (id: number) => {
-    siteStore.openDrawerSite('update', id);
+    siteStore.openDrawerSite(id);
 };
-const handleDel = (id: number) => {
-    console.log('id', id);
-    siteStore.openDrawerSite('delete', id);
-};
+
 const handleRecommend = (id: number) => {
     console.log('handleRecommend', id);
 };
 const handleMoreCommand = (command: string, id: number) => {
     switch (command) {
         case 'delete':
-            handleDel(id);
+            siteStore.destroy(id);
             break;
         case 'recommend':
             handleRecommend(id);
