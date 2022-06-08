@@ -31,7 +31,7 @@ interface Breadcrumb {
     value: string;
 }
 
-export default defineStore(GLOBAL_STORE_KEY, () => {
+export const useGlobalStore = defineStore(GLOBAL_STORE_KEY, () => {
     const profile: Profile = reactive({});
     const findProfile = async () => {
         const res = await findProfileData();
@@ -123,3 +123,6 @@ export default defineStore(GLOBAL_STORE_KEY, () => {
         resetActive,
     };
 });
+
+if (import.meta.hot)
+    import.meta.hot.accept(acceptHMRUpdate(useGlobalStore, import.meta.hot));

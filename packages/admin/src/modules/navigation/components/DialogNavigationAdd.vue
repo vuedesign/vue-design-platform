@@ -111,8 +111,8 @@ import { Ref } from 'vue';
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import useNavigationStore from '../useNavigationStore';
-import useSiteStore, { SiteItem } from '../../site/useSiteStore';
+import { useNavigationStore } from '../useNavigationStore';
+import { useSiteStore, SiteItem } from '../../site/useSiteStore';
 import { typeMap } from '../../site/constants';
 import { ruleMap } from '../constants';
 

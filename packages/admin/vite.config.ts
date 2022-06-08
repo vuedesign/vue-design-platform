@@ -26,6 +26,7 @@ export default defineConfig({
         },
     },
     resolve: {
+        dedupe: ['vue'],
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
         alias: {
             '@': resolve(__dirname, 'src'),

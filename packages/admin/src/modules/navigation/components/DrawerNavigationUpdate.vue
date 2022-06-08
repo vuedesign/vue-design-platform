@@ -88,7 +88,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { STATUS, statusMap } from '@/configs/constants';
-import useNavigationStore from '../useNavigationStore';
+import { useNavigationStore } from '../useNavigationStore';
 import { ruleMap } from '../constants';
 import VdCard from '../../global/components/VdCard.vue';
 

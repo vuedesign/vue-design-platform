@@ -252,7 +252,7 @@ import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
-import useSiteStore from '../useSiteStore';
+import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
 import DrawerSiteUpdate from '../components/DrawerSiteUpdate.vue';
 

@@ -40,7 +40,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore(NAVIGATION_STORE_KEY, () => {
+export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: NavigationItem = reactive({
         id: undefined,
@@ -133,3 +133,8 @@ export default defineStore(NAVIGATION_STORE_KEY, () => {
         update,
     };
 });
+
+if (import.meta.hot)
+    import.meta.hot.accept(
+        acceptHMRUpdate(useNavigationStore, import.meta.hot),
+    );

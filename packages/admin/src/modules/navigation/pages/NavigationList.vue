@@ -162,7 +162,7 @@ import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
-import useNavigationStore from '../useNavigationStore';
+import { useNavigationStore } from '../useNavigationStore';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
 

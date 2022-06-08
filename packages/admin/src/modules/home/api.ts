@@ -13,7 +13,7 @@ export function findCountData(): Promise<CountMap> {
     return http.get('/api/v1/home/count');
 }
 
-export function findOneData(id: number): Promise<HomeItem> {
+export function findOneData(id: number): Promise<any> {
     return http.get(`/api/v1/projects/${id}`);
 }
 

@@ -27,11 +27,6 @@
             <vd-card class="page-home-right">right</vd-card>
         </div>
     </div>
-    <!-- <vd-card class="page-home">
-        <template #default>
-            <div class="page-home-container">home</div>
-        </template>
-    </vd-card> -->
 </template>
 <script lang="ts">
 export default {
@@ -45,7 +40,6 @@ import userHomeStore from '../useHomeStore';
 const homeStore = userHomeStore();
 const { homeCountList } = storeToRefs(homeStore);
 homeStore.findCount();
-// import styles from '../styles/Home.module.scss';
 </script>
 
 <style scoped lang="scss">

@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash-es';
 import {
     findData,
     findOneData,
@@ -54,8 +53,7 @@ export interface UpdateFieldPamas {
     value: any;
     type: string;
 }
-
-export default defineStore(SITE_STORE_KEY, () => {
+export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: SiteItem = reactive({
         id: 0,
@@ -124,18 +122,28 @@ export default defineStore(SITE_STORE_KEY, () => {
 
     const updateStatus = async (data: UpdateFieldPamas) => {
         const { id, field, value, type } = data;
-        const res = await updateFieldData(id, {
+        updateFieldData(id, {
             type,
             field,
             value,
+        }).then((res) => {
+            if (res.affected === 1) {
+                console.log(value, '=====');
+                ElMessage({
+                    type: value === STATUS.AVAILABLE ? 'success' : 'warning',
+                    message:
+                        value === STATUS.AVAILABLE
+                            ? '成功通过审核'
+                            : '下线成功',
+                });
+            }
         });
-        return !!res.affected;
     };
 
     const isDrawerUpdateVisible = ref(false);
 
     const del = (id: number) => {
-        ElMessageBox.confirm('你将永久删除该用户，是否持续？', '删除提示', {
+        ElMessageBox.confirm('你将永久删除该站点，是否持续？', '删除提示', {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
@@ -182,3 +190,6 @@ export default defineStore(SITE_STORE_KEY, () => {
         drawerType,
     };
 });
+
+if (import.meta.hot)
+    import.meta.hot.accept(acceptHMRUpdate(useSiteStore, import.meta.hot));

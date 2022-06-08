@@ -69,7 +69,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import useGlobalStore from '../useGlobalStore';
+import { useGlobalStore } from '../useGlobalStore';
 
 const globalStore = useGlobalStore();
 const router = useRouter();

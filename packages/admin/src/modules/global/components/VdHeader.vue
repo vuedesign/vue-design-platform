@@ -84,7 +84,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import useGlobalStore from '../useGlobalStore';
+import { useGlobalStore } from '../useGlobalStore';
 const globalStore = useGlobalStore();
 const { breadcrumbList, profile } = storeToRefs(globalStore);
 globalStore.findProfile();

@@ -11,7 +11,7 @@ import {
 } from '@/core';
 import { storeToRefs } from 'pinia';
 import { SUCCESS_STATUS_CODE } from './constants';
-import useGlobalStore from '@/modules/global/useGlobalStore';
+import { useGlobalStore } from '@/modules/global/useGlobalStore';
 
 // 拦截器配置
 onGlobalConfig((context) => {

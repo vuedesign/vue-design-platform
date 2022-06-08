@@ -82,7 +82,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import useUserStore from '../useUserStore';
+import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 
 const userStore = useUserStore();

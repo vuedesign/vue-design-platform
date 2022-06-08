@@ -24,7 +24,7 @@ export default {
 import logo from '@/assets/images/logo.png';
 import VdMenuItem from './VdMenuItem.vue';
 import { MenuNode } from '@/configs/menuTree';
-import useGlobalStore from '../useGlobalStore';
+import { useGlobalStore } from '../useGlobalStore';
 
 const globalStore = useGlobalStore();
 const { menuList } = storeToRefs(globalStore);

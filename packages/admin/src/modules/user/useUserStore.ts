@@ -48,7 +48,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore(USER_STORE_KEY, () => {
+export const useUserStore = defineStore(USER_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: UserItem = reactive({
         id: undefined,
@@ -163,3 +163,6 @@ export default defineStore(USER_STORE_KEY, () => {
         drawerType,
     };
 });
+
+if (import.meta.hot)
+    import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));

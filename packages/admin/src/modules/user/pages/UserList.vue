@@ -194,7 +194,7 @@ import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
-import useUserStore from '../useUserStore';
+import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
 
