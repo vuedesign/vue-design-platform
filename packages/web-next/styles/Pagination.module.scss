@@ -1,0 +1,25 @@
+.container {
+  height: 32px;
+  display: flex;
+  justify-content: center;
+
+  span {
+    padding: 0 3px;
+    background-color: #fff;
+    display: flex;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 3px;
+    min-width: 24px;
+    text-align: center;
+    border-radius: 2px;
+    color: #666;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    &.active {
+      background-color: #3d7eff;
+      color: #fff;
+    }
+  }
+}

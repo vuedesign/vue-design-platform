@@ -1,0 +1,12 @@
+node_modules
+packages/**/node_modules
+packages/**/dist
+packages/**/src/configs/*.config.ts
+packages/**/uploads
+packages/.DS_Store
+*.log
+.nuxt
+nuxt.d.ts
+.output
+.env
+**/.DS_Store/**

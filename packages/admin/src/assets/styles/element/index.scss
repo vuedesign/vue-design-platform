@@ -1,0 +1,65 @@
+// @use '@vue-design/theme-2n/src/base.scss';
+
+// @use 'sass:map';
+
+// // @use 'element-plus/theme-chalk/src/common/var.scss';
+// @use 'element-plus/theme-chalk/src/mixins/function.scss' as *;
+
+// $drawer: () !default;
+// $drawer: map.merge(
+//     (
+//         'bg-color':
+//             var(
+//                 #{getCssVarName('dialog', 'bg-color')},
+//                 #{getCssVar('bg-color')}
+//             ),
+//         'padding-primary':
+//             var(#{getCssVarName('dialog', 'padding-primary')}, 20px),
+//     ),
+//     $drawer
+// );
+
+// @forward 'element-plus/theme-chalk/src/common/var.scss' with (
+//     $colors: (
+//         'primary': (
+//             'base': #3d7eff,
+//         ),
+//     ),
+//     $drawer: $drawer,
+//     // Background
+//     // $bg-color: () !default,
+//     // $bg-color:
+//     //     (
+//     //         '': #ffffff,
+//     //         'page': #f2f3f5,
+//     //         'overlay': #ffffff,
+//     //         'light': #fafbfc,
+//     //     ),
+//     $dialog:
+//         (
+//             'border-radius': getCssVar('border-radius-default'),
+//         )
+//         // // Dialog
+//     // // css3 var in packages/theme-chalk/src/dialog.scss
+//     // // $dialog: () !default,
+//     // $dialog:
+//     //     map.merge(
+//     //         (
+//     //             'width': 50%,
+//     //             'margin-top': 15vh,
+//     //             'bg-color': getCssVar('bg-color'),
+//     //             'header-bg-color': getCssVar('bg-color'),
+//     //             'box-shadow': getCssVar('box-shadow'),
+//     //             'title-font-size': getCssVar('font-size-large'),
+//     //             'content-font-size': 14px,
+//     //             'font-line-height': getCssVar('font-line-height-primary'),
+//     //             'padding-primary': 20px,
+//     //             'border-radius': getCssVar('border-radius-default'),
+//     //         ),
+//     //         $dialog
+//     //     )
+// );
+
+// :root {
+//     --el-border-radius-default: 8px;
+// }

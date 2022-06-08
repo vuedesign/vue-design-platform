@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "version": "3.2.33",
+  "scripts": {
+    "lint": "eslint --ext .ts packages/*/src/**.ts",
+    "format": "prettier --write --parser typescript \"packages/**/*.ts?(x)\""
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "eslint",
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "engines": {
+    "node": ">=16.5.0"
+  },
+  "devDependencies": {
+    "lint-staged": "^10.2.10",
+    "prettier": "^2.6.2"
+  }
+}
