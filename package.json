@@ -1,13 +1,12 @@
 {
   "private": true,
-  "version": "3.2.33",
+  "version": "1.0.0",
   "scripts": {
     "lint": "eslint --ext .ts packages/*/src/**.ts",
     "format": "prettier --write --parser typescript \"packages/**/*.ts?(x)\""
   },
   "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verifyCommit.js"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
