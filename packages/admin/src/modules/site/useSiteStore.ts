@@ -10,6 +10,7 @@ import { Ref } from 'vue';
 import { SITE_STORE_KEY } from '@/configs/storeKeys';
 import { STATUS } from '@/configs/constants';
 import { TYPE } from './constants';
+import { useNavigationStore } from '../navigation/useNavigationStore';
 
 export interface SiteItem {
     id?: number;
@@ -40,12 +41,6 @@ export interface SiteFilter {
     status: number;
     title: string;
 }
-export interface SiteState {
-    detail: SiteItem;
-    list: SiteList;
-    filter: SiteFilter;
-    total: number;
-}
 
 export interface UpdateFieldPamas {
     id: number;
@@ -55,7 +50,7 @@ export interface UpdateFieldPamas {
 }
 export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const drawerType = ref('create');
-    const detail: SiteItem = reactive({
+    const siteItem: SiteItem = reactive({
         id: 0,
         authorId: 0,
         codeUrl: '',
@@ -106,7 +101,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const findOne = async (id: number) => {
         const res = await findOneData(id);
         console.log('findOne res', res);
-        Object.assign(detail, res);
+        Object.assign(siteItem, res);
     };
 
     /**
@@ -188,14 +183,38 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     };
 
     const isDrawerUpdateVisible = ref(false);
+    const isDrawerRecommendVisible = ref(false);
 
-    const openDrawerSite = (id: number) => {
-        isDrawerUpdateVisible.value = true;
-        findOne(id);
+    const navigationStore = useNavigationStore();
+
+    const openDrawerSite = async (id: number, type: string) => {
+        if (type === 'update') {
+            isDrawerUpdateVisible.value = true;
+            findOne(id);
+        } else {
+            isDrawerRecommendVisible.value = true;
+            const res = await findOneData(id);
+            const {
+                title,
+                description, // description
+                siteUrl,
+                iconUrl,
+                status,
+            } = res;
+            navigationStore.setNavigationItem({
+                siteId: id,
+                title,
+                description,
+                siteUrl,
+                iconUrl,
+                order: 0,
+                status,
+            });
+        }
     };
 
     return {
-        detail,
+        siteItem,
         list,
         total,
         filter,
@@ -206,6 +225,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
         updateStatus,
         destroy,
         isDrawerUpdateVisible,
+        isDrawerRecommendVisible,
         openDrawerSite,
         drawerType,
     };

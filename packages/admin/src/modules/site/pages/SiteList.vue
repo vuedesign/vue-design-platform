@@ -227,6 +227,7 @@
                 </el-table>
             </div>
             <drawer-site-update />
+            <drawer-site-recommend />
         </template>
         <template #footer>
             <div class="page-site-pagination">
@@ -255,6 +256,7 @@ import VdCard from '../../global/components/VdCard.vue';
 import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
 import DrawerSiteUpdate from '../components/DrawerSiteUpdate.vue';
+import DrawerSiteRecommend from '../components/DrawerSiteRecommend.vue';
 
 const siteStore = useSiteStore();
 const { filter, total, list } = storeToRefs(siteStore);
@@ -273,22 +275,19 @@ const handleStatus = (status: number, id: number) => {
     });
 };
 const handleUpdate = (id: number) => {
-    siteStore.openDrawerSite(id);
+    siteStore.openDrawerSite(id, 'update');
 };
 
-const handleRecommend = (id: number) => {
-    console.log('handleRecommend', id);
-};
 const handleMoreCommand = (command: string, id: number) => {
     switch (command) {
         case 'delete':
             siteStore.destroy(id);
             break;
         case 'recommend':
-            handleRecommend(id);
+            siteStore.openDrawerSite(id, 'recommend');
             break;
     }
-    console.log('command', command);
+    // console.log('command', command);
 };
 </script>
 

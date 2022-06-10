@@ -10,13 +10,13 @@ export interface NavigationItem {
     id?: number;
     siteId: number;
     title: string;
-    descrition: string;
+    description: string;
     siteUrl: string;
     iconUrl: string;
     order: number;
     status: number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 export type NavigationList = Array<NavigationItem>;
 export interface NavigationFilter {
@@ -27,7 +27,7 @@ export interface NavigationFilter {
     search: string;
 }
 export interface NavigationState {
-    detail: NavigationItem;
+    navigationItem: NavigationItem;
     list: NavigationList;
     filter: NavigationFilter;
     total: number;
@@ -42,11 +42,11 @@ export interface UpdateFieldPamas {
 
 export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const drawerType = ref('create');
-    const detail: NavigationItem = reactive({
+    const navigationItem: NavigationItem = reactive({
         id: undefined,
         siteId: 0,
         title: '',
-        descrition: '',
+        description: '',
         siteUrl: '',
         iconUrl: '',
         order: 0,
@@ -54,7 +54,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         createdAt: '',
         updatedAt: '',
     });
-    const defaultCache = cloneDeep(detail);
+    const defaultCache = cloneDeep(navigationItem);
 
     const list: Ref<NavigationItem[]> = ref([]);
     const filter: NavigationFilter = reactive({
@@ -76,29 +76,26 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     };
     const findOne = async (id: number) => {
         const res = await findOneData(id);
-        Object.assign(detail, res);
+        Object.assign(navigationItem, res);
     };
 
     const isDialogAddVisible = ref(false);
-    const updateIDialogUpdateVisibleState = (visible: boolean) => {
-        isDialogAddVisible.value = visible;
-    };
-
     const isDrawerUpdateVisible = ref(false);
-    const updateDrawerUpdateVisibleState = (visible: boolean) => {
-        isDrawerUpdateVisible.value = visible;
-    };
 
     const resetDetail = () => {
-        Object.assign(detail, defaultCache);
+        Object.assign(navigationItem, defaultCache);
     };
 
-    const update = (detail: NavigationItem) => {
+    function setNavigationItem(newData: NavigationItem) {
+        Object.assign(navigationItem, newData);
+    }
+
+    const update = (navigationItem: NavigationItem) => {
         // findOne(id);
     };
 
     const del = (id: number) => {
-        ElMessageBox.confirm('你将永久删除该用户，是否持续？', '删除提示', {
+        ElMessageBox.confirm('你将永久取消该推荐，是否持续？', '取消提示', {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
@@ -119,7 +116,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     };
 
     return {
-        detail,
+        navigationItem,
         list,
         total,
         filter,
@@ -127,10 +124,10 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         findOne,
         isDrawerUpdateVisible,
         isDialogAddVisible,
-        updateDrawerUpdateVisibleState,
         resetDetail,
         del,
         update,
+        setNavigationItem,
     };
 });
 
