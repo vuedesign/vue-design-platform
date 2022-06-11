@@ -14,7 +14,9 @@
                             </el-icon>
                         </template>
                     </el-input>
+
                     <el-select
+                        clearable
                         v-model="filter.type"
                         placeholder="Select"
                         style="width: 200px"
@@ -34,6 +36,7 @@
                         />
                     </el-select>
                     <el-select
+                        clearable
                         v-model="filter.status"
                         placeholder="Select"
                         style="width: 200px"

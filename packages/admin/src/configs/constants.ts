@@ -4,7 +4,7 @@ export const BRAND_TITLE = 'VueDesign';
 
 // 状态
 export enum STATUS {
-    ALL = 0,
+    ALL = '',
     AVAILABLE = 1,
     DISABLE = 2,
 }

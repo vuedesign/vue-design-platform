@@ -1,7 +1,13 @@
 import { reactive, Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash-es';
-import { findData, findOneData } from './api';
+import {
+    findData,
+    findOneData,
+    destroyData,
+    updateData,
+    createData,
+} from './api';
 import { STATUS, RULE } from './constants';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { NAVIGATION_STORE_KEY } from '@/configs/storeKeys';
@@ -27,7 +33,7 @@ export interface NavigationFilter {
     search: string;
 }
 export interface NavigationState {
-    navigationItem: NavigationItem;
+    detail: NavigationItem;
     list: NavigationList;
     filter: NavigationFilter;
     total: number;
@@ -42,7 +48,7 @@ export interface UpdateFieldPamas {
 
 export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const drawerType = ref('create');
-    const navigationItem: NavigationItem = reactive({
+    const detail: NavigationItem = reactive({
         id: undefined,
         siteId: 0,
         title: '',
@@ -54,7 +60,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         createdAt: '',
         updatedAt: '',
     });
-    const defaultCache = cloneDeep(navigationItem);
+    const defaultCache = cloneDeep(detail);
 
     const list: Ref<NavigationItem[]> = ref([]);
     const filter: NavigationFilter = reactive({
@@ -76,22 +82,30 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     };
     const findOne = async (id: number) => {
         const res = await findOneData(id);
-        Object.assign(navigationItem, res);
+        Object.assign(detail, res);
     };
 
     const isDialogAddVisible = ref(false);
     const isDrawerUpdateVisible = ref(false);
 
     const resetDetail = () => {
-        Object.assign(navigationItem, defaultCache);
+        Object.assign(detail, defaultCache);
     };
 
     function setNavigationItem(newData: NavigationItem) {
-        Object.assign(navigationItem, newData);
+        Object.assign(detail, newData);
     }
 
-    const update = (navigationItem: NavigationItem) => {
-        // findOne(id);
+    const create = async (detail: NavigationItem) => {
+        const res = await createData(detail);
+        await find(filter);
+        return res;
+    };
+
+    const update = async (detail: NavigationItem) => {
+        const res = await updateData(detail);
+        await find(filter);
+        return !!res.affected;
     };
 
     const del = (id: number) => {
@@ -102,21 +116,24 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         })
             .then(() => {
                 console.log(id);
-                ElMessage({
-                    type: 'success',
-                    message: 'Delete completed',
+                destroyData(id).then(({ affected }) => {
+                    ElMessage({
+                        type: affected === 1 ? 'success' : 'error',
+                        message: affected === 1 ? '删除成功' : '删除失败',
+                    });
+                    find(filter);
                 });
             })
             .catch(() => {
                 ElMessage({
                     type: 'info',
-                    message: 'Delete canceled',
+                    message: '取消删除',
                 });
             });
     };
 
     return {
-        navigationItem,
+        detail,
         list,
         total,
         filter,
@@ -126,6 +143,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         isDialogAddVisible,
         resetDetail,
         del,
+        create,
         update,
         setNavigationItem,
     };

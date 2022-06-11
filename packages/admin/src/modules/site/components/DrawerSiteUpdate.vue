@@ -154,15 +154,15 @@ import { STATUS } from '@/configs/constants';
 import { watting } from '@/utils';
 
 const siteStore = useSiteStore();
-const { isDrawerUpdateVisible, siteItem } = storeToRefs(siteStore);
+const { isDrawerUpdateVisible, detail } = storeToRefs(siteStore);
 
 const title = '编辑站点信息';
 const loading = ref(false);
 
 const handleUpdateClick = async () => {
-    console.log('siteItem', siteItem.value);
+    console.log('detail', detail.value);
     loading.value = true;
-    await siteStore.update(siteItem.value);
+    await siteStore.update(detail.value);
     loading.value = false;
     ElNotification({
         title: '编辑',

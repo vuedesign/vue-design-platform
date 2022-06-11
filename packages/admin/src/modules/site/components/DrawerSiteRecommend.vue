@@ -9,19 +9,16 @@
         <vd-card scroll>
             <div class="drawer-site-update-card">
                 <el-form
-                    :model="navigationItem"
+                    :model="detail"
                     label-position="left"
                     label-width="60px"
                 >
                     <el-form-item label="Icon">
-                        <el-avatar
-                            shape="square"
-                            :src="navigationItem.iconUrl"
-                        />
+                        <el-avatar shape="square" :src="detail.iconUrl" />
                     </el-form-item>
                     <el-form-item label="标题">
                         <el-input
-                            v-model="navigationItem.title"
+                            v-model="detail.title"
                             autocomplete="off"
                             :autosize="{ minRows: 2, maxRows: 4 }"
                             type="textarea"
@@ -30,7 +27,7 @@
                     </el-form-item>
                     <el-form-item label="描述">
                         <el-input
-                            v-model="navigationItem.description"
+                            v-model="detail.description"
                             autocomplete="off"
                             :autosize="{ minRows: 2, maxRows: 10 }"
                             type="textarea"
@@ -39,14 +36,14 @@
                     </el-form-item>
                     <el-form-item label="网站">
                         <el-input
-                            v-model="navigationItem.siteUrl"
+                            v-model="detail.siteUrl"
                             autocomplete="off"
                             class="form-item-width"
                         />
                     </el-form-item>
                     <el-form-item label="状态">
                         <el-switch
-                            v-model="navigationItem.status"
+                            v-model="detail.status"
                             :active-value="STATUS.AVAILABLE"
                             :inactive-value="STATUS.DISABLE"
                         />
@@ -93,20 +90,20 @@ import { useNavigationStore } from '@/modules/navigation/useNavigationStore';
 const siteStore = useSiteStore();
 const navigationStore = useNavigationStore();
 const { isDrawerRecommendVisible } = storeToRefs(siteStore);
-const { navigationItem } = storeToRefs(navigationStore);
+const { detail } = storeToRefs(navigationStore);
 
 const title = '推荐站点';
 const loading = ref(false);
 
 const handleUpdateClick = async () => {
-    console.log('navigationItem', navigationItem.value);
+    console.log('detail', detail.value);
     loading.value = true;
-    // await siteStore.update(siteItem.value);
-    // ElNotification({
-    //     title: '编辑',
-    //     message: '编辑站点信息成功',
-    //     type: 'success',
-    // });
+    await navigationStore.create(detail.value);
+    ElNotification({
+        title: '编辑',
+        message: '编辑站点信息成功',
+        type: 'success',
+    });
     await watting(1000);
     loading.value = false;
     siteStore.$patch({

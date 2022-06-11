@@ -38,7 +38,8 @@ export interface SiteFilter {
     page: number;
     size: number;
     order: string;
-    status: number;
+    status: string | number;
+    type: string | number;
     title: string;
 }
 
@@ -50,7 +51,7 @@ export interface UpdateFieldPamas {
 }
 export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const drawerType = ref('create');
-    const siteItem: SiteItem = reactive({
+    const detail: SiteItem = reactive({
         id: 0,
         authorId: 0,
         codeUrl: '',
@@ -101,7 +102,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const findOne = async (id: number) => {
         const res = await findOneData(id);
         console.log('findOne res', res);
-        Object.assign(siteItem, res);
+        Object.assign(detail, res);
     };
 
     /**
@@ -214,7 +215,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     };
 
     return {
-        siteItem,
+        detail,
         list,
         total,
         filter,

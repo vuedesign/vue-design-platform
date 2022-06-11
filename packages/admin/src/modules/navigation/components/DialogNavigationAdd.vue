@@ -79,7 +79,7 @@
             />
         </el-table>
         <template #footer>
-            <span class="dialog-footer">
+            <div class="dialog-footer">
                 <el-button class="vd-btn" @click="handleCancelClick">
                     <el-icon>
                         <iconpark-icon name="close-one"></iconpark-icon>
@@ -97,7 +97,7 @@
                     </el-icon>
                     <span>提交</span>
                 </el-button>
-            </span>
+            </div>
         </template>
     </el-dialog>
 </template>
@@ -114,7 +114,6 @@ import { tableDateFormatter } from '@/utils/useTable';
 import { useNavigationStore } from '../useNavigationStore';
 import { useSiteStore, SiteItem } from '../../site/useSiteStore';
 import { typeMap } from '../../site/constants';
-import { ruleMap } from '../constants';
 
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
