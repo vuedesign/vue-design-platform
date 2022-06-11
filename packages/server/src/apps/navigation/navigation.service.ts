@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateNavigationDto } from './dto/create-navigation.dto';
-import { UpdateNavigationDto } from './dto/update-navigation.dto';
+import {
+  UpdateNavigationDto,
+  UpdateFieldDto,
+} from './dto/update-navigation.dto';
 import {
   BaseService,
   IPaginationResponse,
@@ -32,12 +35,22 @@ export class NavigationService extends BaseService {
     return this.navigationRepository.findOne(id);
   }
 
-  update(id: number, updateNavigationDto: UpdateNavigationDto) {
-    return `This action updates a #${id} navigation`;
+  update(id: number, updateSite: UpdateNavigationDto) {
+    return this.navigationRepository.update(id, updateSite);
+  }
+
+  updateField(id: number, updateField: UpdateFieldDto) {
+    const value =
+      updateField.type === 'number'
+        ? Number(updateField.value)
+        : updateField.value;
+    return this.navigationRepository.update(id, {
+      [updateField.field]: value,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} navigation`;
+    return this.navigationRepository.delete(id);
   }
 
   count() {

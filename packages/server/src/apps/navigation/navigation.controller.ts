@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Put,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { NavigationService } from './navigation.service';
 import { CreateNavigationDto } from './dto/create-navigation.dto';
-import { UpdateNavigationDto } from './dto/update-navigation.dto';
+import {
+  UpdateNavigationDto,
+  UpdateFieldDto,
+} from './dto/update-navigation.dto';
 import { Public } from '../../core/decorators/auth.decorator';
 
 @Controller('navigations')
@@ -36,20 +41,28 @@ export class NavigationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.navigationService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateNavigationDto: UpdateNavigationDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSite: UpdateNavigationDto,
   ) {
-    return this.navigationService.update(+id, updateNavigationDto);
+    return this.navigationService.update(id, updateSite);
+  }
+
+  @Patch(':id')
+  updateField(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateField: UpdateFieldDto,
+  ) {
+    return this.navigationService.updateField(id, updateField);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.navigationService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.navigationService.remove(id);
   }
 }

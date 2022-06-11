@@ -10,7 +10,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { LoginBody } from './dto/auth.dto';
+import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { Public } from '../../core/decorators/auth.decorator';
@@ -31,10 +31,10 @@ export class AuthController {
   @Post('login')
   @ApiBody({
     description: '添加用户信息',
-    type: LoginBody,
+    type: LoginBodyDto,
   })
   async login(
-    @Body() body: LoginBody,
+    @Body() body: LoginBodyDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const { account, password } = body;
