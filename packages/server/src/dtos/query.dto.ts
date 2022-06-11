@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum Status {
-  ALL = '',
   AVAILABLE = 1,
   DISABLE = 2,
 }
@@ -26,7 +25,7 @@ export class ListQueryDto {
   @ApiProperty({
     description: '状态',
     default: '',
-    enum: [1, 2],
+    enum: [Status.AVAILABLE, Status.DISABLE],
     required: false,
   })
   status?: Status;

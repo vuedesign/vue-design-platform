@@ -16,8 +16,9 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserListQueryDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../../core/decorators/auth.decorator';
-import { String2numberPipe } from '@/core/pipes/string2number.pipe';
+import { Public } from '@/core/decorators/auth.decorator';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
+import { UserEntity } from '@/entities/user.entity';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -36,10 +37,10 @@ export class UserController {
 
   @Get()
   @ApiQuery({
-    description: '项目列表',
+    description: '用户列表',
     type: UserListQueryDto,
   })
-  findAll(@Query(new String2numberPipe(['search'])) query: UserListQueryDto) {
+  findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
     const { size, page, search, status, rule } = query;
     const options = {
       size,
@@ -64,20 +65,12 @@ export class UserController {
       }
     }
 
-    if (status !== undefined) {
-      if (status === 1 || status === 2) {
-        options.where['status'] = status;
-      } else {
-        delete options.where['status'];
-      }
+    if (status) {
+      options.where['status'] = status;
     }
 
-    if (rule !== undefined) {
-      if (rule === 1 || rule === 2 || rule === 3) {
-        options.where['rule'] = rule;
-      } else {
-        delete options.where['rule'];
-      }
+    if (rule) {
+      options.where['rule'] = rule;
     }
 
     console.log('options.where===', options);

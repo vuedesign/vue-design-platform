@@ -2,8 +2,8 @@ import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { isObject, isNumberString } from 'class-validator';
 
 @Injectable()
-export class String2numberPipe implements PipeTransform {
-  constructor(private schema: Array<string>) {}
+export class QueryTransformPipe implements PipeTransform {
+  constructor(private exclude: Array<string>) {}
   transform(value: any, metadata: ArgumentMetadata) {
     if (isObject(value)) {
       let temp = {};
@@ -16,7 +16,7 @@ export class String2numberPipe implements PipeTransform {
           temp[key] = '';
         } else if (
           typeof value[key] === 'string' &&
-          this.schema.includes(key)
+          this.exclude.includes(key)
         ) {
           temp[key] = value[key];
         } else if (isNumberString(value[key])) {

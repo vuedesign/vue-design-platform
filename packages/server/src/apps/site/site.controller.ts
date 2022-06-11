@@ -17,7 +17,7 @@ import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { Like } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
-import { String2numberPipe } from '@/core/pipes/string2number.pipe';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 
@@ -47,7 +47,7 @@ export class SiteController {
     description: '项目列表',
     type: SiteListQueryDto,
   })
-  findAll(@Query(new String2numberPipe(['title'])) query: SiteListQueryDto) {
+  findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
     const { title, type, status, size, page, order } = query;
     console.log('size=========', query);
     console.log('order', order); // new | hot | ai
