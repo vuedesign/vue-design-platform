@@ -13,6 +13,13 @@
                     label-position="left"
                     label-width="60px"
                 >
+                    <el-form-item label="站点ID">
+                        <el-input
+                            v-model="detail.siteId"
+                            class="form-item-width"
+                            disabled
+                        />
+                    </el-form-item>
                     <el-form-item label="Icon">
                         <el-avatar shape="square" :src="detail.iconUrl" />
                     </el-form-item>
@@ -59,6 +66,7 @@
                         <span>取消</span>
                     </el-button>
                     <el-button
+                        :disabled="isRecommend"
                         class="vd-btn"
                         type="primary"
                         @click="handleUpdateClick"
@@ -81,7 +89,6 @@ export default {
 </script>
 <script lang="ts" setup>
 import { useSiteStore } from '../useSiteStore';
-import { typeMap } from '../constants';
 import VdCard from '../../global/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
 import { watting } from '@/utils';
@@ -90,7 +97,7 @@ import { useNavigationStore } from '@/modules/navigation/useNavigationStore';
 const siteStore = useSiteStore();
 const navigationStore = useNavigationStore();
 const { isDrawerRecommendVisible } = storeToRefs(siteStore);
-const { detail } = storeToRefs(navigationStore);
+const { detail, isRecommend } = storeToRefs(navigationStore);
 
 const title = '推荐站点';
 const loading = ref(false);

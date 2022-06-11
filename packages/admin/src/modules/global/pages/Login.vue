@@ -75,7 +75,7 @@ const globalStore = useGlobalStore();
 const router = useRouter();
 
 const formData = reactive({
-    account: '18602042482',
+    account: 'wujian',
     password: 'string',
 });
 

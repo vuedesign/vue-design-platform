@@ -47,7 +47,6 @@ export interface UpdateFieldPamas {
 }
 
 export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
-    const drawerType = ref('create');
     const detail: NavigationItem = reactive({
         id: undefined,
         siteId: 0,
@@ -72,6 +71,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         search: '',
     });
     const total = ref(0);
+    const isRecommend = ref(false);
 
     const find = async (query?: Record<string, any>) => {
         Object.assign(filter, query);
@@ -83,6 +83,13 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const findOne = async (id: number) => {
         const res = await findOneData(id);
         Object.assign(detail, res);
+    };
+
+    const checkIsRecommend = async (id: number) => {
+        const res = await findData({
+            siteId: id,
+        });
+        console.log('checkIsRecommend', res);
     };
 
     const isDialogAddVisible = ref(false);
@@ -146,6 +153,8 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         create,
         update,
         setNavigationItem,
+        isRecommend,
+        checkIsRecommend,
     };
 });
 

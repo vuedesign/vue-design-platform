@@ -211,6 +211,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
                 order: 0,
                 status,
             });
+            navigationStore.checkIsRecommend(id);
         }
     };
 

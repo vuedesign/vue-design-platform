@@ -1,12 +1,12 @@
 <template>
-    <vd-card class="page-user">
+    <vd-card>
         <template #header>
-            <div class="page-user-header">
-                <div class="page-user-filter">
+            <vd-filter>
+                <template #default="{ input, select, button }">
                     <el-input
                         v-model="filter.search"
                         placeholder="请输入用户名或电话"
-                        style="width: 200px"
+                        :style="input"
                     >
                         <template #prefix>
                             <el-icon>
@@ -17,7 +17,8 @@
                     <el-select
                         v-model="filter.rule"
                         placeholder="Select"
-                        style="width: 200px"
+                        :style="select"
+                        clearable
                     >
                         <template #prefix>
                             <el-icon>
@@ -36,7 +37,8 @@
                     <el-select
                         v-model="filter.status"
                         placeholder="Select"
-                        style="width: 200px"
+                        :style="select"
+                        clearable
                     >
                         <template #prefix>
                             <el-icon>
@@ -51,8 +53,8 @@
                         />
                     </el-select>
                     <el-button
-                        class="vd-btn"
                         type="primary"
+                        :style="button"
                         @click="handleSearch"
                     >
                         <el-icon>
@@ -60,11 +62,11 @@
                         </el-icon>
                         <span>搜索</span>
                     </el-button>
-                </div>
-                <div class="page-user-btn-group">
+                </template>
+                <template #right="{ button }">
                     <el-button
-                        class="vd-btn"
                         type="success"
+                        :style="button"
                         @click="handleCreate"
                     >
                         <el-icon>
@@ -72,8 +74,8 @@
                         </el-icon>
                         <span>新增</span>
                     </el-button>
-                </div>
-            </div>
+                </template>
+            </vd-filter>
         </template>
         <template #default="{ height }">
             <div class="page-user-container">
@@ -194,6 +196,7 @@ import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '../../global/components/VdCard.vue';
+import VdFilter from '../../global/components/VdFilter.vue';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
@@ -219,28 +222,6 @@ const handleCreate = () => {
 </script>
 
 <style scoped lang="scss">
-.page-user-header {
-    display: flex;
-    padding: 16px 24px;
-}
-.page-user-filter {
-    flex: 1;
-    .el-input,
-    .el-select,
-    .el-button {
-        vertical-align: middle;
-        margin-right: 8px;
-        margin-bottom: 12px;
-    }
-    margin-bottom: -12px;
-}
-
-.page-user-btn-group {
-    width: auto;
-}
-.vd-btn {
-    width: 80px;
-}
 .page-user-container {
     // padding: 16px 24px 0;
     flex: 1;
