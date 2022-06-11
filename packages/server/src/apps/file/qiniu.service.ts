@@ -1,6 +1,6 @@
 import * as qiniu from 'qiniu';
 import { Injectable } from '@nestjs/common';
-import qiniuConfig from '@app/configs/qiniu.config';
+import qiniuConfig from '@/configs/qiniu.config';
 
 @Injectable()
 export class QiniuService {

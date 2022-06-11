@@ -10,17 +10,16 @@ import {
   Patch,
   Req,
   ParseIntPipe,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { Like } from 'typeorm';
-import { Public } from '../../core/decorators/auth.decorator';
-import { String2numberPipe } from '../../core/pipes/string2number.pipe';
+import { Public } from '@/core/decorators/auth.decorator';
+import { String2numberPipe } from '@/core/pipes/string2number.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
-import { query, Request } from 'express';
+import { Request } from 'express';
 
 @Controller('sites')
 @ApiTags('站点模块')

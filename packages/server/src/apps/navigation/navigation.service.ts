@@ -10,8 +10,8 @@ import {
   BaseService,
   IPaginationResponse,
   IPaginationQuery,
-} from '@app/globals/services/base.service';
-import { NavigationEntity } from '../../entities/navigation.entity';
+} from '@/globals/services/base.service';
+import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Injectable()
 export class NavigationService extends BaseService {
@@ -32,7 +32,9 @@ export class NavigationService extends BaseService {
   }
 
   findOne(id: number) {
-    return this.navigationRepository.findOne(id);
+    return this.navigationRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateSite: UpdateNavigationDto) {

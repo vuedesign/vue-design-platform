@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { NavigationService } from './navigation.service';
@@ -36,13 +37,14 @@ export class NavigationController {
 
   @Public()
   @Get()
-  findAll() {
-    return this.navigationService.findAll({});
+  findAll(@Query() query: Record<string, any>) {
+    console.log('query', query);
+    return this.navigationService.findAll(query);
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.navigationService.findOne(+id);
+    return this.navigationService.findOne(id);
   }
 
   @Put(':id')

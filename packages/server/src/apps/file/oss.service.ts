@@ -1,6 +1,6 @@
 import * as OSS from 'ali-oss';
 import { Inject, Injectable } from '@nestjs/common';
-import ossConfig from '@app/configs/oss.config';
+import ossConfig from '@/configs/oss.config';
 
 @Injectable()
 export class OssService {

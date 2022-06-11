@@ -1,4 +1,4 @@
-import { BaseService } from '@app/globals/services/base.service';
+import { BaseService } from '@/globals/services/base.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

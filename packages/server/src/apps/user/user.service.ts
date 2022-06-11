@@ -10,7 +10,7 @@ import {
   BaseService,
   IPaginationResponse,
   IPaginationQuery,
-} from '@app/globals/services/base.service';
+} from '@/globals/services/base.service';
 
 export class CreateUser extends PartialType(CreateUserDto) {}
 

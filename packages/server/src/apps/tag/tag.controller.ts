@@ -39,7 +39,7 @@ export class TagController {
       const [orderKey, orderValue]: Array<string> = query.order.split(' ');
       order[orderKey] = orderValue;
     }
-    return this.tagService.findAll({ size, page, order });
+    return this.tagService.findAll({ page, order });
   }
 
   @Get(':id')

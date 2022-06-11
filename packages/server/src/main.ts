@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { AppModule } from './app.module';
+import { AppModule } from '@/app.module';
 import { PORT, HOST, API_PREFIX } from './configs/global.config';
-import middleware from './core/middleware';
-import swagger from './core/swagger';
-import { TransformInterceptor } from './core/interceptors/transform.interceptor';
-import { HttpExceptionFilter } from './core/filters/httpException.filter';
+import middleware from '@/core/middleware';
+import swagger from '@/core/swagger';
+import { TransformInterceptor } from '@/core/interceptors/transform.interceptor';
+import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
