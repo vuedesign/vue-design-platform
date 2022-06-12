@@ -1,6 +1,7 @@
 import { http } from '@/core';
 import { SiteList, SiteItem } from './useSiteStore';
 import { UpdateResult } from 'typeorm';
+import { UpdateFieldParmas } from '@/types/globals';
 
 export type PromiseList<T> = Promise<{
     list: T;
@@ -17,7 +18,7 @@ export function findOneData(id: number): Promise<SiteItem> {
 
 export function updateFieldData(
     id: number,
-    data: Record<string, any>,
+    data: Partial<UpdateFieldParmas>,
 ): Promise<UpdateResult> {
     return http.patch(`/api/v1/sites/${id}`, data);
 }

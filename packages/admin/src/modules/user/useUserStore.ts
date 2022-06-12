@@ -10,42 +10,22 @@ import {
 import { Ref } from 'vue';
 import { USER_STORE_KEY } from '@/configs/storeKeys';
 import { STATUS } from '@/configs/constants';
+import { ListFilter, BaseItem } from '@/types/globals';
 import { RULE } from './constants';
 
-export interface UserItem {
-    id?: number;
-    uuid?: string;
+export interface UserItem extends BaseItem {
     username: string;
     nickname: string;
     email: string;
     phone: string;
     password: string;
     avatar: string;
-    status: number;
-    rule: number;
-    createdAt?: string;
-    updatedAt?: string;
+    rule: number | string;
 }
 export type UserList = Array<UserItem>;
-export interface UserFilter {
-    page: number;
-    size: number;
-    order: string;
-    status: number;
-    search: string;
-}
-export interface UserState {
-    detail: UserItem;
-    list: UserList;
-    filter: UserFilter;
-    total: number;
-}
-
-export interface UpdateFieldPamas {
-    id: number;
-    field: string;
-    value: any;
-    type: string;
+export interface UserListFilter extends ListFilter {
+    order?: string;
+    search?: string;
 }
 
 export const useUserStore = defineStore(USER_STORE_KEY, () => {
@@ -61,12 +41,10 @@ export const useUserStore = defineStore(USER_STORE_KEY, () => {
         avatar: '',
         status: STATUS.DISABLE,
         rule: RULE.USER,
-        createdAt: undefined,
-        updatedAt: undefined,
     });
     const defaultCache = cloneDeep(detail);
     const list: Ref<UserItem[]> = ref([]);
-    const filter: UserFilter = reactive({
+    const filter: UserListFilter = reactive({
         page: 1,
         size: 20,
         order: 'updatedAt DESC',
@@ -76,7 +54,7 @@ export const useUserStore = defineStore(USER_STORE_KEY, () => {
     });
     const total = ref(0);
 
-    const find = async (query?: Record<string, any>) => {
+    const find = async (query?: UserListFilter) => {
         Object.assign(filter, query);
         const res = await findData(filter);
         console.log('res', res);

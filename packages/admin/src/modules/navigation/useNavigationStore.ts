@@ -1,3 +1,4 @@
+import { BaseItem, ListFilter } from '@/types/globals';
 import { reactive, Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash-es';
@@ -11,27 +12,19 @@ import {
     updateFieldData,
 } from './api';
 import { STATUS, RULE } from './constants';
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { NAVIGATION_STORE_KEY } from '@/configs/storeKeys';
 
-export interface NavigationItem {
-    id?: number;
+export interface NavigationItem extends BaseItem {
     siteId: number;
     title: string;
     description: string;
     siteUrl: string;
     iconUrl: string;
     order: number;
-    status: number;
-    createdAt?: string;
-    updatedAt?: string;
 }
 export type NavigationList = Array<NavigationItem>;
-export interface NavigationFilter {
-    page?: number;
-    size?: number;
+export interface NavigationListFilter extends ListFilter {
     order?: string;
-    status?: number | string;
     title?: string;
     siteId?: number | string;
 }
@@ -59,7 +52,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const defaultCache = cloneDeep(detail);
 
     const list: Ref<NavigationItem[]> = ref([]);
-    const filter: NavigationFilter = reactive({
+    const filter: NavigationListFilter = reactive({
         page: 1,
         size: 20,
         status: STATUS.ALL,
@@ -70,7 +63,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const total = ref(0);
     const isRecommend = ref(false);
 
-    const find = async (query?: Record<string, any>) => {
+    const find = async (query?: NavigationListFilter) => {
         Object.assign(filter, query);
         const res = await findData(filter);
         console.log('res', res);
