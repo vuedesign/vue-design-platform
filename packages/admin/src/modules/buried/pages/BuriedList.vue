@@ -17,7 +17,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import useBuriedStore from '../useBuriedStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
 import DialogBuriedUpdate from '../components/DialogBuriedUpdate.vue';

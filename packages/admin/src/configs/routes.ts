@@ -13,7 +13,7 @@ export default [
         redirect: {
             name: 'home',
         },
-        component: () => import(`@/modules/global/components/VdContainer.vue`),
+        component: () => import(`@/modules/global/pages/VdContainer.vue`),
         children: [
             ...homeRoutes,
             ...userRoutes,

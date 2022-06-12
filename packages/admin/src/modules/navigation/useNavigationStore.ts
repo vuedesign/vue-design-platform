@@ -7,6 +7,7 @@ import {
     destroyData,
     updateData,
     createData,
+    findOneBySiteIdData,
 } from './api';
 import { STATUS, RULE } from './constants';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -26,17 +27,12 @@ export interface NavigationItem {
 }
 export type NavigationList = Array<NavigationItem>;
 export interface NavigationFilter {
-    page: number;
-    size: number;
-    order: string;
-    status: number;
-    search: string;
-}
-export interface NavigationState {
-    detail: NavigationItem;
-    list: NavigationList;
-    filter: NavigationFilter;
-    total: number;
+    page?: number;
+    size?: number;
+    order?: string;
+    status?: number | string;
+    title?: string;
+    siteId?: number | string;
 }
 
 export interface UpdateFieldPamas {
@@ -65,10 +61,10 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const filter: NavigationFilter = reactive({
         page: 1,
         size: 20,
-        order: 'updatedAt DESC',
         status: STATUS.ALL,
         rule: RULE.ALL,
-        search: '',
+        title: '',
+        siteId: '',
     });
     const total = ref(0);
     const isRecommend = ref(false);
@@ -86,10 +82,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     };
 
     const checkIsRecommend = async (id: number) => {
-        const res = await findData({
-            siteId: id,
-        });
-        console.log('checkIsRecommend', res);
+        isRecommend.value = await findOneBySiteIdData(id);
     };
 
     const isDialogAddVisible = ref(false);

@@ -149,7 +149,7 @@ export default {
 <script lang="ts" setup>
 import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
 import { watting } from '@/utils';
 

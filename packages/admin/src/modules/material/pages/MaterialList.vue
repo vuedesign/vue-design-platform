@@ -17,7 +17,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import useMaterialStore from '../useMaterialStore';
 import { STATUS, statusMap, ruleMap } from '../constants';
 import DialogUserUpdate from '../components/DialogUserUpdate.vue';

@@ -89,7 +89,7 @@ export default {
 <script lang="ts" setup>
 import { STATUS, statusMap } from '@/configs/constants';
 import { useNavigationStore } from '../useNavigationStore';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 
 const navigaitonStore = useNavigationStore();
 const { isDrawerUpdateVisible, detail } = storeToRefs(navigaitonStore);

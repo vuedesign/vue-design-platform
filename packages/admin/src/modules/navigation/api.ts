@@ -15,6 +15,10 @@ export function findOneData(id: number): Promise<NavigationItem> {
     return http.get(`/api/v1/navigations/${id}`);
 }
 
+export function findOneBySiteIdData(siteId: number): Promise<boolean> {
+    return http.get(`/api/v1/navigations/site/${siteId}`);
+}
+
 export function updateFieldData(
     id: number,
     data: Record<string, any>,

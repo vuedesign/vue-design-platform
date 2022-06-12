@@ -195,8 +195,8 @@ export default {
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import VdCard from '../../global/components/VdCard.vue';
-import VdFilter from '../../global/components/VdFilter.vue';
+import VdCard from '@/components/VdCard.vue';
+import VdFilter from '@/components/VdFilter.vue';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';

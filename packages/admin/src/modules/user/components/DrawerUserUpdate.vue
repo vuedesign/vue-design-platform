@@ -100,7 +100,7 @@ export default {
 <script lang="ts" setup>
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 
 const userStore = useUserStore();
 const { isDrawerUpdateVisible, detail, drawerType } = storeToRefs(userStore);
@@ -118,20 +118,20 @@ const loading = ref(false);
 const handleUpdateClick = async () => {
     console.log('detail', detail.value);
     loading.value = true;
-    if (dialogType.value === 'create') {
+    if (drawerType.value === 'create') {
         await userStore.create(detail.value);
-    } else if (dialogType.value === 'update') {
+    } else if (drawerType.value === 'update') {
         await userStore.update(detail.value);
     }
     loading.value = false;
     userStore.$patch({
-        isDialogUpdateVisible: false,
+        isDrawerUpdateVisible: false,
     });
 };
 
 const handleCancelClick = () => {
     userStore.$patch({
-        isDialogUpdateVisible: false,
+        isDrawerUpdateVisible: false,
     });
 };
 </script>

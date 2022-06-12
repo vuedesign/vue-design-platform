@@ -75,7 +75,7 @@
                         <el-icon>
                             <iconpark-icon name="send"></iconpark-icon>
                         </el-icon>
-                        <span>提交</span>
+                        <span>{{ isRecommend ? '已推荐' : '提交' }}</span>
                     </el-button>
                 </div>
             </template>
@@ -89,7 +89,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { useSiteStore } from '../useSiteStore';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
 import { watting } from '@/utils';
 import { useNavigationStore } from '@/modules/navigation/useNavigationStore';

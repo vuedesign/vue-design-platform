@@ -16,8 +16,8 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import VdHeader from './VdHeader.vue';
-import VdAsider from './VdAsider.vue';
+import VdHeader from '../components/VdHeader.vue';
+import VdAsider from '../components/VdAsider.vue';
 </script>
 
 <style scoped>

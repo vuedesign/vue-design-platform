@@ -1,12 +1,23 @@
 <template>
     <vd-card class="page-navigation">
         <template #header>
-            <div class="page-navigation-header">
-                <div class="page-navigation-filter">
+            <vd-filter>
+                <template #default="{ input, select, button }">
                     <el-input
-                        v-model="filter.search"
+                        v-model="filter.title"
                         placeholder="请输入站点名称"
-                        style="width: 200px"
+                        :style="input"
+                    >
+                        <template #prefix>
+                            <el-icon>
+                                <iconpark-icon name="search"></iconpark-icon>
+                            </el-icon>
+                        </template>
+                    </el-input>
+                    <el-input
+                        v-model="filter.siteId"
+                        placeholder="请输入站点ID"
+                        :style="input"
                     >
                         <template #prefix>
                             <el-icon>
@@ -17,7 +28,7 @@
                     <el-select
                         v-model="filter.status"
                         placeholder="Select"
-                        style="width: 200px"
+                        :style="select"
                     >
                         <template #prefix>
                             <el-icon>
@@ -32,8 +43,8 @@
                         />
                     </el-select>
                     <el-button
-                        class="vd-btn"
                         type="primary"
+                        :style="button"
                         @click="handleSearch"
                     >
                         <el-icon>
@@ -41,11 +52,11 @@
                         </el-icon>
                         <span>搜索</span>
                     </el-button>
-                </div>
-                <div class="page-navigation-btn">
+                </template>
+                <template #right="{ button }">
                     <el-button
-                        class="vd-btn"
                         type="success"
+                        :style="button"
                         @click="handleCreate"
                     >
                         <el-icon>
@@ -53,8 +64,8 @@
                         </el-icon>
                         <span>新增</span>
                     </el-button>
-                </div>
-            </div>
+                </template>
+            </vd-filter>
         </template>
         <template #default="{ height }">
             <div class="page-navigation-container">
@@ -161,7 +172,7 @@ export default {
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import { useNavigationStore } from '../useNavigationStore';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
@@ -172,7 +183,7 @@ const { filter, list, isDrawerUpdateVisible, isDialogAddVisible } =
 
 navigationStore.find();
 
-const handleSearch = (id: number) => {
+const handleSearch = () => {
     navigationStore.find(filter.value);
 };
 const handleEidt = (id: number) => {

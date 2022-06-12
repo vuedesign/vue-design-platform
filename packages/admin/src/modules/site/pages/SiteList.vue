@@ -1,12 +1,12 @@
 <template>
-    <vd-card class="page-site">
+    <vd-card>
         <template #header>
-            <div class="page-site-header">
-                <div class="page-site-filter">
+            <vd-filter>
+                <template #default="{ input, select, button }">
                     <el-input
                         v-model="filter.title"
                         placeholder="请输入标题"
-                        style="width: 200px"
+                        :style="input"
                     >
                         <template #prefix>
                             <el-icon>
@@ -19,7 +19,7 @@
                         clearable
                         v-model="filter.type"
                         placeholder="Select"
-                        style="width: 200px"
+                        :style="select"
                     >
                         <template #prefix>
                             <el-icon>
@@ -54,18 +54,17 @@
                         />
                     </el-select>
                     <el-button
-                        class="vd-btn"
                         type="primary"
                         @click="handleSearch"
+                        :style="button"
                     >
                         <el-icon>
                             <iconpark-icon name="filter"></iconpark-icon>
                         </el-icon>
                         <span>搜索</span>
                     </el-button>
-                </div>
-                <div class="page-site-btn-group"></div>
-            </div>
+                </template>
+            </vd-filter>
         </template>
         <template #default="{ height }">
             <div class="page-site-container">
@@ -255,7 +254,8 @@ export default {
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
+import VdFilter from '@/components/VdFilter.vue';
 import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
 import DrawerSiteUpdate from '../components/DrawerSiteUpdate.vue';
@@ -295,28 +295,6 @@ const handleMoreCommand = (command: string, id: number) => {
 </script>
 
 <style scoped lang="scss">
-.page-site-header {
-    display: flex;
-    padding: 16px 24px;
-}
-.page-site-filter {
-    flex: 1;
-    .el-input,
-    .el-select,
-    .el-button {
-        vertical-align: middle;
-        margin-right: 8px;
-        margin-bottom: 12px;
-    }
-    margin-bottom: -12px;
-}
-
-.page-site-btn-group {
-    width: auto;
-}
-.vd-btn {
-    width: 80px;
-}
 .page-site-container {
     flex: 1;
     overflow: hidden;

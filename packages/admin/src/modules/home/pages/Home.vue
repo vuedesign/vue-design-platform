@@ -34,7 +34,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import userHomeStore from '../useHomeStore';
 
 const homeStore = userHomeStore();
