@@ -4,9 +4,12 @@
             <vd-filter>
                 <template #default="{ input, select, button }">
                     <el-input
-                        v-model="filter.title"
                         placeholder="请输入标题"
                         :style="input"
+                        clearable
+                        v-model="filter.title"
+                        @keyup.enter="handleSearch"
+                        @clear="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>
@@ -17,9 +20,9 @@
 
                     <el-select
                         clearable
-                        v-model="filter.type"
-                        placeholder="Select"
                         :style="select"
+                        v-model="filter.type"
+                        @change="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>
@@ -37,9 +40,9 @@
                     </el-select>
                     <el-select
                         clearable
+                        :style="select"
                         v-model="filter.status"
-                        placeholder="Select"
-                        style="width: 200px"
+                        @change="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>

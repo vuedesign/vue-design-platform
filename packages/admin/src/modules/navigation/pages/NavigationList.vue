@@ -4,36 +4,39 @@
             <vd-filter>
                 <template #default="{ input, select, button }">
                     <el-input
-                        v-model="filter.title"
                         placeholder="请输入站点名称"
+                        clearable
                         :style="input"
+                        v-model="filter.title"
+                        @keyup.enter="handleSearch"
+                        @clear="handleSearch"
                     >
                         <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="search"></iconpark-icon>
-                            </el-icon>
+                            <iconpark-icon name="search"></iconpark-icon>
                         </template>
                     </el-input>
                     <el-input
-                        v-model="filter.siteId"
                         placeholder="请输入站点ID"
+                        clearable
                         :style="input"
+                        v-model="filter.siteId"
+                        @keyup.enter="handleSearch"
+                        @clear="handleSearch"
                     >
                         <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="search"></iconpark-icon>
-                            </el-icon>
+                            <iconpark-icon
+                                name="adobe-indesign"
+                            ></iconpark-icon>
                         </template>
                     </el-input>
                     <el-select
-                        v-model="filter.status"
-                        placeholder="Select"
+                        clearable
                         :style="select"
+                        v-model="filter.status"
+                        @change="handleSearch"
                     >
                         <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="broadcast"></iconpark-icon>
-                            </el-icon>
+                            <iconpark-icon name="broadcast"></iconpark-icon>
                         </template>
                         <el-option
                             v-for="[key, value] in statusMap"
@@ -138,6 +141,9 @@
                                     v-model="row.status"
                                     :active-value="STATUS.AVAILABLE"
                                     :inactive-value="STATUS.DISABLE"
+                                    @change="
+                                        (status) => handleStatus(status, row.id)
+                                    "
                                 />
                             </span>
                             <el-button
@@ -186,9 +192,18 @@ navigationStore.find();
 const handleSearch = () => {
     navigationStore.find(filter.value);
 };
+
 const handleEidt = (id: number) => {
     navigationStore.findOne(id);
     isDrawerUpdateVisible.value = true;
+};
+const handleStatus = (status: number, id: number) => {
+    navigationStore.updateStatus({
+        id,
+        type: 'number',
+        field: 'status',
+        value: status,
+    });
 };
 const handleDel = (id: number) => {
     console.log('id', id);

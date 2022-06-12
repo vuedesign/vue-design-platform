@@ -171,7 +171,6 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
             value,
         }).then((res) => {
             if (res.affected === 1) {
-                console.log(value, '=====');
                 ElMessage({
                     type: value === STATUS.AVAILABLE ? 'success' : 'warning',
                     message:

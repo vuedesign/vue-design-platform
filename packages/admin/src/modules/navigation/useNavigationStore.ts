@@ -8,6 +8,7 @@ import {
     updateData,
     createData,
     findOneBySiteIdData,
+    updateFieldData,
 } from './api';
 import { STATUS, RULE } from './constants';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -108,6 +109,29 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         return !!res.affected;
     };
 
+    /**
+     * 更改站点状态
+     * @param data
+     */
+    const updateStatus = async (data: UpdateFieldPamas) => {
+        const { id, field, value, type } = data;
+        updateFieldData(id, {
+            type,
+            field,
+            value,
+        }).then((res) => {
+            if (res.affected === 1) {
+                ElMessage({
+                    type: value === STATUS.AVAILABLE ? 'success' : 'warning',
+                    message:
+                        value === STATUS.AVAILABLE
+                            ? '成功通过审核'
+                            : '下线成功',
+                });
+            }
+        });
+    };
+
     const del = (id: number) => {
         ElMessageBox.confirm('你将永久取消该推荐，是否持续？', '取消提示', {
             confirmButtonText: '确认',
@@ -148,6 +172,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         setNavigationItem,
         isRecommend,
         checkIsRecommend,
+        updateStatus,
     };
 });
 

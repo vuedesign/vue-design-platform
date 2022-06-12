@@ -4,9 +4,12 @@
             <vd-filter>
                 <template #default="{ input, select, button }">
                     <el-input
-                        v-model="filter.search"
                         placeholder="请输入用户名或电话"
+                        clearable
                         :style="input"
+                        v-model="filter.search"
+                        @keyup.enter="handleSearch"
+                        @clear="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>
@@ -15,10 +18,10 @@
                         </template>
                     </el-input>
                     <el-select
-                        v-model="filter.rule"
-                        placeholder="Select"
-                        :style="select"
                         clearable
+                        :style="select"
+                        v-model="filter.rule"
+                        @change="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>
@@ -35,10 +38,10 @@
                         />
                     </el-select>
                     <el-select
-                        v-model="filter.status"
-                        placeholder="Select"
                         :style="select"
                         clearable
+                        v-model="filter.status"
+                        @change="handleSearch"
                     >
                         <template #prefix>
                             <el-icon>
