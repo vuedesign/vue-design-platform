@@ -31,10 +31,14 @@ export class NavigationService extends BaseService {
     return this.findListAndPage(query);
   }
 
-  findOne(id: number) {
+  findOneById(id: number) {
     return this.navigationRepository.findOne({
       where: { id },
     });
+  }
+
+  findOne(query: any) {
+    return this.navigationRepository.findOne(query);
   }
 
   update(id: number, updateSite: UpdateNavigationDto) {

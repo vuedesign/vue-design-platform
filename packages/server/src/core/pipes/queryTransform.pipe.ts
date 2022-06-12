@@ -3,7 +3,7 @@ import { isObject, isNumberString } from 'class-validator';
 
 @Injectable()
 export class QueryTransformPipe implements PipeTransform {
-  constructor(private exclude: Array<string>) {}
+  constructor(private exclude: Array<string> = []) {}
   transform(value: any, metadata: ArgumentMetadata) {
     if (isObject(value)) {
       let temp = {};
