@@ -83,6 +83,9 @@ export default defineStore(HOME_STORE_KEY, () => {
     });
     const findCount = async () => {
         const count = await findCountData();
+        if (!count) {
+            return;
+        }
         console.log('findUserCount:', count);
         homeCountList.forEach((item) => {
             item.number = count[item.key];
