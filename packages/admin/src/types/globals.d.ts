@@ -6,9 +6,9 @@ export interface UpdateFieldParmas {
 }
 
 export interface ListFilter {
-    page: number;
-    size: number;
-    status: number | string;
+    page?: number;
+    size?: number;
+    status?: number | string;
 }
 
 export interface BaseItem {
