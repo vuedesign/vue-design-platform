@@ -59,6 +59,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         rule: RULE.ALL,
         title: '',
         siteId: '',
+        order: 'order DESC',
     });
     const total = ref(0);
     const isRecommend = ref(false);

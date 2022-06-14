@@ -14,6 +14,7 @@ import { useNavigationStore } from '../navigation/useNavigationStore';
 import { BaseItem, UpdateFieldParmas, ListFilter } from '@/types/globals';
 
 export interface SiteItem extends BaseItem {
+    id: number;
     authorId: number;
     codeUrl: string;
     collections: number;
@@ -31,9 +32,9 @@ export interface SiteItem extends BaseItem {
 }
 export type SiteList = Array<SiteItem>;
 export interface SiteListFilter extends ListFilter {
-    order: string;
-    type: string | number;
-    title: string;
+    order?: string;
+    type?: string | number;
+    title?: string;
 }
 
 export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
@@ -75,7 +76,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
      * 站点列表
      * @param query
      */
-    const find = async (query?: SiteListFilter) => {
+    const find = async (query?: any) => {
         Object.assign(filter, query);
         const res = await findData(filter);
         list.value = res.list;

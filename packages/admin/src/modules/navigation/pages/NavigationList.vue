@@ -80,7 +80,7 @@
                     :height="height"
                     :header-cell-style="headerCellStyle"
                 >
-                    <el-table-column prop="id" label="ID" width="48" />
+                    <el-table-column prop="siteId" label="站点ID" width="80" />
                     <el-table-column label="Icon" width="64">
                         <template #default="scope">
                             <el-avatar
@@ -91,7 +91,7 @@
                             />
                         </template>
                     </el-table-column>
-                    <el-table-column prop="siteId" label="站点ID" width="80" />
+                    <el-table-column prop="order" label="排序" width="64" />
                     <el-table-column
                         prop="title"
                         label="站点名称"
@@ -180,13 +180,14 @@ import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
 import { useNavigationStore } from '../useNavigationStore';
+import { useSiteStore } from '../../site/useSiteStore';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
 
 const navigationStore = useNavigationStore();
 const { filter, list, isDrawerUpdateVisible, isDialogAddVisible } =
     storeToRefs(navigationStore);
-
+const siteStore = useSiteStore();
 navigationStore.find();
 
 const handleSearch = () => {
@@ -210,8 +211,9 @@ const handleDel = (id: number) => {
     navigationStore.del(id);
 };
 const handleCreate = () => {
-    // navigationStore.resetDetail();
-    isDialogAddVisible.value = true;
+    siteStore.find({ size: 999 }).then((res) => {
+        isDialogAddVisible.value = true;
+    });
 };
 </script>
 

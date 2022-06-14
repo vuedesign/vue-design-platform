@@ -1,7 +1,24 @@
 <template>
     <el-dialog v-model="isDialogAddVisible" :title="title" :width="800">
+        <template #header>
+            <h4 style="display: inline-block">{{ title }}</h4>
+            <el-input
+                placeholder="请输入标题"
+                style="width: 200px"
+                clearable
+                v-model="filter.title"
+                @keyup.enter="handleSearch"
+                @clear="handleSearch"
+            >
+                <template #prefix>
+                    <el-icon>
+                        <iconpark-icon name="search"></iconpark-icon>
+                    </el-icon>
+                </template>
+            </el-input>
+        </template>
         <el-table
-            :data="siteList"
+            :data="siteListRef"
             stripe
             style="width: 100%"
             :height="400"
@@ -107,63 +124,81 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { Ref } from 'vue';
+import { reactive } from 'vue';
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import { useNavigationStore } from '../useNavigationStore';
+import { useNavigationStore, NavigationItem } from '../useNavigationStore';
 import { useSiteStore, SiteItem } from '../../site/useSiteStore';
 import { typeMap } from '../../site/constants';
 
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
-const { isDialogAddVisible, list } = storeToRefs(navigationStore);
-const { list: siteList } = storeToRefs(siteStore);
+const { isDialogAddVisible, list: navigationListRef } =
+    storeToRefs(navigationStore);
+const { list: siteListRef } = storeToRefs(siteStore);
+const isMounted = ref(false);
+const navigationMultipleTableRef = ref(null);
 
-siteStore.find({ size: 999 });
+const filter = reactive({
+    title: '',
+});
+
+// watch(
+//     () => isDialogAddVisible,
+//     (visible) => {
+//         debugger;
+//         console.log('visible', visible);
+//     },
+// );
 
 const title = computed(() => {
     return '推荐导航';
 });
 
-const row: Ref<SiteItem[]> = ref([]);
-watch([list, siteList], ([navList, siteList]) => {
-    if (navList.length > 0 && siteList.length > 0) {
-        navList.forEach((item) => {
-            console.log('item', item);
-            const select = siteList.find((i) => i.id === item.siteId);
+watchEffect(() => {
+    const siteList: SiteItem[] = siteListRef.value;
+    const navigationList: NavigationItem[] = navigationListRef.value;
+    if (
+        [
+            navigationList,
+            navigationList.length,
+            siteList,
+            siteList.length,
+            isMounted.value,
+            navigationMultipleTableRef.value,
+        ].every((item) => !!item)
+    ) {
+        siteList.forEach((item) => {
+            const select = navigationList.find((i) => i.siteId === item.id);
             if (select) {
-                console.log('select', select);
-                row.value.push(select);
+                navigationMultipleTableRef.value.toggleRowSelection(
+                    item,
+                    undefined,
+                );
             }
         });
     }
-    console.log('===', row);
 });
 
-console.log('row', row.value);
-const navigationMultipleTableRef = ref(null);
 onMounted(() => {
-    navigationMultipleTableRef.value &&
-        navigationMultipleTableRef.value.toggleRowSelection(
-            row.value,
-            undefined,
-        );
+    isMounted.value = true;
 });
 
 const loading = ref(false);
 
 const handleSelectionChange = (val: any) => {
-    console.log('val', val);
     console.log(
         'navigationMultipleTableRef',
-        navigationMultipleTableRef.value,
         navigationMultipleTableRef.value.getSelectionRows(),
     );
 };
 
+const handleSearch = () => {
+    console.log('handleSearch');
+};
+
 const selectable = (row, index) => {
-    // console.log('row, index', row, index);
     return true;
 };
 
