@@ -14,7 +14,7 @@ import { useNavigationStore } from '../navigation/useNavigationStore';
 import { BaseItem, UpdateFieldParmas, ListFilter } from '@/types/globals';
 
 export interface SiteItem extends BaseItem {
-    id: number;
+    id?: number;
     authorId: number;
     codeUrl: string;
     collections: number;
@@ -30,6 +30,7 @@ export interface SiteItem extends BaseItem {
     type: string;
     views: number;
 }
+
 export type SiteList = Array<SiteItem>;
 export interface SiteListFilter extends ListFilter {
     order?: string;
@@ -60,7 +61,6 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
         createdAt: undefined,
         updatedAt: undefined,
     });
-
     const list: Ref<SiteItem[]> = ref([]);
     const filter: SiteListFilter = reactive({
         page: 1,

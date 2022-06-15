@@ -1,5 +1,10 @@
 <template>
-    <el-dialog v-model="isDialogAddVisible" :title="title" :width="800">
+    <el-dialog
+        v-model="isDialogAddVisible"
+        :title="title"
+        :width="800"
+        @close="hanldeClose"
+    >
         <template #header>
             <h4 style="display: inline-block">{{ title }}</h4>
             <el-input
@@ -134,52 +139,86 @@ import { typeMap } from '../../site/constants';
 
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
-const { isDialogAddVisible, list: navigationListRef } =
-    storeToRefs(navigationStore);
+const { isDialogAddVisible } = storeToRefs(navigationStore);
 const { list: siteListRef } = storeToRefs(siteStore);
 const isMounted = ref(false);
+const isInit = ref(true);
+const isUpdate = ref(true);
 const navigationMultipleTableRef = ref(null);
 
 const filter = reactive({
     title: '',
 });
 
-// watch(
-//     () => isDialogAddVisible,
-//     (visible) => {
-//         debugger;
-//         console.log('visible', visible);
-//     },
-// );
+function defaultSelect(
+    navigationList: NavigationItem[],
+    siteList: SiteItem[],
+    navigationMultipleTable: any,
+) {
+    siteList.forEach((item) => {
+        const select = navigationList.find((i) => i.siteId === item.id);
+        if (select) {
+            multipleSelection.value.push(item);
+            navigationMultipleTable.toggleRowSelection(item, undefined);
+        }
+    });
+}
+
+watch(isDialogAddVisible, (visible) => {
+    if (
+        [
+            visible,
+            navigationStore.list,
+            siteStore.list,
+            navigationMultipleTableRef.value,
+            isUpdate.value,
+        ].every((item) => !!item)
+    ) {
+        defaultSelect(
+            navigationStore.list,
+            siteStore.list,
+            navigationMultipleTableRef.value,
+        );
+        isUpdate.value = false;
+    }
+});
 
 const title = computed(() => {
     return '推荐导航';
 });
 
+const multipleSelection = ref<SiteItem[]>([]);
 watchEffect(() => {
-    const siteList: SiteItem[] = siteListRef.value;
-    const navigationList: NavigationItem[] = navigationListRef.value;
+    console.log(
+        '--------',
+        siteStore.list,
+        navigationStore.list,
+        isMounted.value,
+        navigationMultipleTableRef.value,
+        isInit.value,
+    );
     if (
         [
-            navigationList,
-            navigationList.length,
-            siteList,
-            siteList.length,
+            siteStore.list,
+            navigationStore.list,
             isMounted.value,
             navigationMultipleTableRef.value,
+            isInit.value,
         ].every((item) => !!item)
     ) {
-        siteList.forEach((item) => {
-            const select = navigationList.find((i) => i.siteId === item.id);
-            if (select) {
-                navigationMultipleTableRef.value.toggleRowSelection(
-                    item,
-                    undefined,
-                );
-            }
-        });
+        defaultSelect(
+            navigationStore.list,
+            siteStore.list,
+
+            navigationMultipleTableRef.value,
+        );
+        isInit.value = false;
     }
 });
+
+const hanldeClose = () => {
+    isUpdate.value = true;
+};
 
 onMounted(() => {
     isMounted.value = true;
@@ -188,10 +227,16 @@ onMounted(() => {
 const loading = ref(false);
 
 const handleSelectionChange = (val: any) => {
-    console.log(
-        'navigationMultipleTableRef',
-        navigationMultipleTableRef.value.getSelectionRows(),
-    );
+    console.log('val', val);
+    multipleSelection.value = val;
+    // console.log('val', val);
+    // val.forEach((item) => {
+    //     navigationMultipleTableRef.value.toggleRowSelection(item, undefined);
+    // });
+    // console.log(
+    //     'navigationMultipleTableRef',
+    //     navigationMultipleTableRef.value.getSelectionRows(),
+    // );
 };
 
 const handleSearch = () => {
