@@ -70,181 +70,165 @@
             </vd-filter>
         </template>
         <template #default="{ height }">
-            <div class="page-site-container">
-                <el-table
-                    :data="list"
-                    stripe
-                    style="width: 100%"
-                    :key="height"
-                    :height="height"
-                    :header-cell-style="headerCellStyle"
+            <el-table
+                :data="list"
+                stripe
+                style="width: 100%"
+                :key="height"
+                :height="height"
+                :header-cell-style="headerCellStyle"
+            >
+                <el-table-column prop="id" label="ID" width="48" />
+                <el-table-column label="封面" width="100">
+                    <template #default="{ row }">
+                        <el-image
+                            :src="row.thumbUrl"
+                            :style="{
+                                'width': '80px',
+                                'height': '40px',
+                                'display': 'block',
+                                'border-radius': '4px',
+                            }"
+                        />
+                    </template>
+                </el-table-column>
+                <el-table-column label="Icon" width="64">
+                    <template #default="{ row }">
+                        <el-avatar
+                            shape="square"
+                            :size="40"
+                            :src="row.iconUrl"
+                            style="display: block"
+                        />
+                    </template>
+                </el-table-column>
+                <el-table-column label="标题" width="300">
+                    <template #default="{ row }">
+                        <a :href="row.siteUrl" target="_blank">
+                            {{ row.title }}
+                        </a>
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="views" label="浏览量" width="70" />
+                <el-table-column prop="collections" label="收藏量" width="70" />
+                <el-table-column prop="top" label="顶" width="70" />
+                <el-table-column prop="down" label="踩" width="70" />
+                <el-table-column label="状态" width="70">
+                    <template #default="{ row }">
+                        <el-tag v-if="row.status === STATUS.AVAILABLE">
+                            {{ statusMap.get(row.status || STATUS.AVAILABLE) }}
+                        </el-tag>
+                        <el-tag v-else type="info">
+                            {{ statusMap.get(row.status || STATUS.DISABLE) }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="类型" width="70">
+                    <template #default="{ row }">
+                        {{ typeMap.get(row.type) }}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="createdAt"
+                    label="创建时间"
+                    width="160"
+                    :formatter="tableDateFormatter('createdAt')"
+                />
+                <el-table-column
+                    prop="updatedAt"
+                    label="更改时间"
+                    width="160"
+                    :formatter="tableDateFormatter('updatedAt')"
+                />
+
+                <el-table-column
+                    fixed="right"
+                    label="审核"
+                    align="center"
+                    width="64"
                 >
-                    <el-table-column prop="id" label="ID" width="48" />
-                    <el-table-column label="封面" width="100">
-                        <template #default="{ row }">
-                            <el-image
-                                :src="row.thumbUrl"
-                                :style="{
-                                    'width': '80px',
-                                    'height': '40px',
-                                    'display': 'block',
-                                    'border-radius': '4px',
-                                }"
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="Icon" width="64">
-                        <template #default="{ row }">
-                            <el-avatar
-                                shape="square"
-                                :size="40"
-                                :src="row.iconUrl"
-                                style="display: block"
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="标题" width="300">
-                        <template #default="{ row }">
-                            <a :href="row.siteUrl" target="_blank">
-                                {{ row.title }}
-                            </a>
-                        </template>
-                    </el-table-column>
+                    <template #default="{ row }">
+                        <el-switch
+                            v-model="row.status"
+                            :active-value="STATUS.AVAILABLE"
+                            :inactive-value="STATUS.DISABLE"
+                            @change="(status) => handleStatus(status, row.id)"
+                        />
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="84"
+                    align="center"
+                >
+                    <template #default="{ row }">
+                        <el-button
+                            type="primary"
+                            text
+                            @click="handleUpdate(row.id)"
+                        >
+                            编辑
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="更多"
+                    width="64"
+                    align="center"
+                >
+                    <template #default="{ row }">
+                        <el-dropdown
+                            trigger="click"
+                            @command="
+                                (command) => handleMoreCommand(command, row.id)
+                            "
+                        >
+                            <span class="btn-more">
+                                <iconpark-icon
+                                    name="more-one"
+                                    size="16"
+                                ></iconpark-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item command="recommend">
+                                        <iconpark-icon
+                                            name="trophy"
+                                        ></iconpark-icon>
+                                        <span class="btn-recommend-text">
+                                            推荐
+                                        </span>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item command="delete">
+                                        <iconpark-icon
+                                            name="delete"
+                                        ></iconpark-icon>
+                                        <span class="btn-delete-text">
+                                            删除
+                                        </span>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </template>
+                </el-table-column>
+            </el-table>
 
-                    <el-table-column prop="views" label="浏览量" width="70" />
-                    <el-table-column
-                        prop="collections"
-                        label="收藏量"
-                        width="70"
-                    />
-                    <el-table-column prop="top" label="顶" width="70" />
-                    <el-table-column prop="down" label="踩" width="70" />
-                    <el-table-column label="状态" width="70">
-                        <template #default="{ row }">
-                            <el-tag v-if="row.status === STATUS.AVAILABLE">
-                                {{
-                                    statusMap.get(
-                                        row.status || STATUS.AVAILABLE,
-                                    )
-                                }}
-                            </el-tag>
-                            <el-tag v-else type="info">
-                                {{
-                                    statusMap.get(row.status || STATUS.DISABLE)
-                                }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="类型" width="70">
-                        <template #default="{ row }">
-                            {{ typeMap.get(row.type) }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="createdAt"
-                        label="创建时间"
-                        width="160"
-                        :formatter="tableDateFormatter('createdAt')"
-                    />
-                    <el-table-column
-                        prop="updatedAt"
-                        label="更改时间"
-                        width="160"
-                        :formatter="tableDateFormatter('updatedAt')"
-                    />
-
-                    <el-table-column
-                        fixed="right"
-                        label="审核"
-                        align="center"
-                        width="64"
-                    >
-                        <template #default="{ row }">
-                            <el-switch
-                                v-model="row.status"
-                                :active-value="STATUS.AVAILABLE"
-                                :inactive-value="STATUS.DISABLE"
-                                @change="
-                                    (status) => handleStatus(status, row.id)
-                                "
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="84"
-                        align="center"
-                    >
-                        <template #default="{ row }">
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleUpdate(row.id)"
-                            >
-                                编辑
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        fixed="right"
-                        label="更多"
-                        width="64"
-                        align="center"
-                    >
-                        <template #default="{ row }">
-                            <el-dropdown
-                                trigger="click"
-                                @command="
-                                    (command) =>
-                                        handleMoreCommand(command, row.id)
-                                "
-                            >
-                                <span class="btn-more">
-                                    <iconpark-icon
-                                        name="more-one"
-                                        size="16"
-                                    ></iconpark-icon>
-                                </span>
-                                <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item command="recommend">
-                                            <iconpark-icon
-                                                name="trophy"
-                                            ></iconpark-icon>
-                                            <span class="btn-recommend-text">
-                                                推荐
-                                            </span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item command="delete">
-                                            <iconpark-icon
-                                                name="delete"
-                                            ></iconpark-icon>
-                                            <span class="btn-delete-text">
-                                                删除
-                                            </span>
-                                        </el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
             <drawer-site-update />
             <drawer-site-recommend />
         </template>
-        <template #footer>
-            <div class="page-site-pagination">
-                <el-pagination
-                    small
-                    background
-                    layout="prev, pager, next"
-                    :total="total"
-                    v-model:page-size="filter.size"
-                    v-model:current-page="filter.page"
-                />
-            </div>
+        <template #pagination>
+            <el-pagination
+                small
+                background
+                layout="prev, pager, next"
+                :total="total"
+                v-model:page-size="filter.size"
+                v-model:current-page="filter.page"
+            />
         </template>
     </vd-card>
 </template>
@@ -298,27 +282,13 @@ const handleMoreCommand = (command: string, id: number) => {
 </script>
 
 <style scoped lang="scss">
-.page-site-container {
-    flex: 1;
-    overflow: hidden;
-    overflow-y: auto;
-    margin-bottom: -1px;
-    .btn-more {
-        height: 32px;
-        display: flex;
-        cursor: pointer;
-    }
-}
-
-.btn-switch {
-    margin-right: 12px;
-}
-
-.page-site-pagination {
+.btn-more {
     height: 32px;
     display: flex;
-    justify-content: flex-end;
-    padding: 8px 24px;
+    cursor: pointer;
+}
+.btn-switch {
+    margin-right: 12px;
 }
 </style>
 <style lang="scss">

@@ -167,6 +167,16 @@
             <drawer-navigation-update />
             <dialog-navigation-add />
         </template>
+        <template v-if="total > filter.size" #pagination>
+            <el-pagination
+                small
+                background
+                layout="prev, pager, next"
+                :total="total"
+                v-model:page-size="filter.size"
+                v-model:current-page="filter.page"
+            />
+        </template>
     </vd-card>
 </template>
 <script lang="ts">
@@ -185,7 +195,7 @@ import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
 
 const navigationStore = useNavigationStore();
-const { filter, list, isDrawerUpdateVisible, isDialogAddVisible } =
+const { filter, list, total, isDrawerUpdateVisible, isDialogAddVisible } =
     storeToRefs(navigationStore);
 const siteStore = useSiteStore();
 navigationStore.find();

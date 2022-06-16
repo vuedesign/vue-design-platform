@@ -81,111 +81,101 @@
             </vd-filter>
         </template>
         <template #default="{ height }">
-            <div class="page-user-container">
-                <el-table
-                    :data="list"
-                    stripe
-                    style="width: 100%"
-                    :key="height"
-                    :height="height"
-                    :header-cell-style="headerCellStyle"
-                >
-                    <el-table-column prop="id" label="ID" width="48" />
-                    <el-table-column label="头像" width="64">
-                        <template #default="scope">
-                            <el-avatar
-                                shape="square"
-                                :size="40"
-                                :src="scope.row.avatar"
-                                style="display: block"
+            <el-table
+                :data="list"
+                stripe
+                style="width: 100%"
+                :key="height"
+                :height="height"
+                :header-cell-style="headerCellStyle"
+            >
+                <el-table-column prop="id" label="ID" width="48" />
+                <el-table-column label="头像" width="64">
+                    <template #default="scope">
+                        <el-avatar
+                            shape="square"
+                            :size="40"
+                            :src="scope.row.avatar"
+                            style="display: block"
+                        />
+                    </template>
+                </el-table-column>
+                <el-table-column prop="email" label="邮箱" width="200" />
+                <el-table-column prop="phone" label="电话" width="120" />
+                <el-table-column prop="nickname" label="昵称" width="100" />
+                <el-table-column prop="username" label="用户名" width="100" />
+                <el-table-column label="状态" width="80">
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.status === STATUS.AVAILABLE">
+                            {{
+                                statusMap.get(
+                                    scope.row.status || STATUS.AVAILABLE,
+                                )
+                            }}
+                        </el-tag>
+                        <el-tag v-else type="info">
+                            {{
+                                statusMap.get(
+                                    scope.row.status || STATUS.DISABLE,
+                                )
+                            }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="角色" width="100">
+                    <template #default="scope">
+                        {{ ruleMap.get(scope.row.rule) }}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="createdAt"
+                    label="创建时间"
+                    width="160"
+                    :formatter="tableDateFormatter('createdAt')"
+                />
+                <el-table-column
+                    prop="updatedAt"
+                    label="更改时间"
+                    width="160"
+                    :formatter="tableDateFormatter('updatedAt')"
+                />
+                <el-table-column fixed="right" label="操作" width="210">
+                    <template #default="{ row }">
+                        <span class="btn-switch">
+                            <el-switch
+                                v-model="row.status"
+                                :active-value="STATUS.AVAILABLE"
+                                :inactive-value="STATUS.DISABLE"
                             />
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="email" label="邮箱" width="200" />
-                    <el-table-column prop="phone" label="电话" width="120" />
-                    <el-table-column prop="nickname" label="昵称" width="100" />
-                    <el-table-column
-                        prop="username"
-                        label="用户名"
-                        width="100"
-                    />
-                    <el-table-column label="状态" width="80">
-                        <template #default="scope">
-                            <el-tag
-                                v-if="scope.row.status === STATUS.AVAILABLE"
-                            >
-                                {{
-                                    statusMap.get(
-                                        scope.row.status || STATUS.AVAILABLE,
-                                    )
-                                }}
-                            </el-tag>
-                            <el-tag v-else type="info">
-                                {{
-                                    statusMap.get(
-                                        scope.row.status || STATUS.DISABLE,
-                                    )
-                                }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="角色" width="100">
-                        <template #default="scope">
-                            {{ ruleMap.get(scope.row.rule) }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="createdAt"
-                        label="创建时间"
-                        width="160"
-                        :formatter="tableDateFormatter('createdAt')"
-                    />
-                    <el-table-column
-                        prop="updatedAt"
-                        label="更改时间"
-                        width="160"
-                        :formatter="tableDateFormatter('updatedAt')"
-                    />
-                    <el-table-column fixed="right" label="操作" width="210">
-                        <template #default="{ row }">
-                            <span class="btn-switch">
-                                <el-switch
-                                    v-model="row.status"
-                                    :active-value="STATUS.AVAILABLE"
-                                    :inactive-value="STATUS.DISABLE"
-                                />
-                            </span>
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleUpdate(row.id)"
-                            >
-                                编辑
-                            </el-button>
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleDel(row.id)"
-                            >
-                                删除
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+                        </span>
+                        <el-button
+                            type="primary"
+                            text
+                            @click="handleUpdate(row.id)"
+                        >
+                            编辑
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            text
+                            @click="handleDel(row.id)"
+                        >
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
             <drawer-user-update />
         </template>
-        <template #footer>
-            <div class="page-user-pagination">
-                <el-pagination
-                    small
-                    background
-                    layout="prev, pager, next"
-                    :total="total"
-                    v-model:page-size="filter.size"
-                    v-model:current-page="filter.page"
-                />
-            </div>
+        <template #pagination>
+            <el-pagination
+                small
+                background
+                layout="prev, pager, next"
+                :total="total"
+                v-model:page-size="filter.size"
+                v-model:current-page="filter.page"
+            />
         </template>
     </vd-card>
 </template>
@@ -225,22 +215,7 @@ const handleCreate = () => {
 </script>
 
 <style scoped lang="scss">
-.page-user-container {
-    // padding: 16px 24px 0;
-    flex: 1;
-    overflow: hidden;
-    overflow-y: auto;
-    margin-bottom: -1px;
-}
-
 .btn-switch {
     margin-right: 12px;
-}
-
-.page-user-pagination {
-    height: 32px;
-    display: flex;
-    justify-content: flex-end;
-    padding: 8px 24px;
 }
 </style>
