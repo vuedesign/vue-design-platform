@@ -1,6 +1,7 @@
 <template>
     <vd-card class="page-navigation">
         <template #header>
+            {{ isDialogAddVisible }}
             <vd-filter>
                 <template #default="{ input, select, button }">
                     <el-input
@@ -164,8 +165,14 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <drawer-navigation-update />
-            <dialog-navigation-add />
+            <!-- 编辑推荐站点信息  -->
+            <vd-popup v-model="isDrawerUpdateVisible">
+                <drawer-navigation-update />
+            </vd-popup>
+            <!-- 新增推荐站点 -->
+            <vd-popup v-model="isDialogAddVisible">
+                <dialog-navigation-add />
+            </vd-popup>
         </template>
         <template v-if="total > filter.size" #pagination>
             <el-pagination
@@ -191,6 +198,7 @@ import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
 import { useNavigationStore } from '../useNavigationStore';
 import { useSiteStore } from '../../site/useSiteStore';
+import VdPopup from '@/components/VdPopup';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
 import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
 

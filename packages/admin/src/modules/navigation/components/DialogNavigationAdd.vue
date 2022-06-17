@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        v-model="isDialogAddVisible"
+        v-model="isVisible"
         :title="title"
         :width="800"
         @close="hanldeClose"
@@ -101,25 +101,23 @@
             />
         </el-table>
         <template #footer>
-            <div class="dialog-footer">
-                <el-button class="vd-btn" @click="handleCancelClick">
-                    <el-icon>
-                        <iconpark-icon name="close-one"></iconpark-icon>
-                    </el-icon>
-                    <span>取消</span>
-                </el-button>
-                <el-button
-                    class="vd-btn"
-                    type="primary"
-                    @click="handleUpdateClick"
-                    :loading="loading"
-                >
-                    <el-icon>
-                        <iconpark-icon name="send"></iconpark-icon>
-                    </el-icon>
-                    <span>提交</span>
-                </el-button>
-            </div>
+            <el-button class="vd-btn" @click="handleCancelClick">
+                <el-icon>
+                    <iconpark-icon name="close-one"></iconpark-icon>
+                </el-icon>
+                <span>取消</span>
+            </el-button>
+            <el-button
+                class="vd-btn"
+                type="primary"
+                @click="handleUpdateClick"
+                :loading="loading"
+            >
+                <el-icon>
+                    <iconpark-icon name="send"></iconpark-icon>
+                </el-icon>
+                <span>提交</span>
+            </el-button>
         </template>
     </el-dialog>
 </template>
@@ -129,7 +127,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { WritableComputedRef, reactive } from 'vue';
 import { STATUS, statusMap } from '@/configs/constants';
 // import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
@@ -138,6 +136,21 @@ import { useNavigationStore, NavigationItem } from '../useNavigationStore';
 import { useSiteStore, SiteItem } from '../../site/useSiteStore';
 import { typeMap } from '../../site/constants';
 
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
 const { isDialogAddVisible } = storeToRefs(navigationStore);
@@ -149,6 +162,10 @@ const navigationMultipleTableRef = ref(null);
 
 const filter = reactive({
     title: '',
+});
+
+onMounted(() => {
+    console.warn('==d=d=d=d=d ===onMounted');
 });
 
 function defaultSelect(

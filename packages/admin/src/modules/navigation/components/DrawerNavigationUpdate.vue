@@ -115,6 +115,10 @@ const handleCancelClick = () => {
         isDrawerUpdateVisible: false,
     });
 };
+
+onMounted(() => {
+    console.warn('DrawerNavigationUpdate: onMounted');
+});
 </script>
 
 <style scoped lang="scss">
