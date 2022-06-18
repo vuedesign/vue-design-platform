@@ -12,7 +12,9 @@ export default defineComponent({
             if (!slots.default) {
                 return null;
             }
-            isVisible.value = true;
+            if (props.modelValue) {
+                isVisible.value = props.modelValue;
+            }
             if (isVisible.value) {
                 return h(slots.default()[0], {
                     'modelValue': props.modelValue,
@@ -20,7 +22,8 @@ export default defineComponent({
                         emit('update:modelValue', value);
                     },
                     'onClosed': (value: boolean) => {
-                        isVisible.value = value;
+                        isVisible.value = false;
+                        emit('update:modelValue', value);
                     },
                 });
             }

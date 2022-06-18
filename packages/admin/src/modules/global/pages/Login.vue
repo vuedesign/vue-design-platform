@@ -12,9 +12,7 @@
                             >
                                 <template #prefix>
                                     <el-icon>
-                                        <iconpark-icon
-                                            name="user"
-                                        ></iconpark-icon>
+                                        <user />
                                     </el-icon>
                                 </template>
                             </el-input>
@@ -27,9 +25,7 @@
                             >
                                 <template #prefix>
                                     <el-icon>
-                                        <iconpark-icon
-                                            name="lock"
-                                        ></iconpark-icon>
+                                        <Lock />
                                     </el-icon>
                                 </template>
                             </el-input>
@@ -69,6 +65,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import { User, Lock } from '@icon-park/vue-next';
 import { useGlobalStore } from '../useGlobalStore';
 
 const globalStore = useGlobalStore();

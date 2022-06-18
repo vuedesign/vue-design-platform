@@ -3,42 +3,34 @@
         v-model="isVisible"
         :title="title"
         :width="800"
-        @close="hanldeClose"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
         @closed="emit('closed', false)"
     >
-        <!-- <template #header>
-            <h4 style="display: inline-block">{{ title }}</h4>
-            <el-input
-                placeholder="请输入标题"
-                style="width: 200px"
-                clearable
-                v-model="filter.title"
-                @keyup.enter="handleSearch"
-                @clear="handleSearch"
-            >
-                <template #prefix>
-                    <el-icon>
-                        <search />
-                    </el-icon>
-                </template>
-            </el-input>
-        </template> -->
         <div class="table-filter">
-            <el-input
-                placeholder="请输入标题"
-                clearable
-                v-model="filter.title"
-                @keyup.enter="handleSearch"
-                @clear="handleSearch"
-            >
-                <template #prefix>
+            <div class="table-filter-inner">
+                <el-input
+                    placeholder="请输入标题"
+                    clearable
+                    v-model="filter.title"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <search />
+                        </el-icon>
+                    </template>
+                </el-input>
+            </div>
+            <div class="table-filter-btn">
+                <el-button @click="handleSearch">
                     <el-icon>
-                        <search />
+                        <icon-filter />
                     </el-icon>
-                </template>
-            </el-input>
+                    <span>搜索</span>
+                </el-button>
+            </div>
         </div>
         <el-table
             :data="siteListRef"
@@ -137,7 +129,12 @@ import { headerCellStyle } from '@/configs/styles';
 import { useNavigationStore, NavigationItem } from '../useNavigationStore';
 import { useSiteStore, SiteItem } from '@/modules/site/useSiteStore';
 import { typeMap } from '@/modules/site/constants';
-import { Send, CloseOne, Search } from '@icon-park/vue-next';
+import {
+    Send,
+    CloseOne,
+    Search,
+    Filter as IconFilter,
+} from '@icon-park/vue-next';
 
 const props = defineProps({
     modelValue: {
@@ -156,16 +153,14 @@ const isVisible: WritableComputedRef<boolean> = computed({
 });
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
-const { isDialogAddVisible, list: navigationListRef } =
-    storeToRefs(navigationStore);
+const { list: navigationListRef } = storeToRefs(navigationStore);
 const { list: siteListRef } = storeToRefs(siteStore);
-const isMounted = ref(false);
 const isInit = ref(true);
-const isUpdate = ref(true);
-const navigationMultipleTableRef = ref(null);
+const navigationMultipleTableRef = ref();
 
 const filter = reactive({
     title: '',
+    size: 999,
 });
 
 onMounted(() => {
@@ -186,25 +181,6 @@ function defaultSelect(
     });
 }
 
-watch(isDialogAddVisible, (visible) => {
-    if (
-        [
-            visible,
-            navigationListRef.value,
-            siteListRef.value,
-            navigationMultipleTableRef.value,
-            isUpdate.value,
-        ].every((item) => !!item)
-    ) {
-        defaultSelect(
-            navigationListRef.value,
-            siteListRef.value,
-            navigationMultipleTableRef.value,
-        );
-        isUpdate.value = false;
-    }
-});
-
 const title = computed(() => {
     return '推荐导航';
 });
@@ -215,7 +191,7 @@ watchEffect(() => {
         [
             navigationListRef.value,
             siteListRef.value,
-            isMounted.value,
+            // isMounted.value,
             navigationMultipleTableRef.value,
             isInit.value,
         ].every((item) => !!item)
@@ -229,14 +205,6 @@ watchEffect(() => {
     }
 });
 
-const hanldeClose = () => {
-    isUpdate.value = true;
-};
-
-onMounted(() => {
-    isMounted.value = true;
-});
-
 const loading = ref(false);
 
 const handleSelectionChange = (val: any) => {
@@ -246,6 +214,21 @@ const handleSelectionChange = (val: any) => {
 
 const handleSearch = () => {
     console.log('handleSearch');
+    siteStore.find(filter);
+    if (
+        [
+            multipleSelection.value,
+            multipleSelection.value.length,
+            navigationMultipleTableRef.value,
+        ].every((item) => !!item)
+    ) {
+        multipleSelection.value.forEach((item) => {
+            navigationMultipleTableRef.value.toggleRowSelection(
+                item,
+                undefined,
+            );
+        });
+    }
 };
 
 const selectable = (row, index) => {
@@ -271,5 +254,12 @@ const handleCancelClick = () => {
 }
 .table-filter {
     padding: 8px 24px;
+    display: flex;
+}
+.table-filter-inner {
+    flex: 1;
+}
+.table-filter-btn {
+    margin-left: 12px;
 }
 </style>
