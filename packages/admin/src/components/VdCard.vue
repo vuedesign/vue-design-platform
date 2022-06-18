@@ -85,7 +85,7 @@ onMounted(() => {
 .vd-card-pagination {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    background-color: #fafbfc;
+    // background-color: #fafbfc;
     padding: 12px 24px;
     display: flex;
     justify-content: flex-end;

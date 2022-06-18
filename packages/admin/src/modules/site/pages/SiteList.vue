@@ -2,71 +2,60 @@
     <vd-card>
         <template #header>
             <vd-filter>
-                <template #default="{ input, select, button }">
-                    <el-input
-                        placeholder="请输入标题"
-                        :style="input"
-                        clearable
-                        v-model="filter.title"
-                        @keyup.enter="handleSearch"
-                        @clear="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="search"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                    </el-input>
-
-                    <el-select
-                        clearable
-                        :style="select"
-                        v-model="filter.type"
-                        @change="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon
-                                    name="user-business"
-                                ></iconpark-icon>
-                            </el-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in typeMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-select
-                        clearable
-                        :style="select"
-                        v-model="filter.status"
-                        @change="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="broadcast"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in statusMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-button
-                        type="primary"
-                        @click="handleSearch"
-                        :style="button"
-                    >
+                <el-input
+                    placeholder="请输入标题"
+                    clearable
+                    style="width: 211px"
+                    v-model="filter.title"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="filter"></iconpark-icon>
+                            <search />
                         </el-icon>
-                        <span>搜索</span>
-                    </el-button>
-                </template>
+                    </template>
+                </el-input>
+                <el-select
+                    clearable
+                    v-model="filter.type"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <user-business />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in typeMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-select
+                    clearable
+                    v-model="filter.status"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <broadcast />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in statusMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-button type="primary" @click="handleSearch">
+                    <el-icon>
+                        <icon-filter />
+                    </el-icon>
+                    <span>搜索</span>
+                </el-button>
             </vd-filter>
         </template>
         <template #default="{ height }">
@@ -186,29 +175,22 @@
                                 (command) => handleMoreCommand(command, row.id)
                             "
                         >
-                            <span class="btn-more">
-                                <iconpark-icon
-                                    name="more-one"
-                                    size="16"
-                                ></iconpark-icon>
-                            </span>
+                            <el-icon :size="16">
+                                <more-one />
+                            </el-icon>
                             <template #dropdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item command="recommend">
-                                        <iconpark-icon
-                                            name="trophy"
-                                        ></iconpark-icon>
-                                        <span class="btn-recommend-text">
-                                            推荐
-                                        </span>
+                                        <el-space>
+                                            <el-icon><trophy /></el-icon>
+                                            <span>推荐</span>
+                                        </el-space>
                                     </el-dropdown-item>
                                     <el-dropdown-item command="delete">
-                                        <iconpark-icon
-                                            name="delete"
-                                        ></iconpark-icon>
-                                        <span class="btn-delete-text">
-                                            删除
-                                        </span>
+                                        <el-space>
+                                            <el-icon><delete /></el-icon>
+                                            <span>删除</span>
+                                        </el-space>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
@@ -216,9 +198,12 @@
                     </template>
                 </el-table-column>
             </el-table>
-
-            <drawer-site-update />
-            <drawer-site-recommend />
+            <vd-popup v-model="isDrawerUpdateVisible">
+                <drawer-site-update />
+            </vd-popup>
+            <vd-popup v-model="isDrawerRecommendVisible">
+                <drawer-site-recommend />
+            </vd-popup>
         </template>
         <template #pagination>
             <el-pagination
@@ -238,18 +223,29 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import {
+    Search,
+    UserBusiness,
+    Broadcast,
+    Filter as IconFilter,
+    Trophy,
+    Delete,
+    MoreOne,
+} from '@icon-park/vue-next';
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
-import VdFilter from '@/components/VdFilter.vue';
+import VdFilter from '@/components/VdFilter';
+import VdPopup from '@/components/VdPopup';
 import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
 import DrawerSiteUpdate from '../components/DrawerSiteUpdate.vue';
 import DrawerSiteRecommend from '../components/DrawerSiteRecommend.vue';
 
 const siteStore = useSiteStore();
-const { filter, total, list } = storeToRefs(siteStore);
+const { filter, total, list, isDrawerRecommendVisible, isDrawerUpdateVisible } =
+    storeToRefs(siteStore);
 
 siteStore.find(filter.value);
 
@@ -280,18 +276,7 @@ const handleMoreCommand = (command: string, id: number) => {
     // console.log('command', command);
 };
 </script>
-
-<style scoped lang="scss">
-.btn-more {
-    height: 32px;
-    display: flex;
-    cursor: pointer;
-}
-.btn-switch {
-    margin-right: 12px;
-}
-</style>
-<style lang="scss">
+<style lang="scss" scoped>
 .btn-recommend-text,
 .btn-delete-text {
     display: inline-block;

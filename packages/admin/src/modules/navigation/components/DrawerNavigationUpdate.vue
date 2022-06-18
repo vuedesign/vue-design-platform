@@ -1,6 +1,6 @@
 <template>
     <el-drawer
-        v-model="isDrawerUpdateVisible"
+        v-model="isVisible"
         :title="title"
         :with-header="true"
         custom-class="drawer-navigation-update"
@@ -87,12 +87,29 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import { WritableComputedRef } from 'vue';
 import { STATUS } from '@/configs/constants';
 import { useNavigationStore } from '../useNavigationStore';
 import VdCard from '@/components/VdCard.vue';
 
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
+
 const navigaitonStore = useNavigationStore();
-const { isDrawerUpdateVisible, detail } = storeToRefs(navigaitonStore);
+const { detail } = storeToRefs(navigaitonStore);
 
 const title = computed(() => {
     return '编辑用户信息';

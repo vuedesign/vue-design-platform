@@ -9,25 +9,28 @@
     >
         <dt @click="handleClick">
             <div class="title">
-                <iconpark-icon
-                    :name="
-                        Array.isArray(icon)
-                            ? isOpen
-                                ? icon[0]
-                                : icon[1]
-                            : icon
-                    "
-                    class="title-icon"
-                ></iconpark-icon>
+                <el-icon class="title-icon">
+                    <component
+                        :is="
+                            Array.isArray(icon)
+                                ? isOpen
+                                    ? icon[0]
+                                    : icon[1]
+                                : icon
+                        "
+                    />
+                </el-icon>
                 <span class="title-label">{{ label }}</span>
             </div>
             <div class="icon">
-                <iconpark-icon
-                    v-if="children && children.length"
-                    @click="handleToggle"
-                    :name="isOpen ? 'up' : 'down'"
-                ></iconpark-icon>
-                <iconpark-icon v-else name="right"></iconpark-icon>
+                <el-icon>
+                    <component
+                        v-if="children && children.length"
+                        @click="handleToggle"
+                        :is="isOpen ? 'up' : 'down'"
+                    />
+                    <component v-else :is="'right'"></component>
+                </el-icon>
             </div>
         </dt>
         <dd>
@@ -44,53 +47,101 @@
 </template>
 
 <script lang="ts">
-export default {
-    name: 'vd-menu-item',
-};
-</script>
-<script setup lang="ts">
-interface Props {
-    label: string;
-    value: string;
-    active?: boolean;
-    icon?: string | string[];
-    isOpen?: boolean;
-    children?: Props[];
-}
+import { MenuNode } from '@/configs/menuTree';
+import {
+    Up,
+    Down,
+    Right,
+    FolderOpen,
+    FolderClose,
+    BrowserChrome,
+    Navigation,
+    PictureOne,
+    User,
+    Broadcast,
+} from '@icon-park/vue-next';
 
-const props = withDefaults(defineProps<Props>(), {
-    label: '',
-    value: '',
-    active: false,
-    icon: '',
-    isOpen: false,
-    children: () => [],
+export default defineComponent({
+    name: 'vd-menu-item',
+    props: {
+        label: {
+            type: String,
+            default: '',
+        },
+        value: {
+            type: String,
+            default: '',
+        },
+        active: {
+            type: Boolean,
+            default: false,
+        },
+        icon: {
+            type: [Array, String],
+            default: () => undefined,
+        },
+        isOpen: {
+            type: Boolean,
+            default: false,
+        },
+        children: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    components: {
+        Up,
+        Down,
+        Right,
+        FolderOpen,
+        FolderClose,
+        BrowserChrome,
+        Navigation,
+        PictureOne,
+        User,
+        Broadcast,
+    },
+    emits: ['toggle', 'goto'],
+    setup(props, { emit }) {
+        const handleToggle = () => {
+            emit('toggle', props.value);
+        };
+
+        const handleClick = () => {
+            if (!props.children || !props.children.length) {
+                emit('goto', props);
+            }
+        };
+
+        const handlGoto = (props: MenuNode) => {
+            emit('goto', props);
+        };
+        return {
+            handleToggle,
+            handleClick,
+            handlGoto,
+        };
+    },
 });
 
-const emit = defineEmits(['toggle', 'goto']);
+// const props = withDefaults(defineProps<Props>(), {
+//     label: '',
+//     value: '',
+//     active: false,
+//     icon: undefined,
+//     isOpen: false,
+//     children: () => [],
+// });
 
-const handleToggle = () => {
-    emit('toggle', props.value);
-};
-
-const handleClick = () => {
-    if (!props.children || !props.children.length) {
-        emit('goto', props);
-    }
-};
-
-const handlGoto = (props: Props) => {
-    emit('goto', props);
-};
+// const emit = defineEmits(['toggle', 'goto']);
 </script>
 
 <style scoped lang="scss">
 .vd-menu-item {
     .title {
         flex: 1;
-        > .title-icon,
         > .title-label {
-            display: inline-flex;
+            display: inline-block;
             vertical-align: middle;
         }
     }
@@ -106,7 +157,7 @@ const handlGoto = (props: Props) => {
         display: flex;
         width: 12px;
         align-items: center;
-        > iconpark-icon {
+        > i {
             color: #444;
         }
     }
@@ -123,7 +174,7 @@ const handlGoto = (props: Props) => {
         cursor: pointer;
         .title-icon,
         .title-label,
-        .icon > iconpark-icon {
+        .icon > i {
             color: #3d7eff;
         }
     }
@@ -132,7 +183,7 @@ const handlGoto = (props: Props) => {
         border-radius: 4px;
         .title-icon,
         .title-label,
-        .icon > iconpark-icon {
+        .icon > i {
             color: #fff;
         }
     }
@@ -149,11 +200,11 @@ const handlGoto = (props: Props) => {
             }
         }
         .icon {
-            > iconpark-icon {
+            > i {
                 color: #666;
             }
             &:hover {
-                > iconpark-icon {
+                > i {
                     color: #3d7eff;
                     cursor: pointer;
                 }

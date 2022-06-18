@@ -1,6 +1,6 @@
 <template>
     <el-drawer
-        v-model="isDrawerUpdateVisible"
+        v-model="isVisible"
         :title="title"
         :with-header="true"
         custom-class="drawer-user-update"
@@ -98,12 +98,29 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import { WritableComputedRef } from 'vue';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import VdCard from '@/components/VdCard.vue';
 
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
+
 const userStore = useUserStore();
-const { isDrawerUpdateVisible, detail, drawerType } = storeToRefs(userStore);
+const { detail, drawerType } = storeToRefs(userStore);
 
 const title = computed(() => {
     if (drawerType.value === 'create') {

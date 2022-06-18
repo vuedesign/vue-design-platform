@@ -2,78 +2,64 @@
     <vd-card>
         <template #header>
             <vd-filter>
-                <template #default="{ input, select, button }">
-                    <el-input
-                        placeholder="请输入用户名或电话"
-                        clearable
-                        :style="input"
-                        v-model="filter.search"
-                        @keyup.enter="handleSearch"
-                        @clear="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="search"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                    </el-input>
-                    <el-select
-                        clearable
-                        :style="select"
-                        v-model="filter.rule"
-                        @change="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon
-                                    name="user-business"
-                                ></iconpark-icon>
-                            </el-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in ruleMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-select
-                        :style="select"
-                        clearable
-                        v-model="filter.status"
-                        @change="handleSearch"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="broadcast"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in statusMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-button
-                        type="primary"
-                        :style="button"
-                        @click="handleSearch"
-                    >
+                <el-input
+                    placeholder="请输入用户名或电话"
+                    clearable
+                    style="width: 211px"
+                    v-model="filter.search"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="filter"></iconpark-icon>
+                            <search />
                         </el-icon>
-                        <span>搜索</span>
-                    </el-button>
-                </template>
-                <template #right="{ button }">
-                    <el-button
-                        type="success"
-                        :style="button"
-                        @click="handleCreate"
-                    >
+                    </template>
+                </el-input>
+                <el-select
+                    clearable
+                    v-model="filter.rule"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="add-user"></iconpark-icon>
+                            <user-business />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in ruleMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-select
+                    clearable
+                    v-model="filter.status"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <broadcast />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in statusMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-button type="primary" @click="handleSearch">
+                    <el-icon>
+                        <icon-filter />
+                    </el-icon>
+                    <span>搜索</span>
+                </el-button>
+                <template #right>
+                    <el-button type="success" @click="handleCreate">
+                        <el-icon>
+                            <add-user />
                         </el-icon>
                         <span>新增</span>
                     </el-button>
@@ -165,7 +151,9 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <drawer-user-update />
+            <vd-popup v-model="isDrawerUpdateVisible">
+                <drawer-user-update />
+            </vd-popup>
         </template>
         <template #pagination>
             <el-pagination
@@ -185,17 +173,25 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import {
+    Search,
+    UserBusiness,
+    Broadcast,
+    Filter as IconFilter,
+    AddUser,
+} from '@icon-park/vue-next';
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
-import VdFilter from '@/components/VdFilter.vue';
+import VdFilter from '@/components/VdFilter';
+import VdPopup from '@/components/VdPopup';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import DrawerUserUpdate from '../components/DrawerUserUpdate.vue';
 
 const userStore = useUserStore();
-const { filter, total, list } = storeToRefs(userStore);
+const { filter, total, list, isDrawerUpdateVisible } = storeToRefs(userStore);
 
 userStore.find(filter.value);
 

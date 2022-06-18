@@ -1,6 +1,6 @@
 <template>
     <el-drawer
-        v-model="isDrawerRecommendVisible"
+        v-model="isVisible"
         :title="title"
         :with-header="true"
         custom-class="drawer-site-update"
@@ -88,15 +88,31 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import { WritableComputedRef } from 'vue';
 import { useSiteStore } from '../useSiteStore';
 import VdCard from '@/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
 import { watting } from '@/utils';
 import { useNavigationStore } from '@/modules/navigation/useNavigationStore';
 
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
+
 const siteStore = useSiteStore();
 const navigationStore = useNavigationStore();
-const { isDrawerRecommendVisible } = storeToRefs(siteStore);
 const { detail, isRecommend } = storeToRefs(navigationStore);
 
 const title = '推荐站点';

@@ -87,18 +87,6 @@
                     {{ typeMap.get(row.type) }}
                 </template>
             </el-table-column>
-            <el-table-column
-                prop="createdAt"
-                label="创建时间"
-                width="160"
-                :formatter="tableDateFormatter('createdAt')"
-            />
-            <el-table-column
-                prop="updatedAt"
-                label="更改时间"
-                width="160"
-                :formatter="tableDateFormatter('updatedAt')"
-            />
         </el-table>
         <template #footer>
             <el-button class="vd-btn" @click="handleCancelClick">
@@ -129,12 +117,10 @@ export default {
 <script lang="ts" setup>
 import { WritableComputedRef, reactive } from 'vue';
 import { STATUS, statusMap } from '@/configs/constants';
-// import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
-import { tableDateFormatter } from '@/utils/useTable';
 import { useNavigationStore, NavigationItem } from '../useNavigationStore';
-import { useSiteStore, SiteItem } from '../../site/useSiteStore';
-import { typeMap } from '../../site/constants';
+import { useSiteStore, SiteItem } from '@/modules/site/useSiteStore';
+import { typeMap } from '@/modules/site/constants';
 
 const props = defineProps({
     modelValue: {
@@ -247,14 +233,6 @@ const loading = ref(false);
 const handleSelectionChange = (val: any) => {
     console.log('val', val);
     multipleSelection.value = val;
-    // console.log('val', val);
-    // val.forEach((item) => {
-    //     navigationMultipleTableRef.value.toggleRowSelection(item, undefined);
-    // });
-    // console.log(
-    //     'navigationMultipleTableRef',
-    //     navigationMultipleTableRef.value.getSelectionRows(),
-    // );
 };
 
 const handleSearch = () => {
@@ -270,15 +248,11 @@ const handleUpdateClick = async () => {
     loading.value = true;
     // await navigationStore.create(detail.value);
     loading.value = false;
-    // navigationStore.$patch({
-    //     isDialogUpdateVisible: false,
-    // });
+    emit('update:modelValue', false);
 };
 
 const handleCancelClick = () => {
-    // navigationStore.$patch({
-    //     isDialogUpdateVisible: false,
-    // });
+    emit('update:modelValue', false);
 };
 </script>
 

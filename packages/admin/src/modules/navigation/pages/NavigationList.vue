@@ -1,70 +1,64 @@
 <template>
     <vd-card class="page-navigation">
         <template #header>
-            {{ isDialogAddVisible }}
             <vd-filter>
-                <template #default="{ input, select, button }">
-                    <el-input
-                        placeholder="请输入站点名称"
-                        clearable
-                        :style="input"
-                        v-model="filter.title"
-                        @keyup.enter="handleSearch"
-                        @clear="handleSearch"
-                    >
-                        <template #prefix>
-                            <iconpark-icon name="search"></iconpark-icon>
-                        </template>
-                    </el-input>
-                    <el-input
-                        placeholder="请输入站点ID"
-                        clearable
-                        :style="input"
-                        v-model="filter.siteId"
-                        @keyup.enter="handleSearch"
-                        @clear="handleSearch"
-                    >
-                        <template #prefix>
-                            <iconpark-icon
-                                name="adobe-indesign"
-                            ></iconpark-icon>
-                        </template>
-                    </el-input>
-                    <el-select
-                        clearable
-                        :style="select"
-                        v-model="filter.status"
-                        @change="handleSearch"
-                    >
-                        <template #prefix>
-                            <iconpark-icon name="broadcast"></iconpark-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in statusMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-button
-                        type="primary"
-                        :style="button"
-                        @click="handleSearch"
-                    >
+                <el-input
+                    placeholder="请输入站点名称"
+                    clearable
+                    style="width: 211px"
+                    v-model="filter.title"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="filter"></iconpark-icon>
+                            <search />
                         </el-icon>
-                        <span>搜索</span>
-                    </el-button>
-                </template>
-                <template #right="{ button }">
-                    <el-button
-                        type="success"
-                        :style="button"
-                        @click="handleCreate"
-                    >
+                    </template>
+                </el-input>
+                <el-input
+                    placeholder="请输入站点ID"
+                    clearable
+                    :style="input"
+                    v-model="filter.siteId"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="add-user"></iconpark-icon>
+                            <adobe-indesign />
+                        </el-icon>
+                    </template>
+                </el-input>
+                <el-select
+                    clearable
+                    :style="select"
+                    v-model="filter.status"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <broadcast />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in statusMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-button type="primary" :style="button" @click="handleSearch">
+                    <el-icon>
+                        <icon-filter />
+                    </el-icon>
+                    <span>搜索</span>
+                </el-button>
+
+                <template #right>
+                    <el-button type="success" @click="handleCreate">
+                        <el-icon>
+                            <add-user />
                         </el-icon>
                         <span>新增</span>
                     </el-button>
@@ -192,10 +186,18 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import {
+    Search,
+    Broadcast,
+    Filter as IconFilter,
+    AddUser,
+    AdobeIndesign,
+} from '@icon-park/vue-next';
 import { STATUS, statusMap } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
+import VdFilter from '@/components/VdFilter';
 import { useNavigationStore } from '../useNavigationStore';
 import { useSiteStore } from '../../site/useSiteStore';
 import VdPopup from '@/components/VdPopup';
