@@ -4,7 +4,9 @@
         :title="title"
         :with-header="true"
         custom-class="drawer-user-update"
-        modal
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <vd-card>
             <div class="drawer-user-update-card">

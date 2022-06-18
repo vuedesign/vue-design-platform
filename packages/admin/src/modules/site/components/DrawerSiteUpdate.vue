@@ -1,10 +1,12 @@
 <template>
     <el-drawer
+        custom-class="drawer-site-update"
         v-model="isVisible"
         :title="title"
         :with-header="true"
-        custom-class="drawer-site-update"
-        modal
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <vd-card scroll>
             <div class="drawer-site-update-card">
@@ -121,7 +123,7 @@
                 <div class="drawer-site-update-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
-                            <iconpark-icon name="close-one"></iconpark-icon>
+                            <close-one />
                         </el-icon>
                         <span>取消</span>
                     </el-button>
@@ -132,7 +134,7 @@
                         :loading="loading"
                     >
                         <el-icon>
-                            <iconpark-icon name="send"></iconpark-icon>
+                            <send />
                         </el-icon>
                         <span>提交</span>
                     </el-button>
@@ -148,6 +150,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { WritableComputedRef } from 'vue';
+import { Send, CloseOne } from '@icon-park/vue-next';
 import { useSiteStore } from '../useSiteStore';
 import { typeMap } from '../constants';
 import VdCard from '@/components/VdCard.vue';
@@ -160,7 +163,7 @@ const props = defineProps({
         default: false,
     },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'closed']);
 const isVisible: WritableComputedRef<boolean> = computed({
     get() {
         return props.modelValue;
@@ -193,13 +196,12 @@ const handleUpdateClick = async () => {
 };
 
 const handleCancelClick = () => {
+    emit('update:modelValue', false);
+    // alert(1);
     ElNotification({
         title: '取消',
         message: '取消编辑站点信息',
         type: 'info',
-    });
-    siteStore.$patch({
-        isDrawerUpdateVisible: false,
     });
 };
 </script>
@@ -219,7 +221,7 @@ const handleCancelClick = () => {
 }
 .drawer-site-update-card {
     box-sizing: border-box;
-    // width: 100%;
+    width: 100%;
     padding: 24px;
 }
 .drawer-site-update-footer {

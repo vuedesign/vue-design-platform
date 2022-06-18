@@ -4,6 +4,9 @@
         :title="title"
         :width="800"
         @close="hanldeClose"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <template #header>
             <h4 style="display: inline-block">{{ title }}</h4>

@@ -1,13 +1,15 @@
 <template>
     <el-drawer
+        custom-class="drawer-site-recommend"
         v-model="isVisible"
         :title="title"
         :with-header="true"
-        custom-class="drawer-site-update"
-        modal
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <vd-card scroll>
-            <div class="drawer-site-update-card">
+            <div class="drawer-site-recommend-card">
                 <el-form
                     :model="detail"
                     label-position="left"
@@ -58,10 +60,10 @@
                 </el-form>
             </div>
             <template #footer>
-                <div class="drawer-site-update-footer">
+                <div class="drawer-site-recommend-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
-                            <iconpark-icon name="close-one"></iconpark-icon>
+                            <close-one />
                         </el-icon>
                         <span>取消</span>
                     </el-button>
@@ -73,7 +75,7 @@
                         :loading="loading"
                     >
                         <el-icon>
-                            <iconpark-icon name="send"></iconpark-icon>
+                            <send />
                         </el-icon>
                         <span>{{ isRecommend ? '已推荐' : '提交' }}</span>
                     </el-button>
@@ -89,6 +91,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { WritableComputedRef } from 'vue';
+import { Send, CloseOne } from '@icon-park/vue-next';
 import { useSiteStore } from '../useSiteStore';
 import VdCard from '@/components/VdCard.vue';
 import { STATUS } from '@/configs/constants';
@@ -101,7 +104,7 @@ const props = defineProps({
         default: false,
     },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'closed']);
 const isVisible: WritableComputedRef<boolean> = computed({
     get() {
         return props.modelValue;
@@ -155,16 +158,16 @@ const handleCancelClick = () => {
 }
 </style>
 <style lang="scss">
-.drawer-site-update {
+.drawer-site-recommend {
     width: 500px !important;
     background-color: #f2f3f5;
 }
-.drawer-site-update-card {
+.drawer-site-recommend-card {
     box-sizing: border-box;
     // width: 100%;
     padding: 24px;
 }
-.drawer-site-update-footer {
+.drawer-site-recommend-footer {
     display: flex;
     padding: 16px 24px;
     justify-content: flex-end;
