@@ -19,7 +19,6 @@
                 <el-input
                     placeholder="请输入站点ID"
                     clearable
-                    :style="input"
                     v-model="filter.siteId"
                     @keyup.enter="handleSearch"
                     @clear="handleSearch"
@@ -32,7 +31,6 @@
                 </el-input>
                 <el-select
                     clearable
-                    :style="select"
                     v-model="filter.status"
                     @change="handleSearch"
                 >
@@ -48,7 +46,7 @@
                         :value="key"
                     />
                 </el-select>
-                <el-button type="primary" :style="button" @click="handleSearch">
+                <el-button type="primary" @click="handleSearch">
                     <el-icon>
                         <icon-filter />
                     </el-icon>
@@ -165,7 +163,7 @@
             </vd-popup>
             <!-- 新增推荐站点 -->
             <vd-popup v-model="isDialogAddVisible">
-                <dialog-navigation-add />
+                <dialog-navigation-adds />
             </vd-popup>
         </template>
         <template v-if="total > filter.size" #pagination>
@@ -202,7 +200,7 @@ import { useNavigationStore } from '../useNavigationStore';
 import { useSiteStore } from '../../site/useSiteStore';
 import VdPopup from '@/components/VdPopup';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
-import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
+import DialogNavigationAdds from '../components/DialogNavigationAdds.vue';
 
 const navigationStore = useNavigationStore();
 const { filter, list, total, isDrawerUpdateVisible, isDialogAddVisible } =
@@ -231,7 +229,7 @@ const handleDel = (id: number) => {
     navigationStore.del(id);
 };
 const handleCreate = () => {
-    siteStore.find({ size: 999 }).then((res) => {
+    siteStore.find({ size: 999, status: STATUS.AVAILABLE }).then((res) => {
         isDialogAddVisible.value = true;
     });
 };

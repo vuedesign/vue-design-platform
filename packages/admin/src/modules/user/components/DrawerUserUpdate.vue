@@ -74,7 +74,7 @@
                 <div class="drawer-user-update-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
-                            <iconpark-icon name="close-one"></iconpark-icon>
+                            <close-one />
                         </el-icon>
                         <span>取消</span>
                     </el-button>
@@ -85,7 +85,7 @@
                         :loading="loading"
                     >
                         <el-icon>
-                            <iconpark-icon name="send"></iconpark-icon>
+                            <send />
                         </el-icon>
                         <span>提交</span>
                     </el-button>
@@ -101,6 +101,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { WritableComputedRef } from 'vue';
+import { Send, CloseOne } from '@icon-park/vue-next';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
 import VdCard from '@/components/VdCard.vue';
@@ -111,7 +112,7 @@ const props = defineProps({
         default: false,
     },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'closed']);
 const isVisible: WritableComputedRef<boolean> = computed({
     get() {
         return props.modelValue;

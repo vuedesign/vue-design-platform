@@ -8,7 +8,7 @@
         :close-on-press-escape="false"
         @closed="emit('closed', false)"
     >
-        <template #header>
+        <!-- <template #header>
             <h4 style="display: inline-block">{{ title }}</h4>
             <el-input
                 placeholder="请输入标题"
@@ -20,11 +20,26 @@
             >
                 <template #prefix>
                     <el-icon>
-                        <iconpark-icon name="search"></iconpark-icon>
+                        <search />
                     </el-icon>
                 </template>
             </el-input>
-        </template>
+        </template> -->
+        <div class="table-filter">
+            <el-input
+                placeholder="请输入标题"
+                clearable
+                v-model="filter.title"
+                @keyup.enter="handleSearch"
+                @clear="handleSearch"
+            >
+                <template #prefix>
+                    <el-icon>
+                        <search />
+                    </el-icon>
+                </template>
+            </el-input>
+        </div>
         <el-table
             :data="siteListRef"
             stripe
@@ -70,7 +85,6 @@
                     </a>
                 </template>
             </el-table-column>
-
             <el-table-column prop="views" label="浏览量" width="70" />
             <el-table-column prop="collections" label="收藏量" width="70" />
             <el-table-column prop="top" label="顶" width="70" />
@@ -92,20 +106,19 @@
             </el-table-column>
         </el-table>
         <template #footer>
-            <el-button class="vd-btn" @click="handleCancelClick">
+            <el-button @click="handleCancelClick">
                 <el-icon>
-                    <iconpark-icon name="close-one"></iconpark-icon>
+                    <close-one />
                 </el-icon>
                 <span>取消</span>
             </el-button>
             <el-button
-                class="vd-btn"
                 type="primary"
                 @click="handleUpdateClick"
                 :loading="loading"
             >
                 <el-icon>
-                    <iconpark-icon name="send"></iconpark-icon>
+                    <send />
                 </el-icon>
                 <span>提交</span>
             </el-button>
@@ -114,7 +127,7 @@
 </template>
 <script lang="ts">
 export default {
-    name: 'dialog-navigation-add',
+    name: 'dialog-navigation-adds',
 };
 </script>
 <script lang="ts" setup>
@@ -124,6 +137,7 @@ import { headerCellStyle } from '@/configs/styles';
 import { useNavigationStore, NavigationItem } from '../useNavigationStore';
 import { useSiteStore, SiteItem } from '@/modules/site/useSiteStore';
 import { typeMap } from '@/modules/site/constants';
+import { Send, CloseOne, Search } from '@icon-park/vue-next';
 
 const props = defineProps({
     modelValue: {
@@ -131,7 +145,7 @@ const props = defineProps({
         default: false,
     },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'closed']);
 const isVisible: WritableComputedRef<boolean> = computed({
     get() {
         return props.modelValue;
@@ -142,7 +156,8 @@ const isVisible: WritableComputedRef<boolean> = computed({
 });
 const navigationStore = useNavigationStore();
 const siteStore = useSiteStore();
-const { isDialogAddVisible } = storeToRefs(navigationStore);
+const { isDialogAddVisible, list: navigationListRef } =
+    storeToRefs(navigationStore);
 const { list: siteListRef } = storeToRefs(siteStore);
 const isMounted = ref(false);
 const isInit = ref(true);
@@ -175,15 +190,15 @@ watch(isDialogAddVisible, (visible) => {
     if (
         [
             visible,
-            navigationStore.list,
-            siteStore.list,
+            navigationListRef.value,
+            siteListRef.value,
             navigationMultipleTableRef.value,
             isUpdate.value,
         ].every((item) => !!item)
     ) {
         defaultSelect(
-            navigationStore.list,
-            siteStore.list,
+            navigationListRef.value,
+            siteListRef.value,
             navigationMultipleTableRef.value,
         );
         isUpdate.value = false;
@@ -196,27 +211,18 @@ const title = computed(() => {
 
 const multipleSelection = ref<SiteItem[]>([]);
 watchEffect(() => {
-    console.log(
-        '--------',
-        siteStore.list,
-        navigationStore.list,
-        isMounted.value,
-        navigationMultipleTableRef.value,
-        isInit.value,
-    );
     if (
         [
-            siteStore.list,
-            navigationStore.list,
+            navigationListRef.value,
+            siteListRef.value,
             isMounted.value,
             navigationMultipleTableRef.value,
             isInit.value,
         ].every((item) => !!item)
     ) {
         defaultSelect(
-            navigationStore.list,
-            siteStore.list,
-
+            navigationListRef.value,
+            siteListRef.value,
             navigationMultipleTableRef.value,
         );
         isInit.value = false;
@@ -263,7 +269,7 @@ const handleCancelClick = () => {
 .form-item-width {
     width: 400px;
 }
-.vd-btn {
-    min-width: 80px;
+.table-filter {
+    padding: 8px 24px;
 }
 </style>
