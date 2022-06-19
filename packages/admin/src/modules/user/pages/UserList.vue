@@ -2,60 +2,62 @@
     <vd-card>
         <template #header>
             <vd-filter>
-                <el-input
-                    placeholder="请输入用户名或电话"
-                    clearable
-                    style="width: 211px"
-                    v-model="filter.search"
-                    @keyup.enter="handleSearch"
-                    @clear="handleSearch"
-                >
-                    <template #prefix>
+                <template #default>
+                    <el-input
+                        placeholder="请输入用户名或电话"
+                        clearable
+                        style="width: 211px"
+                        v-model="filter.search"
+                        @keyup.enter="handleSearch"
+                        @clear="handleSearch"
+                    >
+                        <template #prefix>
+                            <el-icon>
+                                <search />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                    <el-select
+                        clearable
+                        v-model="filter.rule"
+                        @change="handleSearch"
+                    >
+                        <template #prefix>
+                            <el-icon>
+                                <user-business />
+                            </el-icon>
+                        </template>
+                        <el-option
+                            v-for="[key, value] in ruleMap"
+                            :key="key"
+                            :label="value"
+                            :value="key"
+                        />
+                    </el-select>
+                    <el-select
+                        clearable
+                        v-model="filter.status"
+                        @change="handleSearch"
+                    >
+                        <template #prefix>
+                            <el-icon>
+                                <broadcast />
+                            </el-icon>
+                        </template>
+                        <el-option
+                            v-for="[key, value] in statusMap"
+                            :key="key"
+                            :label="value"
+                            :value="key"
+                        />
+                    </el-select>
+                    <el-button type="primary" @click="handleSearch">
                         <el-icon>
-                            <search />
+                            <icon-filter />
                         </el-icon>
-                    </template>
-                </el-input>
-                <el-select
-                    clearable
-                    v-model="filter.rule"
-                    @change="handleSearch"
-                >
-                    <template #prefix>
-                        <el-icon>
-                            <user-business />
-                        </el-icon>
-                    </template>
-                    <el-option
-                        v-for="[key, value] in ruleMap"
-                        :key="key"
-                        :label="value"
-                        :value="key"
-                    />
-                </el-select>
-                <el-select
-                    clearable
-                    v-model="filter.status"
-                    @change="handleSearch"
-                >
-                    <template #prefix>
-                        <el-icon>
-                            <broadcast />
-                        </el-icon>
-                    </template>
-                    <el-option
-                        v-for="[key, value] in statusMap"
-                        :key="key"
-                        :label="value"
-                        :value="key"
-                    />
-                </el-select>
-                <el-button type="primary" @click="handleSearch">
-                    <el-icon>
-                        <icon-filter />
-                    </el-icon>
-                    <span>搜索</span>
-                </el-button>
+                        <span>搜索</span>
+                    </el-button>
+                </template>
                 <template #right>
                     <el-button type="success" @click="handleCreate">
                         <el-icon>

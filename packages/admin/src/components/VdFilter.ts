@@ -27,44 +27,43 @@ export default defineComponent({
         },
     },
     setup(props, { slots }) {
-        if (!slots.default) {
-            return null;
-        }
-        const slotsDetault = slots.default();
-
-        const chilren = slotsDetault.map((item, index) => {
-            return h(
-                'div',
-                {
-                    style: {
-                        'margin-right':
-                            index === slotsDetault.length
-                                ? 0
-                                : `${props.horizontal}px`,
-                        'margin-bottom': `${props.vertical}px`,
-                    },
-                },
-                [item],
-            );
-        });
-
-        let rightChildren: any[] = [];
-        if (slots.right && slots.right().length) {
-            // const slotsRight = slots.right();
-            rightChildren = slots.right().map((item) => {
+        return () => {
+            if (!slots.default) {
+                return null;
+            }
+            const slotsDetault = slots.default();
+            const chilren = slotsDetault.map((item, index) => {
                 return h(
                     'div',
                     {
                         style: {
-                            'margin-left': `${props.horizontal}px`,
+                            'margin-right':
+                                index === slotsDetault.length
+                                    ? 0
+                                    : `${props.horizontal}px`,
                             'margin-bottom': `${props.vertical}px`,
                         },
                     },
                     [item],
                 );
             });
-        }
-        return () => {
+
+            let rightChildren: any[] = [];
+            if (slots.right && slots.right().length) {
+                rightChildren = slots.right().map((item) => {
+                    return h(
+                        'div',
+                        {
+                            style: {
+                                'margin-left': `${props.horizontal}px`,
+                                'margin-bottom': `${props.vertical}px`,
+                            },
+                        },
+                        [item],
+                    );
+                });
+            }
+
             return h(
                 'div',
                 {
