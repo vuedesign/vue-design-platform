@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
-import { SiteEntity } from '../../entities/site.entity';
+import { SiteEntity } from '@/entities/site.entity';
 import {
   BaseService,
   IPaginationResponse,
   IPaginationQuery,
-} from '@app/globals/services/base.service';
+} from '@/globals/services/base.service';
 
 @Injectable()
 export class SiteService extends BaseService {

@@ -8,10 +8,7 @@
             >
                 <dt>
                     <span :style="{ color: item.fontColor }">
-                        <iconpark-icon
-                            :name="item.icon"
-                            :size="32"
-                        ></iconpark-icon>
+                        <component :is="item.icon" :size="32" />
                     </span>
                     <span class="title">{{ item.title }}</span>
                 </dt>
@@ -34,9 +31,8 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
 import userHomeStore from '../useHomeStore';
-
 const homeStore = userHomeStore();
 const { homeCountList } = storeToRefs(homeStore);
 homeStore.findCount();

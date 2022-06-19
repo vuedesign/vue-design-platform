@@ -1,19 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-// import { HomeService } from './home.service';
+import { Controller, Get } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
 import { NavigationService } from '../navigation/navigation.service';
-import { CreateHomeDto } from './dto/create-home.dto';
-import { UpdateHomeDto } from './dto/update-home.dto';
-import { Public } from '../../core/decorators/auth.decorator';
 
 @Controller('home')
 export class HomeController {
@@ -27,7 +15,6 @@ export class HomeController {
     return Promise.resolve(22983);
   }
 
-  @Public()
   @Get('count')
   count() {
     return Promise.all([

@@ -12,12 +12,7 @@
     "baseUrl": "./",
     "incremental": true,
     "paths": {
-      "@app/apps/*": ["src/apps/*"],
-      "@app/configs/*": ["src/configs/*"],
-      "@app/core/*": ["src/core/*"],
-      "@app/globals/*": ["src/globals/*"],
-      "@app/utils/*": ["src/utils/*"],
-      "@app/entities/*": ["src/entities/*"]
+      "@/*": ["src/*"]
     }
   }
 }

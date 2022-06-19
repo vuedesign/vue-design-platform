@@ -1,3 +1,4 @@
+import { QueryTransformPipe } from './../../core/pipes/queryTransform.pipe';
 import {
   Controller,
   Get,
@@ -6,12 +7,20 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Put,
+  Query,
 } from '@nestjs/common';
+import { Like } from 'typeorm';
 import { ApiTags, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { NavigationService } from './navigation.service';
 import { CreateNavigationDto } from './dto/create-navigation.dto';
-import { UpdateNavigationDto } from './dto/update-navigation.dto';
-import { Public } from '../../core/decorators/auth.decorator';
+import {
+  UpdateNavigationDto,
+  UpdateFieldDto,
+} from './dto/update-navigation.dto';
+import { NavigationListDto } from './dto/navigation.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 
 @Controller('navigations')
 @ApiTags('导航模块')
@@ -31,25 +40,88 @@ export class NavigationController {
 
   @Public()
   @Get()
-  findAll() {
-    return this.navigationService.findAll({});
+  findAll(@Query(new QueryTransformPipe(['title'])) query: NavigationListDto) {
+    console.log('query====----', query);
+    const { siteId, status, title, size, page, order } = query;
+    type QueryDto = {
+      size: number;
+      page: number;
+      order: Record<string, any>;
+      where: Record<string, any>;
+    };
+    const options: QueryDto = {
+      size,
+      page,
+      order: {
+        updatedAt: 'DESC',
+      },
+      where: {
+        // siteId,
+        // status,
+      },
+    };
+
+    if (title) {
+      options.where['title'] = Like(`%${title}%`);
+    }
+
+    if (status) {
+      options.where['status'] = status;
+    }
+
+    if (siteId) {
+      options.where['siteId'] = siteId;
+    }
+
+    if (order) {
+      const [key, value] = order.split(' ');
+      Object.assign(options, {
+        order: {
+          [key]: value,
+        },
+      });
+    }
+
+    console.log('options', options);
+
+    return this.navigationService.findAll(options);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.navigationService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.navigationService.findOneById(id);
+  }
+
+  @Get('site/:siteId')
+  async findOneBySiteId(
+    @Param('siteId', ParseIntPipe) siteId: number,
+  ): Promise<boolean> {
+    const res = await this.navigationService.findOne({
+      where: {
+        siteId,
+      },
+    });
+    return !!res;
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSite: UpdateNavigationDto,
+  ) {
+    return this.navigationService.update(id, updateSite);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateNavigationDto: UpdateNavigationDto,
+  updateField(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateField: UpdateFieldDto,
   ) {
-    return this.navigationService.update(+id, updateNavigationDto);
+    return this.navigationService.updateField(id, updateField);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.navigationService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.navigationService.remove(id);
   }
 }

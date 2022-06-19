@@ -11,11 +11,14 @@ import {
   DefaultValuePipe,
 } from '@nestjs/common';
 import { Like } from 'typeorm';
-import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserListQueryDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../../core/decorators/auth.decorator';
+import { Public } from '@/core/decorators/auth.decorator';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
+import { UserEntity } from '@/entities/user.entity';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -33,14 +36,12 @@ export class UserController {
   }
 
   @Get()
-  findAll(
-    @Query('size', new DefaultValuePipe(20), ParseIntPipe) size?: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
-    @Query('search') search?: string,
-    @Query('order') order?: string,
-    @Query('status', new DefaultValuePipe(0), ParseIntPipe) status?: number,
-    @Query('rule', new DefaultValuePipe(0), ParseIntPipe) rule?: number,
-  ) {
+  @ApiQuery({
+    description: '用户列表',
+    type: UserListQueryDto,
+  })
+  findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
+    const { size, page, search, status, rule } = query;
     const options = {
       size,
       page,
@@ -49,6 +50,8 @@ export class UserController {
       },
       where: {},
     };
+
+    console.log('options', options);
 
     const isPhone = (str: string) => {
       return !isNaN(Number(str));
@@ -62,20 +65,12 @@ export class UserController {
       }
     }
 
-    if (status !== undefined) {
-      if (status === 1 || status === 2) {
-        options.where['status'] = status;
-      } else {
-        delete options.where['status'];
-      }
+    if (status) {
+      options.where['status'] = status;
     }
 
-    if (rule !== undefined) {
-      if (rule === 1 || rule === 2 || rule === 3) {
-        options.where['rule'] = rule;
-      } else {
-        delete options.where['rule'];
-      }
+    if (rule) {
+      options.where['rule'] = rule;
     }
 
     console.log('options.where===', options);

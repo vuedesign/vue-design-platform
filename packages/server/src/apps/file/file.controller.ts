@@ -20,7 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from '../../core/decorators/auth.decorator';
+import { Public } from '@/core/decorators/auth.decorator';
 import { ensureDirSync } from 'fs-extra';
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';

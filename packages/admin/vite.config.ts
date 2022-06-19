@@ -48,13 +48,12 @@ export default defineConfig({
             template: {
                 compilerOptions: {
                     // treat all tags with a dash as custom elements
-                    isCustomElement: (tag) => tag.includes('iconpark-icon'),
+                    // isCustomElement: (tag) => tag.includes('iconpark-icon'),
                 },
             },
         }),
         viteESLint({
-            include: ['src/**/*.vue', 'src/**/*.js', 'src/**/*.ts'],
-            exclude: 'src/assets/fontawesome/js/*.js',
+            include: ['src/**/*.vue', 'src/**/*.ts'],
         }),
         AutoImport({
             imports: [
@@ -71,7 +70,6 @@ export default defineConfig({
                 }),
             ],
             dts: 'src/types/auto-imports.d.ts',
-            // dirs: ['src/configs'],
             eslintrc: {
                 enabled: false, // Default `false`
                 filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`

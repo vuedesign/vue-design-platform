@@ -11,10 +11,10 @@
         "baseUrl": "./",
         "paths": {
             "@": ["src"],
-            "@/*": ["src/*"],
+            "@/*": ["src/*"]
             // "@/core": ["@/core/index"]
-            "@/core": ["src/core"],
-            "@/core/*": ["src/core/*"]
+            // "@/core": ["src/core"],
+            // "@/core/*": ["src/core/*"]
             // "@/configs/*": ["src/configs/*"]
             // "@/configs/routes": ["./src/configs/routes"]
         }

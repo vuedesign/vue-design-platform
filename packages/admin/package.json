@@ -10,7 +10,8 @@
     },
     "dependencies": {
         "@element-plus/icons-vue": "^1.1.4",
-        "@fortawesome/fontawesome-free": "^5.15.3",
+        "@icon-park/vue-next": "^1.4.0",
+        "@vueuse/core": "^8.6.0",
         "axios": "^0.20.0",
         "core-js": "^3.20.3",
         "element-plus": "^2.2.1",

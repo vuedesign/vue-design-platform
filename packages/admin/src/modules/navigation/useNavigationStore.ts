@@ -1,36 +1,32 @@
+import { BaseItem, ListFilter } from '@/types/globals';
 import { reactive, Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash-es';
-import { findData, findOneData } from './api';
+import {
+    findData,
+    findOneData,
+    destroyData,
+    updateData,
+    createData,
+    findOneBySiteIdData,
+    updateFieldData,
+} from './api';
 import { STATUS, RULE } from './constants';
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { NAVIGATION_STORE_KEY } from '@/configs/storeKeys';
 
-export interface NavigationItem {
-    id?: number;
+export interface NavigationItem extends BaseItem {
     siteId: number;
     title: string;
-    descrition: string;
+    description: string;
     siteUrl: string;
     iconUrl: string;
     order: number;
-    status: number;
-    createdAt: string;
-    updatedAt: string;
 }
 export type NavigationList = Array<NavigationItem>;
-export interface NavigationFilter {
-    page: number;
-    size: number;
-    order: string;
-    status: number;
-    search: string;
-}
-export interface NavigationState {
-    detail: NavigationItem;
-    list: NavigationList;
-    filter: NavigationFilter;
-    total: number;
+export interface NavigationListFilter extends ListFilter {
+    order?: string;
+    title?: string;
+    siteId?: number | string;
 }
 
 export interface UpdateFieldPamas {
@@ -41,12 +37,11 @@ export interface UpdateFieldPamas {
 }
 
 export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
-    const drawerType = ref('create');
     const detail: NavigationItem = reactive({
         id: undefined,
         siteId: 0,
         title: '',
-        descrition: '',
+        description: '',
         siteUrl: '',
         iconUrl: '',
         order: 0,
@@ -57,17 +52,19 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
     const defaultCache = cloneDeep(detail);
 
     const list: Ref<NavigationItem[]> = ref([]);
-    const filter: NavigationFilter = reactive({
+    const filter: NavigationListFilter = reactive({
         page: 1,
         size: 20,
-        order: 'updatedAt DESC',
         status: STATUS.ALL,
         rule: RULE.ALL,
-        search: '',
+        title: '',
+        siteId: '',
+        order: 'order DESC',
     });
     const total = ref(0);
+    const isRecommend = ref(false);
 
-    const find = async (query?: Record<string, any>) => {
+    const find = async (query?: NavigationListFilter) => {
         Object.assign(filter, query);
         const res = await findData(filter);
         console.log('res', res);
@@ -79,41 +76,82 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         Object.assign(detail, res);
     };
 
-    const isDialogAddVisible = ref(false);
-    const updateIDialogUpdateVisibleState = (visible: boolean) => {
-        isDialogAddVisible.value = visible;
+    const checkIsRecommend = async (id: number) => {
+        isRecommend.value = await findOneBySiteIdData(id);
     };
 
+    const isDialogAddVisible = ref(false);
     const isDrawerUpdateVisible = ref(false);
-    const updateDrawerUpdateVisibleState = (visible: boolean) => {
-        isDrawerUpdateVisible.value = visible;
-    };
 
     const resetDetail = () => {
         Object.assign(detail, defaultCache);
     };
 
-    const update = (detail: NavigationItem) => {
-        // findOne(id);
+    function setNavigationItem(newData: NavigationItem) {
+        Object.assign(detail, newData);
+    }
+
+    const create = async (detail: NavigationItem) => {
+        const res = await createData(detail);
+        await find(filter);
+        return res;
+    };
+
+    const createList = async (list: NavigationItem[]) => {
+        const res = await Promise.all(list.map((item) => createData(item)));
+        await find(filter);
+        return res;
+    };
+
+    const update = async (detail: NavigationItem) => {
+        const res = await updateData(detail);
+        await find(filter);
+        return !!res.affected;
+    };
+
+    /**
+     * 更改站点状态
+     * @param data
+     */
+    const updateStatus = async (data: UpdateFieldPamas) => {
+        const { id, field, value, type } = data;
+        updateFieldData(id, {
+            type,
+            field,
+            value,
+        }).then((res) => {
+            if (res.affected === 1) {
+                ElMessage({
+                    type: value === STATUS.AVAILABLE ? 'success' : 'warning',
+                    message:
+                        value === STATUS.AVAILABLE
+                            ? '成功通过审核'
+                            : '下线成功',
+                });
+            }
+        });
     };
 
     const del = (id: number) => {
-        ElMessageBox.confirm('你将永久删除该用户，是否持续？', '删除提示', {
+        ElMessageBox.confirm('你将永久取消该推荐，是否持续？', '取消提示', {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
         })
             .then(() => {
                 console.log(id);
-                ElMessage({
-                    type: 'success',
-                    message: 'Delete completed',
+                destroyData(id).then(({ affected }) => {
+                    ElMessage({
+                        type: affected === 1 ? 'success' : 'error',
+                        message: affected === 1 ? '删除成功' : '删除失败',
+                    });
+                    find(filter);
                 });
             })
             .catch(() => {
                 ElMessage({
                     type: 'info',
-                    message: 'Delete canceled',
+                    message: '取消删除',
                 });
             });
     };
@@ -127,10 +165,15 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         findOne,
         isDrawerUpdateVisible,
         isDialogAddVisible,
-        updateDrawerUpdateVisibleState,
         resetDetail,
         del,
+        create,
+        createList,
         update,
+        setNavigationItem,
+        isRecommend,
+        checkIsRecommend,
+        updateStatus,
     };
 });
 

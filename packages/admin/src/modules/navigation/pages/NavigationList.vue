@@ -1,60 +1,67 @@
 <template>
     <vd-card class="page-navigation">
         <template #header>
-            <div class="page-navigation-header">
-                <div class="page-navigation-filter">
-                    <el-input
-                        v-model="filter.search"
-                        placeholder="请输入站点名称"
-                        style="width: 200px"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="search"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                    </el-input>
-                    <el-select
-                        v-model="filter.status"
-                        placeholder="Select"
-                        style="width: 200px"
-                    >
-                        <template #prefix>
-                            <el-icon>
-                                <iconpark-icon name="broadcast"></iconpark-icon>
-                            </el-icon>
-                        </template>
-                        <el-option
-                            v-for="[key, value] in statusMap"
-                            :key="key"
-                            :label="value"
-                            :value="key"
-                        />
-                    </el-select>
-                    <el-button
-                        class="vd-btn"
-                        type="primary"
-                        @click="handleSearch"
-                    >
+            <vd-filter>
+                <el-input
+                    placeholder="请输入站点名称"
+                    clearable
+                    style="width: 211px"
+                    v-model="filter.title"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="filter"></iconpark-icon>
+                            <search />
                         </el-icon>
-                        <span>搜索</span>
-                    </el-button>
-                </div>
-                <div class="page-navigation-btn">
-                    <el-button
-                        class="vd-btn"
-                        type="success"
-                        @click="handleCreate"
-                    >
+                    </template>
+                </el-input>
+                <el-input
+                    placeholder="请输入站点ID"
+                    clearable
+                    v-model="filter.siteId"
+                    @keyup.enter="handleSearch"
+                    @clear="handleSearch"
+                >
+                    <template #prefix>
                         <el-icon>
-                            <iconpark-icon name="add-user"></iconpark-icon>
+                            <adobe-indesign />
+                        </el-icon>
+                    </template>
+                </el-input>
+                <el-select
+                    clearable
+                    v-model="filter.status"
+                    @change="handleSearch"
+                >
+                    <template #prefix>
+                        <el-icon>
+                            <broadcast />
+                        </el-icon>
+                    </template>
+                    <el-option
+                        v-for="[key, value] in statusMap"
+                        :key="key"
+                        :label="value"
+                        :value="key"
+                    />
+                </el-select>
+                <el-button type="primary" @click="handleSearch">
+                    <el-icon>
+                        <icon-filter />
+                    </el-icon>
+                    <span>搜索</span>
+                </el-button>
+
+                <template #right>
+                    <el-button type="success" @click="handleCreate">
+                        <el-icon>
+                            <add-user />
                         </el-icon>
                         <span>新增</span>
                     </el-button>
-                </div>
-            </div>
+                </template>
+            </vd-filter>
         </template>
         <template #default="{ height }">
             <div class="page-navigation-container">
@@ -66,7 +73,7 @@
                     :height="height"
                     :header-cell-style="headerCellStyle"
                 >
-                    <el-table-column prop="id" label="ID" width="48" />
+                    <el-table-column prop="siteId" label="站点ID" width="80" />
                     <el-table-column label="Icon" width="64">
                         <template #default="scope">
                             <el-avatar
@@ -77,7 +84,7 @@
                             />
                         </template>
                     </el-table-column>
-                    <el-table-column prop="siteId" label="站点ID" width="80" />
+                    <el-table-column prop="order" label="排序" width="64" />
                     <el-table-column
                         prop="title"
                         label="站点名称"
@@ -127,6 +134,9 @@
                                     v-model="row.status"
                                     :active-value="STATUS.AVAILABLE"
                                     :inactive-value="STATUS.DISABLE"
+                                    @change="
+                                        (status) => handleStatus(status, row.id)
+                                    "
                                 />
                             </span>
                             <el-button
@@ -147,8 +157,26 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <drawer-navigation-update />
-            <dialog-navigation-add />
+            <!-- 编辑推荐站点信息  -->
+            <vd-popup v-model="isDrawerUpdateVisible">
+                <drawer-navigation-update />
+            </vd-popup>
+            <!-- 新增推荐站点 -->
+            <vd-popup v-model="isDialogAddVisible">
+                <dialog-navigation-adds />
+            </vd-popup>
+        </template>
+        <template v-if="total > filter.size" #pagination>
+            <el-pagination
+                small
+                background
+                :layout="PAGINATION_LAYOUT"
+                :total="total"
+                v-model:page-size="filter.size"
+                v-model:current-page="filter.page"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+            />
         </template>
     </vd-card>
 </template>
@@ -158,34 +186,61 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { STATUS, statusMap } from '@/configs/constants';
+import {
+    Search,
+    Broadcast,
+    Filter as IconFilter,
+    AddUser,
+    AdobeIndesign,
+} from '@icon-park/vue-next';
+import { STATUS, statusMap, PAGINATION_LAYOUT } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
+import VdFilter from '@/components/VdFilter';
 import { useNavigationStore } from '../useNavigationStore';
+import { useSiteStore } from '../../site/useSiteStore';
+import VdPopup from '@/components/VdPopup';
 import DrawerNavigationUpdate from '../components/DrawerNavigationUpdate.vue';
-import DialogNavigationAdd from '../components/DialogNavigationAdd.vue';
+import DialogNavigationAdds from '../components/DialogNavigationAdds.vue';
 
 const navigationStore = useNavigationStore();
-const { filter, list, isDrawerUpdateVisible, isDialogAddVisible } =
+const { filter, list, total, isDrawerUpdateVisible, isDialogAddVisible } =
     storeToRefs(navigationStore);
-
+const siteStore = useSiteStore();
 navigationStore.find();
 
-const handleSearch = (id: number) => {
+const handleSearch = () => {
     navigationStore.find(filter.value);
 };
+
 const handleEidt = (id: number) => {
     navigationStore.findOne(id);
     isDrawerUpdateVisible.value = true;
+};
+const handleStatus = (status: number, id: number) => {
+    navigationStore.updateStatus({
+        id,
+        type: 'number',
+        field: 'status',
+        value: status,
+    });
 };
 const handleDel = (id: number) => {
     console.log('id', id);
     navigationStore.del(id);
 };
 const handleCreate = () => {
-    // navigationStore.resetDetail();
-    isDialogAddVisible.value = true;
+    siteStore.find({ size: 999, status: STATUS.AVAILABLE }).then((res) => {
+        isDialogAddVisible.value = true;
+    });
+};
+
+const handleSizeChange = (size: number) => {
+    navigationStore.find({ size });
+};
+const handleCurrentChange = (page: number) => {
+    navigationStore.find({ page });
 };
 </script>
 

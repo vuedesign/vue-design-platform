@@ -1,10 +1,12 @@
 <template>
     <el-drawer
-        v-model="isDrawerUpdateVisible"
+        v-model="isVisible"
         :title="title"
         :with-header="true"
         custom-class="drawer-navigation-update"
-        modal
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <vd-card>
             <div class="drawer-navigation-update-card">
@@ -61,7 +63,7 @@
                 <div class="drawer-navigation-update-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
-                            <iconpark-icon name="close-one"></iconpark-icon>
+                            <close-one />
                         </el-icon>
                         <span>取消</span>
                     </el-button>
@@ -72,7 +74,7 @@
                         :loading="loading"
                     >
                         <el-icon>
-                            <iconpark-icon name="send"></iconpark-icon>
+                            <send />
                         </el-icon>
                         <span>提交</span>
                     </el-button>
@@ -87,13 +89,30 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { STATUS, statusMap } from '@/configs/constants';
+import { WritableComputedRef } from 'vue';
+import { STATUS } from '@/configs/constants';
 import { useNavigationStore } from '../useNavigationStore';
-import { ruleMap } from '../constants';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
+import { Send, CloseOne } from '@icon-park/vue-next';
+
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue', 'closed']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
 
 const navigaitonStore = useNavigationStore();
-const { isDrawerUpdateVisible, detail } = storeToRefs(navigaitonStore);
+const { detail } = storeToRefs(navigaitonStore);
 
 const title = computed(() => {
     return '编辑用户信息';
@@ -116,6 +135,10 @@ const handleCancelClick = () => {
         isDrawerUpdateVisible: false,
     });
 };
+
+onMounted(() => {
+    console.warn('DrawerNavigationUpdate: onMounted');
+});
 </script>
 
 <style scoped lang="scss">

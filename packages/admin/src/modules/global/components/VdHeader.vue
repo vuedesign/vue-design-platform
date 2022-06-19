@@ -3,7 +3,9 @@
         <div class="vd-header-breadcrumb">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/' }">
-                    <iconpark-icon name="home"></iconpark-icon>
+                    <el-icon>
+                        <home />
+                    </el-icon>
                     <span class="label">首页</span>
                 </el-breadcrumb-item>
                 <el-breadcrumb-item
@@ -19,10 +21,9 @@
                 <li>
                     <el-popover placement="bottom" :width="300" trigger="click">
                         <template #reference>
-                            <iconpark-icon
-                                name="messages-one"
-                                :size="16"
-                            ></iconpark-icon>
+                            <el-icon :size="16">
+                                <messages-one />
+                            </el-icon>
                         </template>
                         <el-table :data="gridData">
                             <el-table-column
@@ -51,22 +52,26 @@
                         popper-class="vd-profile"
                     >
                         <el-avatar :size="32" :src="profile.avatar">
-                            <iconpark-icon name="me" :size="16"></iconpark-icon>
+                            <el-icon :size="16"><me /></el-icon>
                         </el-avatar>
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
-                                    <iconpark-icon
-                                        name="id-card"
-                                    ></iconpark-icon>
+                                    <el-icon>
+                                        <id-card />
+                                    </el-icon>
                                     <span class="menu-text">个人中心</span>
                                 </el-dropdown-item>
                                 <el-dropdown-item>
-                                    <iconpark-icon name="share"></iconpark-icon>
+                                    <el-icon>
+                                        <share />
+                                    </el-icon>
                                     <span class="menu-text">分享</span>
                                 </el-dropdown-item>
                                 <el-dropdown-item divided>
-                                    <iconpark-icon name="power"></iconpark-icon>
+                                    <el-icon>
+                                        <power />
+                                    </el-icon>
                                     <span class="menu-text">退出</span>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
@@ -84,6 +89,14 @@ export default {
 };
 </script>
 <script setup lang="ts">
+import {
+    Home,
+    IdCard,
+    Share,
+    Power,
+    Me,
+    MessagesOne,
+} from '@icon-park/vue-next';
 import { useGlobalStore } from '../useGlobalStore';
 const globalStore = useGlobalStore();
 const { breadcrumbList, profile } = storeToRefs(globalStore);
@@ -119,14 +132,10 @@ const gridData = [
 }
 .vd-header-breadcrumb {
     flex: 1;
-
-    .label,
-    iconpark-icon {
-        display: inline-block;
-        vertical-align: middle;
-    }
     .label {
         margin-left: 3px;
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 .vd-header-user {
@@ -151,13 +160,15 @@ const gridData = [
         cursor: pointer;
         background-color: transparent;
         transition: all 0.5s;
-        > iconpark-icon {
+        > i {
             color: #666;
+            display: inline-block;
+            vertical-align: middle;
         }
         &:hover {
             background-color: rgba(#3d7eff, 0.2);
             border-radius: 4px;
-            > iconpark-icon {
+            > i {
                 color: #3d7eff;
             }
         }

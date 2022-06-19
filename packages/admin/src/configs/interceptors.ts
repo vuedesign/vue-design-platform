@@ -32,6 +32,7 @@ onHttpRequestFailure((error) => Promise.reject(error));
 
 // 返回成功
 onHttpResponseSuccess((response) => {
+    console.log('response', response);
     if (response.retcode === SUCCESS_STATUS_CODE) {
         return response.data;
     } else if (response.retcode === 1 && response.data.status === 401) {

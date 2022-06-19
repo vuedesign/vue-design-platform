@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { SESSION } from '@app/configs/global.config';
+import { SESSION } from '@/configs/global.config';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';

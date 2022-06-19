@@ -11,23 +11,23 @@ export default <MenuNode[]>[
     {
         label: '内容管理',
         value: 'content',
-        icon: ['folder-open', 'folder-close'],
+        icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
         children: [
             {
                 label: '站点管理',
                 value: 'site',
-                icon: 'browser-chrome',
+                icon: 'BrowserChrome',
             },
             {
                 label: '首页导航管理',
                 value: 'navigation',
-                icon: 'navigation',
+                icon: 'Navigation',
             },
             {
                 label: '素材管理',
                 value: 'material',
-                icon: 'picture-one',
+                icon: 'PictureOne',
             },
         ],
     },
@@ -35,25 +35,25 @@ export default <MenuNode[]>[
         label: '用户管理',
         value: 'user',
         active: true,
-        icon: 'user',
+        icon: 'User',
     },
     {
         label: '数据中心',
         value: 'data',
-        icon: ['folder-open', 'folder-close'],
+        icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
         children: [
             {
                 label: '埋点管理',
                 value: 'buried',
-                icon: 'broadcast',
+                icon: 'Broadcast',
             },
         ],
     },
     {
         label: '配置管理',
         value: 'config',
-        icon: ['folder-open', 'folder-close'],
+        icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
         children: [],
     },

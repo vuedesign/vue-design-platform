@@ -10,14 +10,14 @@ import {
   Patch,
   Req,
   ParseIntPipe,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { Like } from 'typeorm';
-import { Public } from '../../core/decorators/auth.decorator';
+import { Public } from '@/core/decorators/auth.decorator';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 
@@ -43,28 +43,26 @@ export class SiteController {
 
   @Public()
   @Get()
-  // @ApiQuery({
-  //   description: '项目列表',
-  //   // type: SiteListQueryDto,
-  // })
-  findAll(
-    @Query('size', new DefaultValuePipe(20), ParseIntPipe) size?: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
-    @Query('status', new DefaultValuePipe(0), ParseIntPipe) status?: number,
-    @Query('order') order?: string,
-    @Query('type') type?: string,
-    @Query('title') title?: string,
-  ) {
-    console.log('size', size);
-    console.log('page', page);
-    // console.log('tagId', tagId);
+  @ApiQuery({
+    description: '项目列表',
+    type: SiteListQueryDto,
+  })
+  findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
+    const { title, type, status, size, page, order } = query;
+    console.log('size=========', query);
     console.log('order', order); // new | hot | ai
-    // const { size, page, order, tagId } = query;
-    const options = {
+
+    type QueryDto = {
+      size: number;
+      page: number;
+      order: Record<string, any>;
+      where: Record<string, any>;
+    };
+    const options: QueryDto = {
       size,
       page,
       order: {
-        // updatedAt: 'DESC',
+        updatedAt: 'DESC',
       },
       where: {},
     };
@@ -88,20 +86,16 @@ export class SiteController {
       };
     }
 
-    if (status) {
-      options.where['status'] = status;
-    }
-
     if (title) {
       options.where['title'] = Like(`%${title}%`);
     }
 
+    if (status) {
+      options.where['status'] = status;
+    }
+
     if (type) {
-      if (type === 'all') {
-        delete options.where['type'];
-      } else {
-        options.where['type'] = type;
-      }
+      options.where['type'] = type;
     }
     console.log('options', options);
     return this.siteService.findList(options);

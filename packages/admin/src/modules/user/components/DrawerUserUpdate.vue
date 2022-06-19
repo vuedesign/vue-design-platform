@@ -1,10 +1,12 @@
 <template>
     <el-drawer
-        v-model="isDrawerUpdateVisible"
+        v-model="isVisible"
         :title="title"
         :with-header="true"
         custom-class="drawer-user-update"
-        modal
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="emit('closed', false)"
     >
         <vd-card>
             <div class="drawer-user-update-card">
@@ -72,7 +74,7 @@
                 <div class="drawer-user-update-footer">
                     <el-button class="vd-btn" @click="handleCancelClick">
                         <el-icon>
-                            <iconpark-icon name="close-one"></iconpark-icon>
+                            <close-one />
                         </el-icon>
                         <span>取消</span>
                     </el-button>
@@ -83,7 +85,7 @@
                         :loading="loading"
                     >
                         <el-icon>
-                            <iconpark-icon name="send"></iconpark-icon>
+                            <send />
                         </el-icon>
                         <span>提交</span>
                     </el-button>
@@ -98,12 +100,30 @@ export default {
 };
 </script>
 <script lang="ts" setup>
+import { WritableComputedRef } from 'vue';
+import { Send, CloseOne } from '@icon-park/vue-next';
 import { useUserStore } from '../useUserStore';
 import { ruleMap } from '../constants';
-import VdCard from '../../global/components/VdCard.vue';
+import VdCard from '@/components/VdCard.vue';
+
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+});
+const emit = defineEmits(['update:modelValue', 'closed']);
+const isVisible: WritableComputedRef<boolean> = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit('update:modelValue', value);
+    },
+});
 
 const userStore = useUserStore();
-const { isDrawerUpdateVisible, detail, drawerType } = storeToRefs(userStore);
+const { detail, drawerType } = storeToRefs(userStore);
 
 const title = computed(() => {
     if (drawerType.value === 'create') {
@@ -118,20 +138,20 @@ const loading = ref(false);
 const handleUpdateClick = async () => {
     console.log('detail', detail.value);
     loading.value = true;
-    if (dialogType.value === 'create') {
+    if (drawerType.value === 'create') {
         await userStore.create(detail.value);
-    } else if (dialogType.value === 'update') {
+    } else if (drawerType.value === 'update') {
         await userStore.update(detail.value);
     }
     loading.value = false;
     userStore.$patch({
-        isDialogUpdateVisible: false,
+        isDrawerUpdateVisible: false,
     });
 };
 
 const handleCancelClick = () => {
     userStore.$patch({
-        isDialogUpdateVisible: false,
+        isDrawerUpdateVisible: false,
     });
 };
 </script>

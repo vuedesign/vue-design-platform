@@ -1,5 +1,7 @@
 import { HOME_STORE_KEY } from '@/configs/storeKeys';
+import { DataUser, Share, Trophy, PreviewOpen } from '@icon-park/vue-next';
 import { findCountData } from './api';
+import { Component } from 'vue';
 
 interface HomeCountList {
     key: string;
@@ -7,7 +9,7 @@ interface HomeCountList {
     title: string;
     default: number;
     number: number;
-    icon: string;
+    icon: Component;
     bgColor: string;
     fontColor: string;
 }
@@ -43,7 +45,7 @@ export default defineStore(HOME_STORE_KEY, () => {
             title: '用户数',
             default: 0,
             number: 0,
-            icon: 'data-user',
+            icon: DataUser,
             bgColor: '#C7D9FC',
             fontColor: '#316EE8',
         },
@@ -53,7 +55,7 @@ export default defineStore(HOME_STORE_KEY, () => {
             title: '分享数',
             default: 0,
             number: 1918,
-            icon: 'share',
+            icon: Share,
             bgColor: '#BDEBB0',
             fontColor: '#2DAB0A',
         },
@@ -63,7 +65,7 @@ export default defineStore(HOME_STORE_KEY, () => {
             title: '推荐数',
             default: 0,
             number: 44,
-            icon: 'trophy',
+            icon: Trophy,
             bgColor: '#FCE2C2',
             fontColor: '#D97C0B',
         },
@@ -73,7 +75,7 @@ export default defineStore(HOME_STORE_KEY, () => {
             title: '浏览量',
             default: 0,
             number: 22983,
-            icon: 'preview-open',
+            icon: PreviewOpen,
             bgColor: '#FCC2F6',
             fontColor: '#DB1AC8',
         },
@@ -83,6 +85,9 @@ export default defineStore(HOME_STORE_KEY, () => {
     });
     const findCount = async () => {
         const count = await findCountData();
+        if (!count) {
+            return;
+        }
         console.log('findUserCount:', count);
         homeCountList.forEach((item) => {
             item.number = count[item.key];

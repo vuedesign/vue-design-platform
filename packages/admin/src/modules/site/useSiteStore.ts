@@ -10,10 +10,11 @@ import { Ref } from 'vue';
 import { SITE_STORE_KEY } from '@/configs/storeKeys';
 import { STATUS } from '@/configs/constants';
 import { TYPE } from './constants';
+import { useNavigationStore } from '../navigation/useNavigationStore';
+import { BaseItem, UpdateFieldParmas, ListFilter } from '@/types/globals';
 
-export interface SiteItem {
+export interface SiteItem extends BaseItem {
     id?: number;
-    uuid?: string;
     authorId: number;
     codeUrl: string;
     collections: number;
@@ -28,35 +29,20 @@ export interface SiteItem {
     top: number;
     type: string;
     views: number;
-    status: STATUS.DISABLE;
-    createdAt?: string;
-    updatedAt?: string;
-}
-export type SiteList = Array<SiteItem>;
-export interface SiteFilter {
-    page: number;
-    size: number;
-    order: string;
-    status: number;
-    title: string;
-}
-export interface SiteState {
-    detail: SiteItem;
-    list: SiteList;
-    filter: SiteFilter;
-    total: number;
 }
 
-export interface UpdateFieldPamas {
-    id: number;
-    field: string;
-    value: any;
-    type: string;
+export type SiteList = Array<SiteItem>;
+export interface SiteListFilter extends ListFilter {
+    order?: string;
+    type?: string | number;
+    title?: string;
 }
+
 export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: SiteItem = reactive({
-        id: 0,
+        id: undefined,
+        uuid: undefined,
         authorId: 0,
         codeUrl: '',
         collections: 0,
@@ -70,15 +56,13 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
         title: '',
         top: 0,
         type: '',
-        uuid: '',
         views: 0,
         status: STATUS.DISABLE,
         createdAt: undefined,
         updatedAt: undefined,
     });
-
     const list: Ref<SiteItem[]> = ref([]);
-    const filter: SiteFilter = reactive({
+    const filter: SiteListFilter = reactive({
         page: 1,
         size: 20,
         order: 'updatedAt DESC',
@@ -92,11 +76,12 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
      * 站点列表
      * @param query
      */
-    const find = async (query?: Record<string, any>) => {
+    const find = async (query?: any) => {
         Object.assign(filter, query);
         const res = await findData(filter);
         list.value = res.list;
         total.value = res.total;
+        return res;
     };
 
     /**
@@ -105,7 +90,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
      */
     const findOne = async (id: number) => {
         const res = await findOneData(id);
-        console.log('findOne res', res);
+        console.log('findOne res', id, res);
         Object.assign(detail, res);
     };
 
@@ -167,7 +152,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
      * 更改站点状态
      * @param data
      */
-    const updateStatus = async (data: UpdateFieldPamas) => {
+    const updateStatus = async (data: UpdateFieldParmas) => {
         const { id, field, value, type } = data;
         updateFieldData(id, {
             type,
@@ -175,7 +160,6 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
             value,
         }).then((res) => {
             if (res.affected === 1) {
-                console.log(value, '=====');
                 ElMessage({
                     type: value === STATUS.AVAILABLE ? 'success' : 'warning',
                     message:
@@ -188,10 +172,35 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
     };
 
     const isDrawerUpdateVisible = ref(false);
+    const isDrawerRecommendVisible = ref(false);
 
-    const openDrawerSite = (id: number) => {
-        isDrawerUpdateVisible.value = true;
-        findOne(id);
+    const navigationStore = useNavigationStore();
+
+    const openDrawerSite = async (id: number, type: string) => {
+        if (type === 'update') {
+            isDrawerUpdateVisible.value = true;
+            findOne(id);
+        } else {
+            isDrawerRecommendVisible.value = true;
+            const res = await findOneData(id);
+            const {
+                title,
+                description, // description
+                siteUrl,
+                iconUrl,
+                status,
+            } = res;
+            navigationStore.setNavigationItem({
+                siteId: id,
+                title,
+                description,
+                siteUrl,
+                iconUrl,
+                order: 0,
+                status,
+            });
+            navigationStore.checkIsRecommend(id);
+        }
     };
 
     return {
@@ -206,6 +215,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
         updateStatus,
         destroy,
         isDrawerUpdateVisible,
+        isDrawerRecommendVisible,
         openDrawerSite,
         drawerType,
     };

@@ -47,7 +47,7 @@ export class CreateNavigationDto {
     default: 1,
     description: '是否可用：1-可用，2-不可用',
   })
-  isShow: number;
+  status: number;
 
   createdAt?: Date;
 
