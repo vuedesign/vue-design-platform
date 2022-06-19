@@ -209,10 +209,12 @@
             <el-pagination
                 small
                 background
-                layout="prev, pager, next"
+                :layout="PAGINATION_LAYOUT"
                 :total="total"
                 v-model:page-size="filter.size"
                 v-model:current-page="filter.page"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
             />
         </template>
     </vd-card>
@@ -232,7 +234,7 @@ import {
     Delete,
     MoreOne,
 } from '@icon-park/vue-next';
-import { STATUS, statusMap } from '@/configs/constants';
+import { STATUS, statusMap, PAGINATION_LAYOUT } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
@@ -274,6 +276,13 @@ const handleMoreCommand = (command: string, id: number) => {
             break;
     }
     // console.log('command', command);
+};
+
+const handleSizeChange = (size: number) => {
+    siteStore.find({ size });
+};
+const handleCurrentChange = (page: number) => {
+    siteStore.find({ page });
 };
 </script>
 <style lang="scss" scoped>

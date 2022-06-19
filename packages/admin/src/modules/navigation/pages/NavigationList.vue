@@ -170,10 +170,12 @@
             <el-pagination
                 small
                 background
-                layout="prev, pager, next"
+                :layout="PAGINATION_LAYOUT"
                 :total="total"
                 v-model:page-size="filter.size"
                 v-model:current-page="filter.page"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
             />
         </template>
     </vd-card>
@@ -191,7 +193,7 @@ import {
     AddUser,
     AdobeIndesign,
 } from '@icon-park/vue-next';
-import { STATUS, statusMap } from '@/configs/constants';
+import { STATUS, statusMap, PAGINATION_LAYOUT } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
 import VdCard from '@/components/VdCard.vue';
@@ -232,6 +234,13 @@ const handleCreate = () => {
     siteStore.find({ size: 999, status: STATUS.AVAILABLE }).then((res) => {
         isDialogAddVisible.value = true;
     });
+};
+
+const handleSizeChange = (size: number) => {
+    navigationStore.find({ size });
+};
+const handleCurrentChange = (page: number) => {
+    navigationStore.find({ page });
 };
 </script>
 
