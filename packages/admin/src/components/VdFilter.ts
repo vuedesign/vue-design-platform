@@ -74,14 +74,20 @@ export default defineComponent({
                     h(
                         'div',
                         {
-                            style: filterInnerStyle,
+                            style: {
+                                ...filterInnerStyle,
+                                marginBottom: `-${props.vertical}px`,
+                            },
                         },
                         chilren,
                     ),
                     h(
                         'div',
                         {
-                            style: filterRightStyle,
+                            style: {
+                                ...filterRightStyle,
+                                marginBottom: `-${props.vertical}px`,
+                            },
                         },
                         rightChildren,
                     ),

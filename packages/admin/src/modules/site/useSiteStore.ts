@@ -81,6 +81,7 @@ export const useSiteStore = defineStore(SITE_STORE_KEY, () => {
         const res = await findData(filter);
         list.value = res.list;
         total.value = res.total;
+        return res;
     };
 
     /**

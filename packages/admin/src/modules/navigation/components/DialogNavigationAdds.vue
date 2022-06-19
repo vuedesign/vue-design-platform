@@ -123,18 +123,18 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { WritableComputedRef, reactive } from 'vue';
-import { STATUS, statusMap } from '@/configs/constants';
-import { headerCellStyle } from '@/configs/styles';
-import { useNavigationStore, NavigationItem } from '../useNavigationStore';
-import { useSiteStore, SiteItem } from '@/modules/site/useSiteStore';
-import { typeMap } from '@/modules/site/constants';
+import { WritableComputedRef, Ref } from 'vue';
 import {
     Send,
     CloseOne,
     Search,
     Filter as IconFilter,
 } from '@icon-park/vue-next';
+import { STATUS, statusMap } from '@/configs/constants';
+import { headerCellStyle } from '@/configs/styles';
+import { useNavigationStore, NavigationItem } from '../useNavigationStore';
+import { useSiteStore, SiteItem } from '@/modules/site/useSiteStore';
+import { typeMap } from '@/modules/site/constants';
 
 const props = defineProps({
     modelValue: {
@@ -157,6 +157,7 @@ const { list: navigationListRef } = storeToRefs(navigationStore);
 const { list: siteListRef } = storeToRefs(siteStore);
 const isInit = ref(true);
 const navigationMultipleTableRef = ref();
+const multipleSelectionRef = ref<SiteItem[]>([]);
 
 const filter = reactive({
     title: '',
@@ -168,15 +169,23 @@ onMounted(() => {
 });
 
 function defaultSelect(
-    navigationList: NavigationItem[],
-    siteList: SiteItem[],
-    navigationMultipleTable: any,
+    navigationListRef: Ref<NavigationItem[]>,
+    siteListRef: Ref<SiteItem[]>,
+    navigationMultipleTableRef: Ref<any>,
+    multipleSelectionRef: Ref<SiteItem[]>,
 ) {
-    siteList.forEach((item) => {
-        const select = navigationList.find((i) => i.siteId === item.id);
+    multipleSelectionRef.value = [];
+    navigationMultipleTableRef.value.clearSelection();
+    siteListRef.value.forEach((item) => {
+        const select = navigationListRef.value.find(
+            (i) => i.siteId === item.id,
+        );
         if (select) {
-            multipleSelection.value.push(item);
-            navigationMultipleTable.toggleRowSelection(item, undefined);
+            multipleSelectionRef.value.push(item);
+            navigationMultipleTableRef.value.toggleRowSelection(
+                item,
+                undefined,
+            );
         }
     });
 }
@@ -185,21 +194,20 @@ const title = computed(() => {
     return '推荐导航';
 });
 
-const multipleSelection = ref<SiteItem[]>([]);
 watchEffect(() => {
     if (
         [
             navigationListRef.value,
             siteListRef.value,
-            // isMounted.value,
             navigationMultipleTableRef.value,
             isInit.value,
         ].every((item) => !!item)
     ) {
         defaultSelect(
-            navigationListRef.value,
-            siteListRef.value,
-            navigationMultipleTableRef.value,
+            navigationListRef,
+            siteListRef,
+            navigationMultipleTableRef,
+            multipleSelectionRef,
         );
         isInit.value = false;
     }
@@ -207,32 +215,23 @@ watchEffect(() => {
 
 const loading = ref(false);
 
-const handleSelectionChange = (val: any) => {
-    console.log('val', val);
-    multipleSelection.value = val;
+const handleSelectionChange = (val: SiteItem[]) => {
+    multipleSelectionRef.value = val;
 };
 
-const handleSearch = () => {
+const handleSearch = async () => {
     console.log('handleSearch');
-    siteStore.find(filter);
-    if (
-        [
-            multipleSelection.value,
-            multipleSelection.value.length,
-            navigationMultipleTableRef.value,
-        ].every((item) => !!item)
-    ) {
-        multipleSelection.value.forEach((item) => {
-            navigationMultipleTableRef.value.toggleRowSelection(
-                item,
-                undefined,
-            );
-        });
-    }
+    await siteStore.find(filter);
+    defaultSelect(
+        navigationListRef,
+        siteListRef,
+        navigationMultipleTableRef,
+        multipleSelectionRef,
+    );
 };
 
-const selectable = (row, index) => {
-    return true;
+const selectable = (row: NavigationItem) => {
+    return !navigationListRef.value.some((item) => item.siteId === row.id);
 };
 
 const handleUpdateClick = async () => {
