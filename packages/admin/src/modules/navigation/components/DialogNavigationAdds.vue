@@ -220,7 +220,6 @@ const handleSelectionChange = (val: SiteItem[]) => {
 };
 
 const handleSearch = async () => {
-    console.log('handleSearch');
     await siteStore.find(filter);
     defaultSelect(
         navigationListRef,
@@ -234,10 +233,29 @@ const selectable = (row: NavigationItem) => {
     return !navigationListRef.value.some((item) => item.siteId === row.id);
 };
 
+const newMultipleSelect: Ref<NavigationItem[]> = ref([]);
 const handleUpdateClick = async () => {
-    // console.log('detail', detail.value);
+    newMultipleSelect.value = [];
+    multipleSelectionRef.value.forEach((siteItem) => {
+        if (
+            !navigationListRef.value.some(
+                (item) => item.siteId === siteItem.id,
+            ) &&
+            siteItem.id
+        ) {
+            newMultipleSelect.value.push({
+                siteId: siteItem.id,
+                title: siteItem.title,
+                description: siteItem.description || '',
+                siteUrl: siteItem.siteUrl,
+                iconUrl: siteItem.iconUrl,
+                order: 0,
+                status: STATUS.DISABLE,
+            });
+        }
+    });
     loading.value = true;
-    // await navigationStore.create(detail.value);
+    await navigationStore.createList(newMultipleSelect.value);
     loading.value = false;
     emit('update:modelValue', false);
 };

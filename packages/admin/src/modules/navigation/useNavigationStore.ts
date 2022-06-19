@@ -97,6 +97,12 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         return res;
     };
 
+    const createList = async (list: NavigationItem[]) => {
+        const res = await Promise.all(list.map((item) => createData(item)));
+        await find(filter);
+        return res;
+    };
+
     const update = async (detail: NavigationItem) => {
         const res = await updateData(detail);
         await find(filter);
@@ -162,6 +168,7 @@ export const useNavigationStore = defineStore(NAVIGATION_STORE_KEY, () => {
         resetDetail,
         del,
         create,
+        createList,
         update,
         setNavigationItem,
         isRecommend,
