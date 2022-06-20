@@ -41,7 +41,6 @@ export class SiteController {
     return this.siteService.create(createSite);
   }
 
-  @Public()
   @Get()
   @ApiQuery({
     description: '项目列表',
