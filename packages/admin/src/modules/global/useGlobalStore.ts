@@ -110,14 +110,15 @@ export const useGlobalStore = defineStore(GLOBAL_STORE_KEY, () => {
     };
 
     const logout = () => {
-        logoutData().then(() => {
-            ElMessage.success('成功退出！');
-            setTimeout(() => {
-                router.push({
-                    name: 'login',
-                });
-            }, 1000);
-        });
+        removeToken();
+        // logoutData().then(() => {
+        ElMessage.success('成功退出！');
+        // setTimeout(() => {
+        //     // router.push({
+        //     //     name: 'login',
+        //     // });
+        // }, 1000);
+        // });
     };
 
     return {
