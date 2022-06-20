@@ -44,7 +44,7 @@ export class AuthController {
       password,
     });
     console.log('data', data);
-    res.cookie('token', data.token);
+    // res.cookie('token', data.token);
     return data;
   }
 
