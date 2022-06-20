@@ -1,15 +1,15 @@
 import { HOME_STORE_KEY } from '@/configs/storeKeys';
 import { DataUser, Share, Trophy, PreviewOpen } from '@icon-park/vue-next';
 import { findCountData } from './api';
-import { Component } from 'vue';
+import { ConcreteComponent, ShallowRef, Ref } from 'vue';
 
 interface HomeCountList {
     key: string;
     timer: any;
     title: string;
-    default: number;
-    number: number;
-    icon: Component;
+    default: Ref<number>;
+    number: Ref<number>;
+    icon: ConcreteComponent;
     bgColor: string;
     fontColor: string;
 }
@@ -18,18 +18,18 @@ function runNumberTick(homeCountList: HomeCountList[]) {
     setTimeout(() => {
         homeCountList.forEach((item) => {
             item.timer = setInterval(() => {
-                const len = item.number.toString().length;
+                const len = item.number.value.toString().length;
                 const num = Number(
                     new Array(len)
                         .fill(1)
                         .map((item, index) => (index > 0 ? 0 : 1))
                         .join(''),
                 );
-                if (item.number > num - 1) {
-                    item.default = item.default + num;
-                    item.number = item.number - num;
+                if (item.number.value > num - 1) {
+                    item.default.value = item.default.value + num;
+                    item.number.value = item.number.value - num;
                 }
-                if (item.number === 0) {
+                if (item.number.value === 0) {
                     clearInterval(item.timer);
                 }
             }, 50);
@@ -38,13 +38,13 @@ function runNumberTick(homeCountList: HomeCountList[]) {
 }
 
 export default defineStore(HOME_STORE_KEY, () => {
-    const homeCountList: HomeCountList[] = reactive([
+    const homeCountList: ShallowRef<HomeCountList[]> = shallowRef([
         {
             key: 'user',
             timer: null,
             title: '用户数',
-            default: 0,
-            number: 0,
+            default: ref(0),
+            number: ref(0),
             icon: DataUser,
             bgColor: '#C7D9FC',
             fontColor: '#316EE8',
@@ -53,8 +53,8 @@ export default defineStore(HOME_STORE_KEY, () => {
             key: 'site',
             timer: null,
             title: '分享数',
-            default: 0,
-            number: 1918,
+            default: ref(0),
+            number: ref(0),
             icon: Share,
             bgColor: '#BDEBB0',
             fontColor: '#2DAB0A',
@@ -63,8 +63,8 @@ export default defineStore(HOME_STORE_KEY, () => {
             key: 'navigation',
             timer: null,
             title: '推荐数',
-            default: 0,
-            number: 44,
+            default: ref(0),
+            number: ref(0),
             icon: Trophy,
             bgColor: '#FCE2C2',
             fontColor: '#D97C0B',
@@ -73,8 +73,8 @@ export default defineStore(HOME_STORE_KEY, () => {
             key: 'view',
             timer: null,
             title: '浏览量',
-            default: 0,
-            number: 22983,
+            default: ref(0),
+            number: ref(2424),
             icon: PreviewOpen,
             bgColor: '#FCC2F6',
             fontColor: '#DB1AC8',
@@ -89,10 +89,11 @@ export default defineStore(HOME_STORE_KEY, () => {
             return;
         }
         console.log('findUserCount:', count);
-        homeCountList.forEach((item) => {
-            item.number = count[item.key];
+
+        homeCountList.value.forEach((item) => {
+            item.number.value = count[item.key];
         });
-        runNumberTick(homeCountList);
+        runNumberTick(homeCountList.value);
     };
     return {
         findCount,

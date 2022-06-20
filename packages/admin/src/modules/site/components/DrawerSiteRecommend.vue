@@ -164,7 +164,7 @@ const handleCancelClick = () => {
 }
 .drawer-site-recommend-card {
     box-sizing: border-box;
-    // width: 100%;
+    width: 100%;
     padding: 24px;
 }
 .drawer-site-recommend-footer {

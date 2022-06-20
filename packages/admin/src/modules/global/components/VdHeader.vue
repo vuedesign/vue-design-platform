@@ -50,29 +50,26 @@
                         placement="bottom-end"
                         trigger="click"
                         popper-class="vd-profile"
+                        @command="handleUserMenuCommand"
                     >
                         <el-avatar :size="32" :src="profile.avatar">
                             <el-icon :size="16"><me /></el-icon>
                         </el-avatar>
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item>
-                                    <el-icon>
-                                        <id-card />
-                                    </el-icon>
-                                    <span class="menu-text">个人中心</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item>
-                                    <el-icon>
-                                        <share />
-                                    </el-icon>
-                                    <span class="menu-text">分享</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
-                                    <el-icon>
-                                        <power />
-                                    </el-icon>
-                                    <span class="menu-text">退出</span>
+                                <el-dropdown-item
+                                    v-for="item in userMenuList"
+                                    :key="item.value"
+                                    :divided="item.divided"
+                                    :command="item.value"
+                                >
+                                    <el-space>
+                                        <el-icon>
+                                            <component :is="item.icon" />
+                                            <!-- <id-card /> -->
+                                        </el-icon>
+                                        <span>{{ item.label }}</span>
+                                    </el-space>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
@@ -97,11 +94,44 @@ import {
     Me,
     MessagesOne,
 } from '@icon-park/vue-next';
+import { ConcreteComponent, ShallowRef } from 'vue';
 import { useGlobalStore } from '../useGlobalStore';
 const globalStore = useGlobalStore();
 const { breadcrumbList, profile } = storeToRefs(globalStore);
 globalStore.findProfile();
 
+interface UserMenuItem {
+    value: string;
+    label: string;
+    divided?: boolean;
+    icon: ConcreteComponent;
+}
+const userMenuList: ShallowRef<UserMenuItem[]> = shallowRef([
+    {
+        value: 'mine',
+        label: '个人中心',
+        icon: IdCard,
+    },
+    {
+        value: 'share',
+        label: '分享',
+        icon: Share,
+    },
+    {
+        value: 'logout',
+        label: '退出',
+        divided: true,
+        icon: Power,
+    },
+]);
+const handleUserMenuCommand = (command: string) => {
+    console.log('command', command);
+    switch (command) {
+        case 'logout':
+            globalStore.logout();
+            break;
+    }
+};
 const gridData = [
     {
         date: '2016-05-02',
