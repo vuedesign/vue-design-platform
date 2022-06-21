@@ -10,6 +10,8 @@ import {
   UseInterceptors,
   Req,
   Res,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { OssService } from './oss.service';
@@ -19,11 +21,12 @@ import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from '@/core/decorators/auth.decorator';
+import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { ensureDirSync } from 'fs-extra';
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { FileListQueryDto } from './dto/file.dto';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 
 const md5 = require('md5');
 
@@ -69,7 +72,7 @@ const fileMap = {
   2: ['image/gif'],
 };
 
-@Controller('file')
+@Controller('files')
 @ApiTags('公共模块')
 @ApiBearerAuth()
 export class FileController {
@@ -135,22 +138,45 @@ export class FileController {
   }
 
   @Get()
-  findAll() {
-    return this.fileService.findAll();
+  @ApiQuery({
+    description: '项目列表',
+    type: FileListQueryDto,
+  })
+  findAll(@Query(new QueryTransformPipe()) query: FileListQueryDto) {
+    const { status, size = 20, page = 1, order } = query;
+    type QueryDto = {
+      size: number;
+      page: number;
+      order: Record<string, any>;
+      where: Record<string, any>;
+    };
+    const options: QueryDto = {
+      size,
+      page,
+      order: {
+        updatedAt: 'DESC',
+      },
+      where: {},
+    };
+    console.log('options', options);
+    return this.fileService.findList(options);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fileService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.fileService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.fileService.update(+id, updateFileDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateFileDto: UpdateFileDto,
+  ) {
+    return this.fileService.update(id, updateFileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fileService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.fileService.remove(id);
   }
 }

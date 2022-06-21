@@ -1,10 +1,14 @@
-import { BaseService } from '@/globals/services/base.service';
+import {
+  BaseService,
+  IPaginationResponse,
+  IPaginationQuery,
+} from '@/globals/services/base.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { FileEntity } from '../../entities/file.entity';
+import { FileEntity } from '@/entities/file.entity';
 
 @Injectable()
 export class FileService extends BaseService {
@@ -20,19 +24,25 @@ export class FileService extends BaseService {
     return this.fileRepository.save(createFile);
   }
 
-  findAll() {
-    return `This action returns all file`;
+  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
+    return this.findListAndPage(query);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} file`;
+  findOne(query: any): Promise<FileEntity | undefined> {
+    return this.fileRepository.findOne({
+      where: query,
+    });
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
-    return `This action updates a #${id} file`;
+  update(id: number, updateUserDto: UpdateFileDto) {
+    return this.fileRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} file`;
+    return this.fileRepository.delete(id);
+  }
+
+  count() {
+    return this.fileRepository.count();
   }
 }
