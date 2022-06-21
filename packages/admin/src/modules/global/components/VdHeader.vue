@@ -66,7 +66,6 @@
                                     <el-space>
                                         <el-icon>
                                             <component :is="item.icon" />
-                                            <!-- <id-card /> -->
                                         </el-icon>
                                         <span>{{ item.label }}</span>
                                     </el-space>
@@ -128,7 +127,7 @@ const handleUserMenuCommand = (command: string) => {
     console.log('command', command);
     switch (command) {
         case 'logout':
-            globalStore.logout();
+            globalStore.removeToken();
             break;
     }
 };

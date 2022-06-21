@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { findProfileData, loginData, logoutData } from './api';
+import { findProfileData, loginData } from './api';
 import { router, http } from '@/core';
 import menuTree, { MenuNode } from '@/configs/menuTree';
 import { GLOBAL_STORE_KEY } from '@/configs/storeKeys';
@@ -48,6 +48,7 @@ export const useGlobalStore = defineStore(GLOBAL_STORE_KEY, () => {
     const removeToken = (): void => {
         window.localStorage.removeItem(TOKEN_KEY);
         window.location.reload();
+        ElMessage.success('成功退出！');
     };
 
     const login = async (formData: LoginFormData): Promise<void> => {
@@ -109,18 +110,6 @@ export const useGlobalStore = defineStore(GLOBAL_STORE_KEY, () => {
         setActive(menuList.value, name);
     };
 
-    const logout = () => {
-        removeToken();
-        // logoutData().then(() => {
-        ElMessage.success('成功退出！');
-        // setTimeout(() => {
-        //     // router.push({
-        //     //     name: 'login',
-        //     // });
-        // }, 1000);
-        // });
-    };
-
     return {
         profile,
         findProfile,
@@ -133,7 +122,6 @@ export const useGlobalStore = defineStore(GLOBAL_STORE_KEY, () => {
         pushBreadcrumb,
         resetBreadcrumb,
         resetActive,
-        logout,
     };
 });
 

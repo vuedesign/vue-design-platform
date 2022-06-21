@@ -35,7 +35,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VdCard: typeof import('./../components/VdCard.vue')['default']
-    VdFilter: typeof import('./../components/VdFilter.vue')['default']
   }
 }
 
