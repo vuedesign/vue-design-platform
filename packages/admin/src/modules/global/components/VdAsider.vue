@@ -1,7 +1,9 @@
 <template>
     <div class="vd-asider">
         <div class="logo">
-            <a href="#"><img :src="logo" /></a>
+            <a href="javascript:void(0)" @click="handleGotoHome">
+                <img :src="logo" />
+            </a>
         </div>
         <div class="menu">
             <vd-menu-item
@@ -50,6 +52,12 @@ const handleGoto = (props: MenuNode) => {
     globalStore.pushBreadcrumb(name);
     router.push({
         name,
+    });
+};
+
+const handleGotoHome = () => {
+    router.push({
+        name: 'home',
     });
 };
 </script>

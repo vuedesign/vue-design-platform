@@ -22,7 +22,7 @@ export enum TYPE {
 }
 
 export const typeMap = new Map([
-    [TYPE.ALL, '全部'],
+    [TYPE.ALL, '全部类型'],
     [TYPE.IMAGE, '图片（png、jpeg）'],
     [TYPE.GIF, '动图（gif）'],
     [TYPE.MP3, '音频（mp3）'],
