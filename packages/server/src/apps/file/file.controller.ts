@@ -72,6 +72,16 @@ const fileMap = {
   2: ['image/gif'],
 };
 
+function getFileType(mimetype: string) {
+  const item = Object.entries(fileMap).find(([, value]) => {
+    return value.includes(mimetype);
+  });
+  if (item) {
+    return Number(item[0]);
+  }
+  return 0;
+}
+
 @Controller('files')
 @ApiTags('公共模块')
 @ApiBearerAuth()
@@ -89,7 +99,7 @@ export class FileController {
     @Req() req: Request & { user: { id: number } },
   ) {
     console.log('file', file);
-    const type: number = this.getFileType(file.mimetype);
+    const type = getFileType(file.mimetype);
     const filePath = getFilePath();
     const ossfilename = join(filePath, `${file.filename}`);
     const destfilename = join(file.destination, `${file.filename}`);
@@ -120,16 +130,6 @@ export class FileController {
     if (createRes) {
       return createRes;
     }
-  }
-
-  getFileType(mimetype) {
-    const item = Object.entries(fileMap).find(([, value]) => {
-      return value.includes(mimetype);
-    });
-    if (item) {
-      return Number(item[0]);
-    }
-    return 0;
   }
 
   @Post()
