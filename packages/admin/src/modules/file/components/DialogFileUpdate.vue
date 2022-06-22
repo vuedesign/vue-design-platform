@@ -87,11 +87,11 @@ import {
     ElSwitch,
 } from 'element-plus';
 
-import useUserStore from '../useUserStore';
+import useFileStore from '../useFileStore';
 import { storeToRefs } from 'pinia';
 import { ruleMap } from '../constants';
 
-const userStore = useUserStore();
+const userStore = useFileStore();
 const { isDialogUpdateVisible, detail } = storeToRefs(userStore);
 const formLabelWidth = '60px';
 const handleClick = () => {

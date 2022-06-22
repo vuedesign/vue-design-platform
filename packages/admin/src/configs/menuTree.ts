@@ -25,8 +25,8 @@ export default <MenuNode[]>[
                 icon: 'Navigation',
             },
             {
-                label: '素材管理',
-                value: 'material',
+                label: '文件管理',
+                value: 'file',
                 icon: 'PictureOne',
             },
         ],

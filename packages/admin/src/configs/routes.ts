@@ -2,7 +2,7 @@ import globals from '../modules/global/routes';
 import homeRoutes from '../modules/home/routes';
 import userRoutes from '../modules/user/routes';
 import buriedRoutes from '../modules/buried/routes';
-import materialRoutes from '../modules/material/routes';
+import fileRoutes from '../modules/file/routes';
 import navigationRoutes from '../modules/navigation/routes';
 import siteRoutes from '../modules/site/routes';
 
@@ -18,7 +18,7 @@ export default [
             ...homeRoutes,
             ...userRoutes,
             ...buriedRoutes,
-            ...materialRoutes,
+            ...fileRoutes,
             ...navigationRoutes,
             ...siteRoutes,
         ],
