@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileEntity } from '@/entities/file.entity';
+import { UpdateFieldDto } from './dto/file.dto';
 
 @Injectable()
 export class FileService extends BaseService {
@@ -36,6 +37,16 @@ export class FileService extends BaseService {
 
   update(id: number, updateUserDto: UpdateFileDto) {
     return this.fileRepository.update(id, updateUserDto);
+  }
+
+  updateField(id: number, updateField: UpdateFieldDto) {
+    const value =
+      updateField.type === 'number'
+        ? Number(updateField.value)
+        : updateField.value;
+    return this.fileRepository.update(id, {
+      [updateField.field]: value,
+    });
   }
 
   remove(id: number) {

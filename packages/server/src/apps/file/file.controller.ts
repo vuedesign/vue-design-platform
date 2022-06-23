@@ -9,7 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
-  Res,
+  Patch,
   Query,
   ParseIntPipe,
 } from '@nestjs/common';
@@ -25,7 +25,7 @@ import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { ensureDirSync } from 'fs-extra';
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { FileListQueryDto } from './dto/file.dto';
+import { FileListQueryDto, UpdateFieldDto } from './dto/file.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 
 const md5 = require('md5');
@@ -170,9 +170,17 @@ export class FileController {
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateFileDto: UpdateFileDto,
+    @Body() updateFile: UpdateFileDto,
   ) {
-    return this.fileService.update(id, updateFileDto);
+    return this.fileService.update(id, updateFile);
+  }
+
+  @Patch(':id')
+  updateField(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateField: UpdateFieldDto,
+  ) {
+    return this.fileService.updateField(id, updateField);
   }
 
   @Delete(':id')

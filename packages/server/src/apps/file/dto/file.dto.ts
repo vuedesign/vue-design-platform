@@ -47,3 +47,20 @@ export class FileListQueryDto {
   })
   status?: FileStatus;
 }
+
+export class UpdateFieldDto {
+  @ApiProperty({
+    description: '要更新的字段',
+  })
+  field: string;
+
+  @ApiProperty({
+    description: '要更新的数据',
+  })
+  value: string;
+
+  @ApiProperty({
+    description: '数据类型',
+  })
+  type: string;
+}
