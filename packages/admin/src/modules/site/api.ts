@@ -23,7 +23,7 @@ export function updateFieldData(
     return http.patch(`/api/v1/sites/${id}`, data);
 }
 
-export function createData(data: SiteItem) {
+export function createData(data: SiteItem): Promise<UpdateResult> {
     return http.post(`/api/v1/sites`, data);
 }
 
@@ -31,6 +31,6 @@ export function updateData(data: SiteItem): Promise<UpdateResult> {
     return http.put(`/api/v1/sites/${data.id}`, data);
 }
 
-export function destroyData(id: number) {
+export function destroyData(id: number): Promise<UpdateResult> {
     return http.delete(`/api/v1/sites/${id}`);
 }

@@ -194,19 +194,18 @@ import { typeMap } from '../constants';
 import useFileStore from '../useFileStore';
 
 const fileStore = useFileStore();
-const { filter, total, list, isDialogUpdateVisible } = storeToRefs(fileStore);
+const { filter, total, list } = storeToRefs(fileStore);
 
 fileStore.find();
 
 const handleSearch = (id: number) => {
     fileStore.find(filter.value);
 };
-const handleUpdate = (id: number) => {
-    fileStore.findOne(id);
-    isDialogUpdateVisible.value = true;
-};
+// const handleUpdate = (id: number) => {
+//     fileStore.findOne(id);
+//     isDialogUpdateVisible.value = true;
+// };
 const handleDel = (id: number) => {
-    console.log('id', id);
     fileStore.destroy(id);
 };
 // const handleCreate = () => {

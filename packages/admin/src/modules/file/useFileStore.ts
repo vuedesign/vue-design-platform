@@ -1,13 +1,6 @@
 import { Ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
-import {
-    findData,
-    findOneData,
-    updateFieldData,
-    createData,
-    updateData,
-    destroyData,
-} from './api';
+import { findData, findOneData, updateFieldData, destroyData } from './api';
 import { STATUS, TYPE } from './constants';
 import { MATERIAL_STORE_KEY } from '@/configs/storeKeys';
 import { BaseItem, UpdateFieldParmas, ListFilter } from '@/types/globals';
@@ -92,6 +85,7 @@ export default defineStore(MATERIAL_STORE_KEY, () => {
             field,
             value,
         }).then((res) => {
+            debugger;
             if (res.affected === 1) {
                 ElMessage({
                     type: value === STATUS.AVAILABLE ? 'success' : 'warning',
