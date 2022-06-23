@@ -14,7 +14,7 @@ import type { NavigationListResponse } from '../types/navigation'
 const queryDetail: FindSiteQuery = {
   size: 20,
   page: 1,
-  type: 'all'
+  type: undefined
 }
 
 export async function getStaticProps() {

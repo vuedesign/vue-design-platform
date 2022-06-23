@@ -14,7 +14,7 @@ import { useSiteList } from '../pages/hooks/useSiteList'
 const queryDetail: FindSiteQuery = {
   size: 20,
   page: 1,
-  type: 'all'
+  type: undefined
 }
 
 export async function getStaticProps() {
@@ -37,7 +37,7 @@ const Find: NextPage<FindProps> = ({ site }: FindProps) => {
   const context = { list, setList, query, setQuery, total, setTotal }
   useEffect(() => {
     findSite(query).then(res => {
-      //   console.log('findSite update:', res)
+      console.log('findSite update:', res)
       setList(res.list)
       setTotal(res.total)
     })

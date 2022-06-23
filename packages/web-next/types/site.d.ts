@@ -5,7 +5,7 @@ export interface User {
   username: string
 }
 
-export type SiteType = 'site' | 'code' | 'all'
+export type SiteType = 'site' | 'code'
 
 export interface SiteItemType {
   id?: number

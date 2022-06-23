@@ -7,7 +7,7 @@ import { NavigationListResponse } from '../types/navigation'
 export interface FindSiteQuery {
   size: number
   page: number
-  type: SiteType
+  type?: SiteType
 }
 
 export function findSite(query?: FindSiteQuery): Promise<SiteListResponse> {
