@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 import { findSite, FindSiteQuery } from '../globals/apis'
 import { SiteListContext } from './hooks/SiteListContext'
 import type { SiteListResponse } from '../types/site'
-import { useSiteList } from '../pages/hooks/useSiteList'
+// import { useSiteList } from '../hooks/useSiteList'
 
 const queryDetail: FindSiteQuery = {
   size: 20,

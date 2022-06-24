@@ -46,6 +46,7 @@ const More = ({ type }: ListProps) => {
 const List = ({ type }: ListProps) => {
   const context = useContext(SiteListContext)
   const list = context.list || []
+  console.log('list', list)
   return (
     <section className={styles.container}>
       <section className={styles.main}>

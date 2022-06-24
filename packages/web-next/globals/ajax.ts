@@ -48,20 +48,22 @@ export function setToken(token: string) {
   ajaxInstance.defaults.headers.common.Authorization = `Bearer ${token}`
 }
 
-function authorization() {
+function authorization(config?: AxiosRequestConfig) {
   //   const token = useCookie('token')
-  return {
-    headers: {
-      Authorization: `Bearer `
-    }
-  }
+  //   console.log('token', token)
+  return Object.assign(
+    {},
+    {
+      headers: {
+        Authorization: `Bearer `
+      }
+    },
+    config || {}
+  )
 }
 
-export function ajaxGet<D>(url: string, config?: AxiosRequestConfig) {
-  return ajaxInstance.get<any, D>(url, {
-    ...authorization(),
-    ...config
-  })
+export function ajaxGet<D>(url: string, config: AxiosRequestConfig = {}) {
+  return ajaxInstance.get<any, D>(url, authorization(config))
 }
 
 export function ajaxPost<D>(
@@ -70,10 +72,7 @@ export function ajaxPost<D>(
   config?: AxiosRequestConfig
 ) {
   console.log('data', data)
-  return ajaxInstance.post<any, D>(url, data, {
-    // ...authorization(),
-    ...config
-  })
+  return ajaxInstance.post<any, D>(url, data, authorization(config))
 }
 //
 export function ajaxPut<D>(
@@ -81,24 +80,15 @@ export function ajaxPut<D>(
   data: any,
   config?: AxiosRequestConfig
 ) {
-  return ajaxInstance.put<any, D>(url, data, {
-    ...authorization(),
-    ...config
-  })
+  return ajaxInstance.put<any, D>(url, data, authorization(config))
 }
 
 export function ajaxPatch(url: string, data: any, config?: AxiosRequestConfig) {
-  return ajaxInstance.patch(url, data, {
-    ...authorization(),
-    ...config
-  })
+  return ajaxInstance.patch(url, data, authorization(config))
 }
 
 export function ajaxDelete(url: string, config?: AxiosRequestConfig) {
-  return ajaxInstance.delete(url, {
-    ...authorization(),
-    ...config
-  })
+  return ajaxInstance.delete(url, authorization(config))
 }
 
 export default ajaxInstance
