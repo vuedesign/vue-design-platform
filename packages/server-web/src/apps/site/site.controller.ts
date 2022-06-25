@@ -15,11 +15,16 @@ import { SiteService } from './site.service';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
-import { Like } from 'typeorm';
+import { Like, FindOptionsRelations } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
+import { SiteEntity } from '@/entities/site.entity';
+
+function selectFilter(entity, filters) {
+  console.log('selectFilter===');
+}
 
 @Controller('sites')
 @ApiTags('站点模块')
@@ -41,6 +46,7 @@ export class SiteController {
     return this.siteService.create(createSite);
   }
 
+  @Public()
   @Get()
   @ApiQuery({
     description: '项目列表',
@@ -51,11 +57,15 @@ export class SiteController {
     console.log('size=========', query);
     console.log('order', order); // new | hot | ai
 
+    selectFilter(SiteEntity, []);
+
     type QueryDto = {
       size: number;
       page: number;
       order: Record<string, any>;
       where: Record<string, any>;
+      relations: FindOptionsRelations<any>;
+      select?: Record<string, any>;
     };
     const options: QueryDto = {
       size,
@@ -64,6 +74,17 @@ export class SiteController {
         updatedAt: 'DESC',
       },
       where: {},
+      select: {
+        author: {
+          uuid: true,
+          avatar: true,
+          username: true,
+          nickname: true,
+        },
+      },
+      relations: {
+        author: true,
+      },
     };
 
     if (order) {
