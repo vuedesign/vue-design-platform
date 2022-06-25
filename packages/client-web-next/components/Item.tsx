@@ -1,19 +1,20 @@
-import styles from '../styles/Item.module.scss'
-import type { SiteItemType } from '../types/site.d'
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react'
+import styles from "../styles/Item.module.scss";
+import type { SiteItemType } from "../types/site.d";
+import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from "@icon-park/react";
+import Image from "next/image";
 
 const defaultProps = {
-  thumbUrl: '',
+  thumbUrl: "",
   id: 0,
-  title: '',
-  description: '',
+  title: "",
+  description: "",
   tags: () => [],
-  user: () => ({
-    avatar: 'string',
-    username: 'string'
+  author: () => ({
+    avatar: "string",
+    username: "string",
   }),
-  type: 'site'
-}
+  type: "site",
+};
 
 const Item = (props: SiteItemType) => {
   return (
@@ -23,7 +24,7 @@ const Item = (props: SiteItemType) => {
           <a
             href="#"
             style={{
-              backgroundImage: `url('${props.thumbUrl}')`
+              backgroundImage: `url('${props.thumbUrl}')`,
             }}
           ></a>
         </div>
@@ -36,18 +37,21 @@ const Item = (props: SiteItemType) => {
               <ThumbsDown theme="outline" size="16" fill="#666" />
             </dd>
             <dt>
-              {props.user && props.user.avatar && (
-                <img src={props.user.avatar} />
-              )}
+              <Image
+                src={props.author.avatar}
+                alt={props.author.username}
+                width={28}
+                height={28}
+              />
             </dt>
             <dd>
               <Like theme="outline" size="16" fill="#666" />
             </dd>
             <dd>
-              {props.type === 'site' && (
+              {props.type === "site" && (
                 <Home theme="outline" size="16" fill="#666" />
               )}
-              {props.type === 'code' && (
+              {props.type === "code" && (
                 <GithubOne theme="outline" size="16" fill="#666" />
               )}
             </dd>
@@ -64,7 +68,7 @@ const Item = (props: SiteItemType) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;
