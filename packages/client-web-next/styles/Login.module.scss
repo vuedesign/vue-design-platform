@@ -1,0 +1,23 @@
+.container {
+  padding: 100px;
+}
+
+.inner {
+  width: 800px;
+  margin: 0 auto;
+  display: flex;
+  min-height: 300px;
+}
+
+.right {
+  flex: 1;
+}
+.left {
+  width: 400px;
+}
+
+.left-inner {
+  border: 1px solid #eee;
+  height: 100%;
+  padding: 20px 40px 0 40px;
+}
