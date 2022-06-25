@@ -18,6 +18,7 @@
     "element-plus": "^2.2.6",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.13",
+    "ufo": "^0.8.4",
     "vue3-popper": "^1.4.2"
   },
   "license": "MIT"

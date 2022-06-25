@@ -1,29 +1,25 @@
 <template>
-  <el-layout-content class="page-login">
+  <div class="page-login">
     <div class="page-login-inner">
       <div class="page-login-left">
         <div class="page-login-left-inner">
-          <div class="ant-divider-with-text" role="separator">
-            <span class="ant-divider-inner-text">登录</span>
-          </div>
-          <el-form
-            layout="horizontal"
-            :model="formData"
-            :wrapper-col="wrapperCol"
-          >
+          <el-divider content-position="left">登录</el-divider>
+          <el-form label-position="left" label-width="100px" :model="formData">
             <el-form-item class="login-item">
               <el-input
-                v-model:value="formData.account"
+                v-model="formData.account"
                 placeholder="用户名/手机号/邮箱"
               >
                 <template #prefix>
-                  <User style="color: rgba(0, 0, 0, 0.25)" />
+                  <el-icon>
+                    <User />
+                  </el-icon>
                 </template>
               </el-input>
             </el-form-item>
             <el-form-item class="login-item">
               <el-input
-                v-model:value="formData.password"
+                v-model="formData.password"
                 type="password"
                 placeholder="密码"
               >
@@ -36,51 +32,46 @@
             </el-form-item>
             <el-form-item class="login-item">
               <el-button
-                block
                 type="primary"
                 :disabled="formData.account === '' || formData.password === ''"
                 @click="handleLogin"
               >
                 登 录
               </el-button>
-              <el-button block type="link" @click="handleGotoRegister">
-                注 册
-              </el-button>
+              <el-button link @click="handleGotoRegister">注 册</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
-      <div class="page-login-right" />
+      <div class="page-login-right"></div>
     </div>
-  </el-layout-content>
+  </div>
 </template>
 <script lang="ts">
 export default {
-  name: 'login'
-}
+  name: "login",
+};
 </script>
 <script lang="ts" setup>
-import { reactive } from 'vue'
-import { User, Lock } from '@icon-park/vue-next'
+import { reactive } from "vue";
+import { User, Lock } from "@icon-park/vue-next";
 
-const globalStore = useGlobalStore()
+const globalStore = useGlobalStore();
 
 const formData = reactive({
-  account: '18602042482',
-  password: 'string'
-})
+  account: "18602042483",
+  password: "string",
+});
 
 const handleLogin = () => {
-  globalStore.login(formData)
-}
+  globalStore.login(formData);
+};
 
 const handleGotoRegister = () => {
   navigateTo({
-    path: '/register'
-  })
-}
-
-const wrapperCol = reactive({ span: 24 })
+    path: "/register",
+  });
+};
 </script>
 
 <style scoped lang="scss">

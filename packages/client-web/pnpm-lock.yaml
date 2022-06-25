@@ -8,6 +8,7 @@ specifiers:
   nuxt: 3.0.0-rc.4
   pinia: ^2.0.13
   sass: ^1.49.11
+  ufo: ^0.8.4
   unplugin-vue-components: ^0.18.5
   vue3-popper: ^1.4.2
 
@@ -17,6 +18,7 @@ dependencies:
   element-plus: registry.npmmirror.com/element-plus/2.2.6_vue@3.2.37
   normalize.css: registry.npmmirror.com/normalize.css/8.0.1
   pinia: registry.npmmirror.com/pinia/2.0.14_vue@3.2.37
+  ufo: registry.npmmirror.com/ufo/0.8.4
   vue3-popper: registry.npmmirror.com/vue3-popper/1.5.0_vue@3.2.37
 
 devDependencies:
@@ -5818,7 +5820,6 @@ packages:
     resolution: {integrity: sha512-/+BmBDe8GvlB2nIflWasLLAInjYG0bC9HRnfEpNi4sw77J2AJNnEVnTDReVrehoh825+Q/evF3THXTAweyam2g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ufo/-/ufo-0.8.4.tgz}
     name: ufo
     version: 0.8.4
-    dev: true
 
   registry.npmmirror.com/unctx/1.1.4_4mifhig4dhgnrt67tg257xfjai:
     resolution: {integrity: sha512-fQMML+GjUpIjQa0HBrrJezo2dFpTAbQbU0/KFKw4T5wpc9deGjLHSYthdfNAo2xSWM34csI6arzedezQkqtfGw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unctx/-/unctx-1.1.4.tgz}
