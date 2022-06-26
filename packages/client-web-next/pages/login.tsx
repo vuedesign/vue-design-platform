@@ -5,12 +5,18 @@ import styles from "../styles/Login.module.scss";
 import { loginData } from "../globals/apis";
 import { Divider, Form, Input, Button, Checkbox } from "antd";
 import { User, Lock } from "@icon-park/react";
+import { TOKEN_KEY } from "../globals/globals.contant";
+import { useRouter } from "next/router";
+import ajax from "../globals/ajax";
 
 const Login: NextPage<any> = () => {
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const onFinish = (values: any) => {
     loginData(values).then((res) => {
+      window.localStorage.setItem(TOKEN_KEY, res);
+      router.push("/");
       console.log("res", res);
     });
     console.log("Success:", values);
@@ -25,7 +31,7 @@ const Login: NextPage<any> = () => {
     password: [{ required: true, message: "请输入用户密码!" }],
   };
 
-  const [account, setAccount] = useState("18602042483");
+  const [account, setAccount] = useState("18602042484");
   const [password, setPassword] = useState("string");
 
   return (

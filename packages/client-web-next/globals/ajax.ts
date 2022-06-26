@@ -6,6 +6,10 @@ const ajaxInstance = axios.create({
   baseURL: "http://localhost:3003/api/v1",
 });
 
+if (process.env.TOKEN) {
+  setToken(process.env.TOKEN);
+}
+
 ajaxInstance.interceptors.request.use(
   (config) => {
     return config;
@@ -17,7 +21,7 @@ ajaxInstance.interceptors.request.use(
 
 ajaxInstance.interceptors.response.use(
   (response) => {
-    // console.log('response', response.data)
+    // console.log("response=============", response.data);
     if (response.data && response.data.retcode === SUCCESS_STATUS_CODE) {
       return response.data.data;
     } else if (response.data && response.data.retcode === ERROR_STATUS_CODE) {
@@ -49,8 +53,6 @@ export function setToken(token: string) {
 }
 
 function authorization(config?: AxiosRequestConfig) {
-  //   const token = useCookie('token')
-  //   console.log('token', token)
   return Object.assign(
     {},
     {

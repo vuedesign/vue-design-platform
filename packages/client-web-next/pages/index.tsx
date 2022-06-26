@@ -20,8 +20,6 @@ const queryDetail: FindSiteQuery = {
 export async function getStaticProps() {
   const navigation = await findNavData();
   const site = await findSiteData();
-  //   console.log("site=================", site);
-  //   console.log("navigation=================", navigation);
   return {
     props: {
       site,
