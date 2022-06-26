@@ -1,45 +1,45 @@
-import Head from 'next/head'
-import { useState } from 'react'
-import type { NextPage } from 'next'
-import styles from '../styles/Home.module.scss'
-import List from '../components/List'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { findSite, findNav, FindSiteQuery } from '../globals/apis'
-import { SiteListContext } from './hooks/SiteListContext'
-import { NavigationListContext } from './hooks/NavigationListContext'
-import type { SiteListResponse } from '../types/site'
-import type { NavigationListResponse } from '../types/navigation'
+import Head from "next/head";
+import { useState } from "react";
+import type { NextPage } from "next";
+import styles from "../styles/Home.module.scss";
+import List from "../components/List";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { findSiteData, findNavData, FindSiteQuery } from "../globals/apis";
+import { SiteListContext } from "./hooks/SiteListContext";
+import { NavigationListContext } from "./hooks/NavigationListContext";
+import type { SiteListResponse } from "../types/site";
+import type { NavigationListResponse } from "../types/navigation";
 
 const queryDetail: FindSiteQuery = {
   size: 20,
   page: 1,
-  type: undefined
-}
+  type: undefined,
+};
 
 export async function getStaticProps() {
-  const navigation = await findNav()
-  const site = await findSite()
-  console.log('site=================', site)
-  console.log('navigation=================', navigation)
+  const navigation = await findNavData();
+  const site = await findSiteData();
+  //   console.log("site=================", site);
+  //   console.log("navigation=================", navigation);
   return {
     props: {
       site,
-      navigation
-    }
-  }
+      navigation,
+    },
+  };
 }
 
 type HomeProps = {
-  site: SiteListResponse
-  navigation: NavigationListResponse
-}
+  site: SiteListResponse;
+  navigation: NavigationListResponse;
+};
 
 const Home: NextPage<HomeProps> = ({ site, navigation }: HomeProps) => {
-  const [navList] = useState(navigation.list)
-  const [list, setList] = useState(site.list)
-  const [query, setQuery] = useState(queryDetail)
-  const [total, setTotal] = useState(site.total)
+  const [navList] = useState(navigation.list);
+  const [list, setList] = useState(site.list);
+  const [query, setQuery] = useState(queryDetail);
+  const [total, setTotal] = useState(site.total);
   //   const siteContext = { list, setList, query, setQuery, total, setTotal }
   return (
     <div className={styles.container}>
@@ -58,7 +58,7 @@ const Home: NextPage<HomeProps> = ({ site, navigation }: HomeProps) => {
         <Footer />
       </SiteListContext.Provider>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

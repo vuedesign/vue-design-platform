@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Login.module.scss";
-import { findSite, FindSiteQuery } from "../globals/apis";
+import { loginData } from "../globals/apis";
 import { Divider, Form, Input, Button, Checkbox } from "antd";
 import { User, Lock } from "@icon-park/react";
 
@@ -10,6 +10,9 @@ const Login: NextPage<any> = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
+    loginData(values).then((res) => {
+      console.log("res", res);
+    });
     console.log("Success:", values);
   };
 
@@ -18,11 +21,11 @@ const Login: NextPage<any> = () => {
   };
 
   const rules = {
-    username: [{ required: true, message: "请输入用户名称!" }],
+    account: [{ required: true, message: "请输入用户名称!" }],
     password: [{ required: true, message: "请输入用户密码!" }],
   };
 
-  const [username, setUsername] = useState("18602042483");
+  const [account, setAccount] = useState("18602042483");
   const [password, setPassword] = useState("string");
 
   return (
@@ -40,12 +43,12 @@ const Login: NextPage<any> = () => {
               <Form
                 form={form}
                 name="basic"
-                initialValues={{ remember: true, username, password }}
+                initialValues={{ remember: true, account, password }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
               >
-                <Form.Item name="username" rules={rules.username}>
+                <Form.Item name="account" rules={rules.account}>
                   <Input prefix={<User />} />
                 </Form.Item>
 
