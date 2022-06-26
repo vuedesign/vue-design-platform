@@ -22,10 +22,6 @@ import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 import { SiteEntity } from '@/entities/site.entity';
 
-function selectFilter(entity, filters) {
-  console.log('selectFilter===');
-}
-
 @Controller('sites')
 @ApiTags('站点模块')
 @ApiBearerAuth()
@@ -46,7 +42,6 @@ export class SiteController {
     return this.siteService.create(createSite);
   }
 
-  @Public()
   @Get()
   @ApiQuery({
     description: '项目列表',
@@ -56,8 +51,6 @@ export class SiteController {
     const { title, type, status, size, page, order } = query;
     console.log('size=========', query);
     console.log('order', order); // new | hot | ai
-
-    selectFilter(SiteEntity, []);
 
     type QueryDto = {
       size: number;
@@ -117,7 +110,6 @@ export class SiteController {
     if (type) {
       options.where['type'] = type;
     }
-    console.log('options', options);
     return this.siteService.findList(options);
   }
 

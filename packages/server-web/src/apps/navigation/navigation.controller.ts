@@ -28,7 +28,6 @@ import { Public } from '@/core/decorators/auth.decorator';
 export class NavigationController {
   constructor(private readonly navigationService: NavigationService) {}
 
-  @Public()
   @Post()
   @ApiBody({
     description: '添加项目到导航',
@@ -38,7 +37,6 @@ export class NavigationController {
     return this.navigationService.create(createNavigationDto);
   }
 
-  @Public()
   @Get()
   findAll(@Query(new QueryTransformPipe(['title'])) query: NavigationListDto) {
     console.log('query====----', query);
