@@ -17,6 +17,7 @@ import { Public } from '../../core/decorators/auth.decorator';
 import { Response, Request } from 'express';
 import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '../../core/utils';
+import { retryWhen } from 'rxjs';
 
 @Controller('auth')
 @ApiTags('用户模块')
@@ -36,16 +37,18 @@ export class AuthController {
   async login(
     @Body() body: LoginBodyDto,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
   ) {
     const { account, password } = body;
     console.log('account, password', account, password);
-    const data = await this.authService.login({
+    const token = await this.authService.login({
       account,
       password,
     });
-    console.log('data', data);
-    // res.cookie('token', data.token);
-    return data;
+    console.log('token', token);
+    // res.cookie('vue-design-token', token);
+    req.session['vue-design'] = token;
+    return token;
   }
 
   @Get('profile')
