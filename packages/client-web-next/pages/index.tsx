@@ -38,7 +38,7 @@ const Home: NextPage<HomeProps> = ({ site, navigation }: HomeProps) => {
   const [list, setList] = useState(site.list);
   const [query, setQuery] = useState(queryDetail);
   const [total, setTotal] = useState(site.total);
-  //   const siteContext = { list, setList, query, setQuery, total, setTotal }
+  const siteContext = { list, setList, query, setQuery, total, setTotal };
   return (
     <div className={styles.container}>
       <Head>
@@ -49,9 +49,7 @@ const Home: NextPage<HomeProps> = ({ site, navigation }: HomeProps) => {
       <NavigationListContext.Provider value={{ navList }}>
         <Header />
       </NavigationListContext.Provider>
-      <SiteListContext.Provider
-        value={{ list, setList, query, setQuery, total, setTotal }}
-      >
+      <SiteListContext.Provider value={siteContext}>
         <List type="home" />
         <Footer />
       </SiteListContext.Provider>
