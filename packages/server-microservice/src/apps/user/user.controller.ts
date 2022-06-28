@@ -19,12 +19,20 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { UserEntity } from '@/entities/user.entity';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('users')
 @ApiTags('用户模块')
 @ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @MessagePattern({ role: 'user', cmd: 'find-one-by-id' })
+  findOneById(id: number) {
+    return this.userService.findOne({
+      id,
+    });
+  }
 
   @Post()
   @ApiBody({

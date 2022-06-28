@@ -6,25 +6,29 @@ import middleware from '@/core/middleware';
 import swagger from '@/core/swagger';
 import { TransformInterceptor } from '@/core/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    { transport: Transport.TCP },
+  );
 
   // 中间健
-  middleware(app);
+  // middleware(app);
 
-  app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new TransformInterceptor());
-  app.setGlobalPrefix(API_PREFIX);
-  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalInterceptors(new TransformInterceptor());
+  // app.setGlobalPrefix(API_PREFIX);
+  // app.useGlobalPipes(new ValidationPipe());
   // 接口文档
-  swagger(app);
+  // swagger(app);
 
-  Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
+  // Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
 
-  app.enableCors();
+  // app.enableCors();
 
-  await app.listen(PORT || 3000);
-  Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
+  await app.listen();
+  Logger.log(`Microservice 项目启动成功`);
 }
 bootstrap();
