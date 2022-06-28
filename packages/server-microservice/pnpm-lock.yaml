@@ -6,6 +6,7 @@ specifiers:
   '@nestjs/core': ^8.4.3
   '@nestjs/jwt': ^8.0.0
   '@nestjs/mapped-types': ^1.0.1
+  '@nestjs/microservices': ^8.4.7
   '@nestjs/passport': ^8.2.1
   '@nestjs/platform-express': ^8.4.3
   '@nestjs/schematics': ^8.0.9
@@ -59,9 +60,10 @@ specifiers:
 
 dependencies:
   '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
-  '@nestjs/core': 8.4.6_suave6mfkne66p6dqupcjv2744
+  '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
   '@nestjs/jwt': 8.0.1_@nestjs+common@8.4.6
   '@nestjs/mapped-types': 1.0.1_2v2uegmigrjmkn34lwfzpe6n3u
+  '@nestjs/microservices': registry.npmmirror.com/@nestjs/microservices/8.4.7_ylfx5swiot7inr3kdyigrsa54e
   '@nestjs/passport': 8.2.1_goeifnko2ksklhhajumjzug7ey
   '@nestjs/platform-express': 8.4.6_etfae4mmenqzp3rs3pua7csngy
   '@nestjs/swagger': 5.2.1_zi4tuyx3qtp34xthrn3ho5tamm
@@ -91,7 +93,7 @@ dependencies:
 devDependencies:
   '@nestjs/cli': 8.2.6
   '@nestjs/schematics': 8.0.11_hvrr2syzf5w4btcfjkly3rekwe
-  '@nestjs/testing': 8.4.6_ao2apqzecfj6tlim53vr4xrmvq
+  '@nestjs/testing': 8.4.6_dfocwqfcg23vyjztvnwyoxrxu4
   '@types/ali-oss': 6.16.4
   '@types/cookie-parser': 1.4.3
   '@types/express': 4.17.13
@@ -847,7 +849,7 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /@nestjs/core/8.4.6_suave6mfkne66p6dqupcjv2744:
+  /@nestjs/core/8.4.6_p2hvxa7zgjamtse4yli7a6j7by:
     resolution: {integrity: sha512-5zHpxTYV7HT3lfF7l/x0EWBfmuyuDOnGRcALf88tzDGs/7Q/VC6l65d6eFwDwI37NLtScqnmEkT9of8E3fT3mA==}
     requiresBuild: true
     peerDependencies:
@@ -866,6 +868,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
+      '@nestjs/microservices': registry.npmmirror.com/@nestjs/microservices/8.4.7_ylfx5swiot7inr3kdyigrsa54e
       '@nestjs/platform-express': 8.4.6_etfae4mmenqzp3rs3pua7csngy
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
@@ -925,7 +928,7 @@ packages:
       '@nestjs/core': ^8.0.0
     dependencies:
       '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
-      '@nestjs/core': 8.4.6_suave6mfkne66p6dqupcjv2744
+      '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
       body-parser: 1.20.0
       cors: 2.8.5
       express: 4.18.1
@@ -979,7 +982,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
-      '@nestjs/core': 8.4.6_suave6mfkne66p6dqupcjv2744
+      '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
       '@nestjs/mapped-types': 1.0.1_2v2uegmigrjmkn34lwfzpe6n3u
       lodash: 4.17.21
       path-to-regexp: 3.2.0
@@ -990,7 +993,7 @@ packages:
       - class-validator
     dev: false
 
-  /@nestjs/testing/8.4.6_ao2apqzecfj6tlim53vr4xrmvq:
+  /@nestjs/testing/8.4.6_dfocwqfcg23vyjztvnwyoxrxu4:
     resolution: {integrity: sha512-uGRNQ0iWIHqjz5CLxQCTtQ3dB1KyPfkHXnko5mBwKk/iBTiACmll61rVt89Wh8RM+w0bmvCHp9sacNI7IynESg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0
@@ -1004,7 +1007,8 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
-      '@nestjs/core': 8.4.6_suave6mfkne66p6dqupcjv2744
+      '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
+      '@nestjs/microservices': registry.npmmirror.com/@nestjs/microservices/8.4.7_ylfx5swiot7inr3kdyigrsa54e
       '@nestjs/platform-express': 8.4.6_etfae4mmenqzp3rs3pua7csngy
       tslib: 2.4.0
     dev: true
@@ -1019,7 +1023,7 @@ packages:
       typeorm: ^0.3.0
     dependencies:
       '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
-      '@nestjs/core': 8.4.6_suave6mfkne66p6dqupcjv2744
+      '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
       reflect-metadata: 0.1.13
       rxjs: 7.5.5
       typeorm: registry.npmmirror.com/typeorm/0.3.0
@@ -6383,6 +6387,52 @@ packages:
       '@jridgewell/sourcemap-codec': registry.npmmirror.com/@jridgewell/sourcemap-codec/1.4.13
     dev: true
 
+  registry.npmmirror.com/@nestjs/microservices/8.4.7_ylfx5swiot7inr3kdyigrsa54e:
+    resolution: {integrity: sha512-JZX29tBWbbPa+Q06QcCbwKTyEsOFHAPrxgfEkRNwoaiEqqCsITT9w2n5bcz3vlUurdpy5dIgX3/almbitghbKg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@nestjs/microservices/-/microservices-8.4.7.tgz}
+    id: registry.npmmirror.com/@nestjs/microservices/8.4.7
+    name: '@nestjs/microservices'
+    version: 8.4.7
+    peerDependencies:
+      '@grpc/grpc-js': '*'
+      '@nestjs/common': ^8.0.0
+      '@nestjs/core': ^8.0.0
+      '@nestjs/websockets': ^8.0.0
+      amqp-connection-manager: '*'
+      amqplib: '*'
+      cache-manager: '*'
+      kafkajs: '*'
+      mqtt: '*'
+      nats: '*'
+      redis: '*'
+      reflect-metadata: ^0.1.12
+      rxjs: ^7.1.0
+    peerDependenciesMeta:
+      '@grpc/grpc-js':
+        optional: true
+      '@nestjs/websockets':
+        optional: true
+      amqp-connection-manager:
+        optional: true
+      amqplib:
+        optional: true
+      cache-manager:
+        optional: true
+      kafkajs:
+        optional: true
+      mqtt:
+        optional: true
+      nats:
+        optional: true
+      redis:
+        optional: true
+    dependencies:
+      '@nestjs/common': 8.4.6_kgmvgmqc4iohdboj3f7yqhrie4
+      '@nestjs/core': 8.4.6_p2hvxa7zgjamtse4yli7a6j7by
+      iterare: registry.npmmirror.com/iterare/1.2.1
+      reflect-metadata: 0.1.13
+      rxjs: 7.5.5
+      tslib: registry.npmmirror.com/tslib/2.4.0
+
   registry.npmmirror.com/@sqltools/formatter/1.2.3:
     resolution: {integrity: sha512-O3uyB/JbkAEMZaP3YqyHH7TMnex7tWyCbCI4EfJdOCoN6HIhqdJBWTM6aCCiWQ/5f5wxjgU735QAIpJbjDvmzg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@sqltools/formatter/-/formatter-1.2.3.tgz}
     name: '@sqltools/formatter'
@@ -7371,6 +7421,12 @@ packages:
     name: isarray
     version: 1.0.0
 
+  registry.npmmirror.com/iterare/1.2.1:
+    resolution: {integrity: sha512-RKYVTCjAnRthyJes037NX/IiqeidgN1xc3j1RjFfECFp28A1GVwK9nA+i0rJPaHqSZwygLzRnFlzUuHFoWWy+Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/iterare/-/iterare-1.2.1.tgz}
+    name: iterare
+    version: 1.2.1
+    engines: {node: '>=6'}
+
   registry.npmmirror.com/jest-worker/27.5.1:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jest-worker/-/jest-worker-27.5.1.tgz}
     name: jest-worker
@@ -8063,7 +8119,6 @@ packages:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tslib/-/tslib-2.4.0.tgz}
     name: tslib
     version: 2.4.0
-    dev: false
 
   registry.npmmirror.com/type-is/1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/type-is/-/type-is-1.6.18.tgz}
