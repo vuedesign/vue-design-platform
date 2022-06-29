@@ -1,11 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
+import { HomeService } from './home.service';
 import { NavigationService } from '../navigation/navigation.service';
+import { Public } from '@/core/decorators/auth.decorator';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('home')
 export class HomeController {
   constructor(
+    private readonly homeService: HomeService,
     private readonly userService: UserService,
     private readonly siteService: SiteService,
     private readonly navigationService: NavigationService,
@@ -13,6 +17,12 @@ export class HomeController {
 
   viewCount() {
     return Promise.resolve(22983);
+  }
+
+  @Public()
+  @Get()
+  home(@Param('id') id: number) {
+    return this.homeService.findOneUserById(id);
   }
 
   @Get('count')
