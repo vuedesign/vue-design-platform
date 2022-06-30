@@ -5,8 +5,9 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class HomeService {
-  constructor() // @Inject('USER_MICROSERVICE') private readonly client: ClientProxy,
-  {}
+  constructor(
+    @Inject('USER_MICROSERVICE') private readonly client: ClientProxy,
+  ) {}
   create(createHomeDto: CreateHomeDto) {
     return 'This action adds a new home';
   }
