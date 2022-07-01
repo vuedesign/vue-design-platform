@@ -9,7 +9,7 @@ import { ClientProxy } from '@nestjs/microservices';
 @Controller('home')
 export class HomeController {
   constructor(
-    private readonly homeService: HomeService,
+    // private readonly homeService: HomeService,
     private readonly userService: UserService,
     private readonly siteService: SiteService,
     private readonly navigationService: NavigationService,
@@ -22,7 +22,7 @@ export class HomeController {
   @Public()
   @Get()
   home(@Param('id') id: number) {
-    return this.homeService.findOneUserById(id);
+    // return this.homeService.findOneUserById(id);
   }
 
   @Get('count')
