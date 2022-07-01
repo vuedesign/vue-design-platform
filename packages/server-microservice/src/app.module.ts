@@ -8,14 +8,17 @@ import appsModule from '@/apps/imports';
 import { JwtAuthGuard } from '@/apps/auth/guards/jwt-auth.guard';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule],
+  imports: [
+    TypeOrmModule.forRoot(typeormConfig),
+    TypeOrmModule.forFeature(appsModule),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
