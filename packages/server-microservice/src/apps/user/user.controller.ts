@@ -14,38 +14,30 @@ import { Like } from 'typeorm';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserListQueryDto } from './dto/user.dto';
+import { UserListQueryDto, findUserItemQuery } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { UserEntity } from '@/entities/user.entity';
 import { MessagePattern } from '@nestjs/microservices';
 
-@Controller('users')
-@ApiTags('用户模块')
-@ApiBearerAuth()
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @MessagePattern({ role: 'app', cmd: 'find-one-by-id' })
-  // findOneById(id: number) {
-  //   console.log('findOneByIdfindOneByIdfindOneById', id);
-  //   return `test${id}`;
-  // }
-  @MessagePattern({ role: 'user', cmd: 'find-one-by-id' })
-  findOneById(id: number) {
-    console.log('dddd', id);
-    return this.userService.findOne({
-      id,
-    });
-  }
+  // @Post()
+  // @ApiBody({
+  //   description: '添加用户信息',
+  //   type: CreateUserDto,
+  // })
 
-  @Post()
-  @ApiBody({
-    description: '添加用户信息',
-    type: CreateUserDto,
-  })
-  create(@Body() createUserDto: CreateUserDto) {
+  /**
+   * 添加用户信息
+   * @param createUserDto 用户信息
+   * @returns
+   */
+  @MessagePattern({ role: 'user', cmd: 'create' })
+  create(createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
@@ -92,16 +84,25 @@ export class UserController {
     return this.userService.findList(options);
   }
 
-  @Get('count')
+  /**
+   * 统计用户数量
+   * @Get('count')
+   * @returns
+   */
+  @MessagePattern({ role: 'user', cmd: 'count' })
   count() {
     return this.userService.count();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.findOne({
-      id,
-    });
+  /**
+   * 用户信息
+   * @Get(':id')
+   * @param id 用户id
+   * @returns
+   */
+  @MessagePattern({ role: 'user', cmd: 'find-one' })
+  findOne(query: findUserItemQuery): Promise<UserEntity> {
+    return this.userService.findOne(query);
   }
 
   @Put(':id')
