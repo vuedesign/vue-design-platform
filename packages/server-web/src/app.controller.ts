@@ -12,8 +12,9 @@ export class AppController {
   }
 
   @Public()
-  @Get('/item/:id')
+  @Get('/app/:id')
   getById(@Param('id') id: string) {
+    console.log('=====x==x=x', id);
     return this.appService.findOneById(+id);
   }
 }

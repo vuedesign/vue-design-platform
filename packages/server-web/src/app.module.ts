@@ -14,7 +14,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     // TypeOrmModule.forFeature(appsModule),
     // ...appsModule,
     ClientsModule.register([
-      { name: 'USER_MICROSERVICE', transport: Transport.TCP },
+      {
+        name: 'USER_MICROSERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: '127.0.0.1',
+          port: 8071,
+        },
+      },
     ]),
   ],
   controllers: [AppController],
