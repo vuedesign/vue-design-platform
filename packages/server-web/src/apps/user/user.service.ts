@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -11,42 +11,45 @@ import {
   IPaginationResponse,
   IPaginationQuery,
 } from '@/globals/services/base.service';
+import { BaseMicroservice } from '@/globals/services/base.microservice';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 export class CreateUser extends PartialType(CreateUserDto) {}
 
 @Injectable()
-export class UserService extends BaseService {
-  constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-  ) {
-    super(userRepository);
-  }
-
+export class UserService extends BaseMicroservice {
+  // constructor(
+  //   @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
+  // ) {}
   create(createUser: CreateUser) {
-    this.userRepository.create(createUser);
-    return this.userRepository.save(createUser);
+    return this.send<UserEntity>(
+      { module: 'user', method: 'create' },
+      createUser,
+    );
   }
 
-  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
-    return this.findListAndPage(query);
+  // findList(query: IPaginationQuery): Promise<IPaginationResponse> {
+  //   return this.findListAndPage(query);
+  // }
+
+  findOne(query: findUserItemQuery) {
+    // return lastValueFrom(
+    //   this.client.send({ role: 'user', cmd: 'find-one' }, query),
+    // );
+    return this.send<UserEntity>({ module: 'user', method: 'find-one' }, query);
   }
 
-  findOne(query: findUserItemQuery): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({
-      where: query,
-    });
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return this.userRepository.update(id, updateUserDto);
+  // }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto);
-  }
-
-  remove(id: number) {
-    return this.userRepository.delete(id);
-  }
+  // remove(id: number) {
+  //   return this.userRepository.delete(id);
+  // }
 
   count() {
-    return this.userRepository.count();
+    console.log('=============count');
+    return this.send<number>({ module: 'user', method: 'count' }, 10);
   }
 }
