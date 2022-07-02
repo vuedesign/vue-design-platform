@@ -11,7 +11,13 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    { transport: Transport.TCP },
+    {
+      transport: Transport.TCP,
+      options: {
+        host: HOST,
+        port: PORT,
+      },
+    },
   );
 
   // 中间健
@@ -24,7 +30,7 @@ async function bootstrap() {
   // 接口文档
   // swagger(app);
 
-  // Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
+  Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
 
   // app.enableCors();
 

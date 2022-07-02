@@ -27,8 +27,14 @@ import { MessagePattern } from '@nestjs/microservices';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // @MessagePattern({ role: 'app', cmd: 'find-one-by-id' })
+  // findOneById(id: number) {
+  //   console.log('findOneByIdfindOneByIdfindOneById', id);
+  //   return `test${id}`;
+  // }
   @MessagePattern({ role: 'user', cmd: 'find-one-by-id' })
   findOneById(id: number) {
+    console.log('dddd', id);
     return this.userService.findOne({
       id,
     });

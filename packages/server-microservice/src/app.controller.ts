@@ -8,7 +8,7 @@ export class AppController {
 
   @MessagePattern({ role: 'app', cmd: 'find-one-by-id' })
   findOneById(id: number) {
-    console.log('findOneByIdfindOneByIdfindOneById', id);
+    console.log('findOneByIdfindOneByIdfindOneById======////', id);
     return `test${id}`;
   }
 

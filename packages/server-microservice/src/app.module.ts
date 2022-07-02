@@ -6,12 +6,10 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import appsModule from '@/apps/imports';
 import { JwtAuthGuard } from '@/apps/auth/guards/jwt-auth.guard';
+import { UserService } from '@/apps/user/user.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(typeormConfig),
-    TypeOrmModule.forFeature(appsModule),
-  ],
+  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule],
   controllers: [AppController],
   providers: [
     AppService,
