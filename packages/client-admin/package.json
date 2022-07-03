@@ -3,7 +3,7 @@
     "version": "1.0",
     "private": true,
     "scripts": {
-        "dev": "vite --port 3003",
+        "dev": "vite --port 3002",
         "build": "vite build",
         "preview": "vite preview",
         "prettier": "npx prettier --write ./src"
