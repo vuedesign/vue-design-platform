@@ -12,7 +12,7 @@ type Item = {
 
 const typeList: Array<Item> = [
   {
-    value: "all",
+    value: "",
     label: "全部",
   },
   {

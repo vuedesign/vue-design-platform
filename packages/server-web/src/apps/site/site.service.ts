@@ -1,57 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateSiteDto } from './dto/create-site.dto';
-import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { SiteEntity } from '@/entities/site.entity';
-import {
-  BaseService,
-  IPaginationResponse,
-  IPaginationQuery,
-} from '@/globals/services/base.service';
+import { IPaginationOptions } from '@/globals/services/base.service';
+import { BaseMicroservice } from '@/globals/services/base.microservice';
 
 @Injectable()
-export class SiteService extends BaseService {
-  constructor(
-    @InjectRepository(SiteEntity)
-    private readonly siteRepository: Repository<SiteEntity>,
-  ) {
-    super(siteRepository);
-  }
-  create(createSite: CreateSiteDto) {
-    this.siteRepository.create(createSite);
-    return this.siteRepository.save(createSite);
-  }
-
-  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
-    return this.findListAndPage(query);
-  }
-
-  findOne(id: number) {
-    return this.siteRepository.findOne({
-      where: { id },
-    });
-  }
-
-  update(id: number, updateSite: UpdateSiteDto) {
-    return this.siteRepository.update(id, updateSite);
-  }
-
-  updateField(id: number, updateField: UpdateFieldDto) {
-    const value =
-      updateField.type === 'number'
-        ? Number(updateField.value)
-        : updateField.value;
-    return this.siteRepository.update(id, {
-      [updateField.field]: value,
-    });
-  }
-
-  remove(id: number) {
-    return this.siteRepository.delete(id);
-  }
-
-  count() {
-    return this.siteRepository.count();
+export class SiteService extends BaseMicroservice {
+  findList(options: IPaginationOptions): Promise<SiteEntity[]> {
+    return this.send({ module: 'site', method: 'find' }, options);
   }
 }

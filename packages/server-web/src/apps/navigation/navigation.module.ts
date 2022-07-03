@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NavigationService } from './navigation.service';
 import { NavigationController } from './navigation.controller';
-import { NavigationEntity } from '../../entities/navigation.entity';
+import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([NavigationEntity])],
+  imports: [BaseMicroserviceModule],
   controllers: [NavigationController],
   providers: [NavigationService],
   exports: [NavigationService],

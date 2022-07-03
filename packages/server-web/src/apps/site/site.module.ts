@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { SiteService } from './site.service';
 import { SiteController } from './site.controller';
-import { SiteEntity } from '../../entities/site.entity';
+import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SiteEntity])],
+  imports: [BaseMicroserviceModule],
   controllers: [SiteController],
   providers: [SiteService],
   exports: [SiteService],

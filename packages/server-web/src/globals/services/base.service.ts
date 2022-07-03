@@ -1,12 +1,27 @@
 import { Repository, FindOptionsRelations } from 'typeorm';
 
-export interface IPaginationResponse {
-  list: Array<any>;
-  pagination: {
-    page: number;
-    size: number;
-  };
+export interface IPagination {
+  page?: number;
+  size?: number;
+}
+export interface IPaginationResponse<T = any> {
+  list: Array<T>;
+  pagination: IPagination;
   total: number;
+}
+
+export interface IPaginationResponse<T = any> {
+  list: Array<T>;
+  pagination: IPagination;
+  total: number;
+}
+
+export interface IPaginationOptions {
+  pagination?: IPagination;
+  order?: object;
+  where?: object;
+  relations?: FindOptionsRelations<any>;
+  select?: object;
 }
 
 export interface IPaginationQuery {

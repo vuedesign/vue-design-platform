@@ -34,7 +34,7 @@ export class BaseMicroservice {
   send<R, D = any>(pattern: SendPattern, data: D = null): Promise<R> {
     return lastValueFrom(
       this.client.send<R>(
-        { role: pattern.module, cmd: pattern.method },
+        { module: pattern.module, method: pattern.method },
         data || true,
       ),
     );
