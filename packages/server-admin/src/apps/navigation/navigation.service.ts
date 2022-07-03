@@ -9,7 +9,7 @@ import {
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
+  IPaginationOptions,
 } from '@/globals/services/base.service';
 import { NavigationEntity } from '@/entities/navigation.entity';
 
@@ -27,7 +27,7 @@ export class NavigationService extends BaseService {
     return this.navigationRepository.save(createNavigation);
   }
 
-  findAll(query: IPaginationQuery): Promise<IPaginationResponse> {
+  findAll(query: IPaginationOptions): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 

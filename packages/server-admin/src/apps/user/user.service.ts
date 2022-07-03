@@ -9,7 +9,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
+  IPaginationOptions,
 } from '@/globals/services/base.service';
 
 export class CreateUser extends PartialType(CreateUserDto) {}
@@ -28,7 +28,7 @@ export class UserService extends BaseService {
     return this.userRepository.save(createUser);
   }
 
-  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
+  findList(query: IPaginationOptions): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 

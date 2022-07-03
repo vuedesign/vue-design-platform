@@ -7,7 +7,7 @@ import { SiteEntity } from '@/entities/site.entity';
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
+  IPaginationOptions,
 } from '@/globals/services/base.service';
 
 @Injectable()
@@ -23,8 +23,8 @@ export class SiteService extends BaseService {
     return this.siteRepository.save(createSite);
   }
 
-  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
-    return this.findListAndPage(query);
+  findList(options: IPaginationOptions): Promise<IPaginationResponse> {
+    return this.findListAndPage(options);
   }
 
   findOne(id: number) {

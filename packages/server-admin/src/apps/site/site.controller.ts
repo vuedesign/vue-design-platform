@@ -20,6 +20,7 @@ import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
+import { IPaginationOptions } from '@/globals/services/base.service';
 
 @Controller('sites')
 @ApiTags('站点模块')
@@ -57,9 +58,8 @@ export class SiteController {
       order: Record<string, any>;
       where: Record<string, any>;
     };
-    const options: QueryDto = {
-      size,
-      page,
+    const options: IPaginationOptions = {
+      pagination: { size, page },
       order: {
         updatedAt: 'DESC',
       },
