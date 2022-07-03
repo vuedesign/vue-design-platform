@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
+  Inject,
 } from '@nestjs/common';
 import { Like } from 'typeorm';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
@@ -19,6 +20,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { UserEntity } from '@/entities/user.entity';
+import { ClientProxy } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -26,6 +29,7 @@ import { UserEntity } from '@/entities/user.entity';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Public()
   @Post()
   @ApiBody({
     description: '添加用户信息',
@@ -35,71 +39,74 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  @ApiQuery({
-    description: '用户列表',
-    type: UserListQueryDto,
-  })
-  findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
-    const { size, page, search, status, rule } = query;
-    const options = {
-      size,
-      page,
-      order: {
-        updatedAt: 'DESC',
-      },
-      where: {},
-    };
+  // @Get()
+  // @ApiQuery({
+  //   description: '用户列表',
+  //   type: UserListQueryDto,
+  // })
+  // findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
+  //   const { size, page, search, status, rule } = query;
+  //   const options = {
+  //     size,
+  //     page,
+  //     order: {
+  //       updatedAt: 'DESC',
+  //     },
+  //     where: {},
+  //   };
 
-    console.log('options', options);
+  //   console.log('options', options);
 
-    const isPhone = (str: string) => {
-      return !isNaN(Number(str));
-    };
+  //   const isPhone = (str: string) => {
+  //     return !isNaN(Number(str));
+  //   };
 
-    if (search) {
-      if (isPhone(search)) {
-        options.where['phone'] = Like(`%${search}%`);
-      } else {
-        options.where['username'] = Like(`%${search}%`);
-      }
-    }
+  //   if (search) {
+  //     if (isPhone(search)) {
+  //       options.where['phone'] = Like(`%${search}%`);
+  //     } else {
+  //       options.where['username'] = Like(`%${search}%`);
+  //     }
+  //   }
 
-    if (status) {
-      options.where['status'] = status;
-    }
+  //   if (status) {
+  //     options.where['status'] = status;
+  //   }
 
-    if (rule) {
-      options.where['rule'] = rule;
-    }
+  //   if (rule) {
+  //     options.where['rule'] = rule;
+  //   }
 
-    console.log('options.where===', options);
+  //   console.log('options.where===', options);
 
-    return this.userService.findList(options);
-  }
+  //   return this.userService.findList(options);
+  // }
 
+  @Public()
   @Get('count')
   count() {
     return this.userService.count();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log('id', id);
     return this.userService.findOne({
       id,
     });
   }
 
-  @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.userService.update(id, updateUserDto);
-  }
+  // @Put(':id')
+  // update(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() updateUserDto: UpdateUserDto,
+  // ) {
+  //   return this.userService.update(id, updateUserDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id', ParseIntPipe) id: number) {
+  //   return this.userService.remove(id);
+  // }
 }

@@ -37,12 +37,14 @@ const Item = (props: SiteItemType) => {
               <ThumbsDown theme="outline" size="16" fill="#666" />
             </dd>
             <dt>
-              <Image
-                src={props.author.avatar}
-                alt={props.author.username}
-                width={28}
-                height={28}
-              />
+              {props.author && (
+                <Image
+                  src={props.author.avatar}
+                  alt={props.author.username}
+                  width={28}
+                  height={28}
+                />
+              )}
             </dt>
             <dd>
               <Like theme="outline" size="16" fill="#666" />

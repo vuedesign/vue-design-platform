@@ -28,14 +28,12 @@ export class AuthService {
   }
 
   async login(loginData: LoginParam) {
+    console.log('loginData', loginData);
     const user = await this.validateUser(loginData);
     console.log('user', user);
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
-    return {
-      ...payload,
-      token,
-    };
+    return token;
   }
 
   register(registerData: LoginParam) {

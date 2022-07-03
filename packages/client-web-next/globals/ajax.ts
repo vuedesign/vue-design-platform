@@ -1,10 +1,13 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { ERROR_STATUS_CODE, SUCCESS_STATUS_CODE } from "./globals.contant";
 import * as HttpStatus from "./http.contant";
+import { TOKEN_KEY } from "./globals.contant";
 
 const ajaxInstance = axios.create({
   baseURL: "http://localhost:3003/api/v1",
 });
+
+setToken(process.env.TOKEN || localStorage.getItem(TOKEN_KEY) || "");
 
 ajaxInstance.interceptors.request.use(
   (config) => {
@@ -17,7 +20,7 @@ ajaxInstance.interceptors.request.use(
 
 ajaxInstance.interceptors.response.use(
   (response) => {
-    // console.log('response', response.data)
+    // console.log("response=============", response.data);
     if (response.data && response.data.retcode === SUCCESS_STATUS_CODE) {
       return response.data.data;
     } else if (response.data && response.data.retcode === ERROR_STATUS_CODE) {
@@ -49,8 +52,6 @@ export function setToken(token: string) {
 }
 
 function authorization(config?: AxiosRequestConfig) {
-  //   const token = useCookie('token')
-  //   console.log('token', token)
   return Object.assign(
     {},
     {

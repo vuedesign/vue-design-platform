@@ -1,47 +1,47 @@
-import { useState, useEffect } from 'react'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import styles from '../styles/Find.module.scss'
-import List from '../components/List'
-import Top from '../components/Top'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import { findSite, FindSiteQuery } from '../globals/apis'
-import { SiteListContext } from './hooks/SiteListContext'
-import type { SiteListResponse } from '../types/site'
+import { useState, useEffect } from "react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import styles from "../styles/Find.module.scss";
+import List from "../components/List";
+import Top from "../components/Top";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+import { findSiteData, FindSiteQuery } from "../globals/apis";
+import { SiteListContext } from "./hooks/SiteListContext";
+import type { SiteListResponse } from "../types/site";
 // import { useSiteList } from '../hooks/useSiteList'
 
 const queryDetail: FindSiteQuery = {
   size: 20,
   page: 1,
-  type: undefined
-}
+  type: undefined,
+};
 
 export async function getStaticProps() {
-  const site = await findSite(queryDetail)
+  const site = await findSiteData(queryDetail);
   return {
     props: {
-      site
-    }
-  }
+      site,
+    },
+  };
 }
 
 type FindProps = {
-  site: SiteListResponse
-}
+  site: SiteListResponse;
+};
 
 const Find: NextPage<FindProps> = ({ site }: FindProps) => {
-  const [list, setList] = useState(site.list)
-  const [total, setTotal] = useState(site.total)
-  const [query, setQuery] = useState(queryDetail)
-  const context = { list, setList, query, setQuery, total, setTotal }
+  const [list, setList] = useState(site.list);
+  const [total, setTotal] = useState(site.total);
+  const [query, setQuery] = useState(queryDetail);
+  const context = { list, setList, query, setQuery, total, setTotal };
   useEffect(() => {
-    findSite(query).then(res => {
-      console.log('findSite update:', res)
-      setList(res.list)
-      setTotal(res.total)
-    })
-  }, [query])
+    findSiteData(query).then((res) => {
+      console.log("findSite update:", res);
+      setList(res.list);
+      setTotal(res.total);
+    });
+  }, [query]);
 
   return (
     <div className={styles.container}>
@@ -61,7 +61,7 @@ const Find: NextPage<FindProps> = ({ site }: FindProps) => {
       </SiteListContext.Provider>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Find
+export default Find;

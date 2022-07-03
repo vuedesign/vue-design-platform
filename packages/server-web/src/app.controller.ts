@@ -1,7 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from '@/app.service';
+import { Public } from '@/core/decorators/auth.decorator';
+import { Observable } from 'rxjs';
 
-@Controller('common')
+@Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -9,4 +11,11 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  // @Public()
+  // @Get('/app/:id')
+  // getById(@Param('id') id: string): Observable<any> {
+  //   console.log('=====x==x=x', id);
+  //   return this.appService.findOneById(+id);
+  // }
 }

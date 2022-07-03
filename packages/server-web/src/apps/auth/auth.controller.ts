@@ -36,16 +36,14 @@ export class AuthController {
   async login(
     @Body() body: LoginBodyDto,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
   ) {
     const { account, password } = body;
-    console.log('account, password', account, password);
-    const data = await this.authService.login({
+    const token = await this.authService.login({
       account,
       password,
     });
-    console.log('data', data);
-    // res.cookie('token', data.token);
-    return data;
+    return token;
   }
 
   @Get('profile')

@@ -7,12 +7,8 @@ import { TagEntity } from '@/entities/tag.entity';
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
+  IPaginationOptions,
 } from '@/globals/services/base.service';
-
-interface PaginationQuery extends IPaginationQuery {
-  order: any;
-}
 
 @Injectable()
 export class TagService extends BaseService {
@@ -27,8 +23,8 @@ export class TagService extends BaseService {
     return this.tagRepository.save(createTag);
   }
 
-  findAll(query?: PaginationQuery): Promise<IPaginationResponse> {
-    return this.findListAndPage(query);
+  findAll(options?: IPaginationOptions): Promise<IPaginationResponse> {
+    return this.findListAndPage(options);
   }
 
   findOne(id: number) {

@@ -1,7 +1,7 @@
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
+  IPaginationOptions,
 } from '@/globals/services/base.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,7 +25,7 @@ export class FileService extends BaseService {
     return this.fileRepository.save(createFile);
   }
 
-  findList(query: IPaginationQuery): Promise<IPaginationResponse> {
+  findList(query: IPaginationOptions): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 
