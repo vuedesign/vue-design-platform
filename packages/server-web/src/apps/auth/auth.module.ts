@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './strategys/jwt.strategy';
+import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { JwtStrategy } from './strategys/jwt.strategy';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '7d' },
     }),
+    BaseMicroserviceModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

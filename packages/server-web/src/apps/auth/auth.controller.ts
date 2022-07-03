@@ -7,24 +7,23 @@ import {
   Body,
   Res,
   HttpStatus,
-  HttpException,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { UserService } from '../user/user.service';
-import { Public } from '../../core/decorators/auth.decorator';
+import { Public } from '@/core/decorators/auth.decorator';
 import { Response, Request } from 'express';
 import { LoginParam } from './dto/auth.dto';
-import { getFieldType } from '../../core/utils';
+import { getFieldType } from '@/core/utils';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
-@ApiTags('用户模块')
+@ApiTags('登录模块')
 @ApiBearerAuth()
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private jwtService: JwtService,
   ) {}
 
   @Public()
@@ -39,10 +38,15 @@ export class AuthController {
     @Req() req: Request,
   ) {
     const { account, password } = body;
-    const token = await this.authService.login({
+    const user = await this.authService.validateUser({
       account,
       password,
     });
+    if (!user) {
+      throw new UnauthorizedException('登录校验失败');
+    }
+    const payload = { username: user.username, sub: user.id };
+    const token = this.jwtService.sign(payload);
     return token;
   }
 
@@ -51,7 +55,7 @@ export class AuthController {
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException('用户没授权');
     }
-    return this.userService.findOne({ id: req.user.id });
+    return this.authService.findOne({ id: req.user.id });
   }
 
   @Get('logout')
@@ -64,6 +68,10 @@ export class AuthController {
   }
 
   @Public()
+  @ApiBody({
+    description: '注册',
+    type: LoginBodyDto,
+  })
   @Post('register')
   async register(@Body() body: LoginParam) {
     const { password, account } = body;
@@ -71,7 +79,7 @@ export class AuthController {
     const where = {
       [field]: account,
     };
-    const user = await this.userService.findOne(where);
+    const user = await this.authService.findOne(where);
     if (user) {
       return {
         status: HttpStatus.CONFLICT,
@@ -82,7 +90,6 @@ export class AuthController {
       ...where,
       password,
     });
-    console.log('res', res);
     return res;
   }
 }
