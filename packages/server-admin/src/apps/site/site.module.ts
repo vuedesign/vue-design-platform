@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SiteEntity } from '@vue-design/shared/entities';
 import { SiteService } from './site.service';
 import { SiteController } from './site.controller';
 import { SiteTcpController } from './site.tcp.controller';
-import { SiteEntity } from '@/entities/site.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SiteEntity])],

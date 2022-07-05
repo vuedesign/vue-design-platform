@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
-import { SiteEntity } from '@/entities/site.entity';
+import { SiteEntity } from '@vue-design/shared/entities';
 import {
   BaseService,
   IPaginationResponse,

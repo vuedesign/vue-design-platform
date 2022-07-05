@@ -18,7 +18,6 @@ import { UserListQueryDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
-import { UserEntity } from '@/entities/user.entity';
 
 @Controller('users')
 @ApiTags('用户模块')

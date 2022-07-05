@@ -4,7 +4,7 @@ import { FileService } from './file.service';
 import { OssService } from './oss.service';
 import { QiniuService } from './qiniu.service';
 import { FileController } from './file.controller';
-import { FileEntity } from '../../entities/file.entity';
+import { FileEntity } from '@vue-design/shared/entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([FileEntity])],
