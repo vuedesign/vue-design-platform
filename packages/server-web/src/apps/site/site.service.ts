@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SiteEntity } from '@vue-design/shared/entities';
+import { SiteEntity } from '@/entities/site.entity';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 
