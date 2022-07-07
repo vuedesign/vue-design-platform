@@ -11,7 +11,7 @@ import {
   IPaginationResponse,
   IPaginationOptions,
 } from '@/globals/services/base.service';
-import { NavigationEntity } from '@vue-design/shared/entities';
+import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Injectable()
 export class NavigationService extends BaseService {

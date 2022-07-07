@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { FileEntity } from '@vue-design/shared/entities';
+import { FileEntity } from '@/entities/file.entity';
 import { UpdateFieldDto } from './dto/file.dto';
 
 @Injectable()

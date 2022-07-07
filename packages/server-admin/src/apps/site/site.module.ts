@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SiteEntity } from '@vue-design/shared/entities';
+import { SiteEntity } from '@/entities/site.entity';
 import { SiteService } from './site.service';
 import { SiteController } from './site.controller';
 import { SiteTcpController } from './site.tcp.controller';
