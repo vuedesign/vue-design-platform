@@ -1,4 +1,4 @@
-import * as apis from "./apis.contant";
+import * as apis from "./apis.contants";
 import { AxiosRequestConfig } from "axios";
 import ajax from "./ajax";
 import { SiteListResponse, SiteType } from "../types/site";

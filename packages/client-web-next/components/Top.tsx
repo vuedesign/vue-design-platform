@@ -1,37 +1,38 @@
-import styles from '../styles/Top.module.scss'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Wechat, UploadOne } from '@icon-park/react'
-import styled from 'styled-components'
+import styles from "../styles/Top.module.scss";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
+import { Wechat, UploadOne } from "@icon-park/react";
+import styled from "styled-components";
+import Profile from "./Profile";
 
 type NavItem = {
-  path: string
-  label: string
-}
+  path: string;
+  label: string;
+};
 const navList: NavItem[] = [
   {
-    path: '/',
-    label: '首页'
+    path: "/",
+    label: "首页",
   },
   {
-    path: '/find',
-    label: '发现'
-  }
-]
+    path: "/find",
+    label: "发现",
+  },
+];
 
 type LinkProps = {
-  href: string
-  children: string
-}
+  href: string;
+  children: string;
+};
 
 const Top = () => {
-  const router = useRouter()
+  const router = useRouter();
   const handleGotoHome = () => {
     router.push({
-      pathname: '/'
-    })
-  }
+      pathname: "/",
+    });
+  };
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -44,7 +45,7 @@ const Top = () => {
           {navList.map((item, index) => (
             <li
               key={index}
-              className={router.pathname === item.path ? styles.active : ''}
+              className={router.pathname === item.path ? styles.active : ""}
             >
               <Link passHref href={item.path}>
                 {item.label}
@@ -74,11 +75,14 @@ const Top = () => {
               <span className="text">推荐</span>
             </div>
           </li>
-          <li>{/* <header-avatar /> */}</li>
+          <li>
+            {/* <header-avatar /> */}
+            <Profile />
+          </li>
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Top
+export default Top;

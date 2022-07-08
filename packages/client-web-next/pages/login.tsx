@@ -5,7 +5,7 @@ import styles from "../styles/Login.module.scss";
 import { loginData } from "../globals/apis";
 import { Divider, Form, Input, Button, Checkbox } from "antd";
 import { User, Lock } from "@icon-park/react";
-import { TOKEN_KEY } from "../globals/globals.contant";
+import { TOKEN_KEY } from "../globals/globals.contants";
 import { useRouter } from "next/router";
 import ajax from "../globals/ajax";
 

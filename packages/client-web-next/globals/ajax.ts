@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ERROR_STATUS_CODE, SUCCESS_STATUS_CODE } from "./globals.contant";
-import * as HttpStatus from "./http.contant";
-import { TOKEN_KEY } from "./globals.contant";
+import { ERROR_STATUS_CODE, SUCCESS_STATUS_CODE } from "./globals.contants";
+import * as HttpStatus from "./http.contants";
+import { TOKEN_KEY } from "./globals.contants";
+import { useRouter } from "next/router";
 
 const ajaxInstance = axios.create({
   baseURL: "http://localhost:3003/api/v1",
@@ -20,11 +21,18 @@ ajaxInstance.interceptors.request.use(
 
 ajaxInstance.interceptors.response.use(
   (response) => {
-    // console.log("response=============", response.data);
+    console.log("response=============", response.data);
     if (response.data && response.data.retcode === SUCCESS_STATUS_CODE) {
       return response.data.data;
     } else if (response.data && response.data.retcode === ERROR_STATUS_CODE) {
       if (response.data.data.status === HttpStatus.UNAUTHORIZED) {
+        // navigateTo({
+        //   path: "/login",
+        // });
+        // if (!process.server) {
+        //   const router = useRouter();
+        //   router.push("/login");
+        // }
         // if (process.server) {
         //   return false
         // } else {
@@ -33,6 +41,7 @@ ajaxInstance.interceptors.response.use(
         //   })
         // }
         // console.log("HttpStatus===", HttpStatus.UNAUTHORIZED);
+        return response.data.data;
       }
       return response.data;
     }
