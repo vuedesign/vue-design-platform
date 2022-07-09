@@ -47,6 +47,11 @@ export class AuthController {
     }
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
+    console.log('==token==', token);
+    res.cookie(`token`, token, {
+      maxAge: 564000,
+      httpOnly: true,
+    });
     return token;
   }
 
