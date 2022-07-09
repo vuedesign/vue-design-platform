@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@icon-park/react': ^1.3.5
   '@types/cookie': ^0.5.1
+  '@types/js-cookie': ^3.0.2
   '@types/node': 17.0.31
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
@@ -13,6 +14,7 @@ specifiers:
   css-loader: ^6.7.1
   eslint: 8.14.0
   eslint-config-next: 12.1.6
+  js-cookie: ^3.0.1
   less: ^4.1.2
   less-loader: ^10.2.0
   next: 12.1.6
@@ -28,6 +30,7 @@ dependencies:
   antd: 4.21.3_ef5jwxihqo6n7gxfmzogljlgcm
   axios: 0.27.2
   cookie: registry.npmmirror.com/cookie/0.5.0
+  js-cookie: registry.npmmirror.com/js-cookie/3.0.1
   next: 12.1.6_obqpfjjhwfnx7k3awy3rpmmjzm
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
@@ -35,6 +38,7 @@ dependencies:
 
 devDependencies:
   '@types/cookie': registry.npmmirror.com/@types/cookie/0.5.1
+  '@types/js-cookie': registry.npmmirror.com/@types/js-cookie/3.0.2
   '@types/node': 17.0.31
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
@@ -3259,6 +3263,12 @@ packages:
     version: 0.0.51
     dev: true
 
+  registry.npmmirror.com/@types/js-cookie/3.0.2:
+    resolution: {integrity: sha512-6+0ekgfusHftJNYpihfkMu8BWdeHs9EOJuGcSofErjstGPfPGEu9yTu4t460lTzzAMl2cM5zngQJqPMHbbnvYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/js-cookie/-/js-cookie-3.0.2.tgz}
+    name: '@types/js-cookie'
+    version: 3.0.2
+    dev: true
+
   registry.npmmirror.com/@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.11.tgz}
     name: '@types/json-schema'
@@ -3646,6 +3656,13 @@ packages:
       merge-stream: registry.npmmirror.com/merge-stream/2.0.0
       supports-color: registry.npmmirror.com/supports-color/8.1.1
     dev: true
+
+  registry.npmmirror.com/js-cookie/3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.1.tgz}
+    name: js-cookie
+    version: 3.0.1
+    engines: {node: '>=12'}
+    dev: false
 
   registry.npmmirror.com/json-parse-even-better-errors/2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz}

@@ -3,12 +3,25 @@ import { ERROR_STATUS_CODE, SUCCESS_STATUS_CODE } from "./globals.contants";
 import * as HttpStatus from "./http.contants";
 import { TOKEN_KEY } from "./globals.contants";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const ajaxInstance = axios.create({
   baseURL: "http://localhost:3003/api/v1",
 });
 
-setToken(process.env.TOKEN || localStorage.getItem(TOKEN_KEY) || "");
+console.log(
+  'Cookies.get("token")',
+  process.env.TOKEN ||
+    Cookies.get("token") ||
+    localStorage.getItem(TOKEN_KEY) ||
+    ""
+);
+setToken(
+  process.env.TOKEN ||
+    Cookies.get("token") ||
+    localStorage.getItem(TOKEN_KEY) ||
+    ""
+);
 
 ajaxInstance.interceptors.request.use(
   (config) => {

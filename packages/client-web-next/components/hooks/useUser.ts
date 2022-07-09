@@ -15,18 +15,16 @@ export default function useUser(options: Options) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<null | User>(null);
 
-  useEffect(() => {
-    profileData().then((res) => {
-      if (res.status === HttpStatus.UNAUTHORIZED) {
-        setIsLoggedIn(false);
-        setUser(null);
-      } else {
-        setIsLoggedIn(true);
-        // todo
-        setUser(res);
-      }
-      console.log("profileData", res);
-    });
+  profileData().then((res) => {
+    if (res.status === HttpStatus.UNAUTHORIZED) {
+      //   setIsLoggedIn(false);
+      //   setUser(null);
+    } else {
+      //   setIsLoggedIn(true);
+      //   // todo
+      //   setUser(res);
+    }
+    console.log("profileData", res);
   });
 
   return {

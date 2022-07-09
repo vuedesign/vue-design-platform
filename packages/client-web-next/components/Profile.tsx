@@ -1,15 +1,17 @@
+import { useState } from "react";
 import useUser from "./hooks/useUser";
 
-const Profile = () => {
-  // Fetch the user client-side
-  const { user, isLoggedIn } = useUser({ redirectTo: "/login" });
+export interface User {
+  email: string;
+}
 
-  // Server-render loading state
+const Profile = () => {
+  const { user, isLoggedIn } = useUser({ redirectTo: "" });
+
   if (!user || isLoggedIn === false) {
     return <div>Loading...</div>;
   }
 
-  // Once the user request finishes, show the user
   return <div>{user && user.email}</div>;
 };
 
