@@ -7,7 +7,7 @@ import Top from "../components/Top";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { findSiteData, FindSiteQuery } from "../globals/apis";
-import { SiteListContext } from "./hooks/SiteListContext";
+import { SiteListContext } from "../hooks/SiteListContext";
 import type { SiteListResponse } from "../types/site";
 // import { useSiteList } from '../hooks/useSiteList'
 

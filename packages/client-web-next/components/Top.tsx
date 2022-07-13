@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Wechat, UploadOne } from "@icon-park/react";
 import styled from "styled-components";
 import Profile from "./Profile";
+import logoImage from "../public/images/logo.png";
 
 type NavItem = {
   path: string;
@@ -39,7 +40,7 @@ const Top = () => {
         <ul className={styles.nav}>
           <li>
             <h1 className={styles.logo} onClick={handleGotoHome}>
-              <img src="/images/logo.png" />
+              <Image src={logoImage} alt="" width={38} height={224} />
             </h1>
           </li>
           {navList.map((item, index) => (

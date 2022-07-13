@@ -7,7 +7,14 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "styles")],
   },
   images: {
-    domains: ["img.js.design", "t7.baidu.com"],
+    domains: [
+      "img.js.design",
+      "t7.baidu.com",
+      "lf3-cdn-tos.bytescm.com",
+      "nestjs.com",
+      "webpack.js.org",
+      "www.baidu.com",
+    ],
   },
   async rewrites() {
     return {

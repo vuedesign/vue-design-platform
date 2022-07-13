@@ -1,10 +1,10 @@
-import { createContext } from 'react'
-import type { NavigationListType } from '../../types/navigation'
+import { createContext } from "react";
+import type { NavigationListType } from "../types/navigation";
 
 export type NavigationListContextType = {
-  navList: NavigationListType
-}
+  navList: NavigationListType;
+};
 
 export const NavigationListContext = createContext<NavigationListContextType>(
   {} as NavigationListContextType
-)
+);

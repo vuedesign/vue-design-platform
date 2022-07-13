@@ -6,8 +6,8 @@ import List from "../components/List";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { findSiteData, findNavData, FindSiteQuery } from "../globals/apis";
-import { SiteListContext } from "./hooks/SiteListContext";
-import { NavigationListContext } from "./hooks/NavigationListContext";
+import { SiteListContext } from "../hooks/SiteListContext";
+import { NavigationListContext } from "../hooks/NavigationListContext";
 import type { SiteListResponse } from "../types/site";
 import type { NavigationListResponse } from "../types/navigation";
 

@@ -1,7 +1,9 @@
 import { SettingTwo } from "@icon-park/react";
 import styles from "../styles/Header.module.scss";
 import Top from "./Top";
-import { NavigationListContext } from "../pages/hooks/NavigationListContext";
+import { NavigationListContext } from "../hooks/NavigationListContext";
+import Image from "next/image";
+import logoImage from "../public/images/logo.png";
 
 const Header = () => {
   return (
@@ -11,7 +13,7 @@ const Header = () => {
           <div className={styles.wrapper}>
             <Top />
             <div className={styles.logo}>
-              <img src="/images/logo.png" />
+              <Image src={logoImage} alt="" width={224} height={38} />
             </div>
             <div className={styles.mine}>
               <span className={styles["mine-setting"]}>
@@ -21,10 +23,15 @@ const Header = () => {
                 {navList.map((item) => {
                   return (
                     <li key={item.id}>
-                      <a href={item.siteUrl} target="_blank">
+                      <a href={item.siteUrl} target="_blank" rel="noreferrer">
                         <dl>
                           <dt>
-                            <img src={item.iconUrl} />
+                            {/* <Image
+                              src={item.iconUrl}
+                              alt={""}
+                              width={48}
+                              height={48}
+                            /> */}
                           </dt>
                           <dd>
                             <h4>{item.title}</h4>

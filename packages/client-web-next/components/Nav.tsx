@@ -1,9 +1,6 @@
 import { useState } from "react";
 import styles from "../styles/Nav.module.scss";
-import {
-  SiteListContext,
-  SiteListContextType,
-} from "../pages/hooks/SiteListContext";
+import { SiteListContext, SiteListContextType } from "../hooks/SiteListContext";
 
 type Item = {
   value: string;
