@@ -40,7 +40,7 @@ const Top = () => {
         <ul className={styles.nav}>
           <li>
             <h1 className={styles.logo} onClick={handleGotoHome}>
-              <Image src={logoImage} alt="" width={38} height={224} />
+              <Image src={logoImage} alt="" width={224} height={38} />
             </h1>
           </li>
           {navList.map((item, index) => (

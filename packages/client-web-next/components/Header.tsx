@@ -13,7 +13,7 @@ const Header = () => {
           <div className={styles.wrapper}>
             <Top />
             <div className={styles.logo}>
-              <Image src={logoImage} alt="" width={224} height={38} />
+              <Image src={logoImage} alt="logo" width={224} height={38} />
             </div>
             <div className={styles.mine}>
               <span className={styles["mine-setting"]}>
@@ -26,6 +26,7 @@ const Header = () => {
                       <a href={item.siteUrl} target="_blank" rel="noreferrer">
                         <dl>
                           <dt>
+                            <img src={item.iconUrl} alt={"test"} />
                             {/* <Image
                               src={item.iconUrl}
                               alt={""}
@@ -35,7 +36,7 @@ const Header = () => {
                           </dt>
                           <dd>
                             <h4>{item.title}</h4>
-                            <p>{item.description}</p>
+                            {/* <p>{item.description}</p> */}
                           </dd>
                         </dl>
                       </a>
