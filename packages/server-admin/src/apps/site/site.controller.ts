@@ -49,15 +49,6 @@ export class SiteController {
   })
   findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
     const { title, type, status, size, page, order } = query;
-    console.log('size=========', query);
-    console.log('order', order); // new | hot | ai
-
-    type QueryDto = {
-      size: number;
-      page: number;
-      order: Record<string, any>;
-      where: Record<string, any>;
-    };
     const options: IPaginationOptions = {
       pagination: { size, page },
       order: {

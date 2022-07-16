@@ -14,7 +14,6 @@ export class SiteTcpController {
    */
   @MessagePattern({ module: 'site', method: 'find' }, Transport.TCP)
   findAll(options: IPaginationOptions) {
-    console.log('tcp server', options);
     return this.siteService.findList(options);
   }
 }
