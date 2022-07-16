@@ -14,7 +14,7 @@ async function bootstrap() {
   middleware(app);
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new TransformInterceptor());
+  // app.useGlobalInterceptors(new TransformInterceptor());
   app.setGlobalPrefix(API_PREFIX);
   app.useGlobalPipes(new ValidationPipe());
   // 接口文档

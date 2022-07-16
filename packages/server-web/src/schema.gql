@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SiteEntity {
+  id: Int!
+  uuid: String!
+  title: String!
+  thumbUrl: String!
+  logoUrl: Int
+  iconUrl: Int
+  siteUrl: Int
+  codeUrl: Int
+  description: Int
+  authorId: Float!
+  tagIds: Int
+  views: Float!
+  collections: Float!
+  top: Float!
+  down: Float!
+  type: String!
+  status: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SiteEntityPagination {
+  size: Float!
+  page: Float!
+}
+
+type SitePaginated {
+  pagination: SiteEntityPagination
+  list: [SiteEntity!]
+  total: Int!
+}
+
+type Query {
+  sites(query: SiteListInput): SitePaginated
+}
+
+input SiteListInput {
+  size: Float = 20
+  page: Float = 1
+  order: String
+  type: String = ""
+  title: String = ""
+  status: Float = 1
+}
