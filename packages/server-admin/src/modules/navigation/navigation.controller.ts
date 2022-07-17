@@ -1,4 +1,4 @@
-import { QueryTransformPipe } from './../../core/pipes/queryTransform.pipe';
+import { QueryTransformPipe } from '../../core/pipes/queryTransform.pipe';
 import {
   Controller,
   Get,
