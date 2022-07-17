@@ -13,6 +13,7 @@ export interface IPaginatedType<T> {
 }
 
 export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
+  console.log('classRef', classRef, classRef.name);
   @ObjectType(`${classRef.name}Pagination`)
   abstract class Pagination {
     @Field((type) => Number)

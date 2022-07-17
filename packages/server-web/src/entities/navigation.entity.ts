@@ -6,14 +6,18 @@ import {
   CreateDateColumn,
   Generated,
 } from 'typeorm';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('navigation')
 export class NavigationEntity {
+  @Field((type) => Int)
   @PrimaryGeneratedColumn({
     comment: '站点id',
   })
   id: number;
 
+  @Field((type) => Int)
   @Column({
     type: 'int',
     width: 11,
@@ -23,6 +27,7 @@ export class NavigationEntity {
   })
   siteId: number;
 
+  @Field((type) => String)
   @Column({
     type: 'varchar',
     width: 255,
@@ -32,6 +37,7 @@ export class NavigationEntity {
   })
   siteUrl: string;
 
+  @Field((type) => String)
   @Column({
     type: 'varchar',
     width: 255,
@@ -41,6 +47,7 @@ export class NavigationEntity {
   })
   iconUrl: string;
 
+  @Field((type) => String)
   @Column({
     type: 'varchar',
     width: 255,
@@ -49,14 +56,16 @@ export class NavigationEntity {
   })
   title: string;
 
+  @Field((type) => String)
   @Column({
     type: 'varchar',
     width: 255,
-    nullable: true,
+    nullable: false,
     comment: '项目描述',
   })
   description: string;
 
+  @Field((type) => String)
   @Column({
     type: 'int',
     width: 11,
@@ -65,6 +74,7 @@ export class NavigationEntity {
   })
   order: number;
 
+  @Field((type) => String)
   @Column({
     type: 'int',
     width: 1,
@@ -73,6 +83,7 @@ export class NavigationEntity {
   })
   status: number;
 
+  @Field((type) => String)
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
@@ -81,6 +92,7 @@ export class NavigationEntity {
   })
   createdAt: Date;
 
+  @Field((type) => String)
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',

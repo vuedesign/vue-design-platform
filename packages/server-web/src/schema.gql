@@ -34,14 +34,39 @@ type SiteEntityPagination {
   page: Float!
 }
 
-type SitePaginated {
+type SiteListPaginated {
   pagination: SiteEntityPagination
   list: [SiteEntity!]
   total: Int!
 }
 
+type NavigationEntity {
+  id: Int!
+  siteId: Int!
+  siteUrl: String!
+  iconUrl: String!
+  title: String!
+  description: String!
+  order: String!
+  status: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type NavigationEntityPagination {
+  size: Float!
+  page: Float!
+}
+
+type NavigationListPaginated {
+  pagination: NavigationEntityPagination
+  list: [NavigationEntity!]
+  total: Int!
+}
+
 type Query {
-  sites(query: SiteListInput): SitePaginated
+  sites(query: SiteListInput): SiteListPaginated
+  navigations: NavigationListPaginated
 }
 
 input SiteListInput {

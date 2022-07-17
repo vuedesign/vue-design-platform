@@ -56,7 +56,7 @@ export class SiteEntity {
     comment: 'logo url',
     name: 'logo_url',
   })
-  logoUrl: string;
+  logoUrl?: string;
 
   @Field((type) => Int, { nullable: true })
   @Column({
@@ -66,7 +66,7 @@ export class SiteEntity {
     comment: 'icon url',
     name: 'icon_url',
   })
-  iconUrl: string;
+  iconUrl?: string;
 
   @Field((type) => Int, { nullable: true })
   @Column({
@@ -76,7 +76,7 @@ export class SiteEntity {
     comment: '网站 url',
     name: 'site_url',
   })
-  siteUrl: string;
+  siteUrl?: string;
 
   @Field((type) => Int, { nullable: true })
   @Column({

@@ -1,17 +1,17 @@
 import { SiteEntity } from '@/entities/site.entity';
 import { SiteService } from './site.service';
 import { Args, Resolver, Query, Field, Int, ObjectType } from '@nestjs/graphql';
-import { SitePaginated } from './dto/SitePaginated';
+import { SiteListPaginated } from './dto/siteList.paginated.gql';
 import { SiteListInput } from './dto/siteList.input.dto';
 
 @Resolver((of) => SiteEntity)
 export class SiteResolver {
   constructor(private readonly siteService: SiteService) {}
 
-  @Query((returns) => SitePaginated, { nullable: true })
+  @Query((returns) => SiteListPaginated, { nullable: true })
   sites(
     @Args('query', { nullable: true }) query?: SiteListInput,
-  ): Promise<SitePaginated> {
+  ): Promise<SiteListPaginated> {
     const { status, size, page, type, title, order } = query || {};
     return this.siteService.findList({
       where: { status, type },

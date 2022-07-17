@@ -2,19 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { SiteEntity } from '@/entities/site.entity';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
-
-interface FindList {
-  list: [SiteEntity];
-  pagination: {
-    page: number;
-    size: number;
-  };
-  total: number;
-}
+import { IPaginatedType } from '@/dtos/paginated.gql';
 
 @Injectable()
 export class SiteService extends BaseMicroservice {
-  findList(options: IPaginationOptions): Promise<FindList> {
+  findList(options: IPaginationOptions): Promise<IPaginatedType<SiteEntity>> {
     console.log('==s=', options);
     return this.send({ module: 'site', method: 'find' }, options);
   }
