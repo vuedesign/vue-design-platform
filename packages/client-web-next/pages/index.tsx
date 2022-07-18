@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.scss";
 import List from "../components/List";
@@ -10,6 +10,8 @@ import { SiteListContext } from "../hooks/SiteListContext";
 import { NavigationListContext } from "../hooks/NavigationListContext";
 import type { SiteListResponse } from "../types/site";
 import type { NavigationListResponse } from "../types/navigation";
+import { initializeApollo, addApolloState } from "../libs/apolloClient";
+import { gql, useQuery, NetworkStatus } from "@apollo/client";
 
 const queryDetail: FindSiteQuery = {
   size: 20,
@@ -17,15 +19,55 @@ const queryDetail: FindSiteQuery = {
   type: undefined,
 };
 
+export const ALL_POSTS_QUERY = gql`
+  query {
+    navigations {
+      total
+      list {
+        id
+        title
+        description
+        siteUrl
+        iconUrl
+        order
+      }
+      pagination {
+        size
+        page
+      }
+    }
+  }
+`;
+
+// export const allPostsQueryVars = {
+//   skip: 0,
+//   first: 10,
+// };
+
 export async function getStaticProps() {
-  const navigation = await findNavData();
-  const site = await findSiteData();
-  return {
+  const apolloClient = initializeApollo();
+  await apolloClient.query({
+    query: ALL_POSTS_QUERY,
+    variables: {},
+  });
+  //   const navigation = await findNavData();
+  //   const site = await findSiteData();
+
+  return addApolloState(apolloClient, {
     props: {
-      site,
-      navigation,
+      site: { list: [] },
+      navigation: {
+        list: [],
+      },
     },
-  };
+    revalidate: 1,
+  });
+  //   return {
+  //     props: {
+  //       site,
+  //       navigation,
+  //     },
+  //   };
 }
 
 type HomeProps = {
@@ -38,7 +80,41 @@ const Home: NextPage<HomeProps> = ({ site, navigation }: HomeProps) => {
   const [list, setList] = useState(site.list);
   const [query, setQuery] = useState(queryDetail);
   const [total, setTotal] = useState(site.total);
+
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(
+    ALL_POSTS_QUERY,
+    {
+      variables: {},
+      // Setting this value to true will make the component rerender when
+      // the "networkStatus" changes, so we are able to know if it is fetching
+      // more data
+      notifyOnNetworkStatusChange: true,
+    }
+  );
+
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore;
+  console.log("loading", loading);
+  console.log("data", data);
+  console.log("loadingMorePosts", loadingMorePosts);
+
+  //   const loadMorePosts = () => {
+  //     fetchMore({
+  //       variables: {
+  //         skip: allPosts.length,
+  //       },
+  //     });
+  //   };
+  useEffect(() => {
+    console.log("====data", data);
+  }, [data]);
+  if (error) return <div>Error loading posts.</div>;
+  if (loading && !loadingMorePosts) return <div>Loading</div>;
+
+  //   const { allPosts, _allPostsMeta } = data;
+  //   const areMorePosts = allPosts.length < _allPostsMeta.count;
+
   const siteContext = { list, setList, query, setQuery, total, setTotal };
+  console.log("data", data);
   return (
     <div className={styles.container}>
       <Head>
