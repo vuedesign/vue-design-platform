@@ -9,6 +9,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@nestjs/config';
 import { SiteModule } from './modules/site/site.module';
 import { NavigationModule } from './modules/navigation/navigation.module';
+import { AuthModule } from './modules/auth/auth.module';
 import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
 
@@ -26,6 +27,7 @@ import globalConfig from '@/configs/global.config';
     }),
     SiteModule,
     NavigationModule,
+    AuthModule,
   ],
   // providers: [
   //   {
