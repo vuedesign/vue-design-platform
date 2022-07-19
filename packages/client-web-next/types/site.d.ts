@@ -30,4 +30,4 @@ export interface SiteItemType {
   updatedAt?: string;
 }
 export type SiteListType = SiteItemType[];
-export type SiteListResponse = ListPageResponse<SiteListType>;
+export interface SiteListResponse extends ListPageResponse<SiteListType> {}

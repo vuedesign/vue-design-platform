@@ -1,14 +1,16 @@
 import { SettingTwo } from "@icon-park/react";
 import styles from "../styles/Header.module.scss";
 import Top from "./Top";
-import { NavigationListContext } from "../hooks/NavigationListContext";
+import { NavigationContext } from "../hooks/NavigationContext";
 import Image from "next/image";
 import logoImage from "../public/images/logo.png";
+// import { gql, useQuery, NetworkStatus } from "@apollo/client";
+// import { NAVIGATIONS_QUERY } from "../libs/gql";
 
 const Header = () => {
   return (
-    <NavigationListContext.Consumer>
-      {({ navList }) => (
+    <NavigationContext.Consumer>
+      {({ list }) => (
         <header className={styles.container}>
           <div className={styles.wrapper}>
             <Top />
@@ -20,7 +22,7 @@ const Header = () => {
                 <SettingTwo theme="outline" size="16" fill="#e1e9ed" />
               </span>
               <ul className={styles["mine-sites"]}>
-                {navList.map((item) => {
+                {list.map((item) => {
                   return (
                     <li key={item.id}>
                       <a href={item.siteUrl} target="_blank" rel="noreferrer">
@@ -52,7 +54,7 @@ const Header = () => {
           ></div>
         </header>
       )}
-    </NavigationListContext.Consumer>
+    </NavigationContext.Consumer>
   );
 };
 

@@ -3,11 +3,11 @@ import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { concatPagination } from "@apollo/client/utilities";
 import merge from "deepmerge";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash-es";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
-let apolloClient;
+let apolloClient: any;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)

@@ -7,9 +7,10 @@ import Top from "../components/Top";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { findSiteData, FindSiteQuery } from "../globals/apis";
-import { SiteListContext } from "../hooks/SiteListContext";
+import { SiteContext } from "../hooks/SiteContext";
 import type { SiteListResponse } from "../types/site";
-// import { useSiteList } from '../hooks/useSiteList'
+import { useQuery, NetworkStatus } from "@apollo/client";
+import { FIND_QUERY } from "../libs/gql";
 
 const queryDetail: FindSiteQuery = {
   size: 20,
@@ -26,23 +27,44 @@ export async function getStaticProps() {
   };
 }
 
-type FindProps = {
-  site: SiteListResponse;
-};
+type FindProps = {};
 
-const Find: NextPage<FindProps> = ({ site }: FindProps) => {
-  const [list, setList] = useState(site.list);
-  const [total, setTotal] = useState(site.total);
-  const [query, setQuery] = useState(queryDetail);
-  const context = { list, setList, query, setQuery, total, setTotal };
-  useEffect(() => {
-    findSiteData(query).then((res) => {
-      console.log("findSite update:", res);
-      setList(res.list);
-      setTotal(res.total);
+const Find: NextPage<FindProps> = ({}: FindProps) => {
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(
+    FIND_QUERY,
+    {
+      variables: {},
+      // Setting this value to true will make the component rerender when
+      // the "networkStatus" changes, so we are able to know if it is fetching
+      // more data
+      notifyOnNetworkStatusChange: true,
+    }
+  );
+
+  console.log("find data", data);
+
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore;
+
+  const loadMorePosts = () => {
+    fetchMore({
+      variables: {
+        skip: 0,
+      },
     });
-  }, [query]);
+  };
 
+  //   const [list, setList] = useState(site.list);
+  //   const [total, setTotal] = useState(site.total);
+  //   const [query, setQuery] = useState(queryDetail);
+  //   const context = { list, setList, query, setQuery, total, setTotal };
+  //   useEffect(() => {
+  //     findSiteData(query).then((res) => {
+  //       console.log("findSite update:", res);
+  //       setList(res.list);
+  //       setTotal(res.total);
+  //     });
+  //   }, [query]);
+  const context = {};
   return (
     <div className={styles.container}>
       <Head>
@@ -53,12 +75,12 @@ const Find: NextPage<FindProps> = ({ site }: FindProps) => {
       <header className={styles.header}>
         <Top />
       </header>
-      <SiteListContext.Provider value={context}>
+      <SiteContext.Provider value={context}>
         <section className={styles.main}>
           <Nav />
         </section>
         <List type="find" />
-      </SiteListContext.Provider>
+      </SiteContext.Provider>
       <Footer />
     </div>
   );
