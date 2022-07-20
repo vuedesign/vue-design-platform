@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../styles/Nav.module.scss";
-import { SiteListContext, SiteListContextType } from "../hooks/SiteContext";
+import { SiteContext, SiteContextType } from "../hooks/SiteContext";
 
 type Item = {
   value: string;
@@ -39,7 +39,7 @@ const orderList: Array<Item> = [
 
 const Nav = () => {
   const [orderActive, setOrderActive] = useState("new");
-  const hanldeCheckOrderClick = (item: Item, context: SiteListContextType) => {
+  const hanldeCheckOrderClick = (item: Item, context: SiteContextType) => {
     setOrderActive(item.value);
     const { setQuery, query } = context;
     setQuery(
@@ -50,7 +50,7 @@ const Nav = () => {
   };
 
   const [typeActive, setTypeActive] = useState("all");
-  const hanldeCheckTypeClick = (item: Item, context: SiteListContextType) => {
+  const hanldeCheckTypeClick = (item: Item, context: SiteContextType) => {
     setTypeActive(item.value);
     const { setQuery, query } = context;
     setQuery(
@@ -61,7 +61,7 @@ const Nav = () => {
   };
 
   return (
-    <SiteListContext.Consumer>
+    <SiteContext.Consumer>
       {(context) => (
         <div className={styles.nav}>
           <ul className={styles.tabs}>
@@ -90,7 +90,7 @@ const Nav = () => {
           </ul>
         </div>
       )}
-    </SiteListContext.Consumer>
+    </SiteContext.Consumer>
   );
 };
 
