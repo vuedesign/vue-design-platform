@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
+import { AuthResolver } from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './strategys/jwt.strategy';
@@ -19,7 +20,7 @@ import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
     BaseMicroserviceModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, AuthResolver],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

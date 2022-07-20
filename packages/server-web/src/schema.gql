@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UserEntity {
+  id: Int!
+  uuid: String!
+  username: String!
+  nickname: String!
+  email: String!
+  phone: String!
+  password: String!
+  avatar: String!
+  status: Float!
+  rule: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type SiteEntity {
   id: Int!
   uuid: String!
@@ -23,11 +43,6 @@ type SiteEntity {
   createdAt: DateTime!
   updatedAt: DateTime!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type SiteEntityPagination {
   size: Float!
@@ -67,6 +82,7 @@ type NavigationListPaginated {
 type Query {
   sites(query: SiteListInput): SiteListPaginated
   navigations: NavigationListPaginated
+  profile: UserEntity!
 }
 
 input SiteListInput {
