@@ -10,7 +10,7 @@ import logoImage from "../public/images/logo.png";
 const Header = () => {
   return (
     <NavigationContext.Consumer>
-      {({ list }) => (
+      {({ list, total }) => (
         <header className={styles.container}>
           <div className={styles.wrapper}>
             <Top />
@@ -18,6 +18,7 @@ const Header = () => {
               <Image src={logoImage} alt="logo" width={224} height={38} />
             </div>
             <div className={styles.mine}>
+              <span>推荐站点 ({total})</span>
               <span className={styles["mine-setting"]}>
                 <SettingTwo theme="outline" size="16" fill="#e1e9ed" />
               </span>
