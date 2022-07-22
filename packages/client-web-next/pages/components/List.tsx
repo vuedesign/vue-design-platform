@@ -1,8 +1,8 @@
+import { useContext } from "react";
+import Link from "next/link";
 import styles from "../styles/List.module.scss";
 import Item from "./Item";
 import { SiteContext } from "../hooks/SiteContext";
-import { useContext } from "react";
-import Link from "next/link";
 import { Pagination } from "./Pagination";
 
 type ListProps = {

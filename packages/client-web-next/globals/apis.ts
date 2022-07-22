@@ -1,8 +1,8 @@
 import * as apis from "./apis.contants";
 import { AxiosRequestConfig } from "axios";
 import ajax from "./ajax";
-import { SiteListResponse, SiteType } from "../types/site";
-import { NavigationListResponse } from "../types/navigation";
+import { SiteListResponse, SiteType } from "../pages/types/site";
+import { NavigationListResponse } from "../pages/types/navigation";
 
 export interface FindSiteQuery {
   size: number;

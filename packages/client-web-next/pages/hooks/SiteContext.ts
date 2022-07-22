@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { SiteListResponse, SiteListType } from "../types/site";
 import type { SetDispatch, ListPageResponse } from "../types/global";
-import { FindSiteQuery } from "../globals/apis";
+import { FindSiteQuery } from "../../globals/apis";
 
 export interface SiteContextType extends ListPageResponse<SiteListType> {
   setList: SetDispatch<SiteListType>;

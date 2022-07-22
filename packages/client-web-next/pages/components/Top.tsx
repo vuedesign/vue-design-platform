@@ -2,10 +2,9 @@ import styles from "../styles/Top.module.scss";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import { Wechat, UploadOne } from "@icon-park/react";
-import styled from "styled-components";
+import { UploadOne } from "@icon-park/react";
 import Profile from "./Profile";
-import logoImage from "../public/images/logo.png";
+import logoImage from "../../public/images/logo.png";
 
 type NavItem = {
   path: string;

@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Find.module.scss";
-import List from "../components/List";
-import Top from "../components/Top";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
-import { findSiteData, FindSiteQuery } from "../globals/apis";
-import { SiteContext } from "../hooks/SiteContext";
-import type { SiteListResponse } from "../types/site";
 import { useQuery, NetworkStatus } from "@apollo/client";
-import { FIND_QUERY } from "../libs/gql";
+import { findSiteData, FindSiteQuery } from "../globals/apis";
+import styles from "./styles/Find.module.scss";
+import List from "./components/List";
+import Top from "./components/Top";
+import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import { SiteContext } from "./hooks/SiteContext";
+import type { SiteListResponse } from "./types/site";
+import { FIND_QUERY } from "./libs/gql";
 
 const queryDetail: FindSiteQuery = {
   size: 20,

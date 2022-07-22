@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Login.module.scss";
-import { loginData } from "../globals/apis";
+import { useRouter } from "next/router";
 import { Divider, Form, Input, Button, Checkbox } from "antd";
 import { User, Lock } from "@icon-park/react";
+import { loginData } from "../globals/apis";
 import { TOKEN_KEY } from "../globals/globals.contants";
-import { useRouter } from "next/router";
+import styles from "./styles/Login.module.scss";
 import ajax from "../globals/ajax";
 
 const Login: NextPage<any> = () => {

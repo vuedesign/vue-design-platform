@@ -1,4 +1,4 @@
-import { ListPageResponse } from "../types/global";
+import { ListPageResponse } from "./global";
 
 export interface User {
   avatar: string;

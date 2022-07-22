@@ -1,13 +1,13 @@
 import Head from "next/head";
 import type { NextPage } from "next";
-import styles from "../styles/Home.module.scss";
-import List from "../components/List";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { SiteContext } from "../hooks/SiteContext";
-import { NavigationContext } from "../hooks/NavigationContext";
-import { initializeApollo, addApolloState } from "../libs/apolloClient";
-import { INDEX_QUERY } from "../libs/gql";
+import styles from "./styles/Home.module.scss";
+import List from "./components/List";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { SiteContext } from "./hooks/SiteContext";
+import { NavigationContext } from "./hooks/NavigationContext";
+import { initializeApollo, addApolloState } from "./libs/apolloClient";
+import { INDEX_QUERY } from "./libs/gql";
 import { useQuery } from "@apollo/client";
 
 export async function getStaticProps() {
