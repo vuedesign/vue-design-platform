@@ -9,7 +9,6 @@ import { PartialType } from '@nestjs/mapped-types';
 import {
   BaseService,
   IPaginationResponse,
-  IPaginationQuery,
 } from '@/globals/services/base.service';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 import { ClientProxy } from '@nestjs/microservices';
