@@ -1,4 +1,4 @@
-import { QueryTransformPipe } from '../../core/pipes/queryTransform.pipe';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import {
   Controller,
   Get,
@@ -29,17 +29,16 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 export class NavigationController {
   constructor(private readonly navigationService: NavigationService) {}
 
-  @Public()
   @Post()
   @ApiBody({
     description: '添加项目到导航',
     type: CreateNavigationDto,
   })
   create(@Body() createNavigationDto: CreateNavigationDto) {
+    console.log('createNavigationDto', createNavigationDto);
     return this.navigationService.create(createNavigationDto);
   }
 
-  @Public()
   @Get()
   findAll(@Query(new QueryTransformPipe(['title'])) query: NavigationListDto) {
     console.log('query====----', query);
