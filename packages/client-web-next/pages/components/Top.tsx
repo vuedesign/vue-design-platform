@@ -57,22 +57,22 @@ const Top = () => {
           <li>
             <div className={`${styles.btn} ${styles.wechat}`}>
               {/* <home-popper arrow placement="bottom">
-                  <div className="find-header-wechat-title">
-                    <wechat theme="outline" size="16" fill="#999" />
-                    <span className="text">关注公众号</span>
+                <div className="find-header-wechat-title">
+                  <wechat theme="outline" size="16" fill="#999" />
+                  <span className="text">关注公众号</span>
+                </div>
+                <template #content>
+                  <div className="find-header-wechat-popper-content">
+                    <img src="../assets/images/wechat.png" />
                   </div>
-                  <template #content>
-                    <div className="find-header-wechat-popper-content">
-                      <img src="../assets/images/wechat.png" />
-                    </div>
-                  </template>
-                </home-popper> */}
+                </template>
+              </home-popper> */}
             </div>
           </li>
           <li>
             <div className={`${styles.btn} ${styles.recommend}`}>
-              <UploadOne theme="outline" size="14" fill="#808080" />
-              <span className="text">推荐</span>
+              <UploadOne className="btn-upload-one" theme="outline" size="14" />
+              <span className={styles.text}>推荐</span>
             </div>
           </li>
           <li>
