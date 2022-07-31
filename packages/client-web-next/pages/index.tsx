@@ -31,6 +31,7 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
       variables: {},
     }
   );
+  console.log("error==========", error);
   console.log("data", data);
   return (
     <div className={styles.container}>
