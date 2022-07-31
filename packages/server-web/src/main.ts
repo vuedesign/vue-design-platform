@@ -5,6 +5,7 @@ import middleware from '@/core/middleware';
 import swagger from '@/core/swagger';
 import { TransformInterceptor } from '@/core/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
+import { GraphQLExceptionFilter } from '@/core/filters/gqlException.filter';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -14,7 +15,8 @@ async function bootstrap() {
   // 中间健
   middleware(app);
   app.enableCors();
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new GraphQLExceptionFilter());
   // app.useGlobalInterceptors(new TransformInterceptor());
   app.setGlobalPrefix(config.get('global.API_PREFIX'));
   app.useGlobalPipes(new ValidationPipe());

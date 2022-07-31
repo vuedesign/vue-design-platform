@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 // import appsModule from '@/apps/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { GqlAuthGuard } from '@/modules/auth/guards/gql-auth.guard';
 import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -29,11 +30,15 @@ import globalConfig from '@/configs/global.config';
     NavigationModule,
     AuthModule,
   ],
-  // providers: [
-  //   {
-  //     provide: APP_GUARD,
-  //     useClass: JwtAuthGuard,
-  //   },
-  // ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

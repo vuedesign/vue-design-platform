@@ -82,7 +82,7 @@ type NavigationListPaginated {
 type Query {
   sites(query: SiteListInput): SiteListPaginated
   navigations: NavigationListPaginated
-  profile: UserEntity!
+  profile: UserEntity
 }
 
 input SiteListInput {
