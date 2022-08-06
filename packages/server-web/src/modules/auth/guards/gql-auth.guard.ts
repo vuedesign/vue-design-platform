@@ -19,12 +19,13 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     return req;
   }
 
-  // handleRequest(err: any, user: any, info: any) {
-  //   if (err || !user) {
-  //     throw err || new AuthenticationError('Could not authenticate with token');
-  //   }
-  //   return user;
-  // }
+  handleRequest(err: any, user: any, info: any) {
+    console.log('user', user);
+    if (err || !user) {
+      // throw err || new AuthenticationError('Could not authenticate with token');
+    }
+    return user;
+  }
 
   canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [

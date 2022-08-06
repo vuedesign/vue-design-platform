@@ -55,9 +55,10 @@ export class AuthController {
     return token;
   }
 
+  @Public()
   @Get('profile')
   getProfile(@Req() req) {
-    console.log('profile', req);
+    console.log('profile');
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException('用户没授权');
     }
