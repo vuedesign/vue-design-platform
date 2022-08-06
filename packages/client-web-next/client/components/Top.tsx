@@ -1,10 +1,10 @@
-import styles from "../styles/Top.module.scss";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Image from "next/image";
-import { UploadOne } from "@icon-park/react";
-import Profile from "./Profile";
-import logoImage from "../../public/images/logo.png";
+import styles from '../styles/Top.module.scss';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
+import { UploadOne } from '@icon-park/react';
+import Profile from './Profile';
+import logoImage from '../../public/images/logo.png';
 
 type NavItem = {
   path: string;
@@ -12,12 +12,12 @@ type NavItem = {
 };
 const navList: NavItem[] = [
   {
-    path: "/",
-    label: "首页",
+    path: '/',
+    label: '首页',
   },
   {
-    path: "/find",
-    label: "发现",
+    path: '/find',
+    label: '发现',
   },
 ];
 
@@ -30,7 +30,7 @@ const Top = () => {
   const router = useRouter();
   const handleGotoHome = () => {
     router.push({
-      pathname: "/",
+      pathname: '/',
     });
   };
   return (
@@ -45,7 +45,7 @@ const Top = () => {
           {navList.map((item, index) => (
             <li
               key={index}
-              className={router.pathname === item.path ? styles.active : ""}
+              className={router.pathname === item.path ? styles.active : ''}
             >
               <Link passHref href={item.path}>
                 {item.label}
@@ -76,7 +76,6 @@ const Top = () => {
             </div>
           </li>
           <li>
-            {/* <header-avatar /> */}
             <Profile />
           </li>
         </ul>

@@ -1,24 +1,24 @@
-import { useState } from "react";
-// import useUser from "./hooks/useUser";
-import { NavigationContext } from "../hooks/NavigationContext";
-
-// export interface User {
-//   email: string;
-// }
+import { useAuthProfileQuery } from '../../globals/apis';
+import Router from 'next/router';
+import styles from '../styles/Profile.module.scss';
 
 const Profile = () => {
-  //   const { user, isLoggedIn } = useUser({ redirectTo: "" });
+  const { isSuccess, data: profile } = useAuthProfileQuery();
 
-  //   if (!user || isLoggedIn === false) {
-  //     return <div>Loading...</div>;
-  //   }
-
+  const handleGotoLogin = () => {
+    Router.push('/login');
+  };
+  if (!isSuccess) {
+    return (
+      <div className={styles.container} onClick={handleGotoLogin}>
+        登录/注册
+      </div>
+    );
+  }
   return (
-    <NavigationContext.Consumer>
-      {({ profile }) => (
-        <div>{profile && (profile.username || profile.nickname)}</div>
-      )}
-    </NavigationContext.Consumer>
+    <div className={styles.container}>
+      {profile && (profile.username || profile.nickname)}
+    </div>
   );
 };
 

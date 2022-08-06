@@ -9,6 +9,7 @@ import axios from './axios';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import * as apis from './apis.contants';
 import { NavigationListResponse } from '../types/navigation';
+import { User } from '../types/user';
 import { SiteListResponse } from '../types/site';
 
 const axiosBaseQuery =
@@ -24,7 +25,7 @@ const axiosBaseQuery =
   async ({ url, method, data }) => {
     try {
       const result = await axios({ url, method, data });
-      return { data: result };
+      return { ...result };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       console.log('err======', err);
@@ -48,7 +49,7 @@ export const clientApi = createApi({
     authLogin: builder.query<any, void>({
       query: () => ({ url: apis.AUTH_LOGIN, method: 'get' }),
     }),
-    authProfile: builder.query<any[], void>({
+    authProfile: builder.query<User, void>({
       query: () => ({ url: apis.AUTH_PROFILE, method: 'get' }),
     }),
     navigations: builder.query<NavigationListResponse, void>({
