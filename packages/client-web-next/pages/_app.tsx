@@ -1,16 +1,14 @@
-import type { AppProps } from "next/app";
-import "antd/dist/antd.css";
-import "./styles/globals.scss";
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "./libs/apolloClient";
+import type { AppProps } from 'next/app';
+import { wrapper } from '../client/redux/store';
+import 'antd/dist/antd.css';
+import '../client/styles/globals.scss';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const apolloClient = useApollo(pageProps);
   return (
-    <ApolloProvider client={apolloClient}>
+    <>
       <Component {...pageProps} />
-    </ApolloProvider>
+    </>
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

@@ -1,22 +1,22 @@
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from "@icon-park/react";
-import Image from "next/image";
-import styles from "../styles/Item.module.scss";
-import type { SiteItemType } from "../types/site.d";
+import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
+import Image from 'next/image';
+import styles from '../styles/Item.module.scss';
+import type { SiteItem } from '../types/site.d';
 
 const defaultProps = {
-  thumbUrl: "",
+  thumbUrl: '',
   id: 0,
-  title: "",
-  description: "",
+  title: '',
+  description: '',
   tagIds: () => [],
   author: () => ({
-    avatar: "string",
-    username: "string",
+    avatar: 'string',
+    username: 'string',
   }),
-  type: "site",
+  type: 'site',
 };
 
-const Item = (props: SiteItemType) => {
+const Item = (props: SiteItem) => {
   return (
     <div className={styles.container}>
       <div className={styles.inner}>
@@ -50,10 +50,10 @@ const Item = (props: SiteItemType) => {
               <Like theme="outline" size="16" fill="#666" />
             </dd>
             <dd>
-              {props.type === "site" && (
+              {props.type === 'site' && (
                 <Home theme="outline" size="16" fill="#666" />
               )}
-              {props.type === "code" && (
+              {props.type === 'code' && (
                 <GithubOne theme="outline" size="16" fill="#666" />
               )}
             </dd>
@@ -65,7 +65,7 @@ const Item = (props: SiteItemType) => {
           <div className={styles.tags}>
             {props.tagIds &&
               props.tagIds.length &&
-              props.tagIds.split(",").map((t, i) => <span key={i}>{t}</span>)}
+              props.tagIds.split(',').map((t, i) => <span key={i}>{t}</span>)}
           </div>
         </div>
       </div>

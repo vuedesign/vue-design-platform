@@ -1,13 +1,13 @@
-import { ListPageResponse } from "./global";
+import { ListPageResponse } from './global';
 
 export interface User {
   avatar: string;
   username: string;
 }
 
-export type SiteType = "site" | "code";
+export type SiteType = 'site' | 'code';
 
-export interface SiteItemType {
+export interface SiteItem {
   id?: number;
   uuid?: string;
   title: string;
@@ -29,5 +29,5 @@ export interface SiteItemType {
   createdAt?: string;
   updatedAt?: string;
 }
-export type SiteListType = SiteItemType[];
-export interface SiteListResponse extends ListPageResponse<SiteListType> {}
+export type SiteList = SiteItem[];
+export interface SiteListResponse extends ListPageResponse<SiteList> {}

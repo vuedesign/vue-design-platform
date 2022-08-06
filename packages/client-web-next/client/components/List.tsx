@@ -1,9 +1,10 @@
-import { useContext } from "react";
-import Link from "next/link";
-import styles from "../styles/List.module.scss";
-import Item from "./Item";
-import { SiteContext } from "../hooks/SiteContext";
-import { Pagination } from "./Pagination";
+import { useContext } from 'react';
+import Link from 'next/link';
+import styles from '../styles/List.module.scss';
+import Item from './Item';
+import { SiteContext } from '../hooks/SiteContext';
+import { Pagination } from './Pagination';
+import { useSitesQuery } from '../../globals/apis';
 
 type ListProps = {
   type: string;
@@ -44,8 +45,8 @@ type ListProps = {
 // };
 
 const List = ({ type }: ListProps) => {
-  const context = useContext(SiteContext);
-  const list = context.list || [];
+  const { data } = useSitesQuery();
+  const list = data?.list || [];
   return (
     <section className={styles.container}>
       <section className={styles.main}>
