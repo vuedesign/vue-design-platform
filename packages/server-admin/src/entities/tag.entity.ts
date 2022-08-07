@@ -57,7 +57,7 @@ export class TagEntity {
   updatedAt: Date;
 
   @ManyToMany(() => SiteEntity, (site) => site.tags, {
-    cascade: ['insert'],
+    cascade: ['insert', 'update', 'recover', 'soft-remove'],
   })
   @JoinTable()
   sites: SiteEntity[];

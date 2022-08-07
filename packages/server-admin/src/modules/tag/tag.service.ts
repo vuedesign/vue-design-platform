@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from '@/entities/tag.entity';
@@ -19,7 +19,13 @@ export class TagService extends BaseService<TagEntity> {
     super(tagRepository);
   }
 
-  create(createTag: CreateTagDto) {
+  async create(createTag: CreateTagDto) {
+    const tag = await this.tagRepository.findOneBy({
+      name: createTag.name,
+    });
+    if (tag) {
+      return tag;
+    }
     this.tagRepository.create(createTag);
     return this.tagRepository.save(createTag);
   }
@@ -30,8 +36,14 @@ export class TagService extends BaseService<TagEntity> {
     return this.findListAndPage(options);
   }
 
+  findOneBy(where: FindOptionsWhere<TagEntity>) {
+    return this.tagRepository.findOneBy(where);
+  }
+
   findOne(id: number) {
-    return `This action returns a #${id} tag`;
+    return this.tagRepository.findOneBy({
+      id,
+    });
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {

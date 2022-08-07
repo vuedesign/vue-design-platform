@@ -34,7 +34,6 @@ export class SiteController {
     private readonly tagService: TagService,
   ) {}
 
-  @Public()
   @Post()
   @ApiBody({
     description: '添加项目',
@@ -44,12 +43,21 @@ export class SiteController {
     @Body() createSite: CreateSiteDto,
     @Req() req: Request,
   ): Promise<any> {
-    createSite.tags.forEach(async (item) => {
-      await this.tagService.create(item);
-    });
+    const tags: (Promise<TagEntity> | TagEntity)[] = [];
+    for await (const item of createSite.tags) {
+      const tag = await this.tagService.findOneBy({
+        name: item.name,
+      });
+      if (tag) {
+        tags.push(tag);
+      } else {
+        tags.push(item);
+      }
+    }
     Object.assign(createSite, {
       authorId: 4,
       isShow: 1,
+      tags,
     });
     const res = await this.siteService.create(createSite);
     return res;

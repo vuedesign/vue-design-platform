@@ -178,7 +178,7 @@ export class SiteEntity {
   author: UserEntity;
 
   @ManyToMany(() => TagEntity, {
-    cascade: ['insert'],
+    cascade: ['insert', 'remove', 'update'],
   })
   @JoinTable()
   tags: TagEntity[];
