@@ -28,6 +28,10 @@ export class SiteController {
         updatedAt: 'DESC',
       },
       where: {},
+      relations: {
+        tags: true,
+        author: true,
+      },
       select: {
         author: {
           uuid: true,
@@ -35,9 +39,11 @@ export class SiteController {
           username: true,
           nickname: true,
         },
-      },
-      relations: {
-        author: true,
+        tags: {
+          id: true,
+          name: true,
+          description: true,
+        },
       },
     };
 
