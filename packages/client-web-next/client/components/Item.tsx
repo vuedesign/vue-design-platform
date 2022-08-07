@@ -2,6 +2,7 @@ import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import Image from 'next/image';
 import styles from '../styles/Item.module.scss';
 import type { SiteItem } from '../../types/site';
+import { Tooltip } from 'antd';
 
 const defaultProps = {
   thumbUrl: '',
@@ -38,12 +39,11 @@ const Item = (props: SiteItem) => {
             </dd>
             <dt>
               {props.author && (
-                <Image
-                  src={props.author.avatar}
-                  alt={props.author.username}
-                  width={28}
-                  height={28}
-                />
+                <Tooltip placement="bottom" title={props.author.username}>
+                  <span
+                    style={{ backgroundImage: `url(${props.author.avatar})` }}
+                  ></span>
+                </Tooltip>
               )}
             </dt>
             <dd>
