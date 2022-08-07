@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
+import { TagEntity } from '@/entities/tag.entity';
 
 export class CreateSiteDto {
   @ApiProperty({
@@ -61,13 +62,6 @@ export class CreateSiteDto {
   authorId?: number;
 
   @ApiProperty({
-    description: '标签',
-    required: false,
-  })
-  @IsString()
-  tagIds?: string;
-
-  @ApiProperty({
     default: 0,
     description: '浏览量',
   })
@@ -101,7 +95,9 @@ export class CreateSiteDto {
     default: 1,
     description: '是否可用：1-可用，2-不可用',
   })
-  isShow: number;
+  status: number;
+
+  tags: TagEntity[];
 
   createdAt?: Date;
 

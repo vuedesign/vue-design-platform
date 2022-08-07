@@ -18,6 +18,7 @@ export class TagService extends BaseService<TagEntity> {
   ) {
     super(tagRepository);
   }
+
   create(createTag: CreateTagDto) {
     this.tagRepository.create(createTag);
     return this.tagRepository.save(createTag);

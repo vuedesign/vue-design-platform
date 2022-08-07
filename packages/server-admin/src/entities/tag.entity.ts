@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { SiteEntity } from './site.entity';
 
 @Entity('tag')
 export class TagEntity {
@@ -33,23 +36,6 @@ export class TagEntity {
     type: 'int',
     width: 1,
     nullable: true,
-    comment: '标签类型：1-项目，2-页面，3-服务，4-组件',
-  })
-  type: number;
-
-  @Column({
-    type: 'int',
-    width: 11,
-    nullable: true,
-    comment: '作者id',
-    name: 'author_id',
-  })
-  authorId: number;
-
-  @Column({
-    type: 'int',
-    width: 1,
-    nullable: true,
     comment: '是否可用：1-可用，2-不可用',
   })
   status: number;
@@ -69,4 +55,10 @@ export class TagEntity {
     comment: '更新时间',
   })
   updatedAt: Date;
+
+  @ManyToMany(() => SiteEntity, (site) => site.tags, {
+    cascade: ['insert'],
+  })
+  @JoinTable()
+  sites: SiteEntity[];
 }

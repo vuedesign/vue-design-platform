@@ -7,8 +7,11 @@ import {
   Generated,
   ManyToOne,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { TagEntity } from './tag.entity';
 
 @Entity('site')
 export class SiteEntity {
@@ -173,4 +176,10 @@ export class SiteEntity {
     name: 'author_id',
   })
   author: UserEntity;
+
+  @ManyToMany(() => TagEntity, {
+    cascade: ['insert'],
+  })
+  @JoinTable()
+  tags: TagEntity[];
 }

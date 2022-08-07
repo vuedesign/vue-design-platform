@@ -12,6 +12,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
+import { TagService } from '../tag/tag.service';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
@@ -22,27 +23,39 @@ import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { SiteEntity } from '@/entities/site.entity';
+import { TagEntity } from '@/entities/tag.entity';
 
 @Controller('sites')
 @ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
-  constructor(private readonly siteService: SiteService) {}
+  constructor(
+    private readonly siteService: SiteService,
+    private readonly tagService: TagService,
+  ) {}
 
+  @Public()
   @Post()
   @ApiBody({
     description: '添加项目',
     type: CreateSiteDto,
   })
-  create(@Body() createSite: CreateSiteDto, @Req() req: Request): Promise<any> {
-    console.log('createSite', createSite, req.user);
+  async create(
+    @Body() createSite: CreateSiteDto,
+    @Req() req: Request,
+  ): Promise<any> {
+    createSite.tags.forEach(async (item) => {
+      await this.tagService.create(item);
+    });
     Object.assign(createSite, {
       authorId: 4,
       isShow: 1,
     });
-    return this.siteService.create(createSite);
+    const res = await this.siteService.create(createSite);
+    return res;
   }
 
+  @Public()
   @Get()
   @ApiQuery({
     description: '项目列表',
@@ -56,6 +69,23 @@ export class SiteController {
         updatedAt: 'DESC',
       },
       where: {},
+      relations: {
+        tags: true,
+        author: true,
+      },
+      select: {
+        author: {
+          uuid: true,
+          avatar: true,
+          username: true,
+          nickname: true,
+        },
+        tags: {
+          id: true,
+          name: true,
+          description: true,
+        },
+      },
     };
 
     if (order) {
