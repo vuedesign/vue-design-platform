@@ -34,5 +34,10 @@ export default defineNuxtConfig({
         },
       },
     },
+    build: {
+      rollupOptions: {
+        // external: "vue-router",
+      },
+    },
   },
 });

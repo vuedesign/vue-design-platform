@@ -1,0 +1,95 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserEntity {
+  id: Int!
+  uuid: String!
+  username: String!
+  nickname: String!
+  email: String!
+  phone: String!
+  password: String!
+  avatar: String!
+  status: Float!
+  rule: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SiteEntity {
+  id: Int!
+  uuid: String!
+  title: String!
+  thumbUrl: String!
+  logoUrl: Int
+  iconUrl: Int
+  siteUrl: Int
+  codeUrl: Int
+  description: Int
+  authorId: Float!
+  tagIds: Int
+  views: Float!
+  collections: Float!
+  top: Float!
+  down: Float!
+  type: String!
+  status: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SiteEntityPagination {
+  size: Float!
+  page: Float!
+}
+
+type SiteListPaginated {
+  pagination: SiteEntityPagination
+  list: [SiteEntity!]
+  total: Int!
+}
+
+type NavigationEntity {
+  id: Int!
+  siteId: Int!
+  siteUrl: String!
+  iconUrl: String!
+  title: String!
+  description: String!
+  order: String!
+  status: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type NavigationEntityPagination {
+  size: Float!
+  page: Float!
+}
+
+type NavigationListPaginated {
+  pagination: NavigationEntityPagination
+  list: [NavigationEntity!]
+  total: Int!
+}
+
+type Query {
+  sites(query: SiteListInput): SiteListPaginated
+  navigations: NavigationListPaginated
+  profile: UserEntity
+}
+
+input SiteListInput {
+  size: Float = 20
+  page: Float = 1
+  order: String
+  type: String = ""
+  title: String = ""
+  status: Float = 1
+}

@@ -1,28 +1,74 @@
-import * as apis from "./apis.contant";
-import { AxiosRequestConfig } from "axios";
-import ajax from "./ajax";
-import { SiteListResponse, SiteType } from "../types/site";
-import { NavigationListResponse } from "../types/navigation";
+import {
+  BaseQueryFn,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
+import { HYDRATE } from 'next-redux-wrapper';
+// import queryString from 'query-string';
+import axios from './axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
+import * as apis from './apis.contants';
+import { NavigationListResponse } from '../types/navigation';
+import { User } from '../types/user';
+import { SiteListResponse } from '../types/site';
 
-export interface FindSiteQuery {
-  size: number;
-  page: number;
-  type?: SiteType;
-}
+const axiosBaseQuery =
+  (): BaseQueryFn<
+    {
+      url: string;
+      method: AxiosRequestConfig['method'];
+      data?: AxiosRequestConfig['data'];
+    },
+    unknown,
+    unknown
+  > =>
+  async ({ url, method, data }) => {
+    try {
+      const result = await axios({ url, method, data });
+      return { ...result };
+    } catch (axiosError) {
+      const err = axiosError as AxiosError;
+      console.log('err======', err);
+      return {
+        error: { status: err.response?.status, data: err.response?.data },
+      };
+    }
+  };
 
-export function loginData(body: Record<string, string>): Promise<any> {
-  return ajax.post(apis.AUTH_LOGIN, body);
-}
+// const baseUrl =
+//   typeof window !== 'undefined' ? '/api/v1' : 'http://127.0.0.1:8083/api/v1';
+export const clientApi = createApi({
+  reducerPath: 'clientApi',
+  baseQuery: axiosBaseQuery(),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
+  endpoints: (builder) => ({
+    authLogin: builder.query<any, void>({
+      query: () => ({ url: apis.AUTH_LOGIN, method: 'get' }),
+    }),
+    authProfile: builder.query<User, void>({
+      query: () => ({ url: apis.AUTH_PROFILE, method: 'get' }),
+    }),
+    navigations: builder.query<NavigationListResponse, void>({
+      query: () => ({ url: apis.NAVIGATIONS, method: 'get' }),
+    }),
+    sites: builder.query<SiteListResponse, void>({
+      query: () => ({ url: apis.SITES, method: 'get' }),
+    }),
+  }),
+});
 
-export function profileData(): Promise<any> {
-  return ajax.get(apis.AUTH_PROFILE);
-}
+// Export hooks for usage in functional components
+export const {
+  useAuthLoginQuery,
+  useNavigationsQuery,
+  useAuthProfileQuery,
+  useSitesQuery,
+  useLazySitesQuery,
+} = clientApi;
 
-export function findSiteData(query?: FindSiteQuery): Promise<SiteListResponse> {
-  const params = query as AxiosRequestConfig<FindSiteQuery>;
-  return ajax.get(apis.SITES, { params });
-}
-
-export function findNavData(): Promise<NavigationListResponse> {
-  return ajax.get(apis.NAVIGATIONS);
-}
+export const { authLogin, authProfile, sites, navigations } =
+  clientApi.endpoints;

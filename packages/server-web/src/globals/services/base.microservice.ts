@@ -1,7 +1,12 @@
-import { Repository, FindOptionsRelations } from 'typeorm';
+import { Repository, FindOptionsRelations, FindManyOptions } from 'typeorm';
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, lastValueFrom } from 'rxjs';
+
+export interface IPagination {
+  page: number;
+  size: number;
+}
 
 export interface IPaginationResponse {
   list: Array<any>;
@@ -19,6 +24,10 @@ export interface IPaginationQuery {
   where?: object;
   relations?: FindOptionsRelations<any>;
   select?: object;
+}
+
+export interface IPaginationOptions<E = any> extends FindManyOptions<E> {
+  pagination?: IPagination;
 }
 
 export interface SendPattern {

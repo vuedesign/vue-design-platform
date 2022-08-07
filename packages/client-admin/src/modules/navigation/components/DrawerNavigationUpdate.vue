@@ -15,7 +15,7 @@
                     label-position="left"
                     label-width="60px"
                 >
-                    <el-divider content-position="left">基础</el-divider>
+                    <el-divider content-position="left">基础---</el-divider>
 
                     <el-form-item label="Icon">
                         <el-avatar shape="square" :src="detail.iconUrl" />

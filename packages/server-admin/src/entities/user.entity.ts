@@ -5,7 +5,9 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Generated,
+  OneToMany,
 } from 'typeorm';
+import { SiteEntity } from './site.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -100,4 +102,7 @@ export class UserEntity {
     comment: '更新时间',
   })
   updatedAt: Date;
+
+  @OneToMany(() => SiteEntity, (site) => site.author)
+  sites: SiteEntity[];
 }

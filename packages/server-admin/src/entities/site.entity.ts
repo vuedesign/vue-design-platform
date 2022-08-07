@@ -5,7 +5,13 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Generated,
+  ManyToOne,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
+import { UserEntity } from './user.entity';
+import { TagEntity } from './tag.entity';
 
 @Entity('site')
 export class SiteEntity {
@@ -164,4 +170,16 @@ export class SiteEntity {
     comment: '更新时间',
   })
   updatedAt: Date;
+
+  @ManyToOne(() => UserEntity, (user) => user.sites)
+  @JoinColumn({
+    name: 'author_id',
+  })
+  author: UserEntity;
+
+  @ManyToMany(() => TagEntity, {
+    cascade: ['insert', 'remove', 'update'],
+  })
+  @JoinTable()
+  tags: TagEntity[];
 }

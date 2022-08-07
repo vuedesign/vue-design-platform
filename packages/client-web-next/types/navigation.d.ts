@@ -1,13 +1,17 @@
-import { ListPageResponse } from './global'
+import { ListPageResponse } from './global';
 
-export interface NavigationItemType {
-  id?: number
-  iconUrl: string
-  siteUrl: string
-  title: string
-  description: string
-  order: number
-  isShow: number
+export interface NavigationItem {
+  id?: number;
+  siteId: number;
+  siteUrl: string;
+  iconUrl: string;
+  title: string;
+  description: string;
+  order: number;
+  status: number;
+  createdAt: string;
+  updatedAt: string;
 }
-export type NavigationListType = NavigationItemType[]
-export type NavigationListResponse = ListPageResponse<NavigationListType>
+export type NavigationList = NavigationItem[];
+export interface NavigationListResponse
+  extends ListPageResponse<NavigationList> {}

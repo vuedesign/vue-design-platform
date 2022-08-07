@@ -9,14 +9,18 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @Entity('site')
+@ObjectType()
 export class SiteEntity {
+  @Field((type) => Int)
   @PrimaryGeneratedColumn({
     comment: '项目id',
   })
   id: number;
 
+  @Field()
   @Column({
     width: 36,
     nullable: false,
@@ -25,6 +29,7 @@ export class SiteEntity {
   @Generated('uuid')
   uuid: string;
 
+  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -33,6 +38,7 @@ export class SiteEntity {
   })
   title: string;
 
+  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -42,6 +48,7 @@ export class SiteEntity {
   })
   thumbUrl: string;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -49,8 +56,9 @@ export class SiteEntity {
     comment: 'logo url',
     name: 'logo_url',
   })
-  logoUrl: string;
+  logoUrl?: string;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -58,8 +66,9 @@ export class SiteEntity {
     comment: 'icon url',
     name: 'icon_url',
   })
-  iconUrl: string;
+  iconUrl?: string;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -67,8 +76,9 @@ export class SiteEntity {
     comment: '网站 url',
     name: 'site_url',
   })
-  siteUrl: string;
+  siteUrl?: string;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -78,6 +88,7 @@ export class SiteEntity {
   })
   codeUrl: string;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -86,6 +97,7 @@ export class SiteEntity {
   })
   description: string;
 
+  @Field()
   @Column({
     type: 'int',
     width: 11,
@@ -95,6 +107,7 @@ export class SiteEntity {
   })
   authorId: number;
 
+  @Field((type) => Int, { nullable: true })
   @Column({
     type: 'varchar',
     width: 255,
@@ -104,6 +117,7 @@ export class SiteEntity {
   })
   tagIds: string;
 
+  @Field()
   @Column({
     type: 'int',
     width: 11,
@@ -112,6 +126,7 @@ export class SiteEntity {
   })
   views: number;
 
+  @Field()
   @Column({
     type: 'int',
     width: 11,
@@ -120,6 +135,7 @@ export class SiteEntity {
   })
   collections: number;
 
+  @Field()
   @Column({
     type: 'int',
     width: 11,
@@ -128,6 +144,7 @@ export class SiteEntity {
   })
   top: number;
 
+  @Field()
   @Column({
     type: 'int',
     width: 11,
@@ -136,6 +153,7 @@ export class SiteEntity {
   })
   down: number;
 
+  @Field()
   @Column({
     type: 'varchar',
     width: 36,
@@ -144,6 +162,7 @@ export class SiteEntity {
   })
   type: string;
 
+  @Field()
   @Column({
     type: 'int',
     width: 1,
@@ -152,6 +171,7 @@ export class SiteEntity {
   })
   status: number;
 
+  @Field()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
@@ -160,6 +180,7 @@ export class SiteEntity {
   })
   createdAt: Date;
 
+  @Field()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
@@ -168,6 +189,7 @@ export class SiteEntity {
   })
   updatedAt: Date;
 
+  // @Field()
   @ManyToOne(() => UserEntity, (user) => user.sites)
   @JoinColumn({
     name: 'author_id',
