@@ -20,17 +20,13 @@ const Header = () => {
                   <a href={item.siteUrl} target="_blank" rel="noreferrer">
                     <dl>
                       <dt>
-                        {/* <img src={item.iconUrl} alt={'test'} /> */}
-                        <Image
-                          src={item.iconUrl}
-                          alt={''}
-                          width={48}
-                          height={48}
-                        />
+                        <span
+                          style={{ backgroundImage: `url(${item.iconUrl})` }}
+                        ></span>
                       </dt>
                       <dd>
                         <h4>{item.title}</h4>
-                        {/* <p>{item.description}</p> */}
+                        <p>{item.description}</p>
                       </dd>
                     </dl>
                   </a>

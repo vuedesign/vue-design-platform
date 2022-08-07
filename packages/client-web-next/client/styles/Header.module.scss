@@ -166,7 +166,6 @@
     padding: 8px;
 
     a {
-      color: #fff;
       text-decoration: none;
       display: block;
       width: 100%;
@@ -181,6 +180,14 @@
       display: flex;
       justify-content: center;
       margin-right: 12px;
+      > span {
+        display: block;
+        width: 24px;
+        height: 24px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center center;
+      }
     }
 
     dd {
