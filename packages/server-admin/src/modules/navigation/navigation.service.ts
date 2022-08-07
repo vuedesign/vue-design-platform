@@ -14,7 +14,7 @@ import {
 import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Injectable()
-export class NavigationService extends BaseService {
+export class NavigationService extends BaseService<NavigationEntity> {
   constructor(
     @InjectRepository(NavigationEntity)
     private readonly navigationRepository: Repository<NavigationEntity>,
@@ -27,7 +27,9 @@ export class NavigationService extends BaseService {
     return this.navigationRepository.save(createNavigation);
   }
 
-  findAll(query: IPaginationOptions): Promise<IPaginationResponse> {
+  findAll(
+    query: IPaginationOptions<NavigationEntity>,
+  ): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 

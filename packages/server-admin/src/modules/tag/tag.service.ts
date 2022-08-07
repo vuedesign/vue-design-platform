@@ -11,7 +11,7 @@ import {
 } from '@/globals/services/base.service';
 
 @Injectable()
-export class TagService extends BaseService {
+export class TagService extends BaseService<TagEntity> {
   constructor(
     @InjectRepository(TagEntity)
     private readonly tagRepository: Repository<TagEntity>,
@@ -23,7 +23,9 @@ export class TagService extends BaseService {
     return this.tagRepository.save(createTag);
   }
 
-  findAll(options?: IPaginationOptions): Promise<IPaginationResponse> {
+  findAll(
+    options?: IPaginationOptions<TagEntity>,
+  ): Promise<IPaginationResponse> {
     return this.findListAndPage(options);
   }
 

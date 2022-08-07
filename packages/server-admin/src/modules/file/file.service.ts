@@ -12,7 +12,7 @@ import { FileEntity } from '@/entities/file.entity';
 import { UpdateFieldDto } from './dto/file.dto';
 
 @Injectable()
-export class FileService extends BaseService {
+export class FileService extends BaseService<FileEntity> {
   constructor(
     @InjectRepository(FileEntity)
     private readonly fileRepository: Repository<FileEntity>,
@@ -25,7 +25,9 @@ export class FileService extends BaseService {
     return this.fileRepository.save(createFile);
   }
 
-  findList(query: IPaginationOptions): Promise<IPaginationResponse> {
+  findList(
+    query: IPaginationOptions<FileEntity>,
+  ): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 

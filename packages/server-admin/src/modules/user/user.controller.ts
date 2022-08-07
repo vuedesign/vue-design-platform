@@ -19,6 +19,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { UserEntity } from '@/entities/user.entity';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -42,7 +43,7 @@ export class UserController {
   })
   findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
     const { size, page, search, status, rule } = query;
-    const options: IPaginationOptions = {
+    const options: IPaginationOptions<UserEntity> = {
       pagination: { size, page },
       order: {
         updatedAt: 'DESC',

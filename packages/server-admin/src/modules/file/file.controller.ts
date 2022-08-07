@@ -28,6 +28,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FileListQueryDto, UpdateFieldDto } from './dto/file.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { FileEntity } from '@/entities/file.entity';
 
 const md5 = require('md5');
 
@@ -145,7 +146,7 @@ export class FileController {
   })
   findAll(@Query(new QueryTransformPipe()) query: FileListQueryDto) {
     const { status, size = 20, page = 1, order } = query;
-    const options: IPaginationOptions = {
+    const options: IPaginationOptions<FileEntity> = {
       pagination: { size, page },
       order: {
         updatedAt: 'DESC',

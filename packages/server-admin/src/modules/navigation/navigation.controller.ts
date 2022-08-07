@@ -22,6 +22,7 @@ import {
 import { NavigationListDto } from './dto/navigation.dto';
 import { Public } from '@/core/decorators/auth.decorator';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Controller('navigations')
 @ApiTags('导航模块')
@@ -43,7 +44,7 @@ export class NavigationController {
   findAll(@Query(new QueryTransformPipe(['title'])) query: NavigationListDto) {
     console.log('query====----', query);
     const { siteId, status, title, size, page, order } = query;
-    const options: IPaginationOptions = {
+    const options: IPaginationOptions<NavigationEntity> = {
       pagination: { size, page },
       order: {
         updatedAt: 'DESC',

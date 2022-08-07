@@ -13,6 +13,8 @@ import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagListQueryDto } from './dto/tag.dto';
+import { IPaginationOptions } from '@/globals/services/base.service';
+import { TagEntity } from '@/entities/tag.entity';
 
 @Controller('tags')
 @ApiTags('标签模块')
@@ -32,14 +34,18 @@ export class TagController {
   @Get()
   findAll(@Query() query: TagListQueryDto) {
     const { size, page } = query;
-    let order = {
-      updatedAt: 'DESC',
+    const opitions: IPaginationOptions<TagEntity> = {
+      order: {
+        updatedAt: 'DESC',
+      },
+      pagination: { page },
     };
-    if (query.order) {
-      const [orderKey, orderValue]: Array<string> = query.order.split(' ');
-      order[orderKey] = orderValue;
-    }
-    return this.tagService.findAll({ pagination: { page }, order });
+
+    // if (query.order) {
+    //   const [orderKey, orderValue]: Array<string> = query.order.split(' ');
+    //   order[orderKey] = orderValue;
+    // }
+    return this.tagService.findAll(opitions);
   }
 
   @Get(':id')

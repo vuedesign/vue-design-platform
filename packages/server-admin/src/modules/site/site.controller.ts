@@ -21,6 +21,7 @@ import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { Request } from 'express';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { SiteEntity } from '@/entities/site.entity';
 
 @Controller('sites')
 @ApiTags('站点模块')
@@ -49,7 +50,7 @@ export class SiteController {
   })
   findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
     const { title, type, status, size, page, order } = query;
-    const options: IPaginationOptions = {
+    const options: IPaginationOptions<SiteEntity> = {
       pagination: { size, page },
       order: {
         updatedAt: 'DESC',

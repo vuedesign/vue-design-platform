@@ -1,37 +1,42 @@
-import { Repository } from 'typeorm';
+import { Repository, FindManyOptions } from 'typeorm';
 
 export interface IPagination {
   page?: number;
   size?: number;
 }
+
 export interface IPaginationResponse<T = any> {
   list: Array<T>;
   pagination: IPagination;
   total: number;
 }
 
-export interface IPaginationOptions {
+export interface IPaginationOptions<E> extends FindManyOptions<E> {
   pagination?: IPagination;
-  order?: object;
-  where?: object;
 }
 
-export class BaseService {
+export class BaseService<E> {
   constructor(private readonly currentRepository: Repository<any>) {}
   async findListAndPage(
-    opitons: IPaginationOptions,
+    options: IPaginationOptions<E>,
   ): Promise<IPaginationResponse> {
+    console.log('options admin', options);
     const {
-      pagination: { page = 1, size = 20 },
+      pagination = {},
       order = {},
       where = {},
-    } = opitons;
+      relations = {},
+      select = {},
+    } = options || {};
+    const { page = 1, size = 20 } = pagination;
     const [list, total]: [Array<any>, number] =
       await this.currentRepository.findAndCount({
         take: size,
         skip: (page - 1) * size,
         order,
         where,
+        relations,
+        select,
       });
     return {
       list,

@@ -11,7 +11,7 @@ import {
 } from '@/globals/services/base.service';
 
 @Injectable()
-export class SiteService extends BaseService {
+export class SiteService extends BaseService<SiteEntity> {
   constructor(
     @InjectRepository(SiteEntity)
     private readonly siteRepository: Repository<SiteEntity>,
@@ -23,7 +23,9 @@ export class SiteService extends BaseService {
     return this.siteRepository.save(createSite);
   }
 
-  findList(options: IPaginationOptions): Promise<IPaginationResponse> {
+  findList(
+    options: IPaginationOptions<SiteEntity>,
+  ): Promise<IPaginationResponse> {
     return this.findListAndPage(options);
   }
 

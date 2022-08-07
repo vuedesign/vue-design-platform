@@ -15,7 +15,7 @@ import {
 export class CreateUser extends PartialType(CreateUserDto) {}
 
 @Injectable()
-export class UserService extends BaseService {
+export class UserService extends BaseService<UserEntity> {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -28,7 +28,9 @@ export class UserService extends BaseService {
     return this.userRepository.save(createUser);
   }
 
-  findList(query: IPaginationOptions): Promise<IPaginationResponse> {
+  findList(
+    query: IPaginationOptions<UserEntity>,
+  ): Promise<IPaginationResponse> {
     return this.findListAndPage(query);
   }
 
