@@ -7,6 +7,13 @@ export interface User {
 
 export type SiteType = 'site' | 'code';
 
+export interface TagItem {
+  id: number;
+  name: string;
+  description: string;
+}
+export type TagList = TagItem[];
+
 export interface SiteItem {
   id?: number;
   uuid?: string;
@@ -18,7 +25,7 @@ export interface SiteItem {
   codeUrl: string;
   description: string;
   authorId: number;
-  tagIds: string;
+  tags: TagList;
   views: number;
   collections: number;
   top: number;

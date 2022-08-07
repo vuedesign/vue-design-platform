@@ -9,7 +9,7 @@ const defaultProps = {
   id: 0,
   title: '',
   description: '',
-  tagIds: () => [],
+  tags: () => [],
   author: () => ({
     avatar: 'string',
     username: 'string',
@@ -63,9 +63,12 @@ const Item = (props: SiteItem) => {
           <h5>{props.title}</h5>
           <p>{props.description}</p>
           <div className={styles.tags}>
-            {props.tagIds &&
-              props.tagIds.length &&
-              props.tagIds.split(',').map((t, i) => <span key={i}>{t}</span>)}
+            {(props.tags &&
+              props.tags.length &&
+              props.tags.map((item) => (
+                <span key={item.id}>{item.name}</span>
+              ))) ||
+              ''}
           </div>
         </div>
       </div>
