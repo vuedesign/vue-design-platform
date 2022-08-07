@@ -7,7 +7,6 @@ import { IPaginatedType } from '@/dtos/paginated.gql';
 @Injectable()
 export class SiteService extends BaseMicroservice {
   findList(options: IPaginationOptions): Promise<IPaginatedType<SiteEntity>> {
-    console.log('==s=', options);
     return this.send({ module: 'site', method: 'find' }, options);
   }
 }
