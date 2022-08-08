@@ -11,6 +11,7 @@ import * as apis from './apis.contants';
 import { NavigationListResponse } from '../types/navigation';
 import { User } from '../types/user';
 import { SiteListResponse } from '../types/site';
+import { LoginFormData } from '../types/global';
 
 const axiosBaseQuery =
   (): BaseQueryFn<
@@ -25,6 +26,7 @@ const axiosBaseQuery =
   async ({ url, method, data }) => {
     try {
       const result = await axios({ url, method, data });
+      console.log('result', result);
       return { ...result };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
@@ -46,8 +48,14 @@ export const clientApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    authLogin: builder.query<any, void>({
-      query: () => ({ url: apis.AUTH_LOGIN, method: 'get' }),
+    authLogin: builder.mutation<any, LoginFormData>({
+      query: (data) => ({ url: apis.AUTH_LOGIN, method: 'post', data }),
+      transformResponse: (token: string) => {
+        console.log('token', token);
+        return {
+          data: token,
+        };
+      },
     }),
     authProfile: builder.query<User, void>({
       query: () => ({ url: apis.AUTH_PROFILE, method: 'get' }),
@@ -63,7 +71,7 @@ export const clientApi = createApi({
 
 // Export hooks for usage in functional components
 export const {
-  useAuthLoginQuery,
+  useAuthLoginMutation,
   useNavigationsQuery,
   useAuthProfileQuery,
   useSitesQuery,

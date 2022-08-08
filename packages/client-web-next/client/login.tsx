@@ -7,19 +7,26 @@ import { User, Lock } from '@icon-park/react';
 // import { loginData } from "../globals/apis";
 import { TOKEN_KEY } from '../globals/globals.contants';
 import styles from './styles/Login.module.scss';
-import ajax from '../globals/axios';
+import { authLogin, useAuthLoginMutation } from '../globals/apis';
+import { LoginFormData } from '../types/global';
 
 const Login: NextPage<any> = () => {
   const [form] = Form.useForm();
   const router = useRouter();
+  const [login, { isLoading, isSuccess }] = useAuthLoginMutation();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: LoginFormData) => {
+    login(values).then((res) => {
+      console.log('res', res);
+    });
+    // const data = useAuthLoginQuery();
+    // console;
     // loginData(values).then((res) => {
     //   window.localStorage.setItem(TOKEN_KEY, res);
     //   router.push("/");
     //   console.log("res", res);
     // });
-    console.log('Success:', values);
+    // console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
