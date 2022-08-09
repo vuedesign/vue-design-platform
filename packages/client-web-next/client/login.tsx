@@ -17,16 +17,10 @@ const Login: NextPage<any> = () => {
 
   const onFinish = (values: LoginFormData) => {
     login(values).then((res) => {
+      //   window.localStorage.setItem(TOKEN_KEY, res.data.token);
+      //   router.push('/');
       console.log('res', res);
     });
-    // const data = useAuthLoginQuery();
-    // console;
-    // loginData(values).then((res) => {
-    //   window.localStorage.setItem(TOKEN_KEY, res);
-    //   router.push("/");
-    //   console.log("res", res);
-    // });
-    // console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo: any) => {

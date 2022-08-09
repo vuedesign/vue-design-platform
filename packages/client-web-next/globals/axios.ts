@@ -11,17 +11,17 @@ instance.defaults.timeout = 5000;
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.data && response.data.retcode === SUCCESS_STATUS_CODE) {
-      return response.data;
-    } else if (response.data && response.data.retcode === ERROR_STATUS_CODE) {
-      if (response.data.data.status === HttpStatus.UNAUTHORIZED) {
-        return {
-          data: null,
-          error: response.data.data,
-        };
-      }
-      return response.data;
-    }
+    // console.log('response.data', JSON.stringify(response));
+    // if (response.data && response.data.retcode === SUCCESS_STATUS_CODE) {
+    //   return response.data;
+    // } else if (response.data && response.data.retcode === ERROR_STATUS_CODE) {
+    //   if (response.data.data.status === HttpStatus.UNAUTHORIZED) {
+    //     return {
+    //       error: response.data.data,
+    //     };
+    //   }
+    //   return response.data;
+    // }
     return response.data;
   },
   (error) => {

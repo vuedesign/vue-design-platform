@@ -26,8 +26,7 @@ const axiosBaseQuery =
   async ({ url, method, data }) => {
     try {
       const result = await axios({ url, method, data });
-      console.log('result', result);
-      return { ...result };
+      return { data: result };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       console.log('err======', err);
@@ -50,12 +49,6 @@ export const clientApi = createApi({
   endpoints: (builder) => ({
     authLogin: builder.mutation<any, LoginFormData>({
       query: (data) => ({ url: apis.AUTH_LOGIN, method: 'post', data }),
-      transformResponse: (token: string) => {
-        console.log('token', token);
-        return {
-          data: token,
-        };
-      },
     }),
     authProfile: builder.query<User, void>({
       query: () => ({ url: apis.AUTH_PROFILE, method: 'get' }),

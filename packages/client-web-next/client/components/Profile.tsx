@@ -4,7 +4,7 @@ import styles from '../styles/Profile.module.scss';
 
 const Profile = () => {
   const { isSuccess, data: profile } = useAuthProfileQuery();
-
+  console.log('profile', isSuccess, profile);
   const handleGotoLogin = () => {
     Router.push('/login');
   };
