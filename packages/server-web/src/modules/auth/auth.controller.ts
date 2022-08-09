@@ -7,6 +7,7 @@ import {
   Body,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
@@ -16,6 +17,7 @@ import { Response, Request } from 'express';
 import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -26,7 +28,7 @@ export class AuthController {
     private jwtService: JwtService,
   ) {}
 
-  @Public()
+  // @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiBody({
     description: '添加用户信息',
@@ -38,31 +40,28 @@ export class AuthController {
     @Req() req: Request,
   ) {
     const { account, password } = body;
-    const user = await this.authService.validateUser({
-      account,
-      password,
-    });
+    const user = await this.authService.validateUser(account, password);
     if (!user) {
       throw new UnauthorizedException('登录校验失败');
     }
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
-    console.log('==token==', token);
-    res.cookie(`token`, token, {
-      maxAge: 564000,
-      httpOnly: true,
-    });
-    return token;
+    // console.log('==token==', token);
+    // req.session['user'] = user;
+    // res.cookie(`token`, token, {
+    //   maxAge: 564000,
+    //   httpOnly: true,
+    // });
+    return { token, uuid: user.uuid };
   }
 
-  @Public()
   @Get('profile')
-  getProfile(@Req() req) {
-    console.log('profile');
-    if (!req.user || !req.user.id) {
-      throw new UnauthorizedException('用户没授权');
+  getProfile(@Req() req: Request) {
+    console.log('===getProfile===', req.session['user']);
+    if (!req.session || !req.session['user'] || !req.session['user'].id) {
+      throw new UnauthorizedException('用户 session 过期');
     }
-    return this.authService.findOne({ id: req.user.id });
+    return this.authService.findOne({ id: req.session['user'].id });
   }
 
   @Get('logout')

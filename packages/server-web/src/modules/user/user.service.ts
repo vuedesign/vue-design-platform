@@ -28,24 +28,9 @@ export class UserService extends BaseMicroservice {
     );
   }
 
-  // findList(query: IPaginationQuery): Promise<IPaginationResponse> {
-  //   return this.findListAndPage(query);
-  // }
-
   findOne(query: findUserItemQuery) {
-    // return lastValueFrom(
-    //   this.client.send({ role: 'user', cmd: 'find-one' }, query),
-    // );
     return this.send<UserEntity>({ module: 'user', method: 'find-one' }, query);
   }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return this.userRepository.update(id, updateUserDto);
-  // }
-
-  // remove(id: number) {
-  //   return this.userRepository.delete(id);
-  // }
 
   count() {
     console.log('=============count');
