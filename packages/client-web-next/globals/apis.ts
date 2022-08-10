@@ -29,7 +29,6 @@ const axiosBaseQuery =
       return { data: result };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
-      console.log('err======', err);
       return {
         error: { status: err.response?.status, data: err.response?.data },
       };

@@ -17,9 +17,9 @@ const Login: NextPage<any> = () => {
 
   const onFinish = (values: LoginFormData) => {
     login(values).then((res) => {
-      //   window.localStorage.setItem(TOKEN_KEY, res.data.token);
-      //   router.push('/');
       console.log('res', res);
+      window.localStorage.setItem(TOKEN_KEY, res.data);
+      router.push('/');
     });
   };
 
