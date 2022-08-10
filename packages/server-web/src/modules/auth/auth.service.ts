@@ -9,8 +9,6 @@ import { UserEntity } from '@/entities/user.entity';
 @Injectable()
 export class AuthService extends BaseMicroservice {
   async validateUser(account: string, password: string): Promise<any> {
-    console.log('formData', account, password);
-
     let field: string = getFieldType(account);
     const where = {
       [field]: account,

@@ -28,17 +28,13 @@ export class AuthController {
     private jwtService: JwtService,
   ) {}
 
-  // @UseGuards(LocalAuthGuard)
+  @Public()
   @Post('login')
   @ApiBody({
     description: '添加用户信息',
     type: LoginBodyDto,
   })
-  async login(
-    @Body() body: LoginBodyDto,
-    @Res({ passthrough: true }) res: Response,
-    @Req() req: Request,
-  ) {
+  async login(@Body() body: LoginBodyDto) {
     const { account, password } = body;
     const user = await this.authService.validateUser(account, password);
     if (!user) {
@@ -46,22 +42,15 @@ export class AuthController {
     }
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
-    // console.log('==token==', token);
-    // req.session['user'] = user;
-    // res.cookie(`token`, token, {
-    //   maxAge: 564000,
-    //   httpOnly: true,
-    // });
-    return { token, uuid: user.uuid };
+    return token;
   }
 
   @Get('profile')
-  getProfile(@Req() req: Request) {
-    console.log('===getProfile===', req.session['user']);
-    if (!req.session || !req.session['user'] || !req.session['user'].id) {
-      throw new UnauthorizedException('用户 session 过期');
+  getProfile(@Req() req) {
+    if (!req.user || !req.user.id) {
+      throw new UnauthorizedException();
     }
-    return this.authService.findOne({ id: req.session['user'].id });
+    return this.authService.findOne({ id: req.user.id });
   }
 
   @Get('logout')

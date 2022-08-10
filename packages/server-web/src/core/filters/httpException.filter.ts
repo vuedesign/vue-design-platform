@@ -14,6 +14,7 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
     const errorInfo = { ...exception };
     Logger.log(errorInfo.message, '错误提示');
     const status =
@@ -22,13 +23,9 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({
-      data: {
-        ...errorInfo,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-      },
-      message: '请求失败',
-      retcode: 1,
+      ...errorInfo,
+      timestamp: new Date().toISOString(),
+      path: request.url,
     });
   }
 }

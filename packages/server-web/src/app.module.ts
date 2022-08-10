@@ -10,9 +10,6 @@ import { NavigationModule } from './modules/navigation/navigation.module';
 import { AuthModule } from './modules/auth/auth.module';
 import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
-import { AppController } from './app.controller';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './modules/auth/constants';
 
 @Module({
   imports: [
@@ -20,17 +17,12 @@ import { jwtConstants } from './modules/auth/constants';
       isGlobal: true,
       load: [globalConfig, microservicesConfig],
     }),
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
-    }),
     // 微服务
     BaseMicroserviceModule,
     SiteModule,
     NavigationModule,
     AuthModule,
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
