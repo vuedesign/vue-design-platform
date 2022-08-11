@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { Module } from '@nestjs/common';
+import { Module, CacheModule } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 // import appsModule from '@/apps/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
@@ -16,6 +16,9 @@ import globalConfig from '@/configs/global.config';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [globalConfig, microservicesConfig],
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     // 微服务
     BaseMicroserviceModule,

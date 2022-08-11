@@ -7,8 +7,10 @@ import {
   Body,
   Res,
   HttpStatus,
-  UseGuards,
+  Inject,
+  CACHE_MANAGER,
 } from '@nestjs/common';
+// import { CACHE_MANAGER } from '@nestjs/core';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
@@ -18,12 +20,14 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { Cache } from 'cache-manager';
 
 @Controller('auth')
 @ApiTags('登录模块')
 @ApiBearerAuth()
 export class AuthController {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private authService: AuthService,
     private jwtService: JwtService,
   ) {}
@@ -34,7 +38,7 @@ export class AuthController {
     description: '添加用户信息',
     type: LoginBodyDto,
   })
-  async login(@Body() body: LoginBodyDto) {
+  async login(@Body() body: LoginBodyDto, @Req() req: Request) {
     const { account, password } = body;
     const user = await this.authService.validateUser(account, password);
     if (!user) {
@@ -42,12 +46,15 @@ export class AuthController {
     }
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
-
+    this.cacheManager.set('id', user.id);
+    // req.user = payload;
     return token;
   }
 
   @Get('profile')
-  getProfile(@Req() req) {
+  async getProfile(@Req() req) {
+    const id = await this.cacheManager.get('id');
+    console.log('id', id);
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException();
     }
