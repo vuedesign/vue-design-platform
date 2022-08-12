@@ -50,7 +50,16 @@ export const clientApi = createApi({
       query: (data) => ({ url: apis.AUTH_LOGIN, method: 'post', data }),
     }),
     authProfile: builder.query<User, void>({
-      query: () => ({ url: apis.AUTH_PROFILE, method: 'get' }),
+      query: () => ({
+        url: apis.AUTH_PROFILE,
+        method: 'get',
+        headers: {
+          common: {
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF4eHNkZCIsInN1YiI6NCwiaWF0IjoxNjYwMzE1Mjg1LCJleHAiOjE2NjAzMTUzNDV9.big5u_o1tKWXrbuq_buDGRVUT2ZsMJi0SMJuXL302lM',
+          },
+        },
+      }),
     }),
     navigations: builder.query<NavigationListResponse, void>({
       query: () => ({ url: apis.NAVIGATIONS, method: 'get' }),

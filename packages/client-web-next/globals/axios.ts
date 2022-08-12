@@ -5,19 +5,26 @@ import {
   TOKEN_KEY,
 } from './globals.contants';
 import * as HttpStatus from './http.contants';
+// import cookie from 'cookie';
+// import Cookies from 'js-cookie';
+// const cookie = require('cookie-cutter');
 
 const baseURL =
-  typeof window !== 'undefined'
-    ? 'http://127.0.0.1:8083/api/v1'
-    : 'http://127.0.0.1:8083/api/v1';
+  typeof window !== 'undefined' ? '/api/v1' : 'http://127.0.0.1:8083/api/v1';
 const instance = axios.create({
   baseURL,
+  //   withCredentials: true,
 });
 instance.defaults.timeout = 5000;
 
 instance.interceptors.request.use(
   (config) => {
-    console.log('config', config);
+    // if (typeof window === 'undefined') {
+
+    //   console.log('config===============', token);
+    // }
+
+    // console.log('CookiesCookies', cookie.get('token'));
     // if (window && window.localStorage) {
     //   const token = window.localStorage.getItem(TOKEN_KEY);
     //   if (token) {
