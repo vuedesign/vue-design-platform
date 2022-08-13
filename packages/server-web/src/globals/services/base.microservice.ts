@@ -1,7 +1,7 @@
-import { Repository, FindOptionsRelations, FindManyOptions } from 'typeorm';
+import { FindOptionsRelations, FindManyOptions } from 'typeorm';
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 export interface IPagination {
   page: number;

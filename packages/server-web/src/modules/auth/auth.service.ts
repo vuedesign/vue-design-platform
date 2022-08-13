@@ -13,7 +13,6 @@ export class AuthService extends BaseMicroservice {
     const where = {
       [field]: account,
     };
-    console.log('where', where);
     type User = {
       password: string;
     };

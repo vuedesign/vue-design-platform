@@ -38,7 +38,10 @@ export class AuthController {
     description: '添加用户信息',
     type: LoginBodyDto,
   })
-  async login(@Body() body: LoginBodyDto, @Req() req: Request) {
+  async login(
+    @Body() body: LoginBodyDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { account, password } = body;
     const user = await this.authService.validateUser(account, password);
     if (!user) {
@@ -46,15 +49,15 @@ export class AuthController {
     }
     const payload = { username: user.username, sub: user.id };
     const token = this.jwtService.sign(payload);
-    this.cacheManager.set('id', user.id);
-    // req.user = payload;
-    return token;
+    res.cookie('token', token);
+    return {
+      token,
+      user,
+    };
   }
 
   @Get('profile')
-  async getProfile(@Req() req) {
-    const id = await this.cacheManager.get('id');
-    console.log('id', id);
+  getProfile(@Req() req) {
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException();
     }
