@@ -1,19 +1,16 @@
-import { useAuthProfileQuery } from '../../globals/apis';
+import { useProfileQuery } from '../redux/services/auth';
 import Router from 'next/router';
 import styles from '../styles/Profile.module.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
 const Profile = () => {
-  const token = useSelector((state: RootState) => state.app.token);
-  console.log('token===', token);
-  const { isSuccess, data: profile } = useAuthProfileQuery();
+  const { data: profile } = useProfileQuery();
 
-  console.log('profile', isSuccess, profile);
   const handleGotoLogin = () => {
     Router.push('/login');
   };
-  if (!isSuccess) {
+  if (!profile) {
     return (
       <div className={styles.container} onClick={handleGotoLogin}>
         登录/注册

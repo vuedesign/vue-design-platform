@@ -3,7 +3,7 @@ import styles from '../styles/Header.module.scss';
 import Top from './Top';
 import Image from 'next/image';
 import logoImage from '../public/images/logo.png';
-import { useNavigationsQuery } from '../../globals/apis';
+import { useNavigationsQuery } from '../redux/services/client';
 
 const Header = () => {
   const { data } = useNavigationsQuery();

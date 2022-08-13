@@ -7,18 +7,21 @@ import { User, Lock } from '@icon-park/react';
 // import { loginData } from "../globals/apis";
 import { TOKEN_KEY } from '../globals/globals.contants';
 import styles from './styles/Login.module.scss';
-import { authLogin, useAuthLoginMutation } from '../globals/apis';
-import { LoginFormData } from '../types/global';
+import { useLoginMutation, LoginRequest } from './redux/services/auth';
+import { setCredentials } from './redux/features/authSlice';
+import { useDispatch } from 'react-redux';
 
 const Login: NextPage<any> = () => {
   const [form] = Form.useForm();
   const router = useRouter();
-  const [login, { isLoading, isSuccess }] = useAuthLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
 
-  const onFinish = (values: LoginFormData) => {
+  const onFinish = (values: LoginRequest) => {
     login(values).then((res) => {
       console.log('res', res);
-      window.localStorage.setItem(TOKEN_KEY, res.data);
+      window.localStorage.setItem(TOKEN_KEY, res.data.token);
+      dispatch(setCredentials(res.data.user));
       router.push('/');
     });
   };

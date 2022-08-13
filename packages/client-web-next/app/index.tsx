@@ -4,22 +4,24 @@ import styles from './styles/Home.module.scss';
 import List from './components/List';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { wrapper, setToken } from './redux/store';
-import { authProfile, navigations, sites } from '../globals/apis';
+import { wrapper } from './redux/store';
+import { navigations, sites } from './redux/services/client';
+import { profile } from './redux/services/auth';
+import { setCredentials } from './redux/features/authSlice';
 // import { useAppDispatch } from './hooks/app';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    // const dispatch = useAppDispatch();
-    console.log('context', context.req.cookies.token);
+    // console.log('context.req.cookies.token', context.req);
     await store.dispatch(
-      setToken({
+      setCredentials({
         token: context.req.cookies.token || '',
+        user: null,
       }),
     );
-    await store.dispatch(authProfile.initiate());
     await store.dispatch(navigations.initiate());
     await store.dispatch(sites.initiate());
+    await store.dispatch(profile.initiate());
     return {
       props: {},
     };

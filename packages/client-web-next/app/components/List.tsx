@@ -4,7 +4,7 @@ import styles from '../styles/List.module.scss';
 import Item from './Item';
 import { SiteContext } from '../hooks/SiteContext';
 import { Pagination } from './Pagination';
-import { useSitesQuery } from '../../globals/apis';
+import { useSitesQuery } from '../redux/services/client';
 
 type ListProps = {
   type: string;

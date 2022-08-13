@@ -1,3 +1,3 @@
-import Find, { getServerSideProps } from '../client/find';
+import Find, { getServerSideProps } from '../app/find';
 export { getServerSideProps };
 export default Find;

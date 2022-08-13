@@ -26,13 +26,6 @@ const nextConfig = {
       fallback: [
         {
           source: '/:path*',
-          has: [
-            {
-              type: 'cookie',
-              key: 'token',
-              value: 'true',
-            },
-          ],
           destination: `http://127.0.0.1:8083/:path*`,
         },
       ],
