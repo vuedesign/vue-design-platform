@@ -17,4 +17,9 @@ export class SiteTcpController {
   findAll(options: IPaginationOptions<SiteEntity>) {
     return this.siteService.findList(options);
   }
+
+  @MessagePattern({ module: 'site', method: 'findOneByUuid' }, Transport.TCP)
+  findOneByUuid(uuid: string) {
+    return this.siteService.findOneBy({ uuid });
+  }
 }
