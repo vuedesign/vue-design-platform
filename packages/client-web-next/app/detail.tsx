@@ -6,10 +6,9 @@ import Footer from './components/Footer';
 import { wrapper } from './redux/store';
 import { site, useSiteQuery } from './redux/services/client';
 import { profile, useProfileQuery } from './redux/services/auth';
-import { setToken, selectCurrentUser } from './redux/features/authSlice';
+import { setToken } from './redux/features/authSlice';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -32,7 +31,7 @@ type DetailProps = {
 
 const Detail: NextPage<DetailProps> = ({ uuid }: DetailProps) => {
   const { data: detail } = useSiteQuery(uuid);
-  const profile = useSelector(selectCurrentUser);
+  const { data: profile } = useProfileQuery();
   return (
     <div className={styles.container}>
       <Head>
