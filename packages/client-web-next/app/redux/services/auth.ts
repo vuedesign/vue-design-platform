@@ -53,7 +53,6 @@ export const authApi = createApi({
         method: 'GET',
       }),
       transformResponse: (data: any) => {
-        console.log('data', data);
         if (data && data.status === HttpStatus.UNAUTHORIZED) {
           return null;
         }

@@ -14,17 +14,16 @@ const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (
-      state,
-      { payload: { user, token } }: PayloadAction<AuthState>,
-    ) => {
-      state.user = user;
-      state.token = token;
+    setUser: (state, { payload }: PayloadAction<User>) => {
+      state.user = payload;
+    },
+    setToken: (state, { payload }: PayloadAction<string>) => {
+      state.token = payload;
     },
   },
 });
 
-export const { setCredentials } = slice.actions;
+export const { setUser, setToken } = slice.actions;
 
 export default slice.reducer;
 

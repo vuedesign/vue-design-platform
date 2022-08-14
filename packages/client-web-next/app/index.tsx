@@ -7,18 +7,13 @@ import Footer from './components/Footer';
 import { wrapper } from './redux/store';
 import { navigations, sites } from './redux/services/client';
 import { profile } from './redux/services/auth';
-import { setCredentials } from './redux/features/authSlice';
+import { setToken } from './redux/features/authSlice';
 // import { useAppDispatch } from './hooks/app';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     // console.log('context.req.cookies.token', context.req);
-    await store.dispatch(
-      setCredentials({
-        token: context.req.cookies.token || '',
-        user: null,
-      }),
-    );
+    await store.dispatch(setToken(context.req.cookies.token || ''));
     await store.dispatch(navigations.initiate());
     await store.dispatch(sites.initiate());
     await store.dispatch(profile.initiate());

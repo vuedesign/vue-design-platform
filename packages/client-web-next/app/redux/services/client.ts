@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import * as apis from '../apis.contants';
 import { NavigationListResponse } from '../../../types/navigation';
-import { SiteListResponse } from '../../../types/site';
+import { SiteListResponse, SiteItem } from '../../../types/site';
 import { TOKEN_KEY, baseURL } from '../globals.contants';
 import { RootState } from '../store';
 import { isServer } from '../../utils';
@@ -36,8 +36,14 @@ export const clientApi = createApi({
     sites: builder.query<SiteListResponse, void>({
       query: () => ({ url: apis.SITES, method: 'get' }),
     }),
+    site: builder.query<SiteItem, string>({
+      query: (uuid: string) => ({
+        url: `${apis.SITES}/${uuid}`,
+        method: 'get',
+      }),
+    }),
   }),
 });
 
-export const { useNavigationsQuery, useSitesQuery } = clientApi;
-export const { sites, navigations } = clientApi.endpoints;
+export const { useNavigationsQuery, useSitesQuery, useSiteQuery } = clientApi;
+export const { sites, navigations, site } = clientApi.endpoints;

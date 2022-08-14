@@ -1,0 +1,38 @@
+.container {
+  width: 100%;
+  height: auto;
+  background-color: #eff3f5;
+}
+
+.header {
+  background-color: #fff;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.main {
+  width: 1072px;
+  // 1072 + 8 + 8;
+  width: 1088px;
+  margin: 0 auto;
+  padding-bottom: 16px;
+  display: flex;
+  margin-top: 16px;
+}
+
+.content {
+  flex: 1;
+  background-color: #fff;
+  h1 {
+    font-size: 28px;
+    text-align: center;
+  }
+}
+
+.aside {
+  width: 256px;
+  height: 400px;
+  background-color: aliceblue;
+  margin-left: 20px;
+}

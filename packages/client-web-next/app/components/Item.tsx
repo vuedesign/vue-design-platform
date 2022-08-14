@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Item.module.scss';
 import type { SiteItem } from '../../types/site';
 import { Tooltip } from 'antd';
+import Link from 'next/link';
 
 const defaultProps = {
   thumbUrl: '',
@@ -22,12 +23,13 @@ const Item = (props: SiteItem) => {
     <div className={styles.container}>
       <div className={styles.inner}>
         <div className={styles.thumb}>
-          <a
-            href="#"
-            style={{
-              backgroundImage: `url('${props.thumbUrl}')`,
-            }}
-          ></a>
+          <Link href={`/detail/${props.uuid}`}>
+            <a
+              style={{
+                backgroundImage: `url('${props.thumbUrl}')`,
+              }}
+            ></a>
+          </Link>
         </div>
         <div className={styles.tools}>
           <dl>

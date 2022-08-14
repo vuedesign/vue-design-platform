@@ -8,7 +8,7 @@ import { User, Lock } from '@icon-park/react';
 import { TOKEN_KEY } from './redux/globals.contants';
 import styles from './styles/Login.module.scss';
 import { useLoginMutation, LoginRequest } from './redux/services/auth';
-import { setCredentials } from './redux/features/authSlice';
+import { setToken, setUser } from './redux/features/authSlice';
 import { useDispatch } from 'react-redux';
 
 const Login: NextPage<any> = () => {
@@ -19,10 +19,10 @@ const Login: NextPage<any> = () => {
 
   const onFinish = (values: LoginRequest) => {
     login(values).then((res: any) => {
-      console.log('res', res);
       if (res && res.data) {
         window.localStorage.setItem(TOKEN_KEY, res.data.token);
-        dispatch(setCredentials(res.data.user));
+        dispatch(setToken(res.data.token));
+        dispatch(setUser(res.data.user));
         router.push('/');
       }
     });
