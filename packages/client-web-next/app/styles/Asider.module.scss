@@ -1,0 +1,32 @@
+.container {
+  width: 256px;
+  height: 400px;
+  background-color: aliceblue;
+  margin-left: 16px;
+}
+
+.profile {
+  width: inherit;
+  height: 147px;
+  background-color: #e5eaed;
+  border-radius: 3px;
+}
+
+.userinfo {
+  width: inherit;
+  height: 96px;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 3px;
+  dl {
+    display: flex;
+  }
+  dt {
+    width: 64px;
+    height: 64px;
+    margin-right: 16px;
+  }
+  dd {
+    flex: 1;
+  }
+}

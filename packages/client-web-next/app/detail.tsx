@@ -5,10 +5,9 @@ import Top from './components/Top';
 import Footer from './components/Footer';
 import { wrapper } from './redux/store';
 import { site, useSiteQuery } from './redux/services/client';
-import { profile, useProfileQuery } from './redux/services/auth';
+import { profile } from './redux/services/auth';
 import { setToken } from './redux/features/authSlice';
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import Asider from './components/Asider';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -31,7 +30,6 @@ type DetailProps = {
 
 const Detail: NextPage<DetailProps> = ({ uuid }: DetailProps) => {
   const { data: detail } = useSiteQuery(uuid);
-  const { data: profile } = useProfileQuery();
   return (
     <div className={styles.container}>
       <Head>
@@ -56,20 +54,7 @@ const Detail: NextPage<DetailProps> = ({ uuid }: DetailProps) => {
             <div>{detail.description}</div>
           </section>
         )}
-        <aside className={styles.aside}>
-          {profile && (
-            <div>
-              <dl>
-                <dt>
-                  <Avatar src={profile.avatar} icon={<UserOutlined />} />
-                </dt>
-                <dd>
-                  <h5>{profile.username}</h5>
-                </dd>
-              </dl>
-            </div>
-          )}
-        </aside>
+        <Asider />
       </section>
       <Footer />
     </div>
