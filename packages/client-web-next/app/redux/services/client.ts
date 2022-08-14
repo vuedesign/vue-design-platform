@@ -1,47 +1,22 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import { axiosBaseQuery } from '../../../globals/axios';
 import * as apis from '../apis.contants';
 import { NavigationListResponse } from '../../../types/navigation';
 import { SiteListResponse } from '../../../types/site';
-import { TOKEN_KEY } from '../../../globals/globals.contants';
+import { TOKEN_KEY, baseURL } from '../globals.contants';
 import { RootState } from '../store';
+import { isServer } from '../../utils';
 
-// const axiosBaseQuery =
-//   (): BaseQueryFn<
-//     {
-//       url: string;
-//       method: AxiosRequestConfig['method'];
-//       data?: AxiosRequestConfig['data'];
-//     },
-//     unknown,
-//     unknown
-//   > =>
-//   async ({ url, method, data }) => {
-//     try {
-//       const result = await axios({ url, method, data });
-//       return { data: result };
-//     } catch (axiosError) {
-//       const err = axiosError as AxiosError;
-//       return {
-//         error: { status: err.response?.status, data: err.response?.data },
-//       };
-//     }
-//   };
-
-// const baseUrl =
-//   typeof window !== 'undefined' ? '/api/v1' : 'http://127.0.0.1:8083/api/v1';
 export const clientApi = createApi({
   reducerPath: 'clientApi',
-  baseQuery: axiosBaseQuery({
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
       let token: string;
-      if (typeof window !== 'undefined') {
-        token = window.localStorage.getItem(TOKEN_KEY) || '';
-        console.log('client', token);
-      } else {
+      if (isServer) {
         token = (getState() as RootState).auth.token || '';
-        console.log('server', token);
+      } else {
+        token = window.localStorage.getItem(TOKEN_KEY) || '';
       }
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);

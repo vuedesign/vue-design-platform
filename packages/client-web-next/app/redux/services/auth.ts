@@ -2,9 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 import * as apis from '../apis.contants';
 import { User } from '../../../types/user';
-import { TOKEN_KEY } from '../../../globals/globals.contants';
-import { axiosBaseQuery } from '../../../globals/axios';
+import { TOKEN_KEY, baseURL } from '../globals.contants';
+import * as HttpStatus from '../http.contants';
 import { HYDRATE } from 'next-redux-wrapper';
+import { isServer } from '../../utils';
 
 export interface UserResponse {
   user: User;
@@ -18,39 +19,19 @@ export interface LoginRequest {
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: axiosBaseQuery({
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
-      let token: string;
-      if (typeof window !== 'undefined') {
-        token = window.localStorage.getItem(TOKEN_KEY) || '';
-        console.log('client', token);
-      } else {
-        token = (getState() as RootState).auth.token || '';
-        console.log('server', token);
-      }
+      let token: string =
+        (isServer
+          ? (getState() as RootState).auth.token
+          : window.localStorage.getItem(TOKEN_KEY)) || '';
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  //   baseQuery: fetchBaseQuery({
-  //     baseUrl: '/api/v1',
-  //     prepareHeaders: (headers, { getState }) => {
-  //       let token: string;
-  //       if (typeof window !== 'undefined') {
-  //         token = window.localStorage.getItem(TOKEN_KEY) || '';
-  //         console.log('client', token);
-  //       } else {
-  //         token = (getState() as RootState).auth.token || '';
-  //         console.log('server', token);
-  //       }
-  //       if (token) {
-  //         headers.set('Authorization', `Bearer ${token}`);
-  //       }
-  //       return headers;
-  //     },
-  //   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
       return action.payload[reducerPath];
@@ -62,7 +43,7 @@ export const authApi = createApi({
         return {
           url: apis.AUTH_LOGIN,
           method: 'POST',
-          data,
+          body: data,
         };
       },
     }),
@@ -71,6 +52,13 @@ export const authApi = createApi({
         url: apis.AUTH_PROFILE,
         method: 'GET',
       }),
+      transformResponse: (data: any) => {
+        console.log('data', data);
+        if (data && data.status === HttpStatus.UNAUTHORIZED) {
+          return null;
+        }
+        return data;
+      },
     }),
   }),
 });

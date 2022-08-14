@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Divider, Form, Input, Button, Checkbox } from 'antd';
 import { User, Lock } from '@icon-park/react';
 // import { loginData } from "../globals/apis";
-import { TOKEN_KEY } from '../globals/globals.contants';
+import { TOKEN_KEY } from './redux/globals.contants';
 import styles from './styles/Login.module.scss';
 import { useLoginMutation, LoginRequest } from './redux/services/auth';
 import { setCredentials } from './redux/features/authSlice';
@@ -18,11 +18,13 @@ const Login: NextPage<any> = () => {
   const dispatch = useDispatch();
 
   const onFinish = (values: LoginRequest) => {
-    login(values).then((res) => {
+    login(values).then((res: any) => {
       console.log('res', res);
-      window.localStorage.setItem(TOKEN_KEY, res.data.token);
-      dispatch(setCredentials(res.data.user));
-      router.push('/');
+      if (res && res.data) {
+        window.localStorage.setItem(TOKEN_KEY, res.data.token);
+        dispatch(setCredentials(res.data.user));
+        router.push('/');
+      }
     });
   };
 
