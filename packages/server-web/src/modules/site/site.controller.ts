@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like } from 'typeorm';
@@ -12,6 +12,16 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiBearerAuth()
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
+
+  @Public()
+  @Get('/:uuid')
+  @ApiQuery({
+    description: '项目详情',
+    type: String,
+  })
+  findOne(@Param('uuid') uuid: string) {
+    return this.siteService.findOneByUuid(uuid);
+  }
 
   @Public()
   @Get()

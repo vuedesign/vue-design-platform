@@ -13,4 +13,8 @@ export class SiteService extends BaseMicroservice {
   ): Promise<IPaginationResponse<SiteEntity>> {
     return this.send({ module: 'site', method: 'find' }, options);
   }
+
+  findOneByUuid(uuid: string) {
+    return this.send({ module: 'site', method: 'findOneByUuid' }, uuid);
+  }
 }
