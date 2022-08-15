@@ -4,32 +4,38 @@ import styles from './styles/Detail.module.scss';
 import Top from './components/Top';
 import Footer from './components/Footer';
 import { wrapper } from './redux/store';
-import { site, useSiteQuery } from './redux/services/client';
+import { site } from './redux/services/client';
 import { profile } from './redux/services/auth';
-import { setToken } from './redux/features/authSlice';
+import { setToken, setUser } from './redux/features/authSlice';
+import { setSiteItem } from './redux/features/clientSlice';
 import Asider from './components/Asider';
+import { SiteItem } from '../types/site';
+import { User } from '../types/user';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, params }) => {
       const uuid = params?.uuid || '';
       await store.dispatch(setToken(req.cookies.token || ''));
-      await store.dispatch(profile.initiate());
-      await store.dispatch(site.initiate(uuid as string));
+      const { data: user } = await store.dispatch(profile.initiate());
+      await store.dispatch(setUser(user as User));
+      const { data: siteItem } = await store.dispatch(
+        site.initiate(uuid as string),
+      );
+      await store.dispatch(setSiteItem(siteItem as SiteItem));
       return {
         props: {
-          uuid,
+          siteItem,
         },
       };
     },
 );
 
 type DetailProps = {
-  uuid: string;
+  siteItem: SiteItem;
 };
 
-const Detail: NextPage<DetailProps> = ({ uuid }: DetailProps) => {
-  const { data: detail } = useSiteQuery(uuid);
+const Detail: NextPage<DetailProps> = ({ siteItem }: DetailProps) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -41,17 +47,17 @@ const Detail: NextPage<DetailProps> = ({ uuid }: DetailProps) => {
         <Top />
       </header>
       <section className={styles.main}>
-        {detail && (
+        {siteItem && (
           <section className={styles.content}>
-            <h1>{detail.title}</h1>
+            <h1>{siteItem.title}</h1>
             <div>
-              <span>[{detail.type}]</span>
+              <span>[{siteItem.type}]</span>
               <span> · </span>
-              <span>{detail.createdAt}</span>
+              <span>{siteItem.createdAt}</span>
               <span> · </span>
-              <span>阅读 {detail.views}</span>
+              <span>阅读 {siteItem.views}</span>
             </div>
-            <div>{detail.description}</div>
+            <div>{siteItem.description}</div>
           </section>
         )}
         <Asider />

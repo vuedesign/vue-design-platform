@@ -3,6 +3,7 @@ import { createWrapper } from 'next-redux-wrapper';
 import { clientApi } from './services/client';
 import { authApi } from './services/auth';
 import authReducer from './features/authSlice';
+import clientReducer from './features/clientSlice';
 
 export const makeStore = () =>
   configureStore({
@@ -10,6 +11,7 @@ export const makeStore = () =>
       [authApi.reducerPath]: authApi.reducer,
       [clientApi.reducerPath]: clientApi.reducer,
       auth: authReducer,
+      client: clientReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(clientApi.middleware, authApi.middleware),
