@@ -1,3 +1,3 @@
-import Find, { getServerSideProps } from '../app/find';
+import Find, { getServerSideProps } from '../modules/site/pages/find';
 export { getServerSideProps };
 export default Find;

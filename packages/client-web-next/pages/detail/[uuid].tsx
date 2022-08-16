@@ -1,3 +1,3 @@
-import Detail, { getServerSideProps } from '../../app/detail';
+import Detail, { getServerSideProps } from '../../modules/detail';
 export { getServerSideProps };
 export default Detail;
