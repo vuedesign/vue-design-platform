@@ -6,7 +6,7 @@ import { setToken } from '@/modules/auth/slice';
 import List from '../site/components/List';
 import Header from '../navigation/components/Header';
 import Footer from '../site/components/Footer';
-import styles from '../styles/Home.module.scss';
+import styles from '../site/styles/Home.module.scss';
 import { sites } from '../site/api';
 import { navigations } from '../navigation/api';
 

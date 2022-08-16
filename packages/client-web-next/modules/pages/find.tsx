@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../styles/Find.module.scss';
+import styles from '../site/styles/Find.module.scss';
 import List from '../site/components/List';
 import Top from '../site/components/Top';
 import Nav from '../site/components/Nav';
