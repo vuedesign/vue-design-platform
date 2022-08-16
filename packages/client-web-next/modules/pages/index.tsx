@@ -1,13 +1,15 @@
 import Head from 'next/head';
 import type { NextPage } from 'next';
-import styles from './styles/Home.module.scss';
-import List from '../components/List';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { wrapper } from '../../../globals/redux/store';
-import { navigations, sites } from '../api';
-import { profile } from '../../auth/api';
-import { setToken } from '../../auth/slice';
+import { wrapper } from '@/globals/redux/store';
+import { profile } from '@/modules/auth/api';
+import { setToken } from '@/modules/auth/slice';
+import List from '../site/components/List';
+import Header from '../navigation/components/Header';
+import Footer from '../site/components/Footer';
+import styles from '../styles/Home.module.scss';
+import { sites } from '../site/api';
+import { navigations } from '../navigation/api';
+
 // import { useAppDispatch } from './hooks/app';
 
 export const getServerSideProps = wrapper.getServerSideProps(

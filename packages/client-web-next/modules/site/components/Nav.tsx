@@ -1,9 +1,6 @@
 import { useState } from 'react';
+import { SiteContext, SiteContextType } from '@/globals/hooks/SiteContext';
 import styles from '../styles/Nav.module.scss';
-import {
-  SiteContext,
-  SiteContextType,
-} from '../../../globals/hooks/SiteContext';
 
 type Item = {
   value: string;

@@ -1,4 +1,4 @@
-import { ListPageResponse } from '../../globals/types/global';
+import { ListPageResponse } from '@/globals/types/global';
 
 export interface User {
   avatar: string;
@@ -41,18 +41,3 @@ export interface SiteListResponse extends ListPageResponse<SiteList> {}
 export type SiteState = {
   siteItem: SiteItem | null;
 };
-export interface NavigationItem {
-  id?: number;
-  siteId: number;
-  siteUrl: string;
-  iconUrl: string;
-  title: string;
-  description: string;
-  order: number;
-  status: number;
-  createdAt: string;
-  updatedAt: string;
-}
-export type NavigationList = NavigationItem[];
-export interface NavigationListResponse
-  extends ListPageResponse<NavigationList> {}

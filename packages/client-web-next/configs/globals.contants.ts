@@ -1,4 +1,4 @@
-import { isServer } from '../globals/utils';
+import { isServer } from '@/globals/utils';
 
 export const SUCCESS_STATUS_CODE = 0;
 export const ERROR_STATUS_CODE = 1;

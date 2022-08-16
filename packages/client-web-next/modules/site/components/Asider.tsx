@@ -1,6 +1,6 @@
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useProfileQuery } from '../../auth/api';
+import { useProfileQuery } from '@/modules/auth/api';
 import styles from '../styles/Asider.module.scss';
 
 const Asider = () => {

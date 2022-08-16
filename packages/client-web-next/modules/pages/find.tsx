@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Find.module.scss';
-import List from '../components/List';
-import Top from '../components/Top';
-import Nav from '../components/Nav';
-import Footer from '../components/Footer';
+import List from '../site/components/List';
+import Top from '../site/components/Top';
+import Nav from '../site/components/Nav';
+import Footer from '../site/components/Footer';
 
 export async function getServerSideProps() {
   return {

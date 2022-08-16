@@ -1,16 +1,16 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from './styles/Detail.module.scss';
-import { wrapper } from '../../../globals/redux/store';
-import { site } from '../api';
-import { profile } from '../../auth/api';
-import { setToken, setUser } from '../../auth/slice';
-import { setSiteItem } from '../slice';
-import { SiteItem } from '../types';
-import { User } from '../../auth/types';
-import Top from '../components/Top';
-import Footer from '../components/Footer';
-import Asider from '../components/Asider';
+import { wrapper } from '@/globals/redux/store';
+import { profile } from '@/modules/auth/api';
+import { setToken, setUser } from '@/modules/auth/slice';
+import { User } from '@/modules/auth/types';
+import styles from '../styles/Detail.module.scss';
+import { site } from '../site/api';
+import { setSiteItem } from '../site/slice';
+import { SiteItem } from '../site/types';
+import Top from '../site/components/Top';
+import Footer from '../site/components/Footer';
+import Asider from '../site/components/Asider';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

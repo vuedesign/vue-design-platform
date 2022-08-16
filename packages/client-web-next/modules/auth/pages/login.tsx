@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Divider, Form, Input, Button, Checkbox } from 'antd';
 import { User, Lock } from '@icon-park/react';
 import { useDispatch } from 'react-redux';
-import { TOKEN_KEY } from '../../../configs/globals.contants';
+import { TOKEN_KEY } from '@/configs/globals.contants';
 import styles from '../styles/Login.module.scss';
 import { useLoginMutation } from '../api';
 import { LoginRequest } from '../types';

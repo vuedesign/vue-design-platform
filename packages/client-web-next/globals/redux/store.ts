@@ -1,20 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
-import { clientApi } from '../../modules/site/api';
-import { authApi } from '../../modules/auth/api';
-import authReducer from '../../modules/auth/slice';
-import clientReducer from '../../modules/site/slice';
+import { siteApi } from '@/modules/site/api';
+import { authApi } from '@/modules/auth/api';
+import { navigationApi } from '@/modules/navigation/api';
+import authReducer from '@/modules/auth/slice';
+import siteReducer from '@/modules/site/slice';
 
 export const makeStore = () =>
   configureStore({
     reducer: {
       [authApi.reducerPath]: authApi.reducer,
-      [clientApi.reducerPath]: clientApi.reducer,
+      [siteApi.reducerPath]: siteApi.reducer,
+      [navigationApi.reducerPath]: navigationApi.reducer,
       auth: authReducer,
-      client: clientReducer,
+      site: siteReducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(clientApi.middleware, authApi.middleware),
+      getDefaultMiddleware().concat(siteApi.middleware, authApi.middleware),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

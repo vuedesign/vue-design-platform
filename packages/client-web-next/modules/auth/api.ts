@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../../globals/redux/store';
-import * as apis from '../../configs/apis.contants';
-import { UserResponse, LoginRequest } from './types';
-import { TOKEN_KEY, baseURL } from '../../configs/globals.contants';
-import * as HttpStatus from '../../configs/http.contants';
 import { HYDRATE } from 'next-redux-wrapper';
-import { isServer } from '../../globals/utils';
+import { RootState } from '@/globals/redux/store';
+import { isServer } from '@/globals/utils';
+import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
+import * as apis from '@/configs/apis.contants';
+import * as HttpStatus from '@/configs/http.contants';
+import { UserResponse, LoginRequest } from './types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',

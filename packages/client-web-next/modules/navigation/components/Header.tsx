@@ -1,8 +1,5 @@
-import { SettingTwo } from '@icon-park/react';
 import styles from '../styles/Header.module.scss';
-import Top from './Top';
-import Image from 'next/image';
-import logoImage from '../public/images/logo.png';
+import Top from '../../site/components/Top';
 import { useNavigationsQuery } from '../api';
 
 const Header = () => {

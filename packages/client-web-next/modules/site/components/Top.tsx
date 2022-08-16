@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { UploadOne } from '@icon-park/react';
+import logoImage from '@/public/images/logo.png';
 import styles from '../styles/Top.module.scss';
 import Profile from './Profile';
-import logoImage from '../../public/images/logo.png';
 
 type NavItem = {
   path: string;

@@ -1,9 +1,8 @@
 import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
-import Image from 'next/image';
-import styles from '../styles/Item.module.scss';
-import type { SiteItem } from '../types';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
+import styles from '../styles/Item.module.scss';
+import type { SiteItem } from '../types';
 
 const defaultProps = {
   thumbUrl: '',

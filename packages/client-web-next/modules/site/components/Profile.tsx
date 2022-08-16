@@ -1,7 +1,7 @@
 import { Avatar } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import { useProfileQuery } from '../../auth/api';
+import { useProfileQuery } from '@/modules/auth/api';
 import styles from '../styles/Profile.module.scss';
 
 const Profile = () => {

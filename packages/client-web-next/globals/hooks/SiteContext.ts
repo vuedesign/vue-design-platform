@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import type { SiteList } from '../types/site';
-import type { SetDispatch, ListPageResponse } from '../types/global';
+import type { SiteList } from '@/modules/site/types';
+import type { SetDispatch, ListPageResponse } from '@/globals/types/global';
 
 interface FindSiteQuery {}
 

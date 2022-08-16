@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import * as apis from '@/configs/apis.contants';
+import { NavigationListResponse } from '@/globals/types/navigation';
 import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
 import { RootState } from '@/globals/redux/store';
 import { isServer } from '@/globals/utils';
-import { SiteListResponse, SiteItem } from './types';
 
-export const siteApi = createApi({
-  reducerPath: 'siteApi',
+export const navigationApi = createApi({
+  reducerPath: 'navigationApi',
   baseQuery: fetchBaseQuery({
     baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
@@ -29,17 +29,11 @@ export const siteApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    sites: builder.query<SiteListResponse, void>({
-      query: () => ({ url: apis.SITES, method: 'get' }),
-    }),
-    site: builder.query<SiteItem, string>({
-      query: (uuid: string) => ({
-        url: `${apis.SITES}/${uuid}`,
-        method: 'get',
-      }),
+    navigations: builder.query<NavigationListResponse, void>({
+      query: () => ({ url: apis.NAVIGATIONS, method: 'get' }),
     }),
   }),
 });
 
-export const { useSitesQuery, useSiteQuery } = siteApi;
-export const { sites, site } = siteApi.endpoints;
+export const { useNavigationsQuery } = navigationApi;
+export const { navigations } = navigationApi.endpoints;

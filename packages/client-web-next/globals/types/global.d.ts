@@ -18,3 +18,8 @@ export interface LoginFormData {
   password: string;
   remember: boolean;
 }
+
+declare module '*.module.css' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}

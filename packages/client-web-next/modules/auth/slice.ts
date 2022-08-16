@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../globals/redux/store';
+import type { RootState } from '@/globals/redux/store';
 import { AuthState, User } from './types';
 
 const initialState: AuthState = { user: null, token: null };
