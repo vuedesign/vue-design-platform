@@ -22,7 +22,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: siteItem } = await store.dispatch(
         site.initiate(uuid as string),
       );
-      await store.dispatch(setSiteItem(siteItem as SiteItem));
+      //   await store.dispatch(setSiteItem(siteItem as SiteItem));
       return {
         props: {
           siteItem,
@@ -60,7 +60,7 @@ const Detail: NextPage<DetailProps> = ({ siteItem }: DetailProps) => {
             <div>{siteItem.description}</div>
           </section>
         )}
-        <Asider />
+        <Asider uuid={siteItem.uuid} />
       </section>
       <Footer />
     </div>
