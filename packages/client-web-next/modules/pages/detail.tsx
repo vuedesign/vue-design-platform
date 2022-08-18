@@ -48,17 +48,17 @@ const Detail: NextPage<DetailProps> = ({ siteItem }: DetailProps) => {
       </header>
       <section className={styles.main}>
         {siteItem && (
-          <section className={styles.content}>
+          <article className={styles.article}>
             <h1>{siteItem.title}</h1>
-            <div>
+            <div className={styles.meta}>
               <span>[{siteItem.type}]</span>
               <span> · </span>
-              <span>{siteItem.createdAt}</span>
+              <time>{siteItem.createdAt}</time>
               <span> · </span>
               <span>阅读 {siteItem.views}</span>
             </div>
-            <div>{siteItem.description}</div>
-          </section>
+            <div className={styles.content}>{siteItem.description}</div>
+          </article>
         )}
         <Asider uuid={siteItem.uuid} />
       </section>

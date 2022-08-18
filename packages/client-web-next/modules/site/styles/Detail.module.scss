@@ -21,13 +21,28 @@
   margin-top: 16px;
 }
 
-.content {
+.article {
   flex: 1;
   background-color: #fff;
+  padding: 0 24px;
   h1 {
-    font-size: 28px;
+    font-size: 24px;
     text-align: center;
+    line-height: 48px;
+    padding-top: 16px;
+    margin-bottom: 0;
   }
+}
+
+.meta {
+  color: #666;
+  font-size: 12px;
+  border-top: 1px dashed #ddd;
+  padding: 4px 0;
+}
+
+.content {
+  margin-top: 32px;
 }
 
 .aside {
