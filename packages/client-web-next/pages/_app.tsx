@@ -1,7 +1,8 @@
 import type { AppProps } from 'next/app';
-import 'antd/dist/antd.css';
 import { wrapper } from '@/globals/redux/store';
+import '@/assets/styles/normalize.scss';
 import '@/assets/styles/globals.scss';
+import 'antd/dist/antd.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

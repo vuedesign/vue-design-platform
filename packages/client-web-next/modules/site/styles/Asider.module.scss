@@ -7,14 +7,14 @@
 
 .profile {
   width: inherit;
-  height: 147px;
+  height: 120px;
   background-color: #e5eaed;
   border-radius: 3px;
 }
 
 .userinfo {
   width: inherit;
-  height: 96px;
+  height: 80px;
   background-color: #fff;
   padding: 16px;
   border-radius: 3px;
@@ -22,11 +22,16 @@
     display: flex;
   }
   dt {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     margin-right: 16px;
   }
   dd {
     flex: 1;
+  }
+
+  h5 {
+    font-size: 16px;
+    line-height: 20px;
   }
 }
