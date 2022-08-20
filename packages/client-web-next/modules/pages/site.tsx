@@ -1,7 +1,13 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Badge } from 'antd';
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
+import {
+  GithubOne,
+  Home,
+  Like,
+  ThumbsUp,
+  ThumbsDown,
+  TagOne,
+} from '@icon-park/react';
 import { useState } from 'react';
 import { wrapper } from '@/globals/redux/store';
 import { profile } from '@/modules/auth/api';
@@ -131,10 +137,25 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
             </header>
             <div className={styles.meta}>
               <span>[{siteItem.type}]</span>
-              <span> · </span>
+              <span className={styles.dot}> · </span>
               <time>{siteItem.createdAt}</time>
-              <span> · </span>
+              <span className={styles.dot}> · </span>
               <span>阅读 {siteItem.views}</span>
+              <span className={styles.dot}> · </span>
+              {siteItem.tags && (
+                <TagOne
+                  theme="outline"
+                  size="14"
+                  fill="#666"
+                  style={{ height: '14px' }}
+                />
+              )}
+              {siteItem.tags &&
+                siteItem.tags.map((item, index) => (
+                  <span className={styles.tag} key={index}>
+                    {item.name}
+                  </span>
+                ))}
             </div>
             <div className={styles.content}>{siteItem.description}</div>
             <Tools />
