@@ -1,3 +1,3 @@
-import Detail, { getServerSideProps } from '@/modules/pages/detail';
+import Site, { getServerSideProps } from '@/modules/pages/site';
 export { getServerSideProps };
-export default Detail;
+export default Site;
