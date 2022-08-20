@@ -12,13 +12,16 @@
 }
 
 .main {
-  width: 1072px;
-  // 1072 + 8 + 8;
-  width: 1088px;
+  position: relative;
+  width: 100%;
+  padding: 0 32px;
+  // 1072 + 8 + 8 + 64;
+  max-width: 1152px;
   margin: 0 auto;
   padding-bottom: 16px;
   display: flex;
   margin-top: 16px;
+  min-height: calc(100vh - 64px);
 }
 
 .article {

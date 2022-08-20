@@ -8,10 +8,11 @@
   height: 48px;
   display: flex;
   justify-content: space-between;
-  margin: 0 60px;
+  margin: 0 32px;
 }
 
 .nav {
+  margin: 0;
   a {
     color: rgba(184, 184, 184, 1);
     font-size: 16px;
@@ -39,6 +40,7 @@
 
 .user {
   display: flex;
+  margin: 0;
   > li {
     display: flex;
     align-items: center;
@@ -102,10 +104,11 @@
 }
 
 .logo {
-  margin-bottom: 0;
+  margin: 0;
   height: 24px;
   line-height: 24px;
   width: 136px;
+
   img {
     display: block;
     height: 24px;

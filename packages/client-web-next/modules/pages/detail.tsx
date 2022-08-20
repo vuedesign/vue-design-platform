@@ -11,6 +11,7 @@ import { SiteItem } from '../site/types';
 import Top from '../site/components/Top';
 import Footer from '../site/components/Footer';
 import Asider from '../site/components/Asider';
+import Tools from '../site/components/Tools';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -61,6 +62,7 @@ const Detail: NextPage<DetailProps> = ({ siteItem }: DetailProps) => {
           </article>
         )}
         <Asider uuid={siteItem.uuid} />
+        <Tools />
       </section>
       <Footer />
     </div>
