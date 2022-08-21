@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import Link from 'next/link';
 import styles from '../styles/List.module.scss';
-import { useSitesQuery } from '../../../redux/services/siteApi';
-import { Pagination } from './Pagination';
+import { useSitesQuery } from '../redux/services/siteApi';
+// import { Pagination } from '../pages/siteDetail/components/Pagination';
 import Item from './Item';
 
 type ListProps = {

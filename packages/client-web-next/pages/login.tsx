@@ -1,2 +1,2 @@
-import Login from '@/modules/auth/pages/login';
+import Login from '@/modules/pages/login/login';
 export default Login;

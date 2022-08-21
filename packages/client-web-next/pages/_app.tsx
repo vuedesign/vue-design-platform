@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { wrapper } from '@/globals/redux/store';
+import { wrapper } from '@/modules/redux/store';
 import '@/assets/styles/normalize.css';
 import 'antd/dist/antd.css';
 
