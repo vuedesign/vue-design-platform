@@ -35,6 +35,29 @@ export class SiteService extends BaseService<SiteEntity> {
     });
   }
 
+  findOneBy(where: Record<string, string | number>) {
+    return this.siteRepository.findOne({
+      where,
+      relations: {
+        tags: true,
+        author: true,
+      },
+      select: {
+        author: {
+          uuid: true,
+          avatar: true,
+          username: true,
+          nickname: true,
+        },
+        tags: {
+          id: true,
+          name: true,
+          description: true,
+        },
+      },
+    });
+  }
+
   update(id: number, updateSite: UpdateSiteDto) {
     return this.siteRepository.update(id, updateSite);
   }

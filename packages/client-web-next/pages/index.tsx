@@ -1,3 +1,3 @@
-import Home, { getServerSideProps } from '../client/index';
+import Home, { getServerSideProps } from '@/modules/pages/home/Home';
 export { getServerSideProps };
 export default Home;

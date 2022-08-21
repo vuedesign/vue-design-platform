@@ -7,26 +7,21 @@ import {
   Generated,
   OneToMany,
 } from 'typeorm';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { SiteEntity } from './site.entity';
 
-@ObjectType()
 @Entity('user')
 export class UserEntity {
-  @Field(() => Int)
   @PrimaryGeneratedColumn({
     comment: '用户id',
   })
   id: number;
 
-  @Field()
   @Column({
     comment: 'uuid',
   })
   @Generated('uuid')
   uuid: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -35,7 +30,6 @@ export class UserEntity {
   })
   username: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -44,7 +38,6 @@ export class UserEntity {
   })
   nickname: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -53,7 +46,6 @@ export class UserEntity {
   })
   email: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -62,7 +54,6 @@ export class UserEntity {
   })
   phone: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -71,7 +62,6 @@ export class UserEntity {
   })
   password: string;
 
-  @Field()
   @Column({
     type: 'varchar',
     width: 255,
@@ -80,7 +70,6 @@ export class UserEntity {
   })
   avatar: string;
 
-  @Field()
   @Column({
     name: 'status',
     type: 'int',
@@ -90,7 +79,6 @@ export class UserEntity {
   })
   status: number;
 
-  @Field()
   @Column({
     type: 'int',
     width: 1,
@@ -99,7 +87,6 @@ export class UserEntity {
   })
   rule: number;
 
-  @Field()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
@@ -108,7 +95,6 @@ export class UserEntity {
   })
   createdAt: Date;
 
-  @Field()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',

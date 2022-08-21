@@ -1,7 +1,9 @@
 const path = require('path');
 
+const resolve = (dir) => path.resolve(__dirname, dir);
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
@@ -31,6 +33,18 @@ const nextConfig = {
       ],
     };
   },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // config.module.rules.push({
+    //     test: /\.(txt|svg|ttf)$/,
+    //     type: 'asset/resource',
+    //     generator: {
+    //         filename: 'static/[hash][ext][query]',
+    //     },
+    // });
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': resolve('./'),
+    };
+    return config;
+  },
 };
-
-module.exports = nextConfig;

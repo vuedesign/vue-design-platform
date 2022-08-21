@@ -1,0 +1,35 @@
+.container {
+  cursor: pointer;
+}
+
+.btn-login {
+  width: auto;
+  height: 24px;
+  line-height: 24px;
+  background-color: rgba(238, 238, 238, 1);
+  border-radius: 24px;
+  color: rgba(128, 128, 128, 1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  padding: 0 10px;
+  cursor: pointer;
+  > span {
+    font-size: 12px;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    &.text {
+      margin-left: 5px;
+    }
+  }
+  &:hover {
+    background-color: #3d7eff;
+    span,
+    .btn-upload-one {
+      color: #fff;
+    }
+  }
+}

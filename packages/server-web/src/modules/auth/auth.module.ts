@@ -3,11 +3,12 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
-import { AuthResolver } from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+
 import { JwtStrategy } from './strategys/jwt.strategy';
+import { LocalStrategy } from './strategys/local.strategy';
 import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
+import { jwtConstants } from './constants';
 
 @Module({
   imports: [
@@ -15,12 +16,12 @@ import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '7d' },
+      signOptions: { expiresIn: '2d' },
     }),
     BaseMicroserviceModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, AuthResolver],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

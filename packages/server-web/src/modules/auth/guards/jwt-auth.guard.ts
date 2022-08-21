@@ -19,20 +19,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getClass(),
     ]);
     if (isPublic) {
-      console.log('isPublic');
       return true;
     }
     return super.canActivate(context);
   }
 
   handleRequest(err, user, info) {
-    console.log('user', err, user);
-    // console.log('========', info);
-    // You can throw an exception based on either "info" or "err" arguments
     if (err || !user) {
-      console.log('user===', user);
-      // return { ddd: 'ssss' };
-      throw new UnauthorizedException('用户没授权');
+      throw err || new UnauthorizedException('用户没授权');
     }
     return user;
   }

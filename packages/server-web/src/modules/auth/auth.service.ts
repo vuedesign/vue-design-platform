@@ -8,14 +8,11 @@ import { UserEntity } from '@/entities/user.entity';
 
 @Injectable()
 export class AuthService extends BaseMicroservice {
-  async validateUser(formData: LoginParam): Promise<any> {
-    console.log('formData', formData);
-    const { password, account } = formData;
+  async validateUser(account: string, password: string): Promise<any> {
     let field: string = getFieldType(account);
     const where = {
       [field]: account,
     };
-    console.log('where', where);
     type User = {
       password: string;
     };
@@ -23,7 +20,6 @@ export class AuthService extends BaseMicroservice {
       { module: 'user', method: 'find-one' },
       where,
     );
-    // const user = await this.userService.findOne(where);
     if (user && user.password === password) {
       const { password, ...result } = user;
       return result;
