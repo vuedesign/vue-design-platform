@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
 import { NavigationService } from '../navigation/navigation.service';
+import { AuthRequest } from '../auth/dto/auth.dto';
 
 @Controller('home')
 export class HomeController {
@@ -16,7 +17,10 @@ export class HomeController {
   }
 
   @Get('count')
-  count() {
+  count(@Req() req: AuthRequest) {
+    if (!req.user || !req.user.id) {
+      throw new UnauthorizedException('用户没授权');
+    }
     return Promise.all([
       this.userService.count(),
       this.siteService.count(),
