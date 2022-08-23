@@ -30,7 +30,7 @@ export class SiteController {
     type: SiteListQueryDto,
   })
   findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
-    const { title, type, status, size, page, order } = query;
+    const { title, type, status, size, page, order, authorId } = query;
 
     const options: IPaginationOptions = {
       pagination: { size, page },
@@ -87,6 +87,10 @@ export class SiteController {
 
     if (type) {
       options.where['type'] = type;
+    }
+
+    if (authorId) {
+      options.where['authorId'] = authorId;
     }
 
     return this.siteService.findList(options);
