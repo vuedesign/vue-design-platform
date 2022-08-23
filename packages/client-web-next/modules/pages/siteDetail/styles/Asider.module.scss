@@ -1,7 +1,6 @@
 .container {
   width: 256px;
-  height: 400px;
-  background-color: aliceblue;
+  height: auto;
   margin-left: 16px;
 }
 
@@ -33,5 +32,21 @@
   h5 {
     font-size: 16px;
     line-height: 20px;
+  }
+}
+
+.recommend {
+  margin-top: 8px;
+  width: 100%;
+  ul {
+    display: flex;
+    width: 100%;
+    flex-flow: wrap;
+    margin: 0 -4px;
+    padding: 0;
+    list-style: none;
+    li {
+      margin-top: 8px;
+    }
   }
 }

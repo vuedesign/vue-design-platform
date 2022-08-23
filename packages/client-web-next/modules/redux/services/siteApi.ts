@@ -4,7 +4,7 @@ import * as apis from '@/configs/apis.contants';
 import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
 import { RootState } from '@/modules/redux/store';
 import { isServer } from '@/globals/utils';
-import { SiteListResponse, SiteItem } from '../../pages/site/site';
+import { SiteListResponse, SiteItem } from '../types/site';
 
 export const siteApi = createApi({
   reducerPath: 'siteApi',
@@ -29,8 +29,14 @@ export const siteApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    sites: builder.query<SiteListResponse, void>({
-      query: () => ({ url: apis.SITES, method: 'get' }),
+    sites: builder.query<SiteListResponse, Record<string, any>>({
+      query: (params: Record<string, any> = {}) => {
+        const queryString: string[] = [];
+        Object.keys(params).forEach((key) => {
+          queryString.push(`${key}=${params[key]}`);
+        });
+        return { url: `${apis.SITES}?${queryString.join('&')}`, method: 'get' };
+      },
     }),
     site: builder.query<SiteItem, string>({
       query: (uuid: string) => ({

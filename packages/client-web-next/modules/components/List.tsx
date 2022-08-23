@@ -44,7 +44,7 @@ type ListProps = {
 // };
 
 const List = ({ type }: ListProps) => {
-  const { data } = useSitesQuery();
+  const { data } = useSitesQuery({});
   const list = data?.list || [];
   return (
     <section className={styles.container}>

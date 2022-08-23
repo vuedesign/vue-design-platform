@@ -1,7 +1,8 @@
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useSiteQuery } from '@/modules/redux/services/siteApi';
+import { useSiteQuery, useSitesQuery } from '@/modules/redux/services/siteApi';
 import styles from '../styles/Asider.module.scss';
+import Item from '@/modules/components/Item';
 
 type AsiderProps = {
   uuid: string | undefined;
@@ -9,6 +10,9 @@ type AsiderProps = {
 const Asider = ({ uuid }: AsiderProps) => {
   const { data: siteItem } = useSiteQuery(uuid || '');
   const profile = siteItem?.author;
+  const authorId = siteItem?.authorId;
+  const { data: site } = useSitesQuery({ authorId, size: 2 });
+  console.log('siteList', site);
   return (
     <aside className={styles.container}>
       <div className={styles.profile}>
@@ -29,6 +33,17 @@ const Asider = ({ uuid }: AsiderProps) => {
             </dl>
           </div>
         )}
+      </div>
+      <div className={styles.recommend}>
+        <ul>
+          {site &&
+            site.list &&
+            site.list.map((item, index) => (
+              <li key={index}>
+                <Item {...item}></Item>
+              </li>
+            ))}
+        </ul>
       </div>
     </aside>
   );
