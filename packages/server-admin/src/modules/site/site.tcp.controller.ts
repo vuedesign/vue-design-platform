@@ -3,6 +3,7 @@ import { SiteService } from './site.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { SiteEntity } from '@/entities/site.entity';
+import { FindManyOptions } from 'typeorm';
 
 /**
  * 站点模块
@@ -21,5 +22,10 @@ export class SiteTcpController {
   @MessagePattern({ module: 'site', method: 'findOneByUuid' }, Transport.TCP)
   findOneByUuid(uuid: string) {
     return this.siteService.findOneBy({ uuid });
+  }
+
+  @MessagePattern({ module: 'site', method: 'count' }, Transport.TCP)
+  count(options?: FindManyOptions<SiteEntity>) {
+    return this.siteService.count(options);
   }
 }
