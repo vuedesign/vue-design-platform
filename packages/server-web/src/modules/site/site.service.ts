@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SiteEntity } from '@/entities/site.entity';
+import { FindManyOptions } from 'typeorm';
 import {
   IPaginationOptions,
   IPaginationResponse,
@@ -16,5 +17,9 @@ export class SiteService extends BaseMicroservice {
 
   findOneByUuid(uuid: string) {
     return this.send({ module: 'site', method: 'findOneByUuid' }, uuid);
+  }
+
+  count(options?: Partial<SiteEntity>) {
+    return this.send({ module: 'site', method: 'count' }, options);
   }
 }

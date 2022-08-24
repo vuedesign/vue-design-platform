@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like } from 'typeorm';
@@ -12,6 +12,18 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiBearerAuth()
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
+
+  @Public()
+  @Get('/count')
+  @ApiQuery({
+    description: '项目详情',
+    type: Number,
+  })
+  count(@Query('authorId', ParseIntPipe) authorId: number) {
+    return this.siteService.count({
+      authorId,
+    });
+  }
 
   @Public()
   @Get('/:uuid')
