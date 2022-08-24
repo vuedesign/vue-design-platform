@@ -14,7 +14,7 @@ import { wrapper } from '@/modules/redux/store';
 import { profile } from '@/modules/redux/services/authApi';
 import { setToken, setUser } from '@/modules/redux/features/authSlice';
 import { User } from '@/modules/redux/types/auth';
-import { site, sites } from '@/modules/redux/services/siteApi';
+import { site, sites, count } from '@/modules/redux/services/siteApi';
 import { SiteItem } from '@/modules/redux/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
@@ -24,15 +24,22 @@ import styles from './SiteDetail.module.scss';
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, params }) => {
-      const uuid = params?.uuid || '';
+      const uuid: string = (params?.uuid || '') as string;
+      console.log('uuid', uuid);
+      if (!uuid) {
+        return;
+      }
       await store.dispatch(setToken(req.cookies.token || ''));
       await store.dispatch(profile.initiate());
       //   await store.dispatch(setUser(user as User));
+
       const { data: siteItem } = await store.dispatch(
         site.initiate(uuid as string),
       );
       const authorId = siteItem?.authorId;
+      console.log('authorId', authorId);
       await store.dispatch(sites.initiate({ authorId, size: 2 }));
+      await store.dispatch(count.initiate(authorId));
       return {
         props: {
           siteItem,

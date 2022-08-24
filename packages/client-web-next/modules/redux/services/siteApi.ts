@@ -29,6 +29,15 @@ export const siteApi = createApi({
     }
   },
   endpoints: (builder) => ({
+    count: builder.query<number, number | undefined>({
+      query: (authorId?: number) => {
+        console.log('authorId', authorId);
+        return {
+          url: `${apis.SITE_COUNT}?authorId=${authorId}`,
+          method: 'get',
+        };
+      },
+    }),
     sites: builder.query<SiteListResponse, Record<string, any>>({
       query: (params: Record<string, any> = {}) => {
         const queryString: string[] = [];
@@ -47,5 +56,5 @@ export const siteApi = createApi({
   }),
 });
 
-export const { useSitesQuery, useSiteQuery } = siteApi;
-export const { sites, site } = siteApi.endpoints;
+export const { useSitesQuery, useSiteQuery, useCountQuery } = siteApi;
+export const { sites, site, count } = siteApi.endpoints;
