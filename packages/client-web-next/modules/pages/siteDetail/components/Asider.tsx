@@ -1,5 +1,6 @@
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { ShareOne, PreviewOpen } from '@icon-park/react';
 import {
   useCountQuery,
   useSiteQuery,
@@ -38,8 +39,15 @@ const Asider = ({ uuid }: AsiderProps) => {
                 </dd>
               </dl>
             </div>
-            <ul>
-              <li> {count}</li>
+            <ul className={styles.count}>
+              <li>
+                <ShareOne theme="outline" size="16" fill="#666" />
+                <span className={styles.text}>{count}</span>
+              </li>
+              <li>
+                <PreviewOpen theme="outline" size="16" fill="#666" />
+                <span className={styles.text}>0</span>
+              </li>
             </ul>
           </>
         )}
