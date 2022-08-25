@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@/modules/redux/store';
-import { SiteItem, SiteState } from '../../pages/site/site';
+import { SiteItem, SiteState } from '../types/site';
 
 const initialState: SiteState = { siteItem: null };
 

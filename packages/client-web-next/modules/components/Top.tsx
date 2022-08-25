@@ -16,7 +16,7 @@ const navList: NavItem[] = [
     label: '首页',
   },
   {
-    path: '/site',
+    path: '/sites',
     label: '发现',
   },
 ];

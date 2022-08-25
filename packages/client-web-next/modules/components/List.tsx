@@ -1,67 +1,55 @@
-import { useContext } from 'react';
 import Link from 'next/link';
 import styles from '../styles/List.module.scss';
 import { useSitesQuery } from '../redux/services/siteApi';
-import { Pagination } from './Pagination';
 import Item from './Item';
+import { Pagination } from 'antd';
+import { useRouter } from 'next/router';
 
 type ListProps = {
   type: string;
-  page: number;
-  size: number;
-  total: number;
-};
-
-const More = ({ type, size, total, page }: ListProps) => {
-  //   const { total, query, setQuery } = useContext(SiteListContext);
-  const handlePageChange = (page: number) => {
-    // setQuery(
-    //   Object.assign({}, query, {
-    //     page,
-    //   })
-    // );
-  };
-  const handleSizeChange = (size: number) => {
-    // setQuery(
-    //   Object.assign({}, query, {
-    //     size,
-    //   })
-    // );
-  };
-  if (type === 'home') {
-    return (
-      <Link href="/site">
-        <a className={styles.more}>发现更多</a>
-      </Link>
-    );
-  }
-  return (
-    <Pagination
-      total={total}
-      page={page}
-      size={size}
-      onPage={handlePageChange}
-      onSize={handleSizeChange}
-    />
-  );
 };
 
 const List = ({ type }: ListProps) => {
-  const { data } = useSitesQuery({});
-  const list = data?.list || [];
-  const { size = 20, page = 1 } = data?.pagination || {};
-  const total = data?.total || 0;
+  const router = useRouter();
+  const page = Number(router.query.page || 1);
+  const size = Number(router.query.size || 20);
+  const { data = { list: [], pagination: { page, size }, total: 0 } } =
+    useSitesQuery({ page, size });
   return (
     <section className={styles.container}>
       <section className={styles.main}>
         <ul className={styles.list}>
-          {list.map((item, index) => (
+          {data.list.map((item, index) => (
             <li key={index}>
               <Item {...item}></Item>
             </li>
           ))}
         </ul>
-        <More type={type} total={total} size={size} page={page} />
+        {type === 'home' ? (
+          <Link href="/sites">
+            <a className={styles.more}>发现更多</a>
+          </Link>
+        ) : (
+          <div className={styles.page}>
+            <Pagination
+              current={page}
+              defaultCurrent={page}
+              defaultPageSize={size}
+              pageSize={size}
+              total={data.total}
+              itemRender={(page, type, originalElement) => {
+                if (page >= 1 && type == 'page') {
+                  return (
+                    <Link href={`/sites?page=${page}`} passHref={true}>
+                      <a>{page}</a>
+                    </Link>
+                  );
+                }
+                return originalElement;
+              }}
+            />
+          </div>
+        )}
       </section>
     </section>
   );
