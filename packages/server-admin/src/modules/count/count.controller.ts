@@ -27,7 +27,7 @@ export class CountController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.countService.findOne(+id);
+    return this.countService.findOneById(+id);
   }
 
   @Patch(':id')

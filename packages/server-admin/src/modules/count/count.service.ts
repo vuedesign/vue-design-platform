@@ -18,8 +18,9 @@ export class CountService extends BaseService<CountEntity> {
   ) {
     super(countRepository);
   }
-  create(createCountDto: CreateCountDto) {
-    return 'This action adds a new count';
+  create(createCount: Partial<CountEntity>) {
+    this.countRepository.create(createCount);
+    return this.countRepository.save(createCount);
   }
 
   findList(
@@ -28,12 +29,20 @@ export class CountService extends BaseService<CountEntity> {
     return this.findListAndPage(query);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} count`;
+  findOne(where: Partial<CountEntity>) {
+    return this.countRepository.findOne({
+      where,
+    });
   }
 
-  update(id: number, updateCountDto: UpdateCountDto) {
-    return `This action updates a #${id} count`;
+  findOneById(id: number) {
+    return this.countRepository.findOne({
+      where: { id },
+    });
+  }
+
+  update(id: number, updateCount: UpdateCountDto) {
+    return this.countRepository.update(id, updateCount);
   }
 
   remove(id: number) {

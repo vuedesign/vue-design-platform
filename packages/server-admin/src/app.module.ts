@@ -6,10 +6,16 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import appsModule from '@/modules/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
-import { CountModule } from './modules/count/count.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule, CountModule],
+  imports: [
+    TypeOrmModule.forRoot(typeormConfig),
+    ScheduleModule.forRoot(),
+    ...appsModule,
+    TaskModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
