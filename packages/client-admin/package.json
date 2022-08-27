@@ -15,14 +15,14 @@
         "@vue-design/resolver-2n": "link:/Users/wujian/Development/vue.design/vue-design-framework/packages/resolver-2n",
         "@vue-design/theme-2n": "link:/Users/wujian/Development/vue.design/vue-design-framework/packages/theme-2n",
         "@vue-design/theme-2n-demands": "link:/Users/wujian/Development/vue.design/vue-design-framework/packages/theme-2n-demands",
-        "@vueuse/core": "^8.6.0",
+        "@vueuse/core": "^8.9.4",
         "axios": "^0.20.0",
         "core-js": "^3.20.3",
-        "element-plus": "^2.2.1",
+        "element-plus": "^2.2.10",
         "lodash-es": "^4.17.21",
-        "pinia": "^2.0.14",
-        "vue": "^3.2.33",
-        "vue-router": "4"
+        "pinia": "^2.0.16",
+        "vue": "^3.2.37",
+        "vue-router": "^4.1.2"
     },
     "devDependencies": {
         "@ehutch79/vite-eslint": "^0.0.1",
@@ -41,9 +41,9 @@
         "sass": "^1.25.0",
         "typeorm": "^0.3.6",
         "typescript": "^4.5.4",
-        "unplugin-auto-import": "^0.8.5",
-        "unplugin-vue-components": "^0.19.6",
-        "vite": "3.0.2"
+        "unplugin-auto-import": "^0.8.8",
+        "unplugin-vue-components": "^0.19.9",
+        "vite": "3.0.9"
     },
     "browserslist": [
         "> 1%",

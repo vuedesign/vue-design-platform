@@ -15,25 +15,25 @@ specifiers:
   '@vue-design/theme-2n': link:/Users/wujian/Development/vue.design/vue-design-framework/packages/theme-2n
   '@vue-design/theme-2n-demands': link:/Users/wujian/Development/vue.design/vue-design-framework/packages/theme-2n-demands
   '@vue/compiler-sfc': ^3.2.27
-  '@vueuse/core': ^8.6.0
+  '@vueuse/core': ^8.9.4
   axios: ^0.20.0
   core-js: ^3.20.3
-  element-plus: ^2.2.1
+  element-plus: ^2.2.10
   eslint: ^8.7.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-vue: ^8.3.0
   lodash-es: ^4.17.21
-  pinia: ^2.0.14
+  pinia: ^2.0.16
   prettier: ^2.5.1
   sass: ^1.25.0
   typeorm: ^0.3.6
   typescript: ^4.5.4
-  unplugin-auto-import: ^0.8.5
-  unplugin-vue-components: ^0.19.6
-  vite: 3.0.2
-  vue: ^3.2.33
-  vue-router: '4'
+  unplugin-auto-import: ^0.8.8
+  unplugin-vue-components: ^0.19.9
+  vite: 3.0.9
+  vue: ^3.2.37
+  vue-router: ^4.1.2
 
 dependencies:
   '@element-plus/icons-vue': registry.npmmirror.com/@element-plus/icons-vue/1.1.4_vue@3.2.37
@@ -58,7 +58,7 @@ devDependencies:
   '@types/uuid': registry.npmmirror.com/@types/uuid/8.3.4
   '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/5.30.7_6wltbjakwuqm7awqswigmiuhd4
   '@typescript-eslint/parser': registry.npmmirror.com/@typescript-eslint/parser/5.30.7_he2ccbldppg44uulnyq4rwocfa
-  '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/3.0.1_vite@3.0.2+vue@3.2.37
+  '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/3.0.1_vite@3.0.9+vue@3.2.37
   '@vue/compiler-sfc': registry.npmmirror.com/@vue/compiler-sfc/3.2.37
   eslint: registry.npmmirror.com/eslint/8.20.0
   eslint-config-prettier: registry.npmmirror.com/eslint-config-prettier/8.5.0_eslint@8.20.0
@@ -68,9 +68,9 @@ devDependencies:
   sass: registry.npmmirror.com/sass/1.54.0
   typeorm: registry.npmmirror.com/typeorm/0.3.7
   typescript: registry.npmmirror.com/typescript/4.7.4
-  unplugin-auto-import: registry.npmmirror.com/unplugin-auto-import/0.8.8_h424so5tb623alsee2e3aarhfi
-  unplugin-vue-components: registry.npmmirror.com/unplugin-vue-components/0.19.9_vite@3.0.2+vue@3.2.37
-  vite: registry.npmmirror.com/vite/3.0.2_sass@1.54.0
+  unplugin-auto-import: registry.npmmirror.com/unplugin-auto-import/0.8.8_cjfb2vuyppa4z267klnp6hax3q
+  unplugin-vue-components: registry.npmmirror.com/unplugin-vue-components/0.19.9_vite@3.0.9+vue@3.2.37
+  vite: registry.npmmirror.com/vite/3.0.9_sass@1.54.0
 
 packages:
 
@@ -490,7 +490,7 @@ packages:
       eslint-visitor-keys: registry.npmmirror.com/eslint-visitor-keys/3.3.0
     dev: true
 
-  registry.npmmirror.com/@vitejs/plugin-vue/3.0.1_vite@3.0.2+vue@3.2.37:
+  registry.npmmirror.com/@vitejs/plugin-vue/3.0.1_vite@3.0.9+vue@3.2.37:
     resolution: {integrity: sha512-Ll9JgxG7ONIz/XZv3dssfoMUDu9qAnlJ+km+pBA0teYSXzwPCIzS/e1bmwNYl5dcQGs677D21amgfYAnzMl17A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-vue/-/plugin-vue-3.0.1.tgz}
     id: registry.npmmirror.com/@vitejs/plugin-vue/3.0.1
     name: '@vitejs/plugin-vue'
@@ -500,7 +500,7 @@ packages:
       vite: ^3.0.0
       vue: ^3.2.25
     dependencies:
-      vite: registry.npmmirror.com/vite/3.0.2_sass@1.54.0
+      vite: registry.npmmirror.com/vite/3.0.9_sass@1.54.0
       vue: registry.npmmirror.com/vue/3.2.37
     dev: true
 
@@ -2383,6 +2383,17 @@ packages:
       picocolors: registry.npmmirror.com/picocolors/1.0.0
       source-map-js: registry.npmmirror.com/source-map-js/1.0.2
 
+  registry.npmmirror.com/postcss/8.4.16:
+    resolution: {integrity: sha512-ipHE1XBvKzm5xI7hiHCZJCSugxvsdq2mPnsq5+UF+VHCjiBvtDrlxJfMBToWaP9D5XlgNmcFGqoHmUn0EYEaRQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/postcss/-/postcss-8.4.16.tgz}
+    name: postcss
+    version: 8.4.16
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      nanoid: registry.npmmirror.com/nanoid/3.3.4
+      picocolors: registry.npmmirror.com/picocolors/1.0.0
+      source-map-js: registry.npmmirror.com/source-map-js/1.0.2
+    dev: true
+
   registry.npmmirror.com/prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/prelude-ls/-/prelude-ls-1.2.1.tgz}
     name: prelude-ls
@@ -2862,7 +2873,7 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  registry.npmmirror.com/unimport/0.2.10_vite@3.0.2:
+  registry.npmmirror.com/unimport/0.2.10_vite@3.0.9:
     resolution: {integrity: sha512-HoQ0ZDzHJboRYJ4/YxtMAATxiya/s5C2UE6jLFNj1e0D6Qfq6Pw2P40L+ALCkjLwLhR8l2VROE7kba/AaFtdQg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unimport/-/unimport-0.2.10.tgz}
     id: registry.npmmirror.com/unimport/0.2.10
     name: unimport
@@ -2877,7 +2888,7 @@ packages:
       pathe: registry.npmmirror.com/pathe/0.3.2
       scule: registry.npmmirror.com/scule/0.2.1
       strip-literal: registry.npmmirror.com/strip-literal/0.4.0
-      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.2
+      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.9
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -2885,7 +2896,7 @@ packages:
       - webpack
     dev: true
 
-  registry.npmmirror.com/unplugin-auto-import/0.8.8_h424so5tb623alsee2e3aarhfi:
+  registry.npmmirror.com/unplugin-auto-import/0.8.8_cjfb2vuyppa4z267klnp6hax3q:
     resolution: {integrity: sha512-cVZ79zMR1v4VCZ9emFTUnltmazCc2B4hObyVrxJdlgJ2sK8qub6JfjFt38rCF6MVEddkHiWCU6wZR1qbdqe+ig==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unplugin-auto-import/-/unplugin-auto-import-0.8.8.tgz}
     id: registry.npmmirror.com/unplugin-auto-import/0.8.8
     name: unplugin-auto-import
@@ -2902,8 +2913,8 @@ packages:
       '@vueuse/core': registry.npmmirror.com/@vueuse/core/8.9.4_vue@3.2.37
       local-pkg: registry.npmmirror.com/local-pkg/0.4.2
       magic-string: registry.npmmirror.com/magic-string/0.26.2
-      unimport: registry.npmmirror.com/unimport/0.2.10_vite@3.0.2
-      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.2
+      unimport: registry.npmmirror.com/unimport/0.2.10_vite@3.0.9
+      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.9
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -2911,7 +2922,7 @@ packages:
       - webpack
     dev: true
 
-  registry.npmmirror.com/unplugin-vue-components/0.19.9_vite@3.0.2+vue@3.2.37:
+  registry.npmmirror.com/unplugin-vue-components/0.19.9_vite@3.0.9+vue@3.2.37:
     resolution: {integrity: sha512-i5mZtg85euPWZrGswFkoa9pf4WjKCP5qOjnwOyg3KOKVzFjnP3osCdrunQMjtoMKehTdz1vV6baZH8bZR4PNgg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unplugin-vue-components/-/unplugin-vue-components-0.19.9.tgz}
     id: registry.npmmirror.com/unplugin-vue-components/0.19.9
     name: unplugin-vue-components
@@ -2936,7 +2947,7 @@ packages:
       magic-string: registry.npmmirror.com/magic-string/0.26.2
       minimatch: registry.npmmirror.com/minimatch/5.1.0
       resolve: registry.npmmirror.com/resolve/1.22.1
-      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.2
+      unplugin: registry.npmmirror.com/unplugin/0.7.2_vite@3.0.9
       vue: registry.npmmirror.com/vue/3.2.37
     transitivePeerDependencies:
       - esbuild
@@ -2946,7 +2957,7 @@ packages:
       - webpack
     dev: true
 
-  registry.npmmirror.com/unplugin/0.7.2_vite@3.0.2:
+  registry.npmmirror.com/unplugin/0.7.2_vite@3.0.9:
     resolution: {integrity: sha512-m7thX4jP8l5sETpLdUASoDOGOcHaOVtgNyrYlToyQUvILUtEzEnngRBrHnAX3IKqooJVmXpoa/CwQ/QqzvGaHQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unplugin/-/unplugin-0.7.2.tgz}
     id: registry.npmmirror.com/unplugin/0.7.2
     name: unplugin
@@ -2968,7 +2979,7 @@ packages:
     dependencies:
       acorn: registry.npmmirror.com/acorn/8.8.0
       chokidar: registry.npmmirror.com/chokidar/3.5.3
-      vite: registry.npmmirror.com/vite/3.0.2_sass@1.54.0
+      vite: registry.npmmirror.com/vite/3.0.9_sass@1.54.0
       webpack-sources: registry.npmmirror.com/webpack-sources/3.2.3
       webpack-virtual-modules: registry.npmmirror.com/webpack-virtual-modules/0.4.4
     dev: true
@@ -3000,11 +3011,11 @@ packages:
     version: 2.3.0
     dev: true
 
-  registry.npmmirror.com/vite/3.0.2_sass@1.54.0:
-    resolution: {integrity: sha512-TAqydxW/w0U5AoL5AsD9DApTvGb2iNbGs3sN4u2VdT1GFkQVUfgUldt+t08TZgi23uIauh1TUOQJALduo9GXqw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite/-/vite-3.0.2.tgz}
-    id: registry.npmmirror.com/vite/3.0.2
+  registry.npmmirror.com/vite/3.0.9_sass@1.54.0:
+    resolution: {integrity: sha512-waYABTM+G6DBTCpYAxvevpG50UOlZuynR0ckTK5PawNVt7ebX6X7wNXHaGIO6wYYFXSM7/WcuFuO2QzhBB6aMw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite/-/vite-3.0.9.tgz}
+    id: registry.npmmirror.com/vite/3.0.9
     name: vite
-    version: 3.0.2
+    version: 3.0.9
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -3023,7 +3034,7 @@ packages:
         optional: true
     dependencies:
       esbuild: registry.npmmirror.com/esbuild/0.14.49
-      postcss: registry.npmmirror.com/postcss/8.4.14
+      postcss: registry.npmmirror.com/postcss/8.4.16
       resolve: registry.npmmirror.com/resolve/1.22.1
       rollup: registry.npmmirror.com/rollup/2.77.0
       sass: registry.npmmirror.com/sass/1.54.0
