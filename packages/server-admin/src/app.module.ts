@@ -6,9 +6,10 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import appsModule from '@/modules/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { CountModule } from './modules/count/count.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule],
+  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule, CountModule],
   controllers: [AppController],
   providers: [
     AppService,
