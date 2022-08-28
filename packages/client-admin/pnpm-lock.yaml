@@ -26,7 +26,7 @@ specifiers:
   lodash-es: ^4.17.21
   pinia: ^2.0.16
   prettier: ^2.5.1
-  sass: ^1.25.0
+  sass: ^1.54.0
   typeorm: ^0.3.6
   typescript: ^4.5.4
   unplugin-auto-import: ^0.8.8

@@ -59,6 +59,7 @@ import {
     PictureOne,
     User,
     Broadcast,
+    Analysis,
 } from '@icon-park/vue-next';
 
 export default defineComponent({
@@ -100,6 +101,7 @@ export default defineComponent({
         PictureOne,
         User,
         Broadcast,
+        Analysis,
     },
     emits: ['toggle', 'goto'],
     setup(props, { emit }) {

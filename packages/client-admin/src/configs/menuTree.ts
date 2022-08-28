@@ -48,6 +48,11 @@ export default <MenuNode[]>[
                 value: 'buried',
                 icon: 'Broadcast',
             },
+            {
+                label: '用户统计',
+                value: 'count',
+                icon: 'Analysis',
+            },
         ],
     },
     {
