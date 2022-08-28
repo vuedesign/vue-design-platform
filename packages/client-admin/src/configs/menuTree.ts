@@ -43,11 +43,11 @@ export default <MenuNode[]>[
         icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
         children: [
-            {
-                label: '埋点管理',
-                value: 'buried',
-                icon: 'Broadcast',
-            },
+            // {
+            //     label: '埋点管理',
+            //     value: 'buried',
+            //     icon: 'Broadcast',
+            // },
             {
                 label: '用户统计',
                 value: 'count',
