@@ -25,14 +25,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, params }) => {
       const uuid: string = (params?.uuid || '') as string;
-      console.log('uuid', uuid);
       if (!uuid) {
         return;
       }
       await store.dispatch(setToken(req.cookies.token || ''));
       await store.dispatch(profile.initiate());
-      //   await store.dispatch(setUser(user as User));
-
       const { data: siteItem } = await store.dispatch(
         site.initiate(uuid as string),
       );
