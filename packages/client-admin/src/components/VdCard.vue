@@ -3,13 +3,13 @@
         <header v-if="slots.header" class="vd-card-header">
             <slot name="header"></slot>
         </header>
-        <el-scrollbar v-if="isScroll" ref="vdCardRef">
+        <el-scrollbar v-if="isScroll">
             <section class="vd-card-body" :style="bodyStyle">
-                <slot :height="cardBodyHeight" />
+                <slot />
             </section>
         </el-scrollbar>
-        <section v-else class="vd-card-body" ref="vdCardRef" :style="bodyStyle">
-            <slot :height="cardBodyHeight" />
+        <section v-else class="vd-card-body" :style="bodyStyle">
+            <slot />
         </section>
         <footer v-if="slots.footer" class="vd-card-footer">
             <slot name="footer"></slot>
@@ -26,7 +26,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { Ref } from 'vue';
 const slots = useSlots();
 
 interface Props {
@@ -43,15 +42,6 @@ const bodyStyle = computed(() => {
         return {
             padding: props.padding === true ? '16px 24px' : props.padding,
         };
-    }
-});
-
-const vdCardRef: Ref<HTMLDivElement | null> = ref(null);
-const cardBodyHeight = ref(0);
-
-onMounted(() => {
-    if (vdCardRef.value && vdCardRef.value.clientHeight) {
-        cardBodyHeight.value = vdCardRef.value.clientHeight;
     }
 });
 </script>

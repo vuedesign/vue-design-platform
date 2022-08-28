@@ -1,5 +1,5 @@
 <template>
-    <vd-card class="page-navigation">
+    <vd-card is-scroll class="page-navigation">
         <template #header>
             <vd-filter>
                 <el-input
@@ -63,14 +63,12 @@
                 </template>
             </vd-filter>
         </template>
-        <template #default="{ height }">
+        <template #default>
             <div class="page-navigation-container">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
-                    :key="height"
-                    :height="height"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="siteId" label="站点ID" width="80" />
