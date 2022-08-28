@@ -56,6 +56,7 @@ const bodyStyle = computed(() => {
     display: flex;
     flex-direction: column;
     border-radius: 8px;
+    overflow: hidden;
 }
 .vd-card-header {
     border-top-left-radius: 8px;
