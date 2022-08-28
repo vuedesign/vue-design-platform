@@ -19,7 +19,7 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '../../core/utils';
 
 @Controller('auth')
-@ApiTags('用户模块')
+@ApiTags('auth模块')
 @ApiBearerAuth()
 export class AuthController {
   constructor(

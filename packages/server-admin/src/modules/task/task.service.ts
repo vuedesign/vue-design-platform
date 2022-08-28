@@ -11,6 +11,10 @@ import { CountEntity } from '@/entities/count.entity';
 @Injectable()
 export class TaskService {
   private readonly logger = new Logger(TaskService.name);
+  private page = 1;
+  private total = 0;
+  private readonly size = 10;
+
   constructor(
     private userService: UserService,
     private siteService: SiteService,
@@ -34,13 +38,27 @@ export class TaskService {
     this.logger.debug('Called once after 5 seconds');
   }
 
-  async tarks(size: number = 100) {
+  async tarks() {
+    this.page = 1;
+    const tark = await this.tark({ size: this.size, page: this.page });
+    this.total = tark.total;
+    while (this.page * tark.size < this.total) {
+      this.page++;
+      const { page, size, total } = await this.tark({
+        size: this.size,
+        page: this.page,
+      });
+    }
+  }
+
+  async tark({ size = 20, page = 1 }) {
     const user = await this.userService.findList({
       select: {
         id: true,
       },
       pagination: {
         size,
+        page,
       },
     });
     const total = user.total;
@@ -49,9 +67,14 @@ export class TaskService {
     );
     for await (const item of countList) {
       if (item) {
-        this.update(item.authorId, item);
+        await this.update(item.authorId, item);
       }
     }
+    return {
+      page,
+      size,
+      total,
+    };
   }
 
   getCountList(list: { id: number }[] = []): Promise<any>[] {
@@ -112,7 +135,7 @@ export class TaskService {
         ...updateTask,
         type: 'site',
       });
-      this.logger.log(JSON.stringify(updateTask));
+      // this.logger.log(JSON.stringify(updateTask));
     } else {
       await this.countService.create({
         authorId,
@@ -124,5 +147,6 @@ export class TaskService {
         type: 'site',
       });
     }
+    this.logger.log('update');
   }
 }
