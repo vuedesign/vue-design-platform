@@ -1,3 +1,4 @@
+import { SiteEntity } from '@/entities/site.entity';
 import { CountService } from '@/modules/count/count.service';
 import { UserService } from '@/modules/user/user.service';
 import { SiteService } from '@/modules/site/site.service';
@@ -16,15 +17,15 @@ export class TaskService {
     private countService: CountService,
   ) {}
 
-  @Cron('45 * * * * *')
-  handleCron() {
-    this.logger.debug('Called when the second is 45');
-  }
+  // @Cron('45 * * * * *')
+  // handleCron() {
+  //   this.logger.debug('Called when the second is 45');
+  // }
 
-  @Interval(10000 * 60)
+  @Interval(10000 * 6)
   handleInterval() {
     this.tarks();
-    this.logger.debug(`Called every ${10 * 60} seconds`);
+    this.logger.debug(`Called every ${10 * 6} seconds`);
   }
 
   @Timeout(5000)
@@ -33,32 +34,74 @@ export class TaskService {
     this.logger.debug('Called once after 5 seconds');
   }
 
-  async tarks() {
-    const user = await this.userService.findList({});
-    const total = user.total;
-    const countList: Promise<Partial<CountEntity>>[] = user.list.map((item) => {
-      return new Promise((resolve) => {
-        this.siteService
-          .count({
-            where: {
-              authorId: item.id,
-            },
-          })
-          .then((res) => {
-            resolve({
-              authorId: item.id,
-              sites: res,
-            });
-          });
-      });
+  async tarks(size: number = 100) {
+    const user = await this.userService.findList({
+      select: {
+        id: true,
+      },
+      pagination: {
+        size,
+      },
     });
+    const total = user.total;
+    const countList: Promise<Partial<CountEntity>>[] = this.getCountList(
+      user.list,
+    );
     for await (const item of countList) {
-      this.update(item.authorId, {
-        sites: item.sites,
-      });
+      if (item) {
+        this.update(item.authorId, item);
+      }
     }
   }
 
+  getCountList(list: { id: number }[] = []): Promise<any>[] {
+    return list.map(
+      (item) =>
+        new Promise((resolve) => {
+          this.siteService
+            .findList({
+              where: {
+                authorId: item.id,
+              },
+            })
+            .then(({ list, pagination, total }) => {
+              if (total > 0) {
+                resolve({
+                  authorId: item.id,
+                  sites: total,
+                  ...this.listFiledTotal(list),
+                });
+              } else {
+                resolve(null);
+              }
+            });
+        }),
+    );
+  }
+
+  /**
+   * 累计
+   */
+  listFiledTotal(list: SiteEntity[]) {
+    return list.reduce(
+      (total, currentValue) => ({
+        views: total.views + currentValue.views,
+        collections: total.collections + currentValue.collections,
+        top: total.top + currentValue.top,
+        down: total.down + currentValue.down,
+      }),
+      {
+        views: 0,
+        collections: 0,
+        top: 0,
+        down: 0,
+      },
+    );
+  }
+
+  /**
+   * 更新到统计表
+   */
   async update(authorId: number, updateTask: Partial<CountEntity>) {
     const count = await this.countService.findOne({
       authorId,
@@ -69,9 +112,9 @@ export class TaskService {
         ...updateTask,
         type: 'site',
       });
+      this.logger.log(JSON.stringify(updateTask));
     } else {
       await this.countService.create({
-        ...updateTask,
         authorId,
         sites: 0,
         views: 0,
