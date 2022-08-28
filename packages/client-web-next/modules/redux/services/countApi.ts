@@ -4,10 +4,10 @@ import * as apis from '@/configs/apis.contants';
 import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
 import { RootState } from '@/modules/redux/store';
 import { isServer } from '@/globals/utils';
-import { SiteListResponse, SiteItem } from '../types/site';
+import { CountListResponse, CountItem } from '../types/count';
 
-export const siteApi = createApi({
-  reducerPath: 'siteApi',
+export const countApi = createApi({
+  reducerPath: 'countApi',
   baseQuery: fetchBaseQuery({
     baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
@@ -29,23 +29,17 @@ export const siteApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    sites: builder.query<SiteListResponse, Record<string, any>>({
-      query: (params: Record<string, any> = {}) => {
-        const queryString: string[] = [];
-        Object.keys(params).forEach((key) => {
-          queryString.push(`${key}=${params[key]}`);
-        });
-        return { url: `${apis.SITES}?${queryString.join('&')}`, method: 'get' };
+    count: builder.query<number, number | undefined>({
+      query: (authorId?: number) => {
+        console.log('authorId', authorId);
+        return {
+          url: `${apis.COUNTS}/${authorId}`,
+          method: 'get',
+        };
       },
-    }),
-    site: builder.query<SiteItem, string>({
-      query: (uuid: string) => ({
-        url: `${apis.SITES}/${uuid}`,
-        method: 'get',
-      }),
     }),
   }),
 });
 
-export const { useSitesQuery, useSiteQuery } = siteApi;
-export const { sites, site } = siteApi.endpoints;
+export const { useCountQuery } = countApi;
+export const { count } = countApi.endpoints;

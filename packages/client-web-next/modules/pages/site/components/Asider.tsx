@@ -1,11 +1,8 @@
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { ShareOne, PreviewOpen } from '@icon-park/react';
-import {
-  useCountQuery,
-  useSiteQuery,
-  useSitesQuery,
-} from '@/modules/redux/services/siteApi';
+import { useSiteQuery, useSitesQuery } from '@/modules/redux/services/siteApi';
+import { useCountQuery } from '@/modules/redux/services/countApi';
 import styles from '../styles/Asider.module.scss';
 import Item from '@/modules/components/Item';
 
@@ -18,7 +15,8 @@ const Asider = ({ uuid }: AsiderProps) => {
   const authorId = siteItem?.authorId;
   const { data: site } = useSitesQuery({ authorId, size: 2 });
   const { data: count } = useCountQuery(authorId);
-  console.log('siteList', site, count);
+  console.log('siteList', site);
+  console.log('count', count);
   return (
     <aside className={styles.container}>
       <div className={styles.profile}>
