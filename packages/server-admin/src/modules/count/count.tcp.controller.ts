@@ -1,20 +1,20 @@
 import { Controller } from '@nestjs/common';
-import { CountService } from './site.service';
+import { CountService } from './count.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
-import { CountEntity } from '@/entities/site.entity';
+import { CountEntity } from '@/entities/count.entity';
 
 /**
  * 站点模块
  */
 @Controller()
 export class CountTcpController {
-  constructor(private readonly siteService: CountService) {}
+  constructor(private readonly countService: CountService) {}
 
   @MessagePattern(
     { module: 'count', method: 'findOneByAuthorId' },
     Transport.TCP,
   )
-  findOneByAuthorId(authorId: Number) {
-    return this.siteService.findOne({ authorId });
+  findOneByAuthorId(authorId: number) {
+    return this.countService.findOne({ authorId });
   }
 }

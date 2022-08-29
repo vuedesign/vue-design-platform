@@ -23,9 +23,4 @@ export class SiteTcpController {
   findOneByUuid(uuid: string) {
     return this.siteService.findOneBy({ uuid });
   }
-
-  @MessagePattern({ module: 'site', method: 'count' }, Transport.TCP)
-  count(options?: FindManyOptions<SiteEntity>) {
-    return this.siteService.count(options);
-  }
 }
