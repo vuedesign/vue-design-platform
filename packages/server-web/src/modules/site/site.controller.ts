@@ -14,18 +14,6 @@ export class SiteController {
   constructor(private readonly siteService: SiteService) {}
 
   @Public()
-  @Get('/count')
-  @ApiQuery({
-    description: '项目详情',
-    type: Number,
-  })
-  count(@Query('authorId', ParseIntPipe) authorId: number) {
-    return this.siteService.count({
-      authorId,
-    });
-  }
-
-  @Public()
   @Get('/:uuid')
   @ApiQuery({
     description: '项目详情',

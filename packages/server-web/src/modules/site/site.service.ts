@@ -18,8 +18,4 @@ export class SiteService extends BaseMicroservice {
   findOneByUuid(uuid: string) {
     return this.send({ module: 'site', method: 'findOneByUuid' }, uuid);
   }
-
-  count(options?: Partial<SiteEntity>) {
-    return this.send({ module: 'site', method: 'count' }, options);
-  }
 }
