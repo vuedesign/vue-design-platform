@@ -29,9 +29,8 @@ export const countApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    count: builder.query<number, number | undefined>({
-      query: (authorId?: number) => {
-        console.log('authorId', authorId);
+    count: builder.query<CountItem, number>({
+      query: (authorId: number) => {
         return {
           url: `${apis.COUNTS}/${authorId}`,
           method: 'get',

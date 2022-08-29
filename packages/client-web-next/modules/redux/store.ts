@@ -18,7 +18,12 @@ export const makeStore = () =>
       site: siteReducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(siteApi.middleware, authApi.middleware),
+      getDefaultMiddleware().concat(
+        siteApi.middleware,
+        authApi.middleware,
+        navigationApi.middleware,
+        countApi.middleware,
+      ),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

@@ -35,7 +35,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         site.initiate(uuid as string),
       );
       const authorId = siteItem?.authorId;
-      console.log('authorId', authorId);
       await store.dispatch(sites.initiate({ authorId, size: 2 }));
       await store.dispatch(count.initiate(authorId));
       return {
