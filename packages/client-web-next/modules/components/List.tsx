@@ -15,6 +15,8 @@ const List = ({ type }: ListProps) => {
   const size = Number(router.query.size || 20);
   const { data = { list: [], pagination: { page, size }, total: 0 } } =
     useSitesQuery({ page, size });
+
+  const maxPage = Math.ceil(data.total / size);
   return (
     <section className={styles.container}>
       <section className={styles.main}>
@@ -37,8 +39,11 @@ const List = ({ type }: ListProps) => {
               defaultPageSize={size}
               pageSize={size}
               total={data.total}
+              onChange={(page, pageSize) => {
+                router.push(`/sites?page=${page}`);
+              }}
               itemRender={(page, type, originalElement) => {
-                if (page >= 1 && type == 'page') {
+                if (page >= 1 && type === 'page') {
                   return (
                     <Link href={`/sites?page=${page}`} passHref={true}>
                       <a>{page}</a>
