@@ -61,4 +61,10 @@ export class SiteListQueryDto {
     required: false,
   })
   status?: SiteStatus;
+
+  @ApiProperty({
+    description: '作者id',
+    required: false,
+  })
+  authorId?: number;
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SiteEntity } from '@/entities/site.entity';
+import { FindManyOptions } from 'typeorm';
 import {
   IPaginationOptions,
   IPaginationResponse,

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindManyOptions } from 'typeorm';
 import { CreateSiteDto } from './dto/create-site.dto';
 import { UpdateSiteDto, UpdateFieldDto } from './dto/update-site.dto';
 import { SiteEntity } from '@/entities/site.entity';
@@ -76,7 +76,7 @@ export class SiteService extends BaseService<SiteEntity> {
     return this.siteRepository.delete(id);
   }
 
-  count() {
-    return this.siteRepository.count();
+  count(options?: FindManyOptions<SiteEntity>) {
+    return this.siteRepository.count(options);
   }
 }

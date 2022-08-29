@@ -1,5 +1,5 @@
 <template>
-    <vd-card>
+    <vd-card is-scroll>
         <template #header>
             <vd-filter>
                 <template #default>
@@ -46,13 +46,11 @@
                 </template>
             </vd-filter>
         </template>
-        <template #default="{ height }">
+        <template #default>
             <el-table
                 :data="list"
                 stripe
                 style="width: 100%"
-                :key="height"
-                :height="height"
                 :header-cell-style="headerCellStyle"
             >
                 <el-table-column prop="id" label="ID" width="48" />
@@ -229,41 +227,7 @@ const handleCurrentChange = (page: number) => {
 </script>
 
 <style scoped lang="scss">
-.page-file {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-.page-file-header {
-    display: flex;
-    padding: 16px 24px;
-}
-.page-file-filter {
-    flex: 1;
-    .el-input,
-    .el-select,
-    .el-button {
-        vertical-align: middle;
-        margin-right: 12px;
-    }
-}
-.page-file-btn {
-}
-.page-file-container {
-    padding: 16px 24px;
-    flex: 1;
-    overflow: hidden;
-    overflow-y: auto;
-}
-
 .btn-switch {
     margin-right: 12px;
-}
-
-.page-file-pagination {
-    height: 32px;
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px 0;
 }
 </style>

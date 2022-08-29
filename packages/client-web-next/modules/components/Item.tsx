@@ -2,20 +2,7 @@ import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
 import styles from '../styles/Item.module.scss';
-import type { SiteItem } from '@/modules/redux/type/site';
-
-const defaultProps = {
-  thumbUrl: '',
-  id: 0,
-  title: '',
-  description: '',
-  tags: () => [],
-  author: () => ({
-    avatar: 'string',
-    username: 'string',
-  }),
-  type: 'site',
-};
+import type { SiteItem } from '@/modules/redux/types/site';
 
 const Item = (props: SiteItem) => {
   return (

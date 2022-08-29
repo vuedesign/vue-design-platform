@@ -17,7 +17,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     // console.log('context.req.cookies.token', context.req);
     await store.dispatch(setToken(context.req.cookies.token || ''));
     await store.dispatch(navigations.initiate());
-    await store.dispatch(sites.initiate());
+    await store.dispatch(sites.initiate({}));
     await store.dispatch(profile.initiate());
     return {
       props: {},

@@ -3,6 +3,7 @@ import { SiteService } from './site.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { SiteEntity } from '@/entities/site.entity';
+import { FindManyOptions } from 'typeorm';
 
 /**
  * 站点模块

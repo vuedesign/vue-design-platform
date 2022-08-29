@@ -1,5 +1,5 @@
 <template>
-    <vd-card class="page-navigation">
+    <vd-card is-scroll class="page-navigation">
         <template #header>
             <vd-filter>
                 <el-input
@@ -63,14 +63,12 @@
                 </template>
             </vd-filter>
         </template>
-        <template #default="{ height }">
+        <template #default>
             <div class="page-navigation-container">
                 <el-table
                     :data="list"
                     stripe
                     style="width: 100%"
-                    :key="height"
-                    :height="height"
                     :header-cell-style="headerCellStyle"
                 >
                     <el-table-column prop="siteId" label="站点ID" width="80" />
@@ -245,41 +243,7 @@ const handleCurrentChange = (page: number) => {
 </script>
 
 <style scoped lang="scss">
-.page-navigation {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-.page-navigation-header {
-    display: flex;
-    padding: 16px 24px;
-}
-.page-navigation-filter {
-    flex: 1;
-    .el-input,
-    .el-select,
-    .el-button {
-        vertical-align: middle;
-        margin-right: 12px;
-    }
-}
-.page-navigation-btn {
-}
-.page-navigation-container {
-    // padding: 16px 24px;
-    flex: 1;
-    overflow: hidden;
-    overflow-y: auto;
-}
-
 .btn-switch {
     margin-right: 12px;
-}
-
-.page-navigation-pagination {
-    height: 32px;
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px 0;
 }
 </style>

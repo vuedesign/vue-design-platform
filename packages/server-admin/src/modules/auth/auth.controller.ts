@@ -10,7 +10,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { LoginBodyDto } from './dto/auth.dto';
+import { LoginBodyDto, AuthRequest } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { Public } from '../../core/decorators/auth.decorator';
@@ -19,7 +19,7 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '../../core/utils';
 
 @Controller('auth')
-@ApiTags('用户模块')
+@ApiTags('auth模块')
 @ApiBearerAuth()
 export class AuthController {
   constructor(
@@ -49,7 +49,7 @@ export class AuthController {
   }
 
   @Get('profile')
-  getProfile(@Req() req) {
+  getProfile(@Req() req: AuthRequest) {
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException('用户没授权');
     }
@@ -57,7 +57,7 @@ export class AuthController {
   }
 
   @Get('logout')
-  logout(@Req() req, @Res({ passthrough: true }) res: Response) {
+  logout(@Req() req: AuthRequest, @Res({ passthrough: true }) res: Response) {
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException('用户没授权');
     }

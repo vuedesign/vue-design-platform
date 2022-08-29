@@ -6,9 +6,16 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import appsModule from '@/modules/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig), ...appsModule],
+  imports: [
+    TypeOrmModule.forRoot(typeormConfig),
+    ScheduleModule.forRoot(),
+    ...appsModule,
+    TaskModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

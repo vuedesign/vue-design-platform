@@ -5,6 +5,7 @@ import { TagModule } from './tag/tag.module';
 import { FileModule } from './file/file.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { HomeModule } from './home/home.module';
+import { CountModule } from './count/count.module';
 
 export default [
   AuthModule,
@@ -14,4 +15,5 @@ export default [
   FileModule,
   NavigationModule,
   HomeModule,
+  CountModule,
 ];
