@@ -7,7 +7,7 @@
                 style="width: 100%"
                 :header-cell-style="headerCellStyle"
             >
-                <el-table-column prop="id" label="ID" width="48" />
+                <el-table-column prop="id" label="ID" width="96" />
                 <el-table-column prop="authorId" label="用户ID" width="96" />
                 <el-table-column prop="sites" label="站点数" width="auto" />
                 <el-table-column prop="views" label="浏览量" width="auto" />
