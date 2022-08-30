@@ -15,8 +15,6 @@ const List = ({ type }: ListProps) => {
   const size = Number(router.query.size || 20);
   const { data = { list: [], pagination: { page, size }, total: 0 } } =
     useSitesQuery({ page, size });
-
-  const maxPage = Math.ceil(data.total / size);
   return (
     <section className={styles.container}>
       <section className={styles.main}>
