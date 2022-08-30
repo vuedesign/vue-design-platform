@@ -1,8 +1,16 @@
-import { Avatar } from 'antd';
+import { Avatar, Popover } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useProfileQuery } from '@/modules/redux/services/authApi';
 import styles from '../styles/Profile.module.scss';
+
+const text = <span>Title</span>;
+const content = (
+  <div>
+    <p>Content</p>
+    <p>Content</p>
+  </div>
+);
 
 const Profile = () => {
   const { data: profile } = useProfileQuery();
@@ -22,8 +30,14 @@ const Profile = () => {
 
   return (
     <div className={styles.container}>
-      <Avatar size="small" src={profile.avatar} icon={<UserOutlined />} />
-      {/* {profile && (profile.username || profile.nickname)} */}
+      <Popover
+        placement="bottomRight"
+        title={text}
+        content={content}
+        trigger="click"
+      >
+        <Avatar size="small" src={profile.avatar} icon={<UserOutlined />} />
+      </Popover>
     </div>
   );
 };
