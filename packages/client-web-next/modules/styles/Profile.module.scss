@@ -33,3 +33,16 @@
     }
   }
 }
+
+.popover-profile-info {
+  margin: 0;
+  display: flex;
+  padding: 10px 0;
+  dt {
+    margin-right: 8px;
+  }
+  dd {
+    margin: 0;
+    flex: 1;
+  }
+}

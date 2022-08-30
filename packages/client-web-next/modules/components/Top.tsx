@@ -72,7 +72,7 @@ const Top = () => {
           <li>
             <div className={`${styles.btn} ${styles.recommend}`}>
               <UploadOne className="btn-upload-one" theme="outline" size="14" />
-              <span className={styles.text}>推荐</span>
+              <span className={styles.text}>我的推荐</span>
             </div>
           </li>
           <li>

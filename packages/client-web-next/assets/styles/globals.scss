@@ -1,0 +1,9 @@
+.profile-popover-overlay {
+  width: 200px;
+  .ant-popover-arrow {
+    right: 5px !important;
+  }
+  .ant-popover-inner {
+    border-radius: 3px;
+  }
+}

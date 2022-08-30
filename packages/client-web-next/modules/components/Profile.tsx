@@ -4,7 +4,14 @@ import { useRouter } from 'next/router';
 import { useProfileQuery } from '@/modules/redux/services/authApi';
 import styles from '../styles/Profile.module.scss';
 
-const text = <span>Title</span>;
+const text = (profile) => (
+  <dl className={styles['popover-profile-info']}>
+    <dt>
+      <Avatar size={48} src={profile.avatar} icon={<UserOutlined />} />
+    </dt>
+    <dd>{profile.username}</dd>
+  </dl>
+);
 const content = (
   <div>
     <p>Content</p>
@@ -31,12 +38,13 @@ const Profile = () => {
   return (
     <div className={styles.container}>
       <Popover
+        overlayClassName="profile-popover-overlay"
         placement="bottomRight"
-        title={text}
+        title={text(profile)}
         content={content}
         trigger="click"
       >
-        <Avatar size="small" src={profile.avatar} icon={<UserOutlined />} />
+        <Avatar size={32} src={profile.avatar} icon={<UserOutlined />} />
       </Popover>
     </div>
   );
