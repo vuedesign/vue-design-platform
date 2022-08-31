@@ -1,23 +1,53 @@
-import { Avatar, Popover } from 'antd';
+import { Avatar, Popover, Button } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useProfileQuery } from '@/modules/redux/services/authApi';
 import styles from '../styles/Profile.module.scss';
+import { SettingTwo, Power, Home, UploadOne } from '@icon-park/react';
 
-const text = (profile) => (
-  <dl className={styles['popover-profile-info']}>
-    <dt>
-      <Avatar size={48} src={profile.avatar} icon={<UserOutlined />} />
-    </dt>
-    <dd>{profile.username}</dd>
-  </dl>
-);
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
+const ProfilePopoverHeader = ({ profile }) => {
+  return (
+    <dl className={styles['profile-popover-header']}>
+      <dt>
+        <Avatar size={48} src={profile.avatar} icon={<UserOutlined />} />
+      </dt>
+      <dd>{profile.username}</dd>
+    </dl>
+  );
+};
+
+const ProfilePopoverContent = ({ profile }) => {
+  return (
+    <div className={styles['popover-content']}>
+      <ul className={styles['popover-content-menu']}>
+        <li>
+          <a>
+            <Home theme="outline" size="16" />
+            <span className={styles['btn-text']}>个人中心</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <UploadOne theme="outline" size="16" />
+            <span className={styles['btn-text']}>我的推荐</span>
+          </a>
+        </li>
+      </ul>
+      <dl className={styles['popover-content-buttom']}>
+        <dt>
+          <a>
+            <span className={styles['btn-text']}>我的设置</span>
+          </a>
+        </dt>
+        <dd>
+          <a>
+            <span className={styles['btn-text']}>退出登录</span>
+          </a>
+        </dd>
+      </dl>
+    </div>
+  );
+};
 
 const Profile = () => {
   const { data: profile } = useProfileQuery();
@@ -40,8 +70,8 @@ const Profile = () => {
       <Popover
         overlayClassName="profile-popover-overlay"
         placement="bottomRight"
-        title={text(profile)}
-        content={content}
+        title={<ProfilePopoverHeader profile={profile} />}
+        content={<ProfilePopoverContent />}
         trigger="click"
       >
         <Avatar size={32} src={profile.avatar} icon={<UserOutlined />} />
