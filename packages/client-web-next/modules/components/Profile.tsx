@@ -2,21 +2,53 @@ import { Avatar, Popover, Button } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useProfileQuery } from '@/modules/redux/services/authApi';
+import { useCountProfileQuery } from '@/modules/redux/services/countApi';
+import { User } from '@/modules/redux/types/auth';
 import styles from '../styles/Profile.module.scss';
-import { SettingTwo, Power, Home, UploadOne } from '@icon-park/react';
+import {
+  ThumbsUp,
+  Power,
+  Home,
+  UploadOne,
+  ShareOne,
+  PreviewOpen,
+} from '@icon-park/react';
 
-const ProfilePopoverHeader = ({ profile }) => {
+type ProfilePopoverHeaderProps = {
+  profile: User;
+};
+
+const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
+  const { data: count } = useCountProfileQuery();
   return (
-    <dl className={styles['profile-popover-header']}>
-      <dt>
-        <Avatar size={48} src={profile.avatar} icon={<UserOutlined />} />
-      </dt>
-      <dd>{profile.username}</dd>
-    </dl>
+    <>
+      <dl className={styles['profile-popover-header']}>
+        <dt>
+          <Avatar size={48} src={profile.avatar} icon={<UserOutlined />} />
+        </dt>
+        <dd>{profile.username}</dd>
+      </dl>
+      {count && (
+        <ul className={styles['popover-content-count']}>
+          <li>
+            <ShareOne theme="outline" size="16" fill="#666" />
+            <span className={styles.text}>{count.sites}</span>
+          </li>
+          <li>
+            <ThumbsUp theme="outline" size="16" fill="#666" />
+            <span className={styles.text}>{count.top}</span>
+          </li>
+          <li>
+            <PreviewOpen theme="outline" size="16" fill="#666" />
+            <span className={styles.text}>{count.views}</span>
+          </li>
+        </ul>
+      )}
+    </>
   );
 };
 
-const ProfilePopoverContent = ({ profile }) => {
+const ProfilePopoverContent = () => {
   return (
     <div className={styles['popover-content']}>
       <ul className={styles['popover-content-menu']}>

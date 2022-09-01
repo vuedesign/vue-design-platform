@@ -29,6 +29,15 @@ export const countApi = createApi({
     }
   },
   endpoints: (builder) => ({
+    countProfile: builder.query<CountItem, void>({
+      query: () => {
+        console.log('countProfile');
+        return {
+          url: apis.COUNTS_PROFILE,
+          method: 'get',
+        };
+      },
+    }),
     count: builder.query<CountItem, number>({
       query: (authorId: number) => {
         return {
@@ -40,5 +49,5 @@ export const countApi = createApi({
   }),
 });
 
-export const { useCountQuery } = countApi;
-export const { count } = countApi.endpoints;
+export const { useCountQuery, useCountProfileQuery } = countApi;
+export const { count, countProfile } = countApi.endpoints;

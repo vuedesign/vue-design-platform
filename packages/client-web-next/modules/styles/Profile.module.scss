@@ -50,6 +50,30 @@
 .popover-content {
 }
 
+.popover-content-count {
+  margin: 0;
+  display: flex;
+  width: 100%;
+
+  li {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    align-items: center;
+    > span {
+      display: inline-block;
+      height: 16px;
+      line-height: 16px;
+      vertical-align: middle;
+      &.text {
+        margin-left: 8px;
+        color: #333;
+      }
+    }
+  }
+}
+
 .popover-content-menu {
   display: flex;
   li {

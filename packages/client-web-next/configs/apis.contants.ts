@@ -7,3 +7,4 @@ export const SITES = '/sites';
 export const SITE_COUNT = '/sites/count';
 export const NAVIGATIONS = '/navigations';
 export const COUNTS = '/counts';
+export const COUNTS_PROFILE = '/counts/profile';

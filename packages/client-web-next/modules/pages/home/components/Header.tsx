@@ -1,6 +1,6 @@
 import styles from '../styles/Header.module.scss';
-import Top from '../../../components/Top';
-import { useNavigationsQuery } from '../../../redux/services/navigationApi';
+import Top from '@/modules/components/Top';
+import { useNavigationsQuery } from '@/modules/redux/services/navigationApi';
 
 const Header = () => {
   const { data } = useNavigationsQuery();
