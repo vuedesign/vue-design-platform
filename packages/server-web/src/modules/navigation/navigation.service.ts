@@ -11,7 +11,6 @@ export class NavigationService extends BaseMicroservice {
   findList(
     options: IPaginationOptions,
   ): Promise<IPaginationResponse<NavigationEntity>> {
-    console.log('options', options);
     return this.send({ module: 'navigation', method: 'find' }, options);
   }
 }

@@ -31,9 +31,6 @@ export class NavigationController {
         updatedAt: 'DESC',
       },
     };
-
-    console.log('options', options);
-
     return this.navigationService.findList(options);
   }
 }

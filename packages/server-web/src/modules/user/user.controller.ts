@@ -83,30 +83,11 @@ export class UserController {
   // }
 
   @Public()
-  @Get('count')
-  count() {
-    return this.userService.count();
-  }
-
-  @Public()
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log('id', id);
+    console.log('id===user', id);
     return this.userService.findOne({
       id,
     });
   }
-
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() updateUserDto: UpdateUserDto,
-  // ) {
-  //   return this.userService.update(id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id', ParseIntPipe) id: number) {
-  //   return this.userService.remove(id);
-  // }
 }
