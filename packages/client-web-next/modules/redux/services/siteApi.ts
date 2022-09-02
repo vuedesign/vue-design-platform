@@ -31,10 +31,12 @@ export const siteApi = createApi({
   endpoints: (builder) => ({
     sites: builder.query<SiteListResponse, Record<string, any>>({
       query: (params: Record<string, any> = {}) => {
+        console.log('params', params);
         const queryString: string[] = [];
         Object.keys(params).forEach((key) => {
           queryString.push(`${key}=${params[key]}`);
         });
+        console.log('queryString', queryString);
         return { url: `${apis.SITES}?${queryString.join('&')}`, method: 'get' };
       },
     }),

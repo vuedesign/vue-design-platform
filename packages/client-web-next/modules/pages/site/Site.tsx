@@ -23,26 +23,36 @@ import Asider from './components/Asider';
 import styles from './Site.module.scss';
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, params }) => {
-      const uuid: string = (params?.uuid || '') as string;
-      if (!uuid) {
-        return;
+  (store) => async (context) => {
+    console.log('context.params', context.params);
+    const uuid = ((uuid) => {
+      if (!uuid || uuid === 'string') {
+        return '';
       }
-      await store.dispatch(setToken(req.cookies.token || ''));
-      await store.dispatch(profile.initiate());
-      const { data: siteItem } = await store.dispatch(
-        site.initiate(uuid as string),
-      );
-      const authorId = siteItem?.authorId;
-      await store.dispatch(sites.initiate({ authorId, size: 2 }));
-      await store.dispatch(count.initiate(authorId));
+      if (Array.isArray(uuid)) {
+        return uuid[0];
+      }
+      return uuid;
+    })(context.params!.uuid);
+    if (!uuid) {
       return {
         props: {
-          siteItem,
+          siteItem: undefined,
         },
       };
-    },
+    }
+    await store.dispatch(setToken(context.req.cookies.token || ''));
+    await store.dispatch(profile.initiate());
+    const { data: siteItem } = await store.dispatch(site.initiate(uuid));
+    const authorId = siteItem?.authorId;
+    await store.dispatch(sites.initiate({ authorId, size: 2, uuid }));
+    await store.dispatch(count.initiate(authorId));
+    return {
+      props: {
+        siteItem,
+      },
+    };
+  },
 );
 
 type SiteProps = {

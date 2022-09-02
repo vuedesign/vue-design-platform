@@ -7,13 +7,14 @@ import styles from '../styles/Asider.module.scss';
 import Item from '@/modules/components/Item';
 
 type AsiderProps = {
-  uuid: string | undefined;
+  uuid: string;
 };
 const Asider = ({ uuid }: AsiderProps) => {
-  const { data: siteItem } = useSiteQuery(uuid || '');
+  const { data: siteItem } = useSiteQuery(uuid);
   const profile = siteItem?.author;
-  const authorId = siteItem?.authorId;
-  const { data: site } = useSitesQuery({ authorId, size: 2 });
+  const authorId = siteItem?.authorId || 0;
+  console.log(authorId, uuid);
+  const { data: site } = useSitesQuery({ authorId, size: 2, uuid });
   const { data: count } = useCountQuery(authorId);
   return (
     <aside className={styles.container}>

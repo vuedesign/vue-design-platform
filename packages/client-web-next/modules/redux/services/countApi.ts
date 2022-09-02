@@ -38,8 +38,8 @@ export const countApi = createApi({
         };
       },
     }),
-    count: builder.query<CountItem, number>({
-      query: (authorId: number) => {
+    count: builder.query<CountItem, number | undefined>({
+      query: (authorId?: number) => {
         return {
           url: `${apis.COUNTS}/${authorId}`,
           method: 'get',
