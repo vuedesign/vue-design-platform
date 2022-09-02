@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { Like } from 'typeorm';
+import { Like, Not } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
@@ -30,7 +30,17 @@ export class SiteController {
     type: SiteListQueryDto,
   })
   findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
-    const { title, type, status, size = 20, page = 1, order, authorId } = query;
+    console.log('query', query);
+    const {
+      title,
+      type,
+      status,
+      size = 20,
+      page = 1,
+      order,
+      authorId,
+      uuid,
+    } = query;
     const options: IPaginationOptions = {
       pagination: { size, page },
       order: {
@@ -91,6 +101,11 @@ export class SiteController {
     if (authorId) {
       options.where['authorId'] = authorId;
     }
+    console.log('uuid', uuid);
+    if (uuid) {
+      options['uuid'] = Not(`${uuid}`);
+    }
+    console.log('options', options);
     return this.siteService.findList(options);
   }
 }

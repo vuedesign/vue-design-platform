@@ -17,6 +17,13 @@ export enum SiteStatus {
 // title, type, status, size, page, order
 export class SiteListQueryDto {
   @ApiProperty({
+    description: '排除uuid',
+    type: Number,
+    required: false,
+  })
+  uuid?: string;
+
+  @ApiProperty({
     description: '每页数量',
     default: 20,
     type: Number,
