@@ -21,22 +21,18 @@ export class BaseService<E> {
     options: IPaginationOptions<E>,
   ): Promise<IPaginationResponse> {
     console.log('options admin', options);
-    const {
-      pagination = {},
-      order = {},
-      where = {},
-      relations = {},
-      select = {},
-    } = options || {};
+    const { pagination = {}, ...other } = options || {};
     const { page = 1, size = 20 } = pagination;
+    console.log('====', {
+      take: size,
+      skip: (page - 1) * size,
+      ...other,
+    });
     const [list, total]: [Array<any>, number] =
       await this.currentRepository.findAndCount({
         take: size,
         skip: (page - 1) * size,
-        order,
-        where,
-        relations,
-        select,
+        ...other,
       });
     return {
       list,
