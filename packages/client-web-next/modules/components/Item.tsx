@@ -1,4 +1,11 @@
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
+import {
+  GithubOne,
+  Home,
+  Like,
+  ThumbsUp,
+  ThumbsDown,
+  ArrowCircleRight,
+} from '@icon-park/react';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
 import styles from '../styles/Item.module.scss';
@@ -28,9 +35,15 @@ const Item = (props: SiteItem) => {
             <dt>
               {props.author && (
                 <Tooltip placement="bottom" title={props.author.username}>
-                  <span
-                    style={{ backgroundImage: `url(${props.author.avatar})` }}
-                  ></span>
+                  <Link href={`/users/${props.author.uuid}`}>
+                    <a className={styles.avatar}>
+                      <span
+                        style={{
+                          backgroundImage: `url(${props.author.avatar})`,
+                        }}
+                      ></span>
+                    </a>
+                  </Link>
                 </Tooltip>
               )}
             </dt>

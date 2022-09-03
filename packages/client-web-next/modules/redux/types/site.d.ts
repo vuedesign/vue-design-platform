@@ -1,9 +1,5 @@
 import { ListPageResponse } from '@/globals/types/global';
-
-export interface User {
-  avatar: string;
-  username: string;
-}
+import { User } from './auth';
 
 export type SiteType = 'site' | 'code';
 

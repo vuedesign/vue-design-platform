@@ -4,6 +4,7 @@ import { siteApi } from '@/modules/redux/services/siteApi';
 import { authApi } from '@/modules/redux/services/authApi';
 import { navigationApi } from '@/modules/redux/services/navigationApi';
 import { countApi } from '@/modules/redux/services/countApi';
+import { userApi } from '@/modules/redux/services/userApi';
 import authReducer from '@/modules/redux/features/authSlice';
 import siteReducer from '@/modules/redux/features/siteSlice';
 
@@ -14,6 +15,7 @@ export const makeStore = () =>
       [siteApi.reducerPath]: siteApi.reducer,
       [navigationApi.reducerPath]: navigationApi.reducer,
       [countApi.reducerPath]: countApi.reducer,
+      [userApi.reducerPath]: userApi.reducer,
       auth: authReducer,
       site: siteReducer,
     },
@@ -23,6 +25,7 @@ export const makeStore = () =>
         authApi.middleware,
         navigationApi.middleware,
         countApi.middleware,
+        userApi.middleware,
       ),
   });
 

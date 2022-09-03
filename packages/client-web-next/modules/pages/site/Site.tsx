@@ -16,18 +16,9 @@ import { count } from '@/modules/redux/services/countApi';
 import { SiteItem } from '@/modules/redux/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
+import { getUuid } from '@/globals/utils';
 import Asider from './components/Asider';
 import styles from './Site.module.scss';
-
-function getUuid(uuid?: string | string[]) {
-  if (!uuid || uuid === 'string') {
-    return '';
-  }
-  if (Array.isArray(uuid)) {
-    return uuid[0];
-  }
-  return uuid;
-}
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
@@ -35,7 +26,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (!uuid) {
       return {
         props: {
-          siteItem: undefined,
+          siteItem: null,
         },
       };
     }
@@ -120,63 +111,69 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
       </header>
       <section className={styles.main}>
         {siteItem && (
-          <article className={styles.article}>
-            <header className={styles.title}>
-              <h1>{siteItem.title}</h1>
-              <div className={styles.link}>
-                {siteItem.codeUrl && (
-                  <Link href={siteItem.codeUrl} target="_blank">
-                    <span className={styles['link-btn']}>
-                      <GithubOne
-                        theme="outline"
-                        size="16"
-                        fill="#666"
-                        style={{ height: '16px' }}
-                      />
-                    </span>
-                  </Link>
+          <>
+            <article className={styles.article}>
+              <header className={styles.title}>
+                <h1>{siteItem.title}</h1>
+                <div className={styles.link}>
+                  {siteItem.codeUrl && (
+                    <Link href={siteItem.codeUrl} target="_blank">
+                      <span className={styles['link-btn']}>
+                        <GithubOne
+                          theme="outline"
+                          size="16"
+                          fill="#666"
+                          style={{ height: '16px' }}
+                        />
+                      </span>
+                    </Link>
+                  )}
+                  {siteItem.siteUrl && (
+                    <Link href={siteItem.siteUrl} target="_blank">
+                      <span className={styles['link-btn']}>
+                        <Home
+                          theme="outline"
+                          size="16"
+                          fill="#666"
+                          style={{ height: '16px' }}
+                        />
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </header>
+              <div className={styles.meta}>
+                <span>[{siteItem.type}]</span>
+                <span className={styles.dot}> · </span>
+                <time>{siteItem.createdAt}</time>
+                <span className={styles.dot}> · </span>
+                <span>阅读 {siteItem.views}</span>
+                <span className={styles.dot}> · </span>
+                {siteItem.tags && (
+                  <TagOne
+                    theme="outline"
+                    size="14"
+                    fill="#666"
+                    style={{ height: '14px' }}
+                  />
                 )}
-                {siteItem.siteUrl && (
-                  <Link href={siteItem.siteUrl} target="_blank">
-                    <span className={styles['link-btn']}>
-                      <Home
-                        theme="outline"
-                        size="16"
-                        fill="#666"
-                        style={{ height: '16px' }}
-                      />
+                {siteItem.tags &&
+                  siteItem.tags.map((item, index) => (
+                    <span className={styles.tag} key={index}>
+                      {item.name}
                     </span>
-                  </Link>
-                )}
+                  ))}
               </div>
-            </header>
-            <div className={styles.meta}>
-              <span>[{siteItem.type}]</span>
-              <span className={styles.dot}> · </span>
-              <time>{siteItem.createdAt}</time>
-              <span className={styles.dot}> · </span>
-              <span>阅读 {siteItem.views}</span>
-              <span className={styles.dot}> · </span>
-              {siteItem.tags && (
-                <TagOne
-                  theme="outline"
-                  size="14"
-                  fill="#666"
-                  style={{ height: '14px' }}
-                />
-              )}
-              {siteItem.tags &&
-                siteItem.tags.map((item, index) => (
-                  <span className={styles.tag} key={index}>
-                    {item.name}
-                  </span>
-                ))}
-            </div>
-            <div className={styles.content}>{siteItem.description}</div>
-            <Tools />
-          </article>
+              <div className={styles.content}>{siteItem.description}</div>
+              <Tools />
+            </article>
+            <Asider
+              uuid={siteItem.uuid}
+              authorId={siteItem.authorId}
+              profile={siteItem.author}
+            />
+          </>
         )}
-        <Asider uuid={siteItem.uuid} />
       </section>
       <Footer />
     </div>

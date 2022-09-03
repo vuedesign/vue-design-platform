@@ -37,8 +37,8 @@ export const authApi = createApi({
         };
       },
     }),
-    profile: builder.query<any, void>({
-      query: () => ({
+    profile: builder.query<any, string>({
+      query: (uuid) => ({
         url: apis.AUTH_PROFILE,
         method: 'GET',
       }),
@@ -48,6 +48,12 @@ export const authApi = createApi({
         }
         return data;
       },
+    }),
+    user: builder.query<any, string>({
+      query: (uuid) => ({
+        url: `${apis.AUTH_USERS}/${uuid}`,
+        method: 'GET',
+      }),
     }),
   }),
 });
