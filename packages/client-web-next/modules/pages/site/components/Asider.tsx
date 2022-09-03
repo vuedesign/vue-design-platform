@@ -13,7 +13,6 @@ const Asider = ({ uuid }: AsiderProps) => {
   const { data: siteItem } = useSiteQuery(uuid);
   const profile = siteItem?.author;
   const authorId = siteItem?.authorId || 0;
-  console.log(authorId, uuid);
   const { data: site } = useSitesQuery({ authorId, size: 2, uuid });
   const { data: count } = useCountQuery(authorId);
   return (

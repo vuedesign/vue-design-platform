@@ -35,19 +35,4 @@ class MyApp extends App<AppInitialProps> {
   }
 }
 
-// MyApp.getInitialProps = wrapper.getInitialAppProps(
-//   (store) => async (context) => {
-//     await store.dispatch(profile.initiate());
-//     await store.dispatch(countProfile.initiate());
-//     console.log('getInitialProps context:', context);
-//     // const props = await MyApp.getInitialProps(context);
-//     // console.log('props', props);
-//     return {
-//       pageProps: {
-//         // ...(await MyApp.getInitialProps(context)).pageProps,
-//       },
-//     };
-//   },
-// );
-
 export default wrapper.withRedux(MyApp);
