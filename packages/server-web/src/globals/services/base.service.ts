@@ -17,6 +17,7 @@ export interface IPaginationOptions {
   where?: object;
   relations?: FindOptionsRelations<any>;
   select?: object;
+  nots?: object;
 }
 
 export class BaseService {

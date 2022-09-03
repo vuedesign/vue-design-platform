@@ -30,6 +30,11 @@ export class findUserItemQuery {
   @ApiProperty({
     required: false,
   })
+  uuid?: string;
+
+  @ApiProperty({
+    required: false,
+  })
   username?: string;
 
   @ApiProperty({

@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { Like, Not } from 'typeorm';
+import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
@@ -30,7 +30,6 @@ export class SiteController {
     type: SiteListQueryDto,
   })
   findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
-    console.log('query', query);
     const {
       title,
       type,
@@ -41,6 +40,7 @@ export class SiteController {
       authorId,
       uuid,
     } = query;
+    console.log('queryquery', query);
     const options: IPaginationOptions = {
       pagination: { size, page },
       order: {
@@ -53,10 +53,16 @@ export class SiteController {
       },
       select: {
         author: {
+          id: true,
           uuid: true,
           avatar: true,
           username: true,
           nickname: true,
+          email: true,
+          phone: true,
+          password: true,
+          status: true,
+          rule: true,
         },
         tags: {
           id: true,
@@ -64,6 +70,7 @@ export class SiteController {
           description: true,
         },
       },
+      nots: {},
     };
 
     if (order) {
@@ -101,11 +108,10 @@ export class SiteController {
     if (authorId) {
       options.where['authorId'] = authorId;
     }
-    console.log('uuid', uuid);
     if (uuid) {
-      options['uuid'] = Not(`${uuid}`);
+      options.nots['uuid'] = uuid;
     }
-    console.log('options', options);
+    console.log('optionsoptionsoptions', options);
     return this.siteService.findList(options);
   }
 }

@@ -39,48 +39,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  // @Get()
-  // @ApiQuery({
-  //   description: '用户列表',
-  //   type: UserListQueryDto,
-  // })
-  // findAll(@Query(new QueryTransformPipe(['search'])) query: UserListQueryDto) {
-  //   const { size, page, search, status, rule } = query;
-  //   const options = {
-  //     size,
-  //     page,
-  //     order: {
-  //       updatedAt: 'DESC',
-  //     },
-  //     where: {},
-  //   };
-
-  //   console.log('options', options);
-
-  //   const isPhone = (str: string) => {
-  //     return !isNaN(Number(str));
-  //   };
-
-  //   if (search) {
-  //     if (isPhone(search)) {
-  //       options.where['phone'] = Like(`%${search}%`);
-  //     } else {
-  //       options.where['username'] = Like(`%${search}%`);
-  //     }
-  //   }
-
-  //   if (status) {
-  //     options.where['status'] = status;
-  //   }
-
-  //   if (rule) {
-  //     options.where['rule'] = rule;
-  //   }
-
-  //   console.log('options.where===', options);
-
-  //   return this.userService.findList(options);
-  // }
+  @Public()
+  @Get(':uuid')
+  findOneByUuid(@Param('uuid') uuid: string) {
+    return this.userService.findOne({ uuid });
+  }
 
   @Public()
   @Get(':id')
