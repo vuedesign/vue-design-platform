@@ -27,8 +27,8 @@ module.exports = {
     return {
       fallback: [
         {
-          source: '/:path*',
-          destination: `http://127.0.0.1:8083/:path*`,
+          source: '/api/:path*',
+          destination: `http://127.0.0.1:8083/api/:path*`,
         },
       ],
     };

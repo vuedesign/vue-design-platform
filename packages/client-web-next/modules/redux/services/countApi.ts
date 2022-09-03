@@ -31,7 +31,6 @@ export const countApi = createApi({
   endpoints: (builder) => ({
     countProfile: builder.query<CountItem, void>({
       query: () => {
-        console.log('countProfile');
         return {
           url: apis.COUNTS_PROFILE,
           method: 'get',

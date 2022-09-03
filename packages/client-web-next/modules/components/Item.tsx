@@ -9,7 +9,7 @@ const Item = (props: SiteItem) => {
     <div className={styles.container}>
       <div className={styles.inner}>
         <div className={styles.thumb}>
-          <Link href={`/site/${props.uuid}`}>
+          <Link href={`/sites/${props.uuid}`}>
             <a
               style={{
                 backgroundImage: `url('${props.thumbUrl}')`,

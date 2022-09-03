@@ -1,10 +1,5 @@
 import { Avatar, Popover, Button } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/router';
-import { useProfileQuery } from '@/modules/redux/services/authApi';
-import { useCountProfileQuery } from '@/modules/redux/services/countApi';
-import { User } from '@/modules/redux/types/auth';
-import styles from '../styles/Profile.module.scss';
 import {
   ThumbsUp,
   Power,
@@ -13,6 +8,16 @@ import {
   ShareOne,
   PreviewOpen,
 } from '@icon-park/react';
+import { useRouter } from 'next/router';
+import { wrapper } from '@/modules/redux/store';
+import { useProfileQuery, profile } from '@/modules/redux/services/authApi';
+import {
+  useCountProfileQuery,
+  countProfile,
+} from '@/modules/redux/services/countApi';
+import { setToken } from '@/modules/redux/features/authSlice';
+import { User } from '@/modules/redux/types/auth';
+import styles from '../styles/Profile.module.scss';
 
 type ProfilePopoverHeaderProps = {
   profile: User;

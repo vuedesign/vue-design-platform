@@ -13,8 +13,10 @@ const List = ({ type }: ListProps) => {
   const router = useRouter();
   const page = Number(router.query.page || 1);
   const size = Number(router.query.size || 20);
+  console.log('page, size', page, size);
   const { data = { list: [], pagination: { page, size }, total: 0 } } =
     useSitesQuery({ page, size });
+  console.log('dddddddd', data.list);
   return (
     <section className={styles.container}>
       <section className={styles.main}>

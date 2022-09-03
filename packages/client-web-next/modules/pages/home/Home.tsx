@@ -11,15 +11,10 @@ import Footer from '@/modules/components/Footer';
 import Header from './components/Header';
 import styles from './Home.module.scss';
 
-// import { useAppDispatch } from './hooks/app';
-
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    await store.dispatch(setToken(context.req.cookies.token || ''));
     await store.dispatch(navigations.initiate());
     await store.dispatch(sites.initiate({}));
-    await store.dispatch(profile.initiate());
-    await store.dispatch(countProfile.initiate());
     return {
       props: {},
     };

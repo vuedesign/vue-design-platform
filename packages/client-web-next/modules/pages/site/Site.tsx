@@ -11,9 +11,6 @@ import {
   TagOne,
 } from '@icon-park/react';
 import { wrapper } from '@/modules/redux/store';
-import { profile } from '@/modules/redux/services/authApi';
-import { setToken, setUser } from '@/modules/redux/features/authSlice';
-import { User } from '@/modules/redux/types/auth';
 import { site, sites } from '@/modules/redux/services/siteApi';
 import { count } from '@/modules/redux/services/countApi';
 import { SiteItem } from '@/modules/redux/types/site';
@@ -22,18 +19,19 @@ import Footer from '@/modules/components/Footer';
 import Asider from './components/Asider';
 import styles from './Site.module.scss';
 
+function getUuid(uuid?: string | string[]) {
+  if (!uuid || uuid === 'string') {
+    return '';
+  }
+  if (Array.isArray(uuid)) {
+    return uuid[0];
+  }
+  return uuid;
+}
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    console.log('context.params', context.params);
-    const uuid = ((uuid) => {
-      if (!uuid || uuid === 'string') {
-        return '';
-      }
-      if (Array.isArray(uuid)) {
-        return uuid[0];
-      }
-      return uuid;
-    })(context.params!.uuid);
+    const uuid = getUuid(context.params!.uuid);
     if (!uuid) {
       return {
         props: {
@@ -41,8 +39,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
       };
     }
-    await store.dispatch(setToken(context.req.cookies.token || ''));
-    await store.dispatch(profile.initiate());
     const { data: siteItem } = await store.dispatch(site.initiate(uuid));
     const authorId = siteItem?.authorId;
     await store.dispatch(sites.initiate({ authorId, size: 2, uuid }));
