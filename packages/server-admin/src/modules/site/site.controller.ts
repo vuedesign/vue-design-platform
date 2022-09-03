@@ -83,10 +83,16 @@ export class SiteController {
       },
       select: {
         author: {
+          id: true,
           uuid: true,
           avatar: true,
           username: true,
           nickname: true,
+          email: true,
+          phone: true,
+          password: true,
+          status: true,
+          rule: true,
         },
         tags: {
           id: true,
