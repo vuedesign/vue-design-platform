@@ -1,4 +1,11 @@
-import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
@@ -12,9 +19,36 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiBearerAuth()
 export class SiteController {
   constructor(private readonly siteService: SiteService) {}
+  @Get('profile')
+  @ApiQuery({
+    description: '项目列表',
+    type: SiteListQueryDto,
+  })
+  profile(
+    @Query(new QueryTransformPipe()) query: SiteListQueryDto,
+    @Req() req,
+  ) {
+    if (!req.user || !req.user.id) {
+      throw new UnauthorizedException();
+    }
+    const { size = 20, page = 1 } = query;
+    const options: IPaginationOptions = {
+      pagination: { size, page },
+      order: {
+        updatedAt: 'DESC',
+      },
+      where: {},
+      nots: {},
+    };
+
+    if (req.user.id) {
+      options.where['authorId'] = req.user.id;
+    }
+    return this.siteService.findList(options);
+  }
 
   @Public()
-  @Get('/:uuid')
+  @Get(':uuid')
   @ApiQuery({
     description: '项目详情',
     type: String,
@@ -46,29 +80,6 @@ export class SiteController {
         updatedAt: 'DESC',
       },
       where: {},
-      relations: {
-        tags: true,
-        author: true,
-      },
-      select: {
-        author: {
-          id: true,
-          uuid: true,
-          avatar: true,
-          username: true,
-          nickname: true,
-          email: true,
-          phone: true,
-          password: true,
-          status: true,
-          rule: true,
-        },
-        tags: {
-          id: true,
-          name: true,
-          description: true,
-        },
-      },
       nots: {},
     };
 
