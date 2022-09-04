@@ -6,6 +6,7 @@ import {
   ThumbsDown,
   ArrowCircleRight,
 } from '@icon-park/react';
+import { forwardRef } from 'react';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
 import styles from '../styles/Item.module.scss';
@@ -16,7 +17,12 @@ const Item = (props: SiteItem) => {
     <div className={styles.container}>
       <div className={styles.inner}>
         <div className={styles.thumb}>
-          <Link href={`/sites/${props.uuid}`}>
+          <Link
+            href={{
+              pathname: `/sites/[uuid]`,
+              query: { uuid: props.uuid },
+            }}
+          >
             <a
               style={{
                 backgroundImage: `url('${props.thumbUrl}')`,
@@ -34,17 +40,16 @@ const Item = (props: SiteItem) => {
             </dd>
             <dt>
               {props.author && (
-                <Tooltip placement="bottom" title={props.author.username}>
-                  <Link href={`/users/${props.author.uuid}`}>
-                    <a className={styles.avatar}>
-                      <span
-                        style={{
-                          backgroundImage: `url(${props.author.avatar})`,
-                        }}
-                      ></span>
-                    </a>
-                  </Link>
-                </Tooltip>
+                <Link href={`/users/${props.author.uuid}`}>
+                  <a className={styles.avatar} title={props.author.username}>
+                    <span
+                      className={styles.avatar}
+                      style={{
+                        backgroundImage: `url(${props.author.avatar})`,
+                      }}
+                    ></span>
+                  </a>
+                </Link>
               )}
             </dt>
             <dd>
