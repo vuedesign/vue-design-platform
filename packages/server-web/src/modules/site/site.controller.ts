@@ -40,7 +40,6 @@ export class SiteController {
       authorId,
       uuid,
     } = query;
-    console.log('queryquery', query);
     const options: IPaginationOptions = {
       pagination: { size, page },
       order: {
@@ -111,7 +110,6 @@ export class SiteController {
     if (uuid) {
       options.nots['uuid'] = uuid;
     }
-    console.log('optionsoptionsoptions', options);
     return this.siteService.findList(options);
   }
 }

@@ -11,6 +11,7 @@ export class QueryTransformPipe implements PipeTransform {
         if (
           value[key] === '' ||
           value[key] === undefined ||
+          value[key] === 'undefined' ||
           value[key] === null
         ) {
           temp[key] = '';
