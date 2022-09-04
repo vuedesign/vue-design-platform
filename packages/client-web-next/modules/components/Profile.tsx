@@ -18,6 +18,7 @@ import {
 import { setToken } from '@/modules/redux/features/authSlice';
 import { User } from '@/modules/redux/types/auth';
 import styles from '../styles/Profile.module.scss';
+import Link from 'next/link';
 
 type ProfilePopoverHeaderProps = {
   profile: User;
@@ -58,16 +59,20 @@ const ProfilePopoverContent = () => {
     <div className={styles['popover-content']}>
       <ul className={styles['popover-content-menu']}>
         <li>
-          <a>
-            <Home theme="outline" size="16" />
-            <span className={styles['btn-text']}>个人中心</span>
-          </a>
+          <Link href="/profile">
+            <a>
+              <Home theme="outline" size="16" />
+              <span className={styles['btn-text']}>个人中心</span>
+            </a>
+          </Link>
         </li>
         <li>
-          <a>
-            <UploadOne theme="outline" size="16" />
-            <span className={styles['btn-text']}>我的推荐</span>
-          </a>
+          <Link href="/profile">
+            <a>
+              <UploadOne theme="outline" size="16" />
+              <span className={styles['btn-text']}>我的推荐</span>
+            </a>
+          </Link>
         </li>
       </ul>
       <dl className={styles['popover-content-buttom']}>

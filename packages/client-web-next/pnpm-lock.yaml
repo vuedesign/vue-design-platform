@@ -9,6 +9,7 @@ specifiers:
   '@types/js-cookie': ^3.0.2
   '@types/lodash-es': ^4.17.6
   '@types/node': 17.0.31
+  '@types/qs': ^6.9.7
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
   '@types/styled-components': ^5.1.25
@@ -54,6 +55,7 @@ devDependencies:
   '@types/js-cookie': registry.npmmirror.com/@types/js-cookie/3.0.2
   '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
   '@types/node': 17.0.31
+  '@types/qs': registry.npmmirror.com/@types/qs/6.9.7
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
   '@types/styled-components': 5.1.25
@@ -3316,6 +3318,12 @@ packages:
     name: '@types/prop-types'
     version: 15.7.5
     dev: false
+
+  registry.npmmirror.com/@types/qs/6.9.7:
+    resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/qs/-/qs-6.9.7.tgz}
+    name: '@types/qs'
+    version: 6.9.7
+    dev: true
 
   registry.npmmirror.com/@types/react/18.0.8:
     resolution: {integrity: sha512-+j2hk9BzCOrrOSJASi5XiOyBbERk9jG5O73Ya4M0env5Ixi6vUNli4qy994AINcEF+1IEHISYFfIT4zwr++LKw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/react/-/react-18.0.8.tgz}
