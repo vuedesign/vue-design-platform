@@ -7,16 +7,16 @@ import { useRouter } from 'next/router';
 
 type ListProps = {
   type: string;
+  authorId?: number;
 };
 
-const List = ({ type }: ListProps) => {
+const List = ({ type, authorId }: ListProps) => {
   const router = useRouter();
   const page = Number(router.query.page || 1);
   const size = Number(router.query.size || 20);
   const { data = { list: [], pagination: { page, size }, total: 0 } } =
-    useSitesQuery({ page, size });
-
-  const maxPage = Math.ceil(data.total / size);
+    useSitesQuery({ page, size, authorId });
+  console.log('data.list', data.list);
   return (
     <section className={styles.container}>
       <section className={styles.main}>

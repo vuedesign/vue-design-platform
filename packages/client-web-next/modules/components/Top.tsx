@@ -21,17 +21,15 @@ const navList: NavItem[] = [
   },
 ];
 
-type LinkProps = {
-  href: string;
-  children: string;
-};
-
 const Top = () => {
   const router = useRouter();
   const handleGotoHome = () => {
     router.push({
       pathname: '/',
     });
+  };
+  const handleRecommend = () => {
+    alert(1);
   };
   return (
     <div className={styles.container}>
@@ -70,9 +68,12 @@ const Top = () => {
             </div>
           </li>
           <li>
-            <div className={`${styles.btn} ${styles.recommend}`}>
+            <div
+              className={`${styles.btn} ${styles.recommend}`}
+              onClick={handleRecommend}
+            >
               <UploadOne className="btn-upload-one" theme="outline" size="14" />
-              <span className={styles.text}>推荐</span>
+              <span className={styles.text}>我要推荐</span>
             </div>
           </li>
           <li>

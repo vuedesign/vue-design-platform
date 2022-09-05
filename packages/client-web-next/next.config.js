@@ -24,14 +24,20 @@ module.exports = {
     ],
   },
   async rewrites() {
-    return {
-      fallback: [
-        {
-          source: '/:path*',
-          destination: `http://127.0.0.1:8083/:path*`,
-        },
-      ],
-    };
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://127.0.0.1:8083/api/:path*', // Matched parameters can be used in the destination
+      },
+    ];
+    // return {
+    //   fallback: [
+    //     {
+    //       source: '/api/:path*',
+    //       destination: `http://127.0.0.1:8083/api/:path*`,
+    //     },
+    //   ],
+    // };
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // config.module.rules.push({

@@ -1,9 +1,5 @@
 import { ListPageResponse } from '@/globals/types/global';
-
-export interface User {
-  avatar: string;
-  username: string;
-}
+import { User } from './auth';
 
 export type SiteType = 'site' | 'code';
 
@@ -16,7 +12,7 @@ export type TagList = TagItem[];
 
 export interface SiteItem {
   id?: number;
-  uuid?: string;
+  uuid: string;
   title: string;
   thumbUrl: string;
   logoUrl: string;

@@ -5,20 +5,16 @@ import { profile } from '@/modules/redux/services/authApi';
 import { setToken } from '@/modules/redux/features/authSlice';
 import { sites } from '@/modules/redux/services/siteApi';
 import { navigations } from '@/modules/redux/services/navigationApi';
+import { countProfile } from '@/modules/redux/services/countApi';
 import List from '@/modules/components/List';
 import Footer from '@/modules/components/Footer';
 import Header from './components/Header';
 import styles from './Home.module.scss';
 
-// import { useAppDispatch } from './hooks/app';
-
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    // console.log('context.req.cookies.token', context.req);
-    await store.dispatch(setToken(context.req.cookies.token || ''));
     await store.dispatch(navigations.initiate());
     await store.dispatch(sites.initiate({}));
-    await store.dispatch(profile.initiate());
     return {
       props: {},
     };

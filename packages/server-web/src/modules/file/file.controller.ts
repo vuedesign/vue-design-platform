@@ -158,7 +158,7 @@ export class FileController {
       },
       where: {},
     };
-    console.log('options', options);
+    console.log('options=file', options);
     return this.fileService.findList(options);
   }
 

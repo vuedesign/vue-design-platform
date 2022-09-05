@@ -5,6 +5,7 @@ import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
 import { RootState } from '@/modules/redux/store';
 import { isServer } from '@/globals/utils';
 import { SiteListResponse, SiteItem } from '../types/site';
+import { stringify } from 'qs';
 
 export const siteApi = createApi({
   reducerPath: 'siteApi',
@@ -30,16 +31,12 @@ export const siteApi = createApi({
   },
   endpoints: (builder) => ({
     sites: builder.query<SiteListResponse, Record<string, any>>({
-      query: (params: Record<string, any> = {}) => {
-        const queryString: string[] = [];
-        Object.keys(params).forEach((key) => {
-          queryString.push(`${key}=${params[key]}`);
-        });
-        return { url: `${apis.SITES}?${queryString.join('&')}`, method: 'get' };
+      query: (params = {}) => {
+        return { url: `${apis.SITES}?${stringify(params)}`, method: 'get' };
       },
     }),
     site: builder.query<SiteItem, string>({
-      query: (uuid: string) => ({
+      query: (uuid) => ({
         url: `${apis.SITES}/${uuid}`,
         method: 'get',
       }),

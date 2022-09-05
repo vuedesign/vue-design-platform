@@ -4,6 +4,7 @@ export type CountType = 'site' | 'code';
 
 export interface CountItem {
   id?: number;
+  sites: number;
   authorId: number;
   views: number;
   collections: number;

@@ -1,19 +1,25 @@
 import { Avatar } from 'antd';
+import Link from 'next/link';
 import { UserOutlined } from '@ant-design/icons';
-import { ShareOne, PreviewOpen, ThumbsUp } from '@icon-park/react';
+import {
+  ShareOne,
+  PreviewOpen,
+  ThumbsUp,
+  ArrowCircleRight,
+} from '@icon-park/react';
 import { useSiteQuery, useSitesQuery } from '@/modules/redux/services/siteApi';
 import { useCountQuery } from '@/modules/redux/services/countApi';
 import styles from '../styles/Asider.module.scss';
 import Item from '@/modules/components/Item';
+import { User } from '@/modules/redux/types/auth';
 
 type AsiderProps = {
-  uuid: string | undefined;
+  uuid: string;
+  authorId: number;
+  profile: Partial<User>;
 };
-const Asider = ({ uuid }: AsiderProps) => {
-  const { data: siteItem } = useSiteQuery(uuid || '');
-  const profile = siteItem?.author;
-  const authorId = siteItem?.authorId;
-  const { data: site } = useSitesQuery({ authorId, size: 2 });
+const Asider = ({ uuid, authorId, profile }: AsiderProps) => {
+  const { data: site } = useSitesQuery({ authorId, size: 2, uuid });
   const { data: count } = useCountQuery(authorId);
   return (
     <aside className={styles.container}>
@@ -30,7 +36,18 @@ const Asider = ({ uuid }: AsiderProps) => {
               </dt>
               <dd>
                 <h5>{profile.username}</h5>
-                <p></p>
+                <p>
+                  <Link href={`/profile/${profile.uuid}`}>
+                    <a className={styles.link}>
+                      <span className={styles['link-text']}>个人中心</span>
+                      <ArrowCircleRight
+                        theme="outline"
+                        size="14"
+                        fill="#1890ff"
+                      />
+                    </a>
+                  </Link>
+                </p>
               </dd>
             </dl>
           </div>

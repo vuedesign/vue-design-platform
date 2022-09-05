@@ -5,12 +5,22 @@ import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
 import Nav from './components/Nav';
 import styles from './Sites.module.scss';
+import { wrapper } from '@/modules/redux/store';
+import { sites } from '@/modules/redux/services/siteApi';
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    await store.dispatch(
+      sites.initiate({
+        page: 1,
+        size: 20,
+      }),
+    );
+    return {
+      props: {},
+    };
+  },
+);
 
 type SitesProps = {};
 

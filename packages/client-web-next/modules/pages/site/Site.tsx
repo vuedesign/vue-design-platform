@@ -11,38 +11,35 @@ import {
   TagOne,
 } from '@icon-park/react';
 import { wrapper } from '@/modules/redux/store';
-import { profile } from '@/modules/redux/services/authApi';
-import { setToken, setUser } from '@/modules/redux/features/authSlice';
-import { User } from '@/modules/redux/types/auth';
 import { site, sites } from '@/modules/redux/services/siteApi';
 import { count } from '@/modules/redux/services/countApi';
 import { SiteItem } from '@/modules/redux/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
+import { getUuid } from '@/globals/utils';
 import Asider from './components/Asider';
 import styles from './Site.module.scss';
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, params }) => {
-      const uuid: string = (params?.uuid || '') as string;
-      if (!uuid) {
-        return;
-      }
-      await store.dispatch(setToken(req.cookies.token || ''));
-      await store.dispatch(profile.initiate());
-      const { data: siteItem } = await store.dispatch(
-        site.initiate(uuid as string),
-      );
-      const authorId = siteItem?.authorId;
-      await store.dispatch(sites.initiate({ authorId, size: 2 }));
-      await store.dispatch(count.initiate(authorId));
+  (store) => async (context) => {
+    const uuid = getUuid(context.params!.uuid);
+    if (!uuid) {
       return {
         props: {
-          siteItem,
+          siteItem: null,
         },
       };
-    },
+    }
+    const { data: siteItem } = await store.dispatch(site.initiate(uuid));
+    const authorId = siteItem?.authorId;
+    await store.dispatch(sites.initiate({ authorId, size: 2, uuid }));
+    await store.dispatch(count.initiate(authorId));
+    return {
+      props: {
+        siteItem,
+      },
+    };
+  },
 );
 
 type SiteProps = {
@@ -114,63 +111,69 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
       </header>
       <section className={styles.main}>
         {siteItem && (
-          <article className={styles.article}>
-            <header className={styles.title}>
-              <h1>{siteItem.title}</h1>
-              <div className={styles.link}>
-                {siteItem.codeUrl && (
-                  <Link href={siteItem.codeUrl} target="_blank">
-                    <span className={styles['link-btn']}>
-                      <GithubOne
-                        theme="outline"
-                        size="16"
-                        fill="#666"
-                        style={{ height: '16px' }}
-                      />
-                    </span>
-                  </Link>
+          <>
+            <article className={styles.article}>
+              <header className={styles.title}>
+                <h1>{siteItem.title}</h1>
+                <div className={styles.link}>
+                  {siteItem.codeUrl && (
+                    <Link href={siteItem.codeUrl} target="_blank">
+                      <span className={styles['link-btn']}>
+                        <GithubOne
+                          theme="outline"
+                          size="16"
+                          fill="#666"
+                          style={{ height: '16px' }}
+                        />
+                      </span>
+                    </Link>
+                  )}
+                  {siteItem.siteUrl && (
+                    <Link href={siteItem.siteUrl} target="_blank">
+                      <span className={styles['link-btn']}>
+                        <Home
+                          theme="outline"
+                          size="16"
+                          fill="#666"
+                          style={{ height: '16px' }}
+                        />
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </header>
+              <div className={styles.meta}>
+                <span>[{siteItem.type}]</span>
+                <span className={styles.dot}> · </span>
+                <time>{siteItem.createdAt}</time>
+                <span className={styles.dot}> · </span>
+                <span>阅读 {siteItem.views}</span>
+                <span className={styles.dot}> · </span>
+                {siteItem.tags && (
+                  <TagOne
+                    theme="outline"
+                    size="14"
+                    fill="#666"
+                    style={{ height: '14px' }}
+                  />
                 )}
-                {siteItem.siteUrl && (
-                  <Link href={siteItem.siteUrl} target="_blank">
-                    <span className={styles['link-btn']}>
-                      <Home
-                        theme="outline"
-                        size="16"
-                        fill="#666"
-                        style={{ height: '16px' }}
-                      />
+                {siteItem.tags &&
+                  siteItem.tags.map((item, index) => (
+                    <span className={styles.tag} key={index}>
+                      {item.name}
                     </span>
-                  </Link>
-                )}
+                  ))}
               </div>
-            </header>
-            <div className={styles.meta}>
-              <span>[{siteItem.type}]</span>
-              <span className={styles.dot}> · </span>
-              <time>{siteItem.createdAt}</time>
-              <span className={styles.dot}> · </span>
-              <span>阅读 {siteItem.views}</span>
-              <span className={styles.dot}> · </span>
-              {siteItem.tags && (
-                <TagOne
-                  theme="outline"
-                  size="14"
-                  fill="#666"
-                  style={{ height: '14px' }}
-                />
-              )}
-              {siteItem.tags &&
-                siteItem.tags.map((item, index) => (
-                  <span className={styles.tag} key={index}>
-                    {item.name}
-                  </span>
-                ))}
-            </div>
-            <div className={styles.content}>{siteItem.description}</div>
-            <Tools />
-          </article>
+              <div className={styles.content}>{siteItem.description}</div>
+              <Tools />
+            </article>
+            <Asider
+              uuid={siteItem.uuid}
+              authorId={siteItem.authorId}
+              profile={siteItem.author}
+            />
+          </>
         )}
-        <Asider uuid={siteItem.uuid} />
       </section>
       <Footer />
     </div>

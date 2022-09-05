@@ -1,7 +1,5 @@
-import { join } from 'path';
 import { Module, CacheModule } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-// import appsModule from '@/apps/imports';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
 import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 import { ConfigModule } from '@nestjs/config';
