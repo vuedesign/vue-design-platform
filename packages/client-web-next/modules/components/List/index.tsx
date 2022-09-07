@@ -8,15 +8,15 @@ import styles from './List.module.scss';
 type ListProps = {
     type: string;
     authorId?: number;
+    uuid?: string;
 };
 
-const List = ({ type, authorId }: ListProps) => {
+const List = ({ type: pageType, authorId, uuid }: ListProps) => {
     const router = useRouter();
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
     const { data = { list: [], pagination: { page, size }, total: 0 } } =
         useSitesQuery({ page, size, authorId });
-    console.log('data.list', data.list);
     return (
         <section className={styles.container}>
             <section className={styles.main}>
@@ -27,11 +27,7 @@ const List = ({ type, authorId }: ListProps) => {
                         </li>
                     ))}
                 </ul>
-                {type === 'home' ? (
-                    <Link href="/sites">
-                        <a className={styles.more}>发现更多</a>
-                    </Link>
-                ) : (
+                {(pageType === 'sites' || pageType === 'user') && (
                     <div className={styles.page}>
                         <Pagination
                             current={page}
@@ -40,17 +36,39 @@ const List = ({ type, authorId }: ListProps) => {
                             pageSize={size}
                             total={data.total}
                             onChange={(page, pageSize) => {
-                                router.push(`/sites?page=${page}`);
+                                switch (pageType) {
+                                    case 'sites':
+                                        router.push(`/sites?page=${page}`);
+                                        break;
+                                    case 'user':
+                                        router.push(
+                                            `/users/${uuid}?page=${page}`,
+                                        );
+                                        break;
+                                }
                             }}
                             itemRender={(page, type, originalElement) => {
                                 if (page >= 1 && type === 'page') {
-                                    return (
-                                        <Link
-                                            href={`/sites?page=${page}`}
-                                            passHref={true}>
-                                            <a>{page}</a>
-                                        </Link>
-                                    );
+                                    switch (pageType) {
+                                        case 'sites':
+                                            return (
+                                                <Link
+                                                    href={`/sites?page=${page}`}
+                                                    passHref={true}>
+                                                    <a>{page}</a>
+                                                </Link>
+                                            );
+                                            break;
+                                        case 'user':
+                                            return (
+                                                <Link
+                                                    href={`/users/${uuid}?page=${page}`}
+                                                    passHref={true}>
+                                                    <a>{page}</a>
+                                                </Link>
+                                            );
+                                            break;
+                                    }
                                 }
                                 return originalElement;
                             }}

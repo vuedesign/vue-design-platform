@@ -27,6 +27,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return {
             props: {
                 user: userData,
+                uuid,
             },
         };
     },
@@ -34,9 +35,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 type UserProps = {
     user: User;
+    uuid: string;
 };
 
-const User: NextPage<UserProps> = ({ user }: UserProps) => {
+const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -51,7 +53,7 @@ const User: NextPage<UserProps> = ({ user }: UserProps) => {
                 <Top />
             </div>
             <UserHeader user={user} />
-            <List type="user" authorId={user.id} />
+            <List type="user" authorId={user.id} uuid={uuid} />
             <Footer />
         </div>
     );

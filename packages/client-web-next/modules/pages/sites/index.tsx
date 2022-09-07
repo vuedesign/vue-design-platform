@@ -41,7 +41,7 @@ const Sites: NextPage<SitesProps> = ({}: SitesProps) => {
             <section className={styles.main}>
                 <Nav />
             </section>
-            <List type="find" />
+            <List type="sites" />
             <Footer />
         </div>
     );

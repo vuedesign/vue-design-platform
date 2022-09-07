@@ -1,0 +1,19 @@
+.more {
+    display: flex;
+    width: 528px;
+    height: 32px;
+    line-height: 32px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #e5eaed;
+    border-radius: 3px;
+    font-size: 14px;
+    color: gray;
+    &:hover {
+        background-color: #fff;
+        color: #3d7eff;
+    }
+}

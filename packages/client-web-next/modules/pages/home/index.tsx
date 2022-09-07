@@ -1,11 +1,9 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import type { NextPage } from 'next';
 import { wrapper } from '@/modules/store';
-import { profile } from '@/modules/services/authApi';
-import { setToken } from '@/modules/features/authSlice';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
-import { countProfile } from '@/modules/services/countApi';
 import List from '@/modules/components/List';
 import Footer from '@/modules/components/Footer';
 import Header from '@/modules/components/Header';
@@ -36,6 +34,9 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
             </Head>
             <Header />
             <List type="home" />
+            <Link href="/sites">
+                <a className={styles.more}>发现更多</a>
+            </Link>
             <Footer />
         </div>
     );
