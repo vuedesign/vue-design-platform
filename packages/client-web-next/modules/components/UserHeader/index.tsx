@@ -1,5 +1,6 @@
 import { User } from '@/modules/types/auth';
-import { EmailSecurity, Iphone, EditName } from '@icon-park/react';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar } from 'antd';
 import { useCountQuery } from '@/modules/services/countApi';
 import {
     Like,
@@ -18,12 +19,13 @@ const UserHeader = ({ user }: UserHeaderProps) => {
     const { data: count } = useCountQuery(user.id);
     return (
         <header className={styles.container}>
-            <h5 className={styles['wrapper-avatar']}>
-                <span
-                    className={styles.avatar}
-                    style={{
-                        backgroundImage: `url(${user.avatar})`,
-                    }}></span>
+            <div className={styles['user-avatar']}>
+                <Avatar size={48} icon={<UserOutlined />} src={user.avatar} />
+            </div>
+            <h5 className={styles['user-name']}>
+                <span className={styles['user-name-text']}>
+                    {user && (user.nickname || user.username)}
+                </span>
             </h5>
             {count && (
                 <ul className={styles.count}>
@@ -77,28 +79,6 @@ const UserHeader = ({ user }: UserHeaderProps) => {
                         </span>
                         <span className={styles['count-text']}>
                             {count.down}
-                        </span>
-                    </li>
-                </ul>
-            )}
-            {user && (
-                <ul className={styles.info}>
-                    <li>
-                        <EditName theme="outline" size="14" fill="#666" />
-                        <span className={styles['info-text']}>
-                            {user.nickname || user.username}
-                        </span>
-                    </li>
-                    <li>
-                        <Iphone theme="outline" size="14" fill="#666" />
-                        <span className={styles['info-text']}>
-                            {user.phone}
-                        </span>
-                    </li>
-                    <li>
-                        <EmailSecurity theme="outline" size="14" fill="#666" />
-                        <span className={styles['info-text']}>
-                            {user.email}
                         </span>
                     </li>
                 </ul>
