@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SiteContext, SiteContextType } from '@/globals/hooks/SiteContext';
 import styles from './Nav.module.scss';
 
 type Item = {
@@ -39,68 +38,44 @@ const orderList: Array<Item> = [
 
 const Nav = () => {
     const [orderActive, setOrderActive] = useState('new');
-    const hanldeCheckOrderClick = (item: Item, context: SiteContextType) => {
+    const hanldeCheckOrderClick = (item: Item) => {
         setOrderActive(item.value);
-        const { setQuery, query } = context;
-        setQuery(
-            Object.assign({}, query, {
-                order: item.value,
-            }),
-        );
     };
 
     const [typeActive, setTypeActive] = useState('all');
-    const hanldeCheckTypeClick = (item: Item, context: SiteContextType) => {
+    const hanldeCheckTypeClick = (item: Item) => {
         setTypeActive(item.value);
-        const { setQuery, query } = context;
-        setQuery(
-            Object.assign({}, query, {
-                type: item.value,
-            }),
-        );
     };
 
     return (
-        <SiteContext.Consumer>
-            {(context) => (
-                <div className={styles.nav}>
-                    <ul className={styles.tabs}>
-                        {orderList.map((item) => (
-                            <li
-                                className={
-                                    item.value === orderActive
-                                        ? styles.active
-                                        : ''
-                                }
-                                data-type={item.value}
-                                onClick={() =>
-                                    hanldeCheckOrderClick(item, context)
-                                }
-                                key={item.value}>
-                                <span>{item.label}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    <ul className={styles.tags}>
-                        {typeList.map((item) => (
-                            <li
-                                className={
-                                    item.value === typeActive
-                                        ? styles.active
-                                        : ''
-                                }
-                                data-type={item.value}
-                                onClick={() =>
-                                    hanldeCheckTypeClick(item, context)
-                                }
-                                key={item.value}>
-                                <span>{item.label}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </SiteContext.Consumer>
+        <div className={styles.nav}>
+            <ul className={styles.tabs}>
+                {orderList.map((item) => (
+                    <li
+                        className={
+                            item.value === orderActive ? styles.active : ''
+                        }
+                        data-type={item.value}
+                        onClick={() => hanldeCheckOrderClick(item)}
+                        key={item.value}>
+                        <span>{item.label}</span>
+                    </li>
+                ))}
+            </ul>
+            <ul className={styles.tags}>
+                {typeList.map((item) => (
+                    <li
+                        className={
+                            item.value === typeActive ? styles.active : ''
+                        }
+                        data-type={item.value}
+                        onClick={() => hanldeCheckTypeClick(item)}
+                        key={item.value}>
+                        <span>{item.label}</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 };
 
