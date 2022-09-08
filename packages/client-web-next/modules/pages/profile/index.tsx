@@ -4,6 +4,7 @@ import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
 import ProfileHeader from '@/modules/components/ProfileHeader';
 import ProfileList from '@/modules/components/ProfileList';
+// import List from '@/modules/components/List';
 import { wrapper } from '@/modules/store';
 import { profile, sites, counts } from '@/modules/services/authApi';
 import styles from './Profile.module.scss';

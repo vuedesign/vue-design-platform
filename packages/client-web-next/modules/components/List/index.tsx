@@ -11,12 +11,24 @@ type ListProps = {
     uuid?: string;
 };
 
+const getRouterPath = (pageType: string, uuid: string | undefined) => {
+    return (page: number): string => {
+        const pageRoutes = new Map([
+            ['sites', `/sites?page=${page}`],
+            ['user', `/users/${uuid}?page=${page}`],
+            ['profile', `/profile?page=${page}`],
+        ]);
+        return pageRoutes.get(pageType) || `/sites?page=${page}`;
+    };
+};
+
 const List = ({ type: pageType, authorId, uuid }: ListProps) => {
     const router = useRouter();
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
     const { data = { list: [], pagination: { page, size }, total: 0 } } =
         useSitesQuery({ page, size, authorId });
+    const routerPath = getRouterPath(pageType, uuid);
     return (
         <section className={styles.container}>
             <section className={styles.main}>
@@ -36,39 +48,17 @@ const List = ({ type: pageType, authorId, uuid }: ListProps) => {
                             pageSize={size}
                             total={data.total}
                             onChange={(page, pageSize) => {
-                                switch (pageType) {
-                                    case 'sites':
-                                        router.push(`/sites?page=${page}`);
-                                        break;
-                                    case 'user':
-                                        router.push(
-                                            `/users/${uuid}?page=${page}`,
-                                        );
-                                        break;
-                                }
+                                router.push(routerPath(page));
                             }}
                             itemRender={(page, type, originalElement) => {
                                 if (page >= 1 && type === 'page') {
-                                    switch (pageType) {
-                                        case 'sites':
-                                            return (
-                                                <Link
-                                                    href={`/sites?page=${page}`}
-                                                    passHref={true}>
-                                                    <a>{page}</a>
-                                                </Link>
-                                            );
-                                            break;
-                                        case 'user':
-                                            return (
-                                                <Link
-                                                    href={`/users/${uuid}?page=${page}`}
-                                                    passHref={true}>
-                                                    <a>{page}</a>
-                                                </Link>
-                                            );
-                                            break;
-                                    }
+                                    return (
+                                        <Link
+                                            href={routerPath(page)}
+                                            passHref={true}>
+                                            <a>{page}</a>
+                                        </Link>
+                                    );
                                 }
                                 return originalElement;
                             }}
