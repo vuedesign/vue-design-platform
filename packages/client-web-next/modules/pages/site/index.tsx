@@ -43,7 +43,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 
 type SiteProps = {
-    siteItem: SiteItem;
+    siteItem: SiteItem | null;
 };
 
 const Tools = () => {

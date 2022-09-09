@@ -39,6 +39,13 @@ const List = ({ type: pageType, authorId, uuid }: ListProps) => {
                         </li>
                     ))}
                 </ul>
+                {pageType === 'home' && (
+                    <div className={styles.more}>
+                        <Link href="/sites">
+                            <a className={styles['more-link']}>发现更多</a>
+                        </Link>
+                    </div>
+                )}
                 {(pageType === 'sites' || pageType === 'user') && (
                     <div className={styles.page}>
                         <Pagination

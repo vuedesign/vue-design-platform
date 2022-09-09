@@ -34,9 +34,6 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
             </Head>
             <Header />
             <List type="home" />
-            <Link href="/sites">
-                <a className={styles.more}>发现更多</a>
-            </Link>
             <Footer />
         </div>
     );
