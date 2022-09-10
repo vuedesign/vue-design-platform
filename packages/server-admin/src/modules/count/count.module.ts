@@ -6,9 +6,9 @@ import { CountController } from './count.controller';
 import { CountTcpController } from './count.tcp.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CountEntity])],
-  controllers: [CountController, CountTcpController],
-  providers: [CountService],
-  exports: [CountService],
+    imports: [TypeOrmModule.forFeature([CountEntity])],
+    controllers: [CountController, CountTcpController],
+    providers: [CountService],
+    exports: [CountService],
 })
 export class CountModule {}

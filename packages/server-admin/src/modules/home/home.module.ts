@@ -5,7 +5,7 @@ import { SiteModule } from '../site/site.module';
 import { NavigationModule } from '../navigation/navigation.module';
 
 @Module({
-  imports: [UserModule, SiteModule, NavigationModule],
-  controllers: [HomeController],
+    imports: [UserModule, SiteModule, NavigationModule],
+    controllers: [HomeController],
 })
 export class HomeModule {}

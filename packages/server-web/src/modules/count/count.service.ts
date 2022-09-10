@@ -5,11 +5,11 @@ import { BaseMicroservice } from '@/globals/services/base.microservice';
 
 @Injectable()
 export class CountService extends BaseMicroservice {
-  findOneByAuthorId(authorId: number) {
-    console.log('CountService authorId', authorId);
-    return this.send(
-      { module: 'count', method: 'findOneByAuthorId' },
-      authorId,
-    );
-  }
+    findOneByAuthorId(authorId: number) {
+        console.log('CountService authorId', authorId);
+        return this.send(
+            { module: 'count', method: 'findOneByAuthorId' },
+            authorId,
+        );
+    }
 }

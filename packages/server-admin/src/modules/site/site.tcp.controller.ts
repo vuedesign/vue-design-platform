@@ -10,17 +10,17 @@ import { FindManyOptions } from 'typeorm';
  */
 @Controller()
 export class SiteTcpController {
-  constructor(private readonly siteService: SiteService) {}
-  /**
-   * 站点列表
-   */
-  @MessagePattern({ module: 'site', method: 'find' }, Transport.TCP)
-  findAll(options: IPaginationOptions<SiteEntity>) {
-    return this.siteService.findList(options);
-  }
+    constructor(private readonly siteService: SiteService) {}
+    /**
+     * 站点列表
+     */
+    @MessagePattern({ module: 'site', method: 'find' }, Transport.TCP)
+    findAll(options: IPaginationOptions<SiteEntity>) {
+        return this.siteService.findList(options);
+    }
 
-  @MessagePattern({ module: 'site', method: 'findOneByUuid' }, Transport.TCP)
-  findOneByUuid(uuid: string) {
-    return this.siteService.findOneBy({ uuid });
-  }
+    @MessagePattern({ module: 'site', method: 'findOneByUuid' }, Transport.TCP)
+    findOneByUuid(uuid: string) {
+        return this.siteService.findOneBy({ uuid });
+    }
 }

@@ -7,8 +7,8 @@ import { UserEntity } from '../../entities/user.entity';
 import { findUserItemQuery } from './dto/user.dto';
 import { PartialType } from '@nestjs/mapped-types';
 import {
-  BaseService,
-  IPaginationResponse,
+    BaseService,
+    IPaginationResponse,
 } from '@/globals/services/base.service';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 import { ClientProxy } from '@nestjs/microservices';
@@ -18,22 +18,25 @@ export class CreateUser extends PartialType(CreateUserDto) {}
 
 @Injectable()
 export class UserService extends BaseMicroservice {
-  // constructor(
-  //   @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
-  // ) {}
-  create(createUser: CreateUser) {
-    return this.send<UserEntity>(
-      { module: 'user', method: 'create' },
-      createUser,
-    );
-  }
+    // constructor(
+    //   @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
+    // ) {}
+    create(createUser: CreateUser) {
+        return this.send<UserEntity>(
+            { module: 'user', method: 'create' },
+            createUser,
+        );
+    }
 
-  findOne(query: findUserItemQuery) {
-    return this.send<UserEntity>({ module: 'user', method: 'find-one' }, query);
-  }
+    findOne(query: findUserItemQuery) {
+        return this.send<UserEntity>(
+            { module: 'user', method: 'find-one' },
+            query,
+        );
+    }
 
-  count() {
-    console.log('=============count');
-    return this.send<number>({ module: 'user', method: 'count' }, 10);
-  }
+    count() {
+        console.log('=============count');
+        return this.send<number>({ module: 'user', method: 'count' }, 10);
+    }
 }

@@ -6,10 +6,10 @@ import * as compression from 'compression';
 import { ConfigService } from '@nestjs/config';
 
 export default (app: INestApplication) => {
-  const config = app.get(ConfigService);
-  app.use(session(config.get('SESSION')));
+    const config = app.get(ConfigService);
+    app.use(session(config.get('SESSION')));
 
-  app.use(cookieParser());
+    app.use(cookieParser());
 
-  app.use(compression());
+    app.use(compression());
 };

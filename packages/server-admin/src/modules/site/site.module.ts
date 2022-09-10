@@ -8,9 +8,9 @@ import { TagService } from '../tag/tag.service';
 import { TagEntity } from '@/entities/tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SiteEntity, TagEntity])],
-  controllers: [SiteController, SiteTcpController],
-  providers: [SiteService, TagService],
-  exports: [SiteService],
+    imports: [TypeOrmModule.forFeature([SiteEntity, TagEntity])],
+    controllers: [SiteController, SiteTcpController],
+    providers: [SiteService, TagService],
+    exports: [SiteService],
 })
 export class SiteModule {}

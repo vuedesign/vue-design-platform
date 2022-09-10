@@ -10,19 +10,19 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(typeormConfig),
-    ScheduleModule.forRoot(),
-    ...appsModule,
-    TaskModule,
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+    imports: [
+        TypeOrmModule.forRoot(typeormConfig),
+        ScheduleModule.forRoot(),
+        ...appsModule,
+        TaskModule,
+    ],
+    controllers: [AppController],
+    providers: [
+        AppService,
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+    ],
 })
 export class AppModule {}

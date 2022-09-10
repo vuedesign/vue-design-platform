@@ -5,9 +5,9 @@ import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
 
 export default (app: INestApplication) => {
-  app.use(session(SESSION));
+    app.use(session(SESSION));
 
-  app.use(cookieParser());
+    app.use(cookieParser());
 
-  app.use(compression());
+    app.use(compression());
 };

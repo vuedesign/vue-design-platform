@@ -8,18 +8,18 @@ import { MessagePattern, Transport } from '@nestjs/microservices';
 
 @Controller()
 export class AuthTcpController {
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-  ) {}
+    constructor(
+        private authService: AuthService,
+        private userService: UserService,
+    ) {}
 
-  @MessagePattern({ module: 'user', method: 'find-one' }, Transport.TCP)
-  findOne(query: Record<string, any>) {
-    return this.userService.findOne(query);
-  }
+    @MessagePattern({ module: 'user', method: 'find-one' }, Transport.TCP)
+    findOne(query: Record<string, any>) {
+        return this.userService.findOne(query);
+    }
 
-  @MessagePattern({ module: 'auth', method: 'register' }, Transport.TCP)
-  register(body: LoginParam) {
-    return this.authService.register(body);
-  }
+    @MessagePattern({ module: 'auth', method: 'register' }, Transport.TCP)
+    register(body: LoginParam) {
+        return this.authService.register(body);
+    }
 }

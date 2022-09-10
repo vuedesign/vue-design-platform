@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NavigationService } from './navigation.service';
 
 describe('NavigationService', () => {
-  let service: NavigationService;
+    let service: NavigationService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [NavigationService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [NavigationService],
+        }).compile();
 
-    service = module.get<NavigationService>(NavigationService);
-  });
+        service = module.get<NavigationService>(NavigationService);
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 });

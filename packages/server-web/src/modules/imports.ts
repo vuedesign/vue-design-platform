@@ -6,10 +6,10 @@ import { SiteModule } from './site/site.module';
 import { NavigationModule } from './navigation/navigation.module';
 
 export default [
-  AuthModule,
-  UserModule,
-  SiteModule,
-  // TagModule,
-  // FileModule,
-  NavigationModule,
+    AuthModule,
+    UserModule,
+    SiteModule,
+    // TagModule,
+    // FileModule,
+    NavigationModule,
 ];

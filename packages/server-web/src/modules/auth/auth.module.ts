@@ -11,17 +11,17 @@ import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 import { jwtConstants } from './constants';
 
 @Module({
-  imports: [
-    UserModule,
-    PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '2d' },
-    }),
-    BaseMicroserviceModule,
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtModule],
+    imports: [
+        UserModule,
+        PassportModule,
+        JwtModule.register({
+            secret: jwtConstants.secret,
+            signOptions: { expiresIn: '2d' },
+        }),
+        BaseMicroserviceModule,
+    ],
+    controllers: [AuthController],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
+    exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
