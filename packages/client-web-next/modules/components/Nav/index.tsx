@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
+import { Time, Fire, ThumbsUp } from '@icon-park/react';
 import styles from './Nav.module.scss';
 
 type Item = {
     value: string;
     label: string;
+    icon?: ReactElement;
 };
 
 const typeList: Array<Item> = [
@@ -25,14 +27,17 @@ const orderList: Array<Item> = [
     {
         value: 'new',
         label: '最新',
+        icon: <Time theme="outline" size="16" />,
     },
     {
         value: 'hot',
         label: '最热',
+        icon: <Fire theme="outline" size="16" />,
     },
     {
         value: 'ai',
         label: '推荐',
+        icon: <ThumbsUp theme="outline" size="16" />,
     },
 ];
 
@@ -58,7 +63,8 @@ const Nav = () => {
                         data-type={item.value}
                         onClick={() => hanldeCheckOrderClick(item)}
                         key={item.value}>
-                        <span>{item.label}</span>
+                        {item.icon}
+                        <span className={styles.text}>{item.label}</span>
                     </li>
                 ))}
             </ul>
