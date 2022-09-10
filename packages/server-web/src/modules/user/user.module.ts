@@ -4,9 +4,9 @@ import { UserController } from './user.controller';
 import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 
 @Module({
-  imports: [BaseMicroserviceModule],
-  controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+    imports: [BaseMicroserviceModule],
+    controllers: [UserController],
+    providers: [UserService],
+    exports: [UserService],
 })
 export class UserModule {}

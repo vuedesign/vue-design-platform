@@ -6,9 +6,9 @@ import { NavigationTcpController } from './navigation.tcp.controller';
 import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([NavigationEntity])],
-  controllers: [NavigationController, NavigationTcpController],
-  providers: [NavigationService],
-  exports: [NavigationService],
+    imports: [TypeOrmModule.forFeature([NavigationEntity])],
+    controllers: [NavigationController, NavigationTcpController],
+    providers: [NavigationService],
+    exports: [NavigationService],
 })
 export class NavigationModule {}

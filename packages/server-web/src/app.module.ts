@@ -11,26 +11,26 @@ import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [globalConfig, microservicesConfig],
-    }),
-    CacheModule.register({
-      isGlobal: true,
-    }),
-    // 微服务
-    BaseMicroserviceModule,
-    SiteModule,
-    NavigationModule,
-    AuthModule,
-    CountModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [globalConfig, microservicesConfig],
+        }),
+        CacheModule.register({
+            isGlobal: true,
+        }),
+        // 微服务
+        BaseMicroserviceModule,
+        SiteModule,
+        NavigationModule,
+        AuthModule,
+        CountModule,
+    ],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+    ],
 })
 export class AppModule {}

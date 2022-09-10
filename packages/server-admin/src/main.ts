@@ -9,35 +9,35 @@ import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule);
 
-  // 提供给前台微服务
-  const tcpMicroservice = app.connectMicroservice<MicroserviceOptions>({
-    // name: 'BASE_MICROSERVICE',
-    transport: Transport.TCP,
-    options: {
-      port: 8071,
-      host: '127.0.0.1',
-    },
-  });
+    // 提供给前台微服务
+    const tcpMicroservice = app.connectMicroservice<MicroserviceOptions>({
+        // name: 'BASE_MICROSERVICE',
+        transport: Transport.TCP,
+        options: {
+            port: 8071,
+            host: '127.0.0.1',
+        },
+    });
 
-  await app.startAllMicroservices();
+    await app.startAllMicroservices();
 
-  // 中间健
-  middleware(app);
+    // 中间健
+    middleware(app);
 
-  app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new TransformInterceptor());
-  app.setGlobalPrefix(API_PREFIX);
-  app.useGlobalPipes(new ValidationPipe());
-  // 接口文档
-  swagger(app);
+    app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalInterceptors(new TransformInterceptor());
+    app.setGlobalPrefix(API_PREFIX);
+    app.useGlobalPipes(new ValidationPipe());
+    // 接口文档
+    swagger(app);
 
-  Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
+    Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
 
-  app.enableCors();
+    app.enableCors();
 
-  await app.listen(PORT || 3000);
-  Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
+    await app.listen(PORT || 3000);
+    Logger.log(`${HOST}:${PORT}`, `项目启动成功`);
 }
 bootstrap();

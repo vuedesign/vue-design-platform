@@ -8,13 +8,13 @@ import { CountEntity } from '@/entities/count.entity';
  */
 @Controller()
 export class CountTcpController {
-  constructor(private readonly countService: CountService) {}
+    constructor(private readonly countService: CountService) {}
 
-  @MessagePattern(
-    { module: 'count', method: 'findOneByAuthorId' },
-    Transport.TCP,
-  )
-  findOneByAuthorId(authorId: number) {
-    return this.countService.findOne({ authorId });
-  }
+    @MessagePattern(
+        { module: 'count', method: 'findOneByAuthorId' },
+        Transport.TCP,
+    )
+    findOneByAuthorId(authorId: number) {
+        return this.countService.findOne({ authorId });
+    }
 }

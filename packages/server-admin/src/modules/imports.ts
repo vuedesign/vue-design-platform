@@ -8,12 +8,12 @@ import { HomeModule } from './home/home.module';
 import { CountModule } from './count/count.module';
 
 export default [
-  AuthModule,
-  UserModule,
-  SiteModule,
-  TagModule,
-  FileModule,
-  NavigationModule,
-  HomeModule,
-  CountModule,
+    AuthModule,
+    UserModule,
+    SiteModule,
+    TagModule,
+    FileModule,
+    NavigationModule,
+    HomeModule,
+    CountModule,
 ];

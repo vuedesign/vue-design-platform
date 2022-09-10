@@ -11,26 +11,26 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiTags('导航模块')
 @ApiBearerAuth()
 export class NavigationController {
-  constructor(private readonly navigationService: NavigationService) {}
+    constructor(private readonly navigationService: NavigationService) {}
 
-  // @Post()
-  // @ApiBody({
-  //   description: '添加项目到导航',
-  //   type: CreateNavigationDto,
-  // })
-  // create(@Body() createNavigationDto: CreateNavigationDto) {
-  //   return this.navigationService.create(createNavigationDto);
-  // }
+    // @Post()
+    // @ApiBody({
+    //   description: '添加项目到导航',
+    //   type: CreateNavigationDto,
+    // })
+    // create(@Body() createNavigationDto: CreateNavigationDto) {
+    //   return this.navigationService.create(createNavigationDto);
+    // }
 
-  @Public()
-  @Get()
-  findAll() {
-    const options: IPaginationOptions = {
-      pagination: { size: 20, page: 1 },
-      order: {
-        updatedAt: 'DESC',
-      },
-    };
-    return this.navigationService.findList(options);
-  }
+    @Public()
+    @Get()
+    findAll() {
+        const options: IPaginationOptions = {
+            pagination: { size: 20, page: 1 },
+            order: {
+                updatedAt: 'DESC',
+            },
+        };
+        return this.navigationService.findList(options);
+    }
 }

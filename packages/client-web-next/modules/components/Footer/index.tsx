@@ -53,7 +53,9 @@ const Footer = () => {
                                 href={
                                     'https://github.com/vuedesign/vue-design-platform'
                                 }>
-                                <a className={styles.github}></a>
+                                <a
+                                    target={'_blank'}
+                                    className={styles.github}></a>
                             </Link>
                         </dt>
                         <dd>

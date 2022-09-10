@@ -17,7 +17,7 @@ class MyApp extends App<AppInitialProps> {
     public static getInitialProps = wrapper.getInitialAppProps(
         (store) => async (context) => {
             const req: CtxReq = context.ctx.req as CtxReq;
-            await store.dispatch(setToken(req!.cookies!.token || ''));
+            await store.dispatch(setToken(req?.cookies?.token || ''));
             await store.dispatch(profile.initiate());
             await store.dispatch(countProfile.initiate());
             // 1. Wait for all page actions to dispatch

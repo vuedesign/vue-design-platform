@@ -6,34 +6,34 @@ import { AuthRequest } from '../auth/dto/auth.dto';
 
 @Controller('home')
 export class HomeController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly siteService: SiteService,
-    private readonly navigationService: NavigationService,
-  ) {}
+    constructor(
+        private readonly userService: UserService,
+        private readonly siteService: SiteService,
+        private readonly navigationService: NavigationService,
+    ) {}
 
-  viewCount() {
-    return Promise.resolve(22983);
-  }
-
-  @Get('count')
-  count(@Req() req: AuthRequest) {
-    if (!req.user || !req.user.id) {
-      throw new UnauthorizedException('用户没授权');
+    viewCount() {
+        return Promise.resolve(22983);
     }
-    return Promise.all([
-      this.userService.count(),
-      this.siteService.count(),
-      this.navigationService.count(),
-      this.viewCount(),
-    ]).then((res) => {
-      const [user, site, navigation, view] = res;
-      return {
-        user,
-        site,
-        navigation,
-        view,
-      };
-    });
-  }
+
+    @Get('count')
+    count(@Req() req: AuthRequest) {
+        if (!req.user || !req.user.id) {
+            throw new UnauthorizedException('用户没授权');
+        }
+        return Promise.all([
+            this.userService.count(),
+            this.siteService.count(),
+            this.navigationService.count(),
+            this.viewCount(),
+        ]).then((res) => {
+            const [user, site, navigation, view] = res;
+            return {
+                user,
+                site,
+                navigation,
+                view,
+            };
+        });
+    }
 }

@@ -4,48 +4,48 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
 export interface IPagination {
-  page: number;
-  size: number;
+    page: number;
+    size: number;
 }
 
 export interface IPaginationResponse {
-  list: Array<any>;
-  pagination: {
-    page: number;
-    size: number;
-  };
-  total: number;
+    list: Array<any>;
+    pagination: {
+        page: number;
+        size: number;
+    };
+    total: number;
 }
 
 export interface IPaginationQuery {
-  page?: number;
-  size?: number;
-  order?: object;
-  where?: object;
-  relations?: FindOptionsRelations<any>;
-  select?: object;
+    page?: number;
+    size?: number;
+    order?: object;
+    where?: object;
+    relations?: FindOptionsRelations<any>;
+    select?: object;
 }
 
 export interface IPaginationOptions<E = any> extends FindManyOptions<E> {
-  pagination?: IPagination;
+    pagination?: IPagination;
 }
 
 export interface SendPattern {
-  module: string;
-  method: string;
+    module: string;
+    method: string;
 }
 
 export class BaseMicroservice {
-  constructor(
-    @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
-  ) {}
+    constructor(
+        @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
+    ) {}
 
-  send<R, D = any>(pattern: SendPattern, data: D = null): Promise<R> {
-    return lastValueFrom(
-      this.client.send<R>(
-        { module: pattern.module, method: pattern.method },
-        data || true,
-      ),
-    );
-  }
+    send<R, D = any>(pattern: SendPattern, data: D = null): Promise<R> {
+        return lastValueFrom(
+            this.client.send<R>(
+                { module: pattern.module, method: pattern.method },
+                data || true,
+            ),
+        );
+    }
 }

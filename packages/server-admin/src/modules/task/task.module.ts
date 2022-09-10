@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { TaskService } from './task.service';
 
 @Module({
-  imports: [UserModule, SiteModule, CountModule],
-  providers: [TaskService],
+    imports: [UserModule, SiteModule, CountModule],
+    providers: [TaskService],
 })
 export class TaskModule {}

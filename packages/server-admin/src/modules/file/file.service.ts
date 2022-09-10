@@ -1,7 +1,7 @@
 import {
-  BaseService,
-  IPaginationResponse,
-  IPaginationOptions,
+    BaseService,
+    IPaginationResponse,
+    IPaginationOptions,
 } from '@/globals/services/base.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,49 +13,49 @@ import { UpdateFieldDto } from './dto/file.dto';
 
 @Injectable()
 export class FileService extends BaseService<FileEntity> {
-  constructor(
-    @InjectRepository(FileEntity)
-    private readonly fileRepository: Repository<FileEntity>,
-  ) {
-    super(fileRepository);
-  }
+    constructor(
+        @InjectRepository(FileEntity)
+        private readonly fileRepository: Repository<FileEntity>,
+    ) {
+        super(fileRepository);
+    }
 
-  create(createFile: CreateFileDto) {
-    this.fileRepository.create(createFile);
-    return this.fileRepository.save(createFile);
-  }
+    create(createFile: CreateFileDto) {
+        this.fileRepository.create(createFile);
+        return this.fileRepository.save(createFile);
+    }
 
-  findList(
-    query: IPaginationOptions<FileEntity>,
-  ): Promise<IPaginationResponse> {
-    return this.findListAndPage(query);
-  }
+    findList(
+        query: IPaginationOptions<FileEntity>,
+    ): Promise<IPaginationResponse> {
+        return this.findListAndPage(query);
+    }
 
-  findOne(query: any): Promise<FileEntity | undefined> {
-    return this.fileRepository.findOne({
-      where: query,
-    });
-  }
+    findOne(query: any): Promise<FileEntity | undefined> {
+        return this.fileRepository.findOne({
+            where: query,
+        });
+    }
 
-  update(id: number, updateUserDto: UpdateFileDto) {
-    return this.fileRepository.update(id, updateUserDto);
-  }
+    update(id: number, updateUserDto: UpdateFileDto) {
+        return this.fileRepository.update(id, updateUserDto);
+    }
 
-  updateField(id: number, updateField: UpdateFieldDto) {
-    const value =
-      updateField.type === 'number'
-        ? Number(updateField.value)
-        : updateField.value;
-    return this.fileRepository.update(id, {
-      [updateField.field]: value,
-    });
-  }
+    updateField(id: number, updateField: UpdateFieldDto) {
+        const value =
+            updateField.type === 'number'
+                ? Number(updateField.value)
+                : updateField.value;
+        return this.fileRepository.update(id, {
+            [updateField.field]: value,
+        });
+    }
 
-  remove(id: number) {
-    return this.fileRepository.delete(id);
-  }
+    remove(id: number) {
+        return this.fileRepository.delete(id);
+    }
 
-  count() {
-    return this.fileRepository.count();
-  }
+    count() {
+        return this.fileRepository.count();
+    }
 }
