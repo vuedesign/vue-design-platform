@@ -4,9 +4,11 @@ import type { NextPage } from 'next';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
-import List from '@/modules/components/List';
-import Footer from '@/modules/components/Footer';
+
 import Header from '@/modules/components/Header';
+import List from '@/modules/components/List';
+import Buttom from '@/modules/components/Bottom';
+import Footer from '@/modules/components/Footer';
 import styles from './Home.module.scss';
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -34,6 +36,7 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
             </Head>
             <Header />
             <List type="home" />
+            <Buttom />
             <Footer />
         </div>
     );
