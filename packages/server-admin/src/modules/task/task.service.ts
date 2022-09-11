@@ -44,7 +44,7 @@ export class TaskService {
         this.total = tark.total;
         while (this.page * tark.size < this.total) {
             this.page++;
-            const { page, size, total } = await this.tark({
+            await this.tark({
                 size: this.size,
                 page: this.page,
             });

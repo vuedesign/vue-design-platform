@@ -17,15 +17,6 @@
         "fs-extra": "^10.0.0",
         "rimraf": "^3.0.2"
     },
-    "lint-staged": {
-        "*.js": [
-            "prettier --write"
-        ],
-        "*.ts?(x)": [
-            "eslint",
-            "prettier --parser=typescript --write"
-        ]
-    },
     "engines": {
         "node": ">=16.5.0"
     },

@@ -60,6 +60,7 @@ import {
     User,
     Broadcast,
     Analysis,
+    TagOne,
 } from '@icon-park/vue-next';
 
 export default defineComponent({
@@ -102,6 +103,7 @@ export default defineComponent({
         User,
         Broadcast,
         Analysis,
+        TagOne,
     },
     emits: ['toggle', 'goto'],
     setup(props, { emit }) {

@@ -25,6 +25,11 @@ export default <MenuNode[]>[
                 icon: 'Navigation',
             },
             {
+                label: '标签管理',
+                value: 'tag',
+                icon: 'TagOne',
+            },
+            {
                 label: '文件管理',
                 value: 'file',
                 icon: 'PictureOne',

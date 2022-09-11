@@ -14,7 +14,7 @@ export interface ListFilter {
 export interface BaseItem {
     id?: number;
     uuid?: string;
-    status: number | string;
+    status?: number | string;
     createdAt?: string;
     updatedAt?: string;
 }
