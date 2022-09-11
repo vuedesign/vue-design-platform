@@ -1,8 +1,13 @@
 import styles from './Bottom.module.scss';
-import { RankingList, TagOne, Help, ShareSys } from '@icon-park/react';
+import { RankingList, TagOne } from '@icon-park/react';
+import { useTagsQuery } from '@/modules/services/tagApi';
 import Link from 'next/link';
 
 const Bottom = () => {
+    const { data: tags } = useTagsQuery();
+    console.log('tags', tags);
+    const tagList = tags?.list || [];
+    console.log('tags', tagList);
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -19,13 +24,10 @@ const Bottom = () => {
                         <span className={styles.title}>标签云</span>
                     </dt>
                     <dd>
-                        <span>掘金</span>
-                        <span>稀土</span>
-                        <span>Vue.js</span>
-                        <span>前端面试题</span>
-                        <span>Kotlin</span>
-                        <span>ReactNative</span>
-                        <span>Python</span>
+                        {tagList &&
+                            tagList.map((item) => (
+                                <span data-id={item.id}>{item.name}</span>
+                            ))}
                     </dd>
                 </dl>
             </div>

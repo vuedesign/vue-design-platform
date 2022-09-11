@@ -18,9 +18,6 @@ export class CreateUser extends PartialType(CreateUserDto) {}
 
 @Injectable()
 export class UserService extends BaseMicroservice {
-    // constructor(
-    //   @Inject('BASE_MICROSERVICE') private readonly client?: ClientProxy,
-    // ) {}
     create(createUser: CreateUser) {
         return this.send<UserEntity>(
             { module: 'user', method: 'create' },

@@ -5,37 +5,35 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from '@/entities/tag.entity';
 import {
-    BaseService,
     IPaginationResponse,
     IPaginationOptions,
 } from '@/globals/services/base.service';
+import { BaseMicroservice } from '@/globals/services/base.microservice';
 
 @Injectable()
-export class TagService extends BaseService {
-    constructor(
-        @InjectRepository(TagEntity)
-        private readonly tagRepository: Repository<TagEntity>,
-    ) {
-        super(tagRepository);
-    }
+export class TagService extends BaseMicroservice {
     create(createTag: CreateTagDto) {
-        this.tagRepository.create(createTag);
-        return this.tagRepository.save(createTag);
+        // this.tagRepository.create(createTag);
+        // return this.tagRepository.save(createTag);
     }
 
-    findAll(options?: IPaginationOptions): Promise<IPaginationResponse> {
-        return this.findListAndPage(options);
+    findList(options?: IPaginationOptions): Promise<IPaginationResponse> {
+        return this.send(
+            {
+                module: 'tag',
+                method: 'findList',
+            },
+            options,
+        );
     }
 
     findOne(id: number) {
-        return `This action returns a #${id} tag`;
-    }
-
-    update(id: number, updateTagDto: UpdateTagDto) {
-        return `This action updates a #${id} tag`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} tag`;
+        return this.send(
+            {
+                module: 'tag',
+                method: 'findOne',
+            },
+            id,
+        );
     }
 }
