@@ -1,12 +1,17 @@
 import styles from './Bottom.module.scss';
 import { RankingList, TagOne } from '@icon-park/react';
 import { useTagsQuery } from '@/modules/services/tagApi';
+import { useUsersQuery } from '@/modules/services/userApi';
 import Link from 'next/link';
 
 const Bottom = () => {
     const { data: tags } = useTagsQuery();
-    console.log('tags', tags);
+    const { data: users } = useUsersQuery({
+        size: 6,
+    });
     const tagList = tags?.list || [];
+    const userList = users?.list || [];
+    console.log('users', userList);
     console.log('tags', tagList);
     return (
         <div className={styles.container}>
@@ -16,7 +21,29 @@ const Bottom = () => {
                         <RankingList theme="outline" size="24" />
                         <span className={styles.title}>作者排行榜</span>
                     </dt>
-                    <dd></dd>
+                    <dd>
+                        {userList &&
+                            userList.map((item, key) => {
+                                return (
+                                    <Link
+                                        href={`/users/${item.uuid}`}
+                                        key={key}>
+                                        <dl className={styles['user-item']}>
+                                            <dt
+                                                style={{
+                                                    backgroundImage: `url(${item.avatar})`,
+                                                }}></dt>
+                                            <dd>
+                                                <h5>
+                                                    {item.nickname ||
+                                                        item.username}
+                                                </h5>
+                                            </dd>
+                                        </dl>
+                                    </Link>
+                                );
+                            })}
+                    </dd>
                 </dl>
                 <dl className={styles.tags}>
                     <dt>

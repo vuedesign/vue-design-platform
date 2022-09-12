@@ -12,6 +12,7 @@ import { TagService } from './tag.service';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagListQueryDto } from './dto/tag.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 
 @Controller('tags')
 @ApiTags('标签模块')
@@ -28,6 +29,7 @@ export class TagController {
         return this.tagService.create(createTagDto);
     }
 
+    @Public()
     @Get()
     findList(@Query() query: TagListQueryDto) {
         const { size, page } = query;

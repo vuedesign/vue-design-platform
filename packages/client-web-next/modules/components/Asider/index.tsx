@@ -16,28 +16,28 @@ import styles from './Asider.module.scss';
 type AsiderProps = {
     uuid: string;
     authorId: number;
-    profile: Partial<User>;
+    user: Partial<User>;
 };
-const Asider = ({ uuid, authorId, profile }: AsiderProps) => {
+const Asider = ({ uuid, authorId, user }: AsiderProps) => {
     const { data: site } = useSitesQuery({ authorId, size: 2, uuid });
     const { data: count } = useCountQuery(authorId);
     return (
         <aside className={styles.container}>
-            <div className={styles.profile}>
-                {profile && (
+            <div className={styles.user}>
+                {user && (
                     <div className={styles.userinfo}>
                         <dl>
                             <dt>
                                 <Avatar
                                     size={48}
-                                    src={profile.avatar}
+                                    src={user.avatar}
                                     icon={<UserOutlined />}
                                 />
                             </dt>
                             <dd>
-                                <h5>{profile.username}</h5>
+                                <h5>{user.username}</h5>
                                 <p>
-                                    <Link href={`/profile/${profile.uuid}`}>
+                                    <Link href={`/users/${user.uuid}`}>
                                         <a className={styles.link}>
                                             <span
                                                 className={styles['link-text']}>

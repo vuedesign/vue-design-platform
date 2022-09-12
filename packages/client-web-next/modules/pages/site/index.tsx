@@ -185,7 +185,7 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                         <Asider
                             uuid={siteItem.uuid}
                             authorId={siteItem.authorId}
-                            profile={siteItem.author}
+                            user={siteItem.author}
                         />
                     </>
                 )}

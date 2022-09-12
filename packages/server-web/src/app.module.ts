@@ -8,6 +8,7 @@ import { NavigationModule } from './modules/navigation/navigation.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CountModule } from './modules/count/count.module';
 import { TagModule } from './modules/tag/tag.module';
+import { UserModule } from './modules/user/user.module';
 import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
 
@@ -27,6 +28,7 @@ import globalConfig from '@/configs/global.config';
         AuthModule,
         CountModule,
         TagModule,
+        UserModule,
     ],
     providers: [
         {
