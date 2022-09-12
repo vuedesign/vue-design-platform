@@ -6,6 +6,7 @@ import fileRoutes from '../modules/file/routes';
 import navigationRoutes from '../modules/navigation/routes';
 import siteRoutes from '../modules/site/routes';
 import countRoutes from '../modules/count/routes';
+import tagRoutes from '../modules/tag/routes';
 
 export default [
     {
@@ -23,6 +24,7 @@ export default [
             ...fileRoutes,
             ...navigationRoutes,
             ...siteRoutes,
+            ...tagRoutes,
         ],
     },
     ...globals,

@@ -3,16 +3,16 @@ import {
     Get,
     Post,
     Body,
-    Put,
     Param,
-    Delete,
     Query,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { TagService } from './tag.service';
+import { IPaginationOptions } from '@/globals/services/base.service';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagListQueryDto } from './dto/tag.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 
 @Controller('tags')
 @ApiTags('标签模块')
@@ -29,32 +29,21 @@ export class TagController {
         return this.tagService.create(createTagDto);
     }
 
+    @Public()
     @Get()
-    findAll(@Query() query: TagListQueryDto) {
+    findList(@Query() query: TagListQueryDto) {
         const { size, page } = query;
-        let order = {
-            updatedAt: 'DESC',
+        const opitions: IPaginationOptions = {
+            order: {
+                updatedAt: 'DESC',
+            },
+            pagination: { page, size },
         };
-        if (query.order) {
-            const [orderKey, orderValue]: Array<string> =
-                query.order.split(' ');
-            order[orderKey] = orderValue;
-        }
-        return this.tagService.findAll({ order, pagination: { page } });
+        return this.tagService.findList(opitions);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.tagService.findOne(+id);
-    }
-
-    @Put(':id')
-    update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-        return this.tagService.update(+id, updateTagDto);
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.tagService.remove(+id);
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.tagService.findOne(id);
     }
 }

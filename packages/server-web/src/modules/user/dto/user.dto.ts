@@ -11,14 +11,6 @@ export class UserListQueryDto extends ListQueryDto {
     order?: string;
 
     @ApiProperty({
-        description: '搜索',
-        required: false,
-        type: String,
-        default: '',
-    })
-    search?: string;
-
-    @ApiProperty({
         description: '角色',
         required: false,
         type: Number,

@@ -30,7 +30,7 @@ export class TagService extends BaseService<TagEntity> {
         return this.tagRepository.save(createTag);
     }
 
-    findAll(
+    findList(
         options?: IPaginationOptions<TagEntity>,
     ): Promise<IPaginationResponse> {
         return this.findListAndPage(options);
@@ -47,10 +47,10 @@ export class TagService extends BaseService<TagEntity> {
     }
 
     update(id: number, updateTagDto: UpdateTagDto) {
-        return `This action updates a #${id} tag`;
+        return this.tagRepository.update(id, updateTagDto);
     }
 
     remove(id: number) {
-        return `This action removes a #${id} tag`;
+        return this.tagRepository.delete(id);
     }
 }

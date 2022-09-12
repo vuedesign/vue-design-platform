@@ -29,8 +29,17 @@ export class UserService extends BaseService<UserEntity> {
     }
 
     findList(
-        query: IPaginationOptions<UserEntity>,
+        opitons: IPaginationOptions<UserEntity>,
     ): Promise<IPaginationResponse> {
+        const query = Object.assign(opitons, {
+            select: {
+                id: true,
+                uuid: true,
+                username: true,
+                nickname: true,
+                avatar: true,
+            },
+        });
         return this.findListAndPage(query);
     }
 

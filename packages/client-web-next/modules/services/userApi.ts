@@ -2,7 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import { baseURL } from '@/configs/globals.contants';
 import * as apis from '@/configs/apis.contants';
-import { User } from '@/modules/types';
+import { User, UserListResponse } from '@/modules/types';
+import { stringify } from 'qs';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -21,8 +22,16 @@ export const userApi = createApi({
                 method: 'GET',
             }),
         }),
+        users: builder.query<UserListResponse, Record<string, number | string>>(
+            {
+                query: (params = {}) => ({
+                    url: `${apis.USERS}?${stringify(params)}`,
+                    method: 'GET',
+                }),
+            },
+        ),
     }),
 });
 
-export const { useUserQuery } = userApi;
-export const { user } = userApi.endpoints;
+export const { useUserQuery, useUsersQuery } = userApi;
+export const { user, users } = userApi.endpoints;

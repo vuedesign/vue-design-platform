@@ -3,25 +3,16 @@ import {
     Get,
     Post,
     Body,
-    Put,
     Param,
-    Delete,
     ParseIntPipe,
     Query,
-    DefaultValuePipe,
-    Inject,
 } from '@nestjs/common';
-import { Like } from 'typeorm';
-import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserListQueryDto } from './dto/user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '@/core/decorators/auth.decorator';
-import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
-import { UserEntity } from '@/entities/user.entity';
-import { ClientProxy } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+import { IPaginationOptions } from '@/globals/services/base.service';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -48,9 +39,21 @@ export class UserController {
     @Public()
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
-        console.log('id===user', id);
         return this.userService.findOne({
             id,
         });
+    }
+
+    @Public()
+    @Get()
+    findList(@Query() query: UserListQueryDto) {
+        const { size = 20, page = 1 } = query;
+        const options: IPaginationOptions = {
+            pagination: { size, page },
+            order: {
+                updatedAt: 'DESC',
+            },
+        };
+        return this.userService.findList(options);
     }
 }

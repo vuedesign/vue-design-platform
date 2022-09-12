@@ -1,3 +1,4 @@
+import { Like } from 'typeorm';
 import {
     Controller,
     Get,
@@ -15,6 +16,7 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagListQueryDto } from './dto/tag.dto';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { TagEntity } from '@/entities/tag.entity';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 
 @Controller('tags')
 @ApiTags('标签模块')
@@ -32,20 +34,19 @@ export class TagController {
     }
 
     @Get()
-    findAll(@Query() query: TagListQueryDto) {
-        const { size, page } = query;
+    findList(@Query(new QueryTransformPipe(['name'])) query: TagListQueryDto) {
+        const { size, page, name } = query;
         const opitions: IPaginationOptions<TagEntity> = {
             order: {
                 updatedAt: 'DESC',
             },
-            pagination: { page },
+            pagination: { page, size },
+            where: {},
         };
-
-        // if (query.order) {
-        //   const [orderKey, orderValue]: Array<string> = query.order.split(' ');
-        //   order[orderKey] = orderValue;
-        // }
-        return this.tagService.findAll(opitions);
+        if (name) {
+            opitions.where['name'] = Like(`%${name}%`);
+        }
+        return this.tagService.findList(opitions);
     }
 
     @Get(':id')
