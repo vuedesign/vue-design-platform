@@ -1,27 +1,14 @@
-import { useState, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Time, Fire, ThumbsUp } from '@icon-park/react';
 import styles from './Nav.module.scss';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 type Item = {
     value: string;
     label: string;
     icon?: ReactElement;
 };
-
-const typeList: Array<Item> = [
-    {
-        value: '',
-        label: '全部',
-    },
-    {
-        value: 'site',
-        label: '网站',
-    },
-    {
-        value: 'code',
-        label: '代码',
-    },
-];
 
 const orderList: Array<Item> = [
     {
@@ -41,24 +28,45 @@ const orderList: Array<Item> = [
     },
 ];
 
+const typeList: Array<Item> = [
+    {
+        value: 'all',
+        label: '全部',
+    },
+    {
+        value: 'site',
+        label: '网站',
+    },
+    {
+        value: 'code',
+        label: '代码',
+    },
+];
+
 const Nav = () => {
-    const [orderActive, setOrderActive] = useState('new');
+    const useNavDispatch = useDispatch();
+    const query = useSelector(selectCurrentQuery);
     const hanldeCheckOrderClick = (item: Item) => {
-        setOrderActive(item.value);
+        useNavDispatch(
+            setQuery({
+                order: item.value,
+            }),
+        );
     };
-
-    const [typeActive, setTypeActive] = useState('all');
     const hanldeCheckTypeClick = (item: Item) => {
-        setTypeActive(item.value);
+        useNavDispatch(
+            setQuery({
+                type: item.value,
+            }),
+        );
     };
-
     return (
         <div className={styles.nav}>
             <ul className={styles.tabs}>
                 {orderList.map((item) => (
                     <li
                         className={
-                            item.value === orderActive ? styles.active : ''
+                            item.value === query.order ? styles.active : ''
                         }
                         data-type={item.value}
                         onClick={() => hanldeCheckOrderClick(item)}
@@ -72,7 +80,7 @@ const Nav = () => {
                 {typeList.map((item) => (
                     <li
                         className={
-                            item.value === typeActive ? styles.active : ''
+                            item.value === query.type ? styles.active : ''
                         }
                         data-type={item.value}
                         onClick={() => hanldeCheckTypeClick(item)}
@@ -81,6 +89,7 @@ const Nav = () => {
                     </li>
                 ))}
             </ul>
+            <div>{JSON.stringify(query)}</div>
         </div>
     );
 };

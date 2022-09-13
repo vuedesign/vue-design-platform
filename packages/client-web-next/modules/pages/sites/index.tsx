@@ -7,9 +7,16 @@ import Nav from '@/modules/components/Nav';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import styles from './Sites.module.scss';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
+        await store.dispatch(
+            setQuery({
+                order: 'new',
+                type: 'all',
+            }),
+        );
         await store.dispatch(
             sites.initiate({
                 page: 1,
