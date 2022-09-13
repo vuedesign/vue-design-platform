@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { UserEntity } from '@/entities/user.entity';
+import { findUserItemQuery } from './dto/user.dto';
 
 /**
  * 用户模块
@@ -19,7 +20,7 @@ export class UserTcpController {
     }
 
     @MessagePattern({ module: 'user', method: 'findOne' }, Transport.TCP)
-    findOne(id: number) {
-        return this.userService.findOne({ id });
+    findOne(query: findUserItemQuery) {
+        return this.userService.findOne(query);
     }
 }

@@ -50,8 +50,9 @@
 }
 
 .user-item {
-    width: 256px;
+    width: 244px;
     display: flex;
+    margin: 0 28px 16px 12px;
     margin-right: 16px;
     margin-bottom: 16px;
     > dt {
@@ -59,14 +60,17 @@
         height: 40px;
         border-radius: 20px;
         margin-right: 8px;
+        background-size: contain;
     }
     > dd {
-        flex: 1;
         height: 40px;
         margin-bottom: 0;
+        display: flex;
+        align-items: center;
         > h5 {
             height: 20px;
             line-height: 20px;
+            margin-bottom: 0;
         }
     }
     background-color: transparent;
@@ -82,6 +86,7 @@
     width: 256px;
     height: auto;
     dd {
+        padding: 0 12px;
         span {
             display: inline-block;
             vertical-align: middle;
