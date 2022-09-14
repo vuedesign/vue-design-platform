@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import { useSitesQuery } from '@/modules/services/siteApi';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './List.module.scss';
+import { useEffect, useState } from 'react';
 
 type ListProps = {
     type: string;
@@ -26,9 +29,26 @@ const List = ({ type: pageType, authorId, uuid }: ListProps) => {
     const router = useRouter();
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
-    const { data = { list: [], pagination: { page, size }, total: 0 } } =
-        useSitesQuery({ page, size, authorId });
+    const [siteQuery, setSiteQuery] = useState({
+        authorId,
+        page,
+        size,
+        type: 'all',
+        order: 'new',
+    });
+    const query = useSelector(selectCurrentQuery);
+
+    const {
+        data = { list: [], pagination: { page, size }, total: 0 },
+        refetch,
+    } = useSitesQuery(siteQuery);
     const routerPath = getRouterPath(pageType, uuid);
+
+    useEffect(() => {
+        console.log('query', query);
+        setSiteQuery(Object.assign(siteQuery, query));
+        refetch();
+    }, [query]);
     return (
         <section className={styles.container}>
             <section className={styles.main}>

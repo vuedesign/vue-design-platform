@@ -3,7 +3,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@/modules/store';
 import { SiteItem, SiteState, SiteQuery } from '@/modules/types/site';
 
-const initialState: SiteState = { siteItem: null, query: {} };
+const initialState: SiteState = {
+    siteItem: null,
+    query: {
+        order: 'new',
+        type: 'all',
+    },
+};
 
 const slice = createSlice({
     name: 'site',

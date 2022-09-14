@@ -89,7 +89,6 @@ const Nav = () => {
                     </li>
                 ))}
             </ul>
-            <div>{JSON.stringify(query)}</div>
         </div>
     );
 };
