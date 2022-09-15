@@ -34,7 +34,7 @@ export interface SiteItem {
 }
 export type SiteList = SiteItem[];
 export interface SiteListResponse extends ListPageResponse<SiteList> {}
-export type SiteQuery = Record<string, string>;
+export type SiteQuery = Record<string, string | number>;
 export type SiteState = {
     siteItem: SiteItem | null;
     query: SiteQuery;

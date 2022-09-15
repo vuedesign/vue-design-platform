@@ -7,22 +7,18 @@ import Nav from '@/modules/components/Nav';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import styles from './Sites.module.scss';
-import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import { setQuery } from '@/modules/features/siteSlice';
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        await store.dispatch(
-            setQuery({
-                order: 'new',
-                type: 'all',
-            }),
-        );
-        await store.dispatch(
-            sites.initiate({
-                page: 1,
-                size: 20,
-            }),
-        );
+        const query = {
+            order: String(context.query.order || 'new'),
+            type: String(context.query.type || 'all'),
+            page: Number(context.query.page || 1),
+            size: Number(context.query.size || 20),
+        };
+        await store.dispatch(setQuery(query));
+        await store.dispatch(sites.initiate(query));
         return {
             props: {},
         };

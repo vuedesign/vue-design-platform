@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useSitesQuery } from '@/modules/services/siteApi';
-import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentQuery } from '@/modules/features/siteSlice';
+import { useSelector } from 'react-redux';
 import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
@@ -25,28 +25,18 @@ const getRouterPath = (pageType: string, uuid: string | undefined) => {
     };
 };
 
-const List = ({ type: pageType, authorId, uuid }: ListProps) => {
+const List = ({ type: pageType, uuid }: ListProps) => {
     const router = useRouter();
+    const query = useSelector(selectCurrentQuery);
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
-    const [siteQuery, setSiteQuery] = useState({
-        authorId,
-        page,
-        size,
-        type: 'all',
-        order: 'new',
-    });
-    const query = useSelector(selectCurrentQuery);
-
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
-    } = useSitesQuery(siteQuery);
+    } = useSitesQuery(query);
     const routerPath = getRouterPath(pageType, uuid);
 
     useEffect(() => {
-        console.log('query', query);
-        setSiteQuery(Object.assign(siteQuery, query));
         refetch();
     }, [query]);
     return (

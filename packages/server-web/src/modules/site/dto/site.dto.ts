@@ -3,7 +3,7 @@ import { Transform } from 'class-transformer';
 import { IsString, IsInt, IsNotEmpty, isNumberString } from 'class-validator';
 
 export enum SiteType {
-    // ALL = '',
+    ALL = 'all',
     CODE = 'code',
     SITE = 'site',
 }

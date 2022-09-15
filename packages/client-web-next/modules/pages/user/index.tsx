@@ -11,6 +11,7 @@ import { count } from '@/modules/services/countApi';
 import { User } from '@/modules/types/auth';
 import { getUuid } from '@/modules/utils';
 import styles from './User.module.scss';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 
 type UserProps = {
     user: User;
@@ -26,13 +27,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 props: {} as UserProps,
             };
         }
-        await store.dispatch(
-            sites.initiate({
-                page: 1,
-                size: 20,
-                authorId: userData.id,
-            }),
-        );
+        const query = {
+            order: String(context.query.order || 'new'),
+            type: String(context.query.type || 'all'),
+            page: Number(context.query.page || 1),
+            size: Number(context.query.size || 20),
+            authorId: userData.id,
+        };
+        await store.dispatch(setQuery(query));
+        await store.dispatch(sites.initiate(query));
         await store.dispatch(count.initiate(userData.id));
         return {
             props: {

@@ -97,10 +97,6 @@ export class SiteController {
                     updatedAt: 'DESC',
                 };
             }
-        } else {
-            options.order = {
-                updatedAt: 'DESC',
-            };
         }
 
         if (title) {
@@ -111,7 +107,7 @@ export class SiteController {
             options.where['status'] = status;
         }
 
-        if (type) {
+        if (type && type !== 'all') {
             options.where['type'] = type;
         }
 
