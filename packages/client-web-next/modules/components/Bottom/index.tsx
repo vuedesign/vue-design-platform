@@ -26,7 +26,8 @@ const Bottom = () => {
                             userList.map((item, key) => {
                                 return (
                                     <Link
-                                        href={`/users/${item.uuid}`}
+                                        href={`/users/[uuid]`}
+                                        as={`/users/${item.uuid}`}
                                         key={key}>
                                         <dl className={styles['user-item']}>
                                             <dt
@@ -52,8 +53,10 @@ const Bottom = () => {
                     </dt>
                     <dd>
                         {tagList &&
-                            tagList.map((item) => (
-                                <span data-id={item.id}>{item.name}</span>
+                            tagList.map((item, key) => (
+                                <span key={key} data-id={item.id}>
+                                    {item.name}
+                                </span>
                             ))}
                     </dd>
                 </dl>

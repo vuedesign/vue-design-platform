@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 
 type ListProps = {
     type: string;
-    authorId?: number;
     uuid?: string;
 };
 

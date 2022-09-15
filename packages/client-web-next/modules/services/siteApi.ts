@@ -32,6 +32,7 @@ export const siteApi = createApi({
     endpoints: (builder) => ({
         sites: builder.query<SiteListResponse, Record<string, any>>({
             query: (params = {}) => {
+                console.log('====params', params);
                 return {
                     url: `${apis.SITES}?${stringify(params)}`,
                     method: 'get',

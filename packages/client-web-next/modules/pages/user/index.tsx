@@ -27,6 +27,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 props: {} as UserProps,
             };
         }
+        console.log('userData', userData);
         const query = {
             order: String(context.query.order || 'new'),
             type: String(context.query.type || 'all'),
@@ -63,7 +64,7 @@ const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List type="user" authorId={user.id} uuid={uuid} />
+                <List type="user" uuid={uuid} />
                 <Footer />
             </div>
         )
