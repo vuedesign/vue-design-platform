@@ -45,8 +45,17 @@ export const siteApi = createApi({
                 method: 'get',
             }),
         }),
+        sitesAssociate: builder.query<SiteItem, Record<string, any>>({
+            query: (params = {}) => {
+                const { uuid, ...query } = params;
+                return {
+                    url: `${apis.SITES}/${uuid}/associate?${stringify(query)}`,
+                    method: 'get',
+                };
+            },
+        }),
     }),
 });
 
-export const { useSitesQuery, useSiteQuery } = siteApi;
-export const { sites, site } = siteApi.endpoints;
+export const { useSitesQuery, useSiteQuery, useSitesAssociateQuery } = siteApi;
+export const { sites, site, sitesAssociate } = siteApi.endpoints;

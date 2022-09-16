@@ -11,7 +11,7 @@ import {
     TagOne,
 } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import { site, sites } from '@/modules/services/siteApi';
+import { site, sites, sitesAssociate } from '@/modules/services/siteApi';
 import { count } from '@/modules/services/countApi';
 import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
@@ -32,7 +32,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
         const { data: siteItem } = await store.dispatch(site.initiate(uuid));
         const authorId = siteItem?.authorId;
-        await store.dispatch(sites.initiate({ authorId, size: 2, uuid }));
+        await store.dispatch(
+            sitesAssociate.initiate({ authorId, size: 2, uuid }),
+        );
         await store.dispatch(count.initiate(authorId));
         return {
             props: {

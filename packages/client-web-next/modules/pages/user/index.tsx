@@ -33,7 +33,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             type: String(context.query.type || 'all'),
             page: Number(context.query.page || 1),
             size: Number(context.query.size || 20),
-            authorId: userData.id,
+            uuid,
         };
         await store.dispatch(setQuery(query));
         await store.dispatch(sites.initiate(query));

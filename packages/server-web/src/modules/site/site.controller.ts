@@ -7,6 +7,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
+import { UserService } from '../user/user.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
@@ -18,7 +19,10 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
-    constructor(private readonly siteService: SiteService) {}
+    constructor(
+        private readonly siteService: SiteService,
+        private readonly userService: UserService,
+    ) {}
     @Get('profile')
     @ApiQuery({
         description: '项目列表',
@@ -48,6 +52,34 @@ export class SiteController {
     }
 
     @Public()
+    @Get(':uuid/associate')
+    @ApiQuery({
+        description: '项目列表',
+        type: SiteListQueryDto,
+    })
+    findAssociate(
+        @Param('uuid') uuid: string,
+        @Query(new QueryTransformPipe()) query: SiteListQueryDto,
+    ) {
+        const { size = 2, page = 1, authorId } = query;
+        const options: IPaginationOptions = {
+            pagination: { size, page },
+            order: {
+                updatedAt: 'DESC',
+            },
+            where: {},
+            nots: {},
+        };
+        if (uuid) {
+            options.nots['uuid'] = uuid;
+        }
+        if (authorId) {
+            options.where['authorId'] = authorId;
+        }
+        return this.siteService.findList(options);
+    }
+
+    @Public()
     @Get(':uuid')
     @ApiQuery({
         description: '项目详情',
@@ -63,7 +95,9 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
+    async findAll(
+        @Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto,
+    ) {
         const {
             title,
             type,
@@ -71,7 +105,7 @@ export class SiteController {
             size = 20,
             page = 1,
             order,
-            authorId,
+            // authorId,
             uuid,
         } = query;
         const options: IPaginationOptions = {
@@ -111,12 +145,17 @@ export class SiteController {
             options.where['type'] = type;
         }
 
-        if (authorId) {
-            options.where['authorId'] = authorId;
-        }
         if (uuid) {
-            options.nots['uuid'] = uuid;
+            const user = await this.userService.findOne({ uuid });
+            // console.log('user', user);
+            if (user.id) {
+                options.where['authorId'] = user.id;
+            }
         }
+
+        // if (authorId) {
+        //     options.where['authorId'] = authorId;
+        // }
         return this.siteService.findList(options);
     }
 }
