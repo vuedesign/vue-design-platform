@@ -9,9 +9,19 @@ import { sites } from '@/modules/services/siteApi';
 import styles from './Sites.module.scss';
 import { setQuery } from '@/modules/features/siteSlice';
 
+type SitesPropsQuery = {
+    order: string;
+    type: string;
+    page: number;
+    size: number;
+};
+type SitesProps = {
+    query: SitesPropsQuery;
+};
+
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const query = {
+        const query: SitesPropsQuery = {
             order: String(context.query.order || 'new'),
             type: String(context.query.type || 'all'),
             page: Number(context.query.page || 1),
@@ -20,14 +30,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await store.dispatch(setQuery(query));
         await store.dispatch(sites.initiate(query));
         return {
-            props: {},
+            props: {
+                query,
+            },
         };
     },
 );
 
-type SitesProps = {};
-
-const Sites: NextPage<SitesProps> = ({}: SitesProps) => {
+const Sites: NextPage<SitesProps> = ({ query }: SitesProps) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -44,7 +54,7 @@ const Sites: NextPage<SitesProps> = ({}: SitesProps) => {
             <section className={styles.main}>
                 <Nav />
             </section>
-            <List type="sites" />
+            <List type="sites" query={query} />
             <Footer />
         </div>
     );
