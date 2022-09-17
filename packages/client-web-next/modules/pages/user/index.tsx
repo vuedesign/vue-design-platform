@@ -13,8 +13,14 @@ import { getParamsByContext } from '@/modules/utils';
 import styles from './User.module.scss';
 import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 
+type UserPropsQuery = {
+    page: number;
+    size: number;
+    authorId: number;
+};
 type UserProps = {
     user: User;
+    query: UserPropsQuery;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -39,12 +45,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return {
             props: {
                 user: userData,
+                query,
             },
         };
     },
 );
 
-const User: NextPage<UserProps> = ({ user }: UserProps) => {
+const User: NextPage<UserProps> = ({ user, query }: UserProps) => {
     return (
         user && (
             <div className={styles.container}>
@@ -60,7 +67,7 @@ const User: NextPage<UserProps> = ({ user }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List type="user" user={user} />
+                <List type="user" user={user} query={query} />
                 <Footer />
             </div>
         )

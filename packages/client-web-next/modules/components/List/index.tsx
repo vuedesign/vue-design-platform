@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { useSitesQuery, sites } from '@/modules/services/siteApi';
+import { RootState } from '@/modules/store';
 import { selectCurrentQuery } from '@/modules/features/siteSlice';
 import { useSelector } from 'react-redux';
 import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './List.module.scss';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { User } from '@/modules/types/auth';
 
 type ListProps = {
@@ -17,21 +18,29 @@ type ListProps = {
 
 const List = ({ type: pageType, user, query }: ListProps) => {
     const router = useRouter();
+    const page = Number(router.query.page || 1);
+    const size = Number(router.query.size || 20);
+    const [currentQuery, setCurrentQuery] = useState({
+        ...query,
+        page,
+        size,
+    });
     const globalQuery = useSelector(selectCurrentQuery);
-    const [currentQuery, setCurrentQuery] = useState(query);
-    const { page, size } = currentQuery;
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
     } = useSitesQuery(currentQuery);
 
     useEffect(() => {
-        console.log('stiessss', globalQuery);
-        setCurrentQuery(globalQuery);
-        setTimeout(() => {
-            refetch();
-        }, 0);
+        setCurrentQuery({
+            ...currentQuery,
+            ...globalQuery,
+        });
     }, [globalQuery]);
+
+    useEffect(() => {
+        refetch();
+    }, [currentQuery]);
     return (
         <section className={styles.container}>
             <section className={styles.main}>

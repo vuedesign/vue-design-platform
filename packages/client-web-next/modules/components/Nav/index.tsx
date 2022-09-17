@@ -3,6 +3,7 @@ import { Time, Fire, ThumbsUp } from '@icon-park/react';
 import styles from './Nav.module.scss';
 import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 type Item = {
     value: string;
@@ -44,19 +45,24 @@ const typeList: Array<Item> = [
 ];
 
 const Nav = () => {
+    const router = useRouter();
     const useNavDispatch = useDispatch();
     const query = useSelector(selectCurrentQuery);
     const hanldeCheckOrderClick = (item: Item) => {
+        router.push('/sites?page=1');
         useNavDispatch(
             setQuery({
                 order: item.value,
+                page: 1,
             }),
         );
     };
     const hanldeCheckTypeClick = (item: Item) => {
+        router.push('/sites?page=1');
         useNavDispatch(
             setQuery({
                 type: item.value,
+                page: 1,
             }),
         );
     };
