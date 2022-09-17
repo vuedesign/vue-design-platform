@@ -5,6 +5,7 @@ import { TOKEN_KEY, baseURL } from '@/configs/globals.contants';
 import { RootState } from '@/modules/store';
 import { isServer } from '@/modules/utils';
 import { SiteListResponse, SiteItem } from '@/modules/types';
+import { slice } from '@/modules/features/siteSlice';
 import { stringify } from 'qs';
 
 export const siteApi = createApi({
@@ -32,7 +33,6 @@ export const siteApi = createApi({
     endpoints: (builder) => ({
         sites: builder.query<SiteListResponse, Record<string, any>>({
             query: (params = {}) => {
-                console.log('====params', params);
                 return {
                     url: `${apis.SITES}?${stringify(params)}`,
                     method: 'get',

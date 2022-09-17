@@ -6,34 +6,27 @@ import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './List.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { User } from '@/modules/types/auth';
 
 type ListProps = {
     type: string;
-    uuid?: string;
+    user?: User;
 };
 
-const getRouterPath = (pageType: string, uuid: string | undefined) => {
-    return (page: number): string => {
-        const pageRoutes = new Map([
-            ['sites', `/sites?page=${page}`],
-            ['user', `/users/${uuid}?page=${page}`],
-            ['profile', `/profile?page=${page}`],
-        ]);
-        return pageRoutes.get(pageType) || `/sites?page=${page}`;
-    };
-};
-
-const List = ({ type: pageType, uuid }: ListProps) => {
+const List = ({ type: pageType, user }: ListProps) => {
     const router = useRouter();
+
     const query = useSelector(selectCurrentQuery);
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
-    } = useSitesQuery(query);
-    const routerPath = getRouterPath(pageType, uuid);
+    } = useSitesQuery({
+        ...query,
+        authorId: user && user.id,
+    });
 
     useEffect(() => {
         refetch();
@@ -64,14 +57,24 @@ const List = ({ type: pageType, uuid }: ListProps) => {
                             pageSize={size}
                             total={data.total}
                             onChange={(page, pageSize) => {
-                                router.push(routerPath(page));
+                                if (pageType === 'user' && user) {
+                                    router.push(
+                                        `/users/${user.uuid}?page=${page}`,
+                                    );
+                                } else if (pageType === 'sites') {
+                                    router.push(`/sites?page=${page}`);
+                                }
                             }}
                             itemRender={(page, type, originalElement) => {
                                 if (page >= 1 && type === 'page') {
+                                    let href = '';
+                                    if (pageType === 'user' && user) {
+                                        href = `/users/${user.uuid}?page=${page}`;
+                                    } else if (pageType === 'sites') {
+                                        href = `/sites?page=${page}`;
+                                    }
                                     return (
-                                        <Link
-                                            href={routerPath(page)}
-                                            passHref={true}>
+                                        <Link href={href} passHref={true}>
                                             <a>{page}</a>
                                         </Link>
                                     );

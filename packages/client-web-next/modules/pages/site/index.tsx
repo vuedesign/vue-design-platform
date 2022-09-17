@@ -16,13 +16,13 @@ import { count } from '@/modules/services/countApi';
 import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
-import { getUuid } from '@/modules/utils';
+import { getParamsByContext } from '@/modules/utils';
 import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const uuid = getUuid(context.params!.uuid);
+        const uuid = getParamsByContext<typeof context>(context, 'uuid');
         if (!uuid) {
             return {
                 props: {

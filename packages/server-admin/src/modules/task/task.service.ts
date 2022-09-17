@@ -28,13 +28,13 @@ export class TaskService {
 
     @Interval(10000 * 6)
     handleInterval() {
-        this.tarks();
+        // this.tarks();
         this.logger.debug(`Called every ${10 * 6} seconds`);
     }
 
     @Timeout(5000)
     async handleTimeout() {
-        this.tarks();
+        // this.tarks();
         this.logger.debug('Called once after 5 seconds');
     }
 

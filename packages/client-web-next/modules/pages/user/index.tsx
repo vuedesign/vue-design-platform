@@ -9,18 +9,18 @@ import { sites } from '@/modules/services/siteApi';
 import { user } from '@/modules/services/userApi';
 import { count } from '@/modules/services/countApi';
 import { User } from '@/modules/types/auth';
-import { getUuid } from '@/modules/utils';
+import { getParamsByContext } from '@/modules/utils';
 import styles from './User.module.scss';
 import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 
 type UserProps = {
     user: User;
-    uuid: string;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const uuid = getUuid(context.params!.uuid);
+        const uuid = getParamsByContext<typeof context>(context, 'uuid');
+        console.log('## uuid', uuid);
         const { data: userData } = await store.dispatch(user.initiate(uuid));
         if (!userData) {
             return {
@@ -29,11 +29,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
         console.log('userData', userData);
         const query = {
-            order: String(context.query.order || 'new'),
-            type: String(context.query.type || 'all'),
             page: Number(context.query.page || 1),
             size: Number(context.query.size || 20),
-            uuid,
+            authorId: userData.id,
         };
         await store.dispatch(setQuery(query));
         await store.dispatch(sites.initiate(query));
@@ -41,16 +39,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return {
             props: {
                 user: userData,
-                uuid,
             },
         };
     },
 );
 
-const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
+const User: NextPage<UserProps> = ({ user }: UserProps) => {
     return (
-        user &&
-        uuid && (
+        user && (
             <div className={styles.container}>
                 <Head>
                     <title>vue.design-profile</title>
@@ -64,7 +60,7 @@ const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List type="user" uuid={uuid} />
+                <List type="user" user={user} />
                 <Footer />
             </div>
         )

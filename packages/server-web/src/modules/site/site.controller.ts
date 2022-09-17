@@ -54,7 +54,7 @@ export class SiteController {
     @Public()
     @Get(':uuid/associate')
     @ApiQuery({
-        description: '项目列表',
+        description: '详情相关项目列表',
         type: SiteListQueryDto,
     })
     findAssociate(
@@ -96,7 +96,8 @@ export class SiteController {
         type: SiteListQueryDto,
     })
     async findAll(
-        @Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto,
+        @Query(new QueryTransformPipe(['title']))
+        query: SiteListQueryDto,
     ) {
         const {
             title,
@@ -105,8 +106,7 @@ export class SiteController {
             size = 20,
             page = 1,
             order,
-            // authorId,
-            uuid,
+            authorId,
         } = query;
         const options: IPaginationOptions = {
             pagination: { size, page },
@@ -114,7 +114,6 @@ export class SiteController {
                 updatedAt: 'DESC',
             },
             where: {},
-            nots: {},
         };
 
         if (order) {
@@ -145,17 +144,12 @@ export class SiteController {
             options.where['type'] = type;
         }
 
-        if (uuid) {
-            const user = await this.userService.findOne({ uuid });
-            // console.log('user', user);
-            if (user.id) {
-                options.where['authorId'] = user.id;
-            }
+        if (authorId) {
+            options.where['authorId'] = authorId;
         }
-
-        // if (authorId) {
-        //     options.where['authorId'] = authorId;
-        // }
-        return this.siteService.findList(options);
+        const data = await this.siteService.findList(options);
+        console.log('options==x=x', options);
+        console.log('options==x=xdata', data);
+        return data;
     }
 }

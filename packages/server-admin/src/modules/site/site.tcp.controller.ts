@@ -14,8 +14,8 @@ export class SiteTcpController {
     /**
      * 站点列表
      */
-    @MessagePattern({ module: 'site', method: 'find' }, Transport.TCP)
-    findAll(options: IPaginationOptions<SiteEntity>) {
+    @MessagePattern({ module: 'site', method: 'findList' }, Transport.TCP)
+    findList(options: IPaginationOptions<SiteEntity>) {
         return this.siteService.findList(options);
     }
 
