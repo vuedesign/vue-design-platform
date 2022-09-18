@@ -67,7 +67,7 @@ const User: NextPage<UserProps> = ({ user, query }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List type="user" user={user} query={query} />
+                <List pageType="user" user={user} query={query} />
                 <Footer />
             </div>
         )

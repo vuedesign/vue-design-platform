@@ -23,13 +23,6 @@ import styles from './Site.module.scss';
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
         const uuid = getParamsByContext<typeof context>(context, 'uuid');
-        if (!uuid) {
-            return {
-                props: {
-                    siteItem: null,
-                },
-            };
-        }
         const { data: siteItem } = await store.dispatch(site.initiate(uuid));
         const authorId = siteItem?.authorId;
         await store.dispatch(
@@ -45,47 +38,48 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 
 type SiteProps = {
-    siteItem: SiteItem | null;
+    siteItem: SiteItem | undefined | null;
 };
+
+const toolList = [
+    {
+        icon: (
+            <ThumbsUp
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+        badge: 99,
+    },
+    {
+        icon: (
+            <ThumbsDown
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+        badge: 4,
+    },
+    {
+        icon: (
+            <Like
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+        badge: 20,
+    },
+];
 
 const Tools = () => {
     const [count, setCount] = useState(99);
     //  GithubOne, Home, Like, ThumbsUp, ThumbsDown
-    const toolList = [
-        {
-            icon: (
-                <ThumbsUp
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: 99,
-        },
-        {
-            icon: (
-                <ThumbsDown
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: 4,
-        },
-        {
-            icon: (
-                <Like
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: 20,
-        },
-    ];
     return (
         <div className={styles.tools}>
             <ul>

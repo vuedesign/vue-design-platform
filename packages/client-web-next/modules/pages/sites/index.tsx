@@ -54,7 +54,7 @@ const Sites: NextPage<SitesProps> = ({ query }: SitesProps) => {
             <section className={styles.main}>
                 <Nav />
             </section>
-            <List type="sites" query={query} />
+            <List pageType="sites" query={query} />
             <Footer />
         </div>
     );
