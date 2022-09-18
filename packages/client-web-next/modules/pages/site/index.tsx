@@ -113,6 +113,11 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
             <section className={styles.main}>
                 {siteItem && (
                     <>
+                        <Asider
+                            uuid={siteItem.uuid}
+                            authorId={siteItem.authorId}
+                            user={siteItem.author}
+                        />
                         <article className={styles.article}>
                             <header className={styles.title}>
                                 <h1>{siteItem.title}</h1>
@@ -178,11 +183,6 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                             </div>
                             <Tools />
                         </article>
-                        <Asider
-                            uuid={siteItem.uuid}
-                            authorId={siteItem.authorId}
-                            user={siteItem.author}
-                        />
                     </>
                 )}
             </section>

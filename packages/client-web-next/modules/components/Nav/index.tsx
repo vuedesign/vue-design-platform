@@ -1,17 +1,17 @@
+import styles from './Nav.module.scss';
 import { ReactElement } from 'react';
 import { Time, Fire, ThumbsUp } from '@icon-park/react';
-import styles from './Nav.module.scss';
 import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import { typeList, TypeItem } from '@/configs/globals.contants';
 
-type Item = {
+type OrderItem = {
     value: string;
     label: string;
     icon?: ReactElement;
 };
-
-const orderList: Array<Item> = [
+const orderList: Array<OrderItem> = [
     {
         value: 'new',
         label: '最新',
@@ -29,26 +29,11 @@ const orderList: Array<Item> = [
     },
 ];
 
-const typeList: Array<Item> = [
-    {
-        value: 'all',
-        label: '全部',
-    },
-    {
-        value: 'site',
-        label: '网站',
-    },
-    {
-        value: 'code',
-        label: '代码',
-    },
-];
-
 const Nav = () => {
     const router = useRouter();
     const useNavDispatch = useDispatch();
     const query = useSelector(selectCurrentQuery);
-    const hanldeCheckOrderClick = (item: Item) => {
+    const hanldeCheckOrderClick = (item: OrderItem) => {
         router.push('/sites?page=1');
         useNavDispatch(
             setQuery({
@@ -57,7 +42,7 @@ const Nav = () => {
             }),
         );
     };
-    const hanldeCheckTypeClick = (item: Item) => {
+    const hanldeCheckTypeClick = (item: TypeItem) => {
         router.push('/sites?page=1');
         useNavDispatch(
             setQuery({
