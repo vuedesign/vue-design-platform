@@ -4,10 +4,10 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     CreateDateColumn,
-    ManyToMany,
-    JoinTable,
+    // ManyToMany,
+    // JoinTable,
 } from 'typeorm';
-import { SiteEntity } from './site.entity';
+// import { SiteEntity } from './site.entity';
 
 @Entity('tag')
 export class TagEntity {
@@ -56,9 +56,9 @@ export class TagEntity {
     })
     updatedAt: Date;
 
-    @ManyToMany(() => SiteEntity, (site) => site.tags, {
-        cascade: ['insert', 'update', 'recover', 'soft-remove'],
-    })
-    @JoinTable()
-    sites: SiteEntity[];
+    // @ManyToMany(() => SiteEntity, (site) => site.tags, {
+    //     cascade: ['insert', 'update', 'recover', 'soft-remove'],
+    // })
+    // @JoinTable()
+    // sites: SiteEntity[];
 }

@@ -19,6 +19,11 @@ export class LoginParam {
     password: string;
 }
 
+type LikeParamType = 'top' | 'down';
+export interface LikeParam {
+    type: LikeParamType;
+}
+
 export interface AuthRequest extends Request {
     user: UserEntity;
 }

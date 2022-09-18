@@ -11,6 +11,7 @@ import type {
     User,
     SiteListResponse,
     SiteItem,
+    LikeParam,
 } from '@/modules/types';
 import { stringify } from 'qs';
 
@@ -84,13 +85,23 @@ export const authApi = createApi({
                 return data;
             },
         }),
+        like: builder.mutation<boolean, LikeParam>({
+            query: (data) => {
+                return {
+                    url: apis.TOOLS_LIKE,
+                    method: 'PATCH',
+                    body: data,
+                };
+            },
+        }),
     }),
 });
 
 export const {
     useLoginMutation,
+    useLikeMutation,
     useProfileQuery,
     useCountsQuery,
     useSitesQuery,
 } = authApi;
-export const { profile, counts, sites } = authApi.endpoints;
+export const { profile, counts, sites, like } = authApi.endpoints;
