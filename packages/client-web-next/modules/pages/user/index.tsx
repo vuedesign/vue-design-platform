@@ -9,44 +9,51 @@ import { sites } from '@/modules/services/siteApi';
 import { user } from '@/modules/services/userApi';
 import { count } from '@/modules/services/countApi';
 import { User } from '@/modules/types/auth';
-import { getUuid } from '@/modules/utils';
+import { getParamsByContext } from '@/modules/utils';
 import styles from './User.module.scss';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
 
+type UserPropsQuery = {
+    page: number;
+    size: number;
+    authorId: number;
+};
 type UserProps = {
     user: User;
-    uuid: string;
+    query: UserPropsQuery;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const uuid = getUuid(context.params!.uuid);
+        const uuid = getParamsByContext<typeof context>(context, 'uuid');
+        console.log('## uuid', uuid);
         const { data: userData } = await store.dispatch(user.initiate(uuid));
         if (!userData) {
             return {
                 props: {} as UserProps,
             };
         }
-        await store.dispatch(
-            sites.initiate({
-                page: 1,
-                size: 20,
-                authorId: userData.id,
-            }),
-        );
+        console.log('userData', userData);
+        const query = {
+            page: Number(context.query.page || 1),
+            size: Number(context.query.size || 20),
+            authorId: userData.id,
+        };
+        await store.dispatch(setQuery(query));
+        await store.dispatch(sites.initiate(query));
         await store.dispatch(count.initiate(userData.id));
         return {
             props: {
                 user: userData,
-                uuid,
+                query,
             },
         };
     },
 );
 
-const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
+const User: NextPage<UserProps> = ({ user, query }: UserProps) => {
     return (
-        user &&
-        uuid && (
+        user && (
             <div className={styles.container}>
                 <Head>
                     <title>vue.design-profile</title>
@@ -60,7 +67,7 @@ const User: NextPage<UserProps> = ({ user, uuid }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List type="user" authorId={user.id} uuid={uuid} />
+                <List pageType="user" user={user} query={query} />
                 <Footer />
             </div>
         )

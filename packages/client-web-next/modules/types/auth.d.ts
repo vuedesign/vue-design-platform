@@ -33,3 +33,9 @@ export interface UserListResponse extends ListPageResponse<UserList> {}
 export type UserState = {
     userItem: User | null;
 };
+
+export type LikeParamType = 'top' | 'down';
+export interface LikeParam {
+    type: LikeParamType;
+    siteId: number;
+}

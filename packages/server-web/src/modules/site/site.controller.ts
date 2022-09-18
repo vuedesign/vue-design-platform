@@ -7,6 +7,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
+import { UserService } from '../user/user.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
@@ -18,7 +19,10 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 @ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
-    constructor(private readonly siteService: SiteService) {}
+    constructor(
+        private readonly siteService: SiteService,
+        private readonly userService: UserService,
+    ) {}
     @Get('profile')
     @ApiQuery({
         description: '项目列表',
@@ -48,6 +52,34 @@ export class SiteController {
     }
 
     @Public()
+    @Get(':uuid/associate')
+    @ApiQuery({
+        description: '详情相关项目列表',
+        type: SiteListQueryDto,
+    })
+    findAssociate(
+        @Param('uuid') uuid: string,
+        @Query(new QueryTransformPipe()) query: SiteListQueryDto,
+    ) {
+        const { size = 2, page = 1, authorId } = query;
+        const options: IPaginationOptions = {
+            pagination: { size, page },
+            order: {
+                updatedAt: 'DESC',
+            },
+            where: {},
+            nots: {},
+        };
+        if (uuid) {
+            options.nots['uuid'] = uuid;
+        }
+        if (authorId) {
+            options.where['authorId'] = authorId;
+        }
+        return this.siteService.findList(options);
+    }
+
+    @Public()
     @Get(':uuid')
     @ApiQuery({
         description: '项目详情',
@@ -63,7 +95,10 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    findAll(@Query(new QueryTransformPipe(['title'])) query: SiteListQueryDto) {
+    async findAll(
+        @Query(new QueryTransformPipe(['title']))
+        query: SiteListQueryDto,
+    ) {
         const {
             title,
             type,
@@ -72,7 +107,6 @@ export class SiteController {
             page = 1,
             order,
             authorId,
-            uuid,
         } = query;
         const options: IPaginationOptions = {
             pagination: { size, page },
@@ -80,7 +114,6 @@ export class SiteController {
                 updatedAt: 'DESC',
             },
             where: {},
-            nots: {},
         };
 
         if (order) {
@@ -97,10 +130,6 @@ export class SiteController {
                     updatedAt: 'DESC',
                 };
             }
-        } else {
-            options.order = {
-                updatedAt: 'DESC',
-            };
         }
 
         if (title) {
@@ -111,16 +140,16 @@ export class SiteController {
             options.where['status'] = status;
         }
 
-        if (type) {
+        if (type && type !== 'all') {
             options.where['type'] = type;
         }
 
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        if (uuid) {
-            options.nots['uuid'] = uuid;
-        }
-        return this.siteService.findList(options);
+        const data = await this.siteService.findList(options);
+        console.log('options==x=x', options);
+        console.log('options==x=xdata', data);
+        return data;
     }
 }

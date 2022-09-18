@@ -1,16 +1,8 @@
-import {
-    GithubOne,
-    Home,
-    Like,
-    ThumbsUp,
-    ThumbsDown,
-    ArrowCircleRight,
-} from '@icon-park/react';
-import { forwardRef } from 'react';
-import { Tooltip } from 'antd';
+import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import Link from 'next/link';
 import type { SiteItem } from '@/modules/types/site';
 import styles from './Item.module.scss';
+import { typeMap } from '@/configs/globals.contants';
 
 const Item = (props: SiteItem) => {
     return (
@@ -72,6 +64,9 @@ const Item = (props: SiteItem) => {
                     <h5>{props.title}</h5>
                     <p>{props.description}</p>
                     <div className={styles.tags}>
+                        {typeMap.has(props.type) && (
+                            <span>{typeMap.get(props.type)}</span>
+                        )}
                         {(props.tags &&
                             props.tags.length &&
                             props.tags.map((item) => (

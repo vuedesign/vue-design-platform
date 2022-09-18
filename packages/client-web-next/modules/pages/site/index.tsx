@@ -11,28 +11,25 @@ import {
     TagOne,
 } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import { site, sites } from '@/modules/services/siteApi';
+import { site, sites, sitesAssociate } from '@/modules/services/siteApi';
 import { count } from '@/modules/services/countApi';
 import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
-import { getUuid } from '@/modules/utils';
+import { getParamsByContext } from '@/modules/utils';
 import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
+import { useLikeMutation } from '@/modules/services/authApi';
+import { typeMap } from '@/configs/globals.contants';
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const uuid = getUuid(context.params!.uuid);
-        if (!uuid) {
-            return {
-                props: {
-                    siteItem: null,
-                },
-            };
-        }
+        const uuid = getParamsByContext<typeof context>(context, 'uuid');
         const { data: siteItem } = await store.dispatch(site.initiate(uuid));
         const authorId = siteItem?.authorId;
-        await store.dispatch(sites.initiate({ authorId, size: 2, uuid }));
+        await store.dispatch(
+            sitesAssociate.initiate({ authorId, size: 2, uuid }),
+        );
         await store.dispatch(count.initiate(authorId));
         return {
             props: {
@@ -43,14 +40,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 
 type SiteProps = {
-    siteItem: SiteItem | null;
+    siteItem: SiteItem | undefined | null;
 };
 
-const Tools = () => {
-    const [count, setCount] = useState(99);
+type SiteToolsProps = {
+    siteItem: SiteItem;
+};
+
+const Tools = ({ siteItem }: SiteToolsProps) => {
     //  GithubOne, Home, Like, ThumbsUp, ThumbsDown
     const toolList = [
         {
+            type: 'top',
             icon: (
                 <ThumbsUp
                     theme="outline"
@@ -59,9 +60,10 @@ const Tools = () => {
                     style={{ height: '20px' }}
                 />
             ),
-            badge: 99,
+            badge: siteItem.top || 0,
         },
         {
+            type: 'down',
             icon: (
                 <ThumbsDown
                     theme="outline"
@@ -70,9 +72,10 @@ const Tools = () => {
                     style={{ height: '20px' }}
                 />
             ),
-            badge: 4,
+            badge: siteItem.down || 0,
         },
         {
+            type: 'collections',
             icon: (
                 <Like
                     theme="outline"
@@ -81,9 +84,18 @@ const Tools = () => {
                     style={{ height: '20px' }}
                 />
             ),
-            badge: 20,
+            badge: siteItem.collections || 0,
         },
     ];
+    const [like, { isLoading }] = useLikeMutation();
+    console.log('siteItem', siteItem);
+    const handleClick = (item: any) => {
+        console.log('item', item);
+        like({
+            type: item.type,
+            siteId: siteItem.id || 0,
+        });
+    };
     return (
         <div className={styles.tools}>
             <ul>
@@ -92,7 +104,11 @@ const Tools = () => {
                         <span className={styles['tools-text']}>
                             {item.badge}
                         </span>
-                        <span className={styles['tools-btn']}>{item.icon}</span>
+                        <span
+                            onClick={() => handleClick(item)}
+                            className={styles['tools-btn']}>
+                            {item.icon}
+                        </span>
                     </li>
                 ))}
             </ul>
@@ -117,6 +133,11 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
             <section className={styles.main}>
                 {siteItem && (
                     <>
+                        <Asider
+                            uuid={siteItem.uuid}
+                            authorId={siteItem.authorId}
+                            user={siteItem.author}
+                        />
                         <article className={styles.article}>
                             <header className={styles.title}>
                                 <h1>{siteItem.title}</h1>
@@ -154,7 +175,9 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                                 </div>
                             </header>
                             <div className={styles.meta}>
-                                <span>[{siteItem.type}]</span>
+                                {typeMap.has(siteItem.type) && (
+                                    <span>[{typeMap.get(siteItem.type)}]</span>
+                                )}
                                 <span className={styles.dot}> · </span>
                                 <time>{siteItem.createdAt}</time>
                                 <span className={styles.dot}> · </span>
@@ -180,13 +203,8 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                             <div className={styles.content}>
                                 {siteItem.description}
                             </div>
-                            <Tools />
+                            {siteItem && <Tools siteItem={siteItem} />}
                         </article>
-                        <Asider
-                            uuid={siteItem.uuid}
-                            authorId={siteItem.authorId}
-                            user={siteItem.author}
-                        />
                     </>
                 )}
             </section>

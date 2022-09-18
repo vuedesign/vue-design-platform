@@ -17,3 +17,6 @@ export const USERS = '/users';
 export const COUNTS_PROFILE = '/counts/profile';
 export const AUTH_PROFILE = '/auth/profile';
 export const SITES_PROFILE = '/sites/profile';
+
+// tools
+export const TOOLS_LIKE = '/tools/like';

@@ -8,6 +8,7 @@ import {
     Res,
     HttpStatus,
     HttpException,
+    Put,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto, AuthRequest } from './dto/auth.dto';
@@ -15,7 +16,7 @@ import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { Public } from '../../core/decorators/auth.decorator';
 import { Response, Request } from 'express';
-import { LoginParam } from './dto/auth.dto';
+import { LoginParam, LikeParam } from './dto/auth.dto';
 import { getFieldType } from '../../core/utils';
 
 @Controller('auth')
@@ -87,4 +88,7 @@ export class AuthController {
         console.log('res', res);
         return res;
     }
+
+    @Put('like')
+    like(@Body() body: LikeParam) {}
 }

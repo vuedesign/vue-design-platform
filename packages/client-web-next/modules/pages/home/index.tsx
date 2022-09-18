@@ -35,7 +35,7 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <List type="home" />
+            <List pageType="home" />
             <Buttom />
             <Footer />
         </div>

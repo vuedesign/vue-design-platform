@@ -7,7 +7,7 @@ import {
     ThumbsUp,
     ArrowCircleRight,
 } from '@icon-park/react';
-import { useSitesQuery } from '@/modules/services/siteApi';
+import { useSitesAssociateQuery } from '@/modules/services/siteApi';
 import { useCountQuery } from '@/modules/services/countApi';
 import Item from '@/modules/components/Item';
 import { User } from '@/modules/types/auth';
@@ -19,7 +19,7 @@ type AsiderProps = {
     user: Partial<User>;
 };
 const Asider = ({ uuid, authorId, user }: AsiderProps) => {
-    const { data: site } = useSitesQuery({ authorId, size: 2, uuid });
+    const { data: site } = useSitesAssociateQuery({ authorId, size: 2, uuid });
     const { data: count } = useCountQuery(authorId);
     return (
         <aside className={styles.container}>
