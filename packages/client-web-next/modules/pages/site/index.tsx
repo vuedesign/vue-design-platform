@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ import {
     TagOne,
 } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import { site, sites, sitesAssociate } from '@/modules/services/siteApi';
+import { site, useSiteQuery, sitesAssociate } from '@/modules/services/siteApi';
 import { count } from '@/modules/services/countApi';
 import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
@@ -21,6 +22,104 @@ import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
 import { useLikeMutation } from '@/modules/services/authApi';
 import { typeMap } from '@/configs/globals.contants';
+
+type SiteProps = {
+    uuid: string;
+};
+type TooItemType = 'top' | 'down' | 'collections';
+type TooItem = {
+    type: TooItemType;
+    icon: ReactElement;
+};
+
+const toolList: Array<TooItem> = [
+    {
+        type: 'top',
+        icon: (
+            <ThumbsUp
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+    },
+    {
+        type: 'down',
+        icon: (
+            <ThumbsDown
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+    },
+    {
+        type: 'collections',
+        icon: (
+            <Like
+                theme="outline"
+                size="20"
+                fill="#666"
+                style={{ height: '20px' }}
+            />
+        ),
+    },
+];
+
+const Tools = ({ uuid }: SiteProps) => {
+    const { data: detail, refetch } = useSiteQuery(uuid);
+    if (!detail) {
+        return null;
+    }
+    const [badges, setBadges] = useState({
+        top: detail.top || 0,
+        down: detail.down || 0,
+        collections: detail.collections || 0,
+    });
+
+    const [like, { isLoading }] = useLikeMutation();
+    const handleClick = (type: TooItemType) => {
+        like({
+            type,
+            siteId: detail.id || 0,
+        }).then((res) => {
+            console.log('res', res);
+            if (!res) {
+                return;
+            }
+            refetch();
+        });
+    };
+
+    useEffect(() => {
+        setBadges({
+            top: detail.top || 0,
+            down: detail.down || 0,
+            collections: detail.collections || 0,
+        });
+    }, [detail]);
+
+    return (
+        <div className={styles.tools}>
+            <ul>
+                {toolList.map((item, index) => (
+                    <li key={index}>
+                        <span className={styles['tools-text']}>
+                            {badges[item.type]}
+                        </span>
+                        <span
+                            onClick={() => handleClick(item.type)}
+                            className={styles['tools-btn']}>
+                            {item.icon}
+                        </span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
@@ -33,90 +132,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await store.dispatch(count.initiate(authorId));
         return {
             props: {
-                siteItem,
+                uuid,
             },
         };
     },
 );
 
-type SiteProps = {
-    siteItem: SiteItem | undefined | null;
-};
-
-type SiteToolsProps = {
-    siteItem: SiteItem;
-};
-
-const Tools = ({ siteItem }: SiteToolsProps) => {
-    //  GithubOne, Home, Like, ThumbsUp, ThumbsDown
-    const toolList = [
-        {
-            type: 'top',
-            icon: (
-                <ThumbsUp
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: siteItem.top || 0,
-        },
-        {
-            type: 'down',
-            icon: (
-                <ThumbsDown
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: siteItem.down || 0,
-        },
-        {
-            type: 'collections',
-            icon: (
-                <Like
-                    theme="outline"
-                    size="20"
-                    fill="#666"
-                    style={{ height: '20px' }}
-                />
-            ),
-            badge: siteItem.collections || 0,
-        },
-    ];
-    const [like, { isLoading }] = useLikeMutation();
-    console.log('siteItem', siteItem);
-    const handleClick = (item: any) => {
-        console.log('item', item);
-        like({
-            type: item.type,
-            siteId: siteItem.id || 0,
-        });
-    };
-    return (
-        <div className={styles.tools}>
-            <ul>
-                {toolList.map((item, index) => (
-                    <li key={index}>
-                        <span className={styles['tools-text']}>
-                            {item.badge}
-                        </span>
-                        <span
-                            onClick={() => handleClick(item)}
-                            className={styles['tools-btn']}>
-                            {item.icon}
-                        </span>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
+const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
+    const { data: detail } = useSiteQuery(uuid);
     return (
         <div className={styles.container}>
             <Head>
@@ -131,20 +154,20 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                 <Top />
             </header>
             <section className={styles.main}>
-                {siteItem && (
+                {detail && (
                     <>
                         <Asider
-                            uuid={siteItem.uuid}
-                            authorId={siteItem.authorId}
-                            user={siteItem.author}
+                            uuid={detail.uuid}
+                            authorId={detail.authorId}
+                            user={detail.author}
                         />
                         <article className={styles.article}>
                             <header className={styles.title}>
-                                <h1>{siteItem.title}</h1>
+                                <h1>{detail.title}</h1>
                                 <div className={styles.link}>
-                                    {siteItem.codeUrl && (
+                                    {detail.codeUrl && (
                                         <Link
-                                            href={siteItem.codeUrl}
+                                            href={detail.codeUrl}
                                             target="_blank">
                                             <span
                                                 className={styles['link-btn']}>
@@ -157,9 +180,9 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                                             </span>
                                         </Link>
                                     )}
-                                    {siteItem.siteUrl && (
+                                    {detail.siteUrl && (
                                         <Link
-                                            href={siteItem.siteUrl}
+                                            href={detail.siteUrl}
                                             target="_blank">
                                             <span
                                                 className={styles['link-btn']}>
@@ -175,15 +198,15 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                                 </div>
                             </header>
                             <div className={styles.meta}>
-                                {typeMap.has(siteItem.type) && (
-                                    <span>[{typeMap.get(siteItem.type)}]</span>
+                                {typeMap.has(detail.type) && (
+                                    <span>[{typeMap.get(detail.type)}]</span>
                                 )}
                                 <span className={styles.dot}> · </span>
-                                <time>{siteItem.createdAt}</time>
+                                <time>{detail.createdAt}</time>
                                 <span className={styles.dot}> · </span>
-                                <span>阅读 {siteItem.views}</span>
+                                <span>阅读 {detail.views}</span>
                                 <span className={styles.dot}> · </span>
-                                {siteItem.tags && (
+                                {detail.tags && (
                                     <TagOne
                                         theme="outline"
                                         size="14"
@@ -191,8 +214,8 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                                         style={{ height: '14px' }}
                                     />
                                 )}
-                                {siteItem.tags &&
-                                    siteItem.tags.map((item, index) => (
+                                {detail.tags &&
+                                    detail.tags.map((item, index) => (
                                         <span
                                             className={styles.tag}
                                             key={index}>
@@ -201,9 +224,9 @@ const Site: NextPage<SiteProps> = ({ siteItem }: SiteProps) => {
                                     ))}
                             </div>
                             <div className={styles.content}>
-                                {siteItem.description}
+                                {detail.description}
                             </div>
-                            {siteItem && <Tools siteItem={siteItem} />}
+                            <Tools uuid={uuid} />
                         </article>
                     </>
                 )}
