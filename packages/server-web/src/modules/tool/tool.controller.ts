@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ToolService } from './tool.service';
 import { CreateToolDto } from './dto/create-tool.dto';
-import { UpdateToolDto } from './dto/update-tool.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 import { LikeParam } from './dto/tool.dto';
 
 @Controller('tools')
@@ -32,8 +32,10 @@ export class ToolController {
         return this.toolService.findOne(+id);
     }
 
+    // @Public()
     @Patch('like')
     like(@Body() param: LikeParam, @Req() req) {
+        console.log('req.user', req.user);
         if (!req.user || !req.user.id) {
             return false;
         }
