@@ -42,6 +42,7 @@ export class AuthController {
     async login(
         @Body() body: LoginBodyDto,
         @Res({ passthrough: true }) res: Response,
+        @Req() req,
     ) {
         const { account, password } = body;
         const user = await this.authService.validateUser(account, password);
@@ -51,6 +52,7 @@ export class AuthController {
         const payload = { username: user.username, sub: user.id };
         const token = this.jwtService.sign(payload);
         res.cookie('token', token);
+        req.session.user = user;
         return {
             token,
             user,

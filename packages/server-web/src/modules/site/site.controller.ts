@@ -86,8 +86,11 @@ export class SiteController {
         type: String,
     })
     findOne(@Param('uuid') uuid: string, @Req() req) {
-        console.log('=====', req.user);
-        return this.siteService.findOneByUuid(uuid);
+        console.log('=====', req);
+        return this.siteService.findOneBy({
+            uuid,
+            authorId: req?.session?.user?.id,
+        });
     }
 
     @Public()

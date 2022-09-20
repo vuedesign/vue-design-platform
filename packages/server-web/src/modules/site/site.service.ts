@@ -43,7 +43,7 @@ export class SiteService extends BaseMicroservice {
         return this.send({ module: 'site', method: 'findList' }, options);
     }
 
-    findOneByUuid(uuid: string) {
-        return this.send({ module: 'site', method: 'findOneByUuid' }, uuid);
+    findOneBy(where) {
+        return this.send({ module: 'site', method: 'findOneBy' }, where);
     }
 }
