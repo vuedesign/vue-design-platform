@@ -86,7 +86,8 @@ export class SiteController {
         type: String,
     })
     findOne(@Param('uuid') uuid: string, @Req() req) {
-        console.log('=====', req);
+        console.log('=====', req.session.user);
+        // req.session.user = null;
         return this.siteService.findOneBy({
             uuid,
             authorId: req?.session?.user?.id,

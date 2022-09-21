@@ -73,6 +73,7 @@ export class AuthController {
             throw new UnauthorizedException('用户没授权');
         }
         res.cookie('token', null);
+        req.session.user = null;
         return true;
     }
 
