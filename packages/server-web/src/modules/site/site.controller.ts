@@ -4,6 +4,7 @@ import {
     Param,
     Query,
     Req,
+    Res,
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
@@ -11,6 +12,7 @@ import { UserService } from '../user/user.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
+import { User } from '@/core/decorators/user.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { IPaginationOptions } from '@/globals/services/base.service';
@@ -85,12 +87,11 @@ export class SiteController {
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @Req() req) {
-        console.log('=====', req.session.user);
-        // req.session.user = null;
+    findOne(@Param('uuid') uuid: string, @User() user) {
+        console.log('==xx===', user);
         return this.siteService.findOneBy({
             uuid,
-            authorId: req?.session?.user?.id,
+            authorId: user?.id,
         });
     }
 
