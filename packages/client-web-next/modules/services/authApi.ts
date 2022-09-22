@@ -27,6 +27,7 @@ export const authApi = createApi({
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
+            console.log('token', token);
             return headers;
         },
     }),
@@ -42,6 +43,14 @@ export const authApi = createApi({
                     url: apis.AUTH_LOGIN,
                     method: 'POST',
                     body: data,
+                };
+            },
+        }),
+        logout: builder.mutation<boolean, void>({
+            query: () => {
+                return {
+                    url: apis.AUTH_LOGOUT,
+                    method: 'GET',
                 };
             },
         }),
@@ -103,5 +112,6 @@ export const {
     useProfileQuery,
     useCountsQuery,
     useSitesQuery,
+    useLogoutMutation,
 } = authApi;
-export const { profile, counts, sites, like } = authApi.endpoints;
+export const { profile, counts, sites, like, logout } = authApi.endpoints;

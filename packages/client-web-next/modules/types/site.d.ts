@@ -10,6 +10,12 @@ export interface TagItem {
 }
 export type TagList = TagItem[];
 
+export interface Tool {
+    top: number;
+    down: number;
+    collections: number;
+}
+
 export interface SiteItem {
     id?: number;
     uuid: string;
@@ -31,6 +37,7 @@ export interface SiteItem {
     author: User;
     createdAt?: string;
     updatedAt?: string;
+    tool?: Tool;
 }
 export type SiteList = SiteItem[];
 export interface SiteListResponse extends ListPageResponse<SiteList> {}

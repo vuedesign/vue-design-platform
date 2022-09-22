@@ -19,7 +19,8 @@ const Login: NextPage<any> = () => {
 
     const onFinish = (values: LoginRequest) => {
         login(values).then((res: any) => {
-            if (res && res.data) {
+            console.log('res', res, values);
+            if (res && res.data && res.data.token) {
                 window.localStorage.setItem(TOKEN_KEY, res.data.token);
                 dispatch(setToken(res.data.token));
                 dispatch(setUser(res.data.user));

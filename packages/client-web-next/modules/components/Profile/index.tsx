@@ -1,4 +1,4 @@
-import { Avatar, Popover, Button } from 'antd';
+import { Avatar, Popover } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import {
     ThumbsUp,
@@ -9,8 +9,13 @@ import {
     PreviewOpen,
 } from '@icon-park/react';
 import { useRouter } from 'next/router';
-import { wrapper } from '@/modules/store';
-import { useProfileQuery, profile } from '@/modules/services/authApi';
+import { useDispatch } from 'react-redux';
+import {
+    useProfileQuery,
+    profile,
+    logout,
+    useLogoutMutation,
+} from '@/modules/services/authApi';
 import {
     useCountProfileQuery,
     countProfile,
@@ -19,6 +24,7 @@ import { setToken } from '@/modules/features/authSlice';
 import { User } from '@/modules/types/auth';
 import styles from './Profile.module.scss';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 type ProfilePopoverHeaderProps = {
     profile: User;
@@ -58,7 +64,15 @@ const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
     );
 };
 
-const ProfilePopoverContent = () => {
+const ProfilePopoverContent = ({
+    handleLogout,
+}: {
+    handleLogout: () => void;
+}) => {
+    // const handleClick = () => {
+    //     // logout
+    //     refetch();
+    // };
     return (
         <div className={styles['popover-content']}>
             <ul className={styles['popover-content-menu']}>
@@ -86,7 +100,7 @@ const ProfilePopoverContent = () => {
                     </a>
                 </dt>
                 <dd>
-                    <a>
+                    <a onClick={handleLogout}>
                         <span className={styles['btn-text']}>退出登录</span>
                     </a>
                 </dd>
@@ -96,10 +110,16 @@ const ProfilePopoverContent = () => {
 };
 
 const Profile = () => {
+    const [logout] = useLogoutMutation();
     const { data: profile } = useProfileQuery();
     const router = useRouter();
     const handleGotoLogin = () => {
         router.push('/login');
+    };
+
+    const handleLogout = () => {
+        logout();
+        // profileRefetch();
     };
 
     if (!profile) {
@@ -117,7 +137,7 @@ const Profile = () => {
                 overlayClassName="profile-popover-overlay"
                 placement="bottomRight"
                 title={<ProfilePopoverHeader profile={profile} />}
-                content={<ProfilePopoverContent />}
+                content={<ProfilePopoverContent handleLogout={handleLogout} />}
                 trigger="click">
                 <Avatar
                     size={32}

@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { SiteService } from './site.service';
+import { ToolService } from '@/modules/tool/tool.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { SiteEntity } from '@/entities/site.entity';
@@ -10,7 +11,10 @@ import { FindManyOptions } from 'typeorm';
  */
 @Controller()
 export class SiteTcpController {
-    constructor(private readonly siteService: SiteService) {}
+    constructor(
+        private readonly siteService: SiteService,
+        private readonly toolService: ToolService,
+    ) {}
     /**
      * 站点列表
      */
@@ -19,8 +23,23 @@ export class SiteTcpController {
         return this.siteService.findList(options);
     }
 
-    @MessagePattern({ module: 'site', method: 'findOneByUuid' }, Transport.TCP)
-    findOneByUuid(uuid: string) {
-        return this.siteService.findOneBy({ uuid });
+    @MessagePattern({ module: 'site', method: 'findOneBy' }, Transport.TCP)
+    async findOneBy({ authorId, uuid }) {
+        const site = await this.siteService.findOneBy({ uuid });
+        if (!authorId) {
+            return site;
+        }
+        const tool = await this.toolService.findOneBy({
+            siteId: site.id,
+            authorId,
+        });
+        Object.assign(site, {
+            tool: {
+                top: tool.top,
+                down: tool.down,
+                collections: tool.collections,
+            },
+        });
+        return site;
     }
 }

@@ -25,6 +25,11 @@ import { typeMap } from '@/configs/globals.contants';
 
 type SiteProps = {
     uuid: string;
+    tool?: {
+        top: number;
+        down: number;
+        collections: number;
+    };
 };
 type TooItemType = 'top' | 'down' | 'collections';
 type TooItem = {
@@ -35,40 +40,21 @@ type TooItem = {
 const toolList: Array<TooItem> = [
     {
         type: 'top',
-        icon: (
-            <ThumbsUp
-                theme="outline"
-                size="20"
-                fill="#666"
-                style={{ height: '20px' }}
-            />
-        ),
+        icon: <ThumbsUp theme="outline" size="20" style={{ height: '20px' }} />,
     },
     {
         type: 'down',
         icon: (
-            <ThumbsDown
-                theme="outline"
-                size="20"
-                fill="#666"
-                style={{ height: '20px' }}
-            />
+            <ThumbsDown theme="outline" size="20" style={{ height: '20px' }} />
         ),
     },
     {
         type: 'collections',
-        icon: (
-            <Like
-                theme="outline"
-                size="20"
-                fill="#666"
-                style={{ height: '20px' }}
-            />
-        ),
+        icon: <Like theme="outline" size="20" style={{ height: '20px' }} />,
     },
 ];
 
-const Tools = ({ uuid }: SiteProps) => {
+const Tools = ({ uuid, tool }: SiteProps) => {
     const { data: detail, refetch } = useSiteQuery(uuid);
     if (!detail) {
         return null;
@@ -101,11 +87,27 @@ const Tools = ({ uuid }: SiteProps) => {
         });
     }, [detail]);
 
+    const isTool = (type: TooItemType) => {
+        console.log('type', type);
+        console.log('tool', tool);
+        if (!tool) {
+            return;
+        }
+        console.log('tool[type]=========', tool[type]);
+        if (tool[type]) {
+            console.log('tool[type]=========', tool[type]);
+            return tool[type] === 1 ? 'active' : undefined;
+        }
+    };
+
     return (
         <div className={styles.tools}>
             <ul>
                 {toolList.map((item, index) => (
-                    <li key={index}>
+                    <li
+                        key={index}
+                        className={isTool(item.type)}
+                        data-type={item.type}>
                         <span className={styles['tools-text']}>
                             {badges[item.type]}
                         </span>
@@ -140,6 +142,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
     const { data: detail } = useSiteQuery(uuid);
+    console.log('detail', detail);
     return (
         <div className={styles.container}>
             <Head>
@@ -226,7 +229,7 @@ const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
                             <div className={styles.content}>
                                 {detail.description}
                             </div>
-                            <Tools uuid={uuid} />
+                            <Tools uuid={uuid} tool={detail.tool} />
                         </article>
                     </>
                 )}

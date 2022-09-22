@@ -9,9 +9,11 @@ import {
     JoinColumn,
     JoinTable,
     ManyToMany,
+    OneToOne,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TagEntity } from './tag.entity';
+import { ToolEntity } from './tool.entity';
 
 @Entity('site')
 export class SiteEntity {
