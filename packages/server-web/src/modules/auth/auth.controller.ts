@@ -51,7 +51,10 @@ export class AuthController {
         }
         const payload = { username: user.username, sub: user.id };
         const token = this.jwtService.sign(payload);
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
+        req.session.token = token;
         req.session.user = user;
         return {
             token,
@@ -72,8 +75,9 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
-        res.cookie('token', null);
+        res.clearCookie('token');
         req.session.user = null;
+        req.session.token = null;
         return true;
     }
 

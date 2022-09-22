@@ -20,6 +20,9 @@ export class AuthService extends BaseMicroservice {
             { module: 'user', method: 'find-one' },
             where,
         );
+        if (user.password !== password) {
+            throw new UnauthorizedException('登录密码错误');
+        }
         if (user && user.password === password) {
             const { password, ...result } = user;
             return result;

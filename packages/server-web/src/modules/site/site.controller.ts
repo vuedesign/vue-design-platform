@@ -153,8 +153,6 @@ export class SiteController {
             options.where['authorId'] = authorId;
         }
         const data = await this.siteService.findList(options);
-        console.log('options==x=x', options);
-        console.log('options==x=xdata', data);
         return data;
     }
 }
