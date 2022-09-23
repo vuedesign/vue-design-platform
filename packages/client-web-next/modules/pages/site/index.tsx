@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
     GithubOne,
     Home,
-    Like,
+    Star,
     ThumbsUp,
     ThumbsDown,
     TagOne,
@@ -63,7 +63,7 @@ const toolList: Array<TooItem> = [
     {
         type: 'collections',
         icon: (active: boolean) => (
-            <Like
+            <Star
                 theme={active ? 'filled' : 'outline'}
                 size="20"
                 fill={active ? '#3d80fd' : '#666'}

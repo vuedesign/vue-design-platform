@@ -88,7 +88,6 @@ export class SiteController {
         type: String,
     })
     findOne(@Param('uuid') uuid: string, @User() user) {
-        console.log('==xx===', user);
         return this.siteService.findOneBy({
             uuid,
             authorId: user?.id,
@@ -101,9 +100,10 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    async findAll(
+    findAll(
         @Query(new QueryTransformPipe(['title']))
         query: SiteListQueryDto,
+        @User() user: Record<string, any>,
     ) {
         const {
             title,
@@ -115,11 +115,35 @@ export class SiteController {
             authorId,
         } = query;
         const options: IPaginationOptions = {
+            relations: {
+                tags: true,
+                author: true,
+            },
+            select: {
+                author: {
+                    id: true,
+                    uuid: true,
+                    avatar: true,
+                    username: true,
+                    nickname: true,
+                    email: true,
+                    phone: true,
+                    password: true,
+                    status: true,
+                    rule: true,
+                },
+                tags: {
+                    id: true,
+                    name: true,
+                    description: true,
+                },
+            },
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
             },
             where: {},
+            userId: user?.id,
         };
 
         if (order) {
@@ -153,7 +177,6 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        const data = await this.siteService.findList(options);
-        return data;
+        return this.siteService.findList(options);
     }
 }

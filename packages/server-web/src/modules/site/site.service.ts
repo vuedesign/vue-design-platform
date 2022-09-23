@@ -12,34 +12,6 @@ export class SiteService extends BaseMicroservice {
     findList(
         options: IPaginationOptions,
     ): Promise<IPaginationResponse<SiteEntity>> {
-        options = Object.assign(
-            {
-                relations: {
-                    tags: true,
-                    author: true,
-                },
-                select: {
-                    author: {
-                        id: true,
-                        uuid: true,
-                        avatar: true,
-                        username: true,
-                        nickname: true,
-                        email: true,
-                        phone: true,
-                        password: true,
-                        status: true,
-                        rule: true,
-                    },
-                    tags: {
-                        id: true,
-                        name: true,
-                        description: true,
-                    },
-                },
-            },
-            options,
-        );
         return this.send({ module: 'site', method: 'findList' }, options);
     }
 

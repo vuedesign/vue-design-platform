@@ -1,4 +1,4 @@
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
+import { GithubOne, Home, Star, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import Link from 'next/link';
 import type { SiteItem } from '@/modules/types/site';
 import styles from './Item.module.scss';
@@ -23,10 +23,24 @@ const Item = (props: SiteItem) => {
                 <div className={styles.tools}>
                     <dl>
                         <dd>
-                            <ThumbsUp theme="outline" size="16" fill="#666" />
+                            <ThumbsUp
+                                theme={
+                                    props.tool?.top === 1 ? 'filled' : 'outline'
+                                }
+                                size="16"
+                                fill="#666"
+                            />
                         </dd>
                         <dd>
-                            <ThumbsDown theme="outline" size="16" fill="#666" />
+                            <ThumbsDown
+                                theme={
+                                    props.tool?.down === 1
+                                        ? 'filled'
+                                        : 'outline'
+                                }
+                                size="16"
+                                fill="#666"
+                            />
                         </dd>
                         <dt>
                             {props.author && (
@@ -44,7 +58,15 @@ const Item = (props: SiteItem) => {
                             )}
                         </dt>
                         <dd>
-                            <Like theme="outline" size="16" fill="#666" />
+                            <Star
+                                theme={
+                                    props.tool?.collections === 1
+                                        ? 'filled'
+                                        : 'outline'
+                                }
+                                size="16"
+                                fill="#666"
+                            />
                         </dd>
                         <dd>
                             {props.type === 'site' && (
