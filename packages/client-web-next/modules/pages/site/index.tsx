@@ -34,23 +34,42 @@ type SiteProps = {
 type TooItemType = 'top' | 'down' | 'collections';
 type TooItem = {
     type: TooItemType;
-    icon: ReactElement;
+    icon: (active: boolean) => ReactElement;
 };
 
 const toolList: Array<TooItem> = [
     {
         type: 'top',
-        icon: <ThumbsUp theme="outline" size="20" style={{ height: '20px' }} />,
+        icon: (active: boolean) => (
+            <ThumbsUp
+                theme={active ? 'filled' : 'outline'}
+                size="20"
+                fill={active ? '#3d80fd' : '#666'}
+                style={{ height: '20px' }}
+            />
+        ),
     },
     {
         type: 'down',
-        icon: (
-            <ThumbsDown theme="outline" size="20" style={{ height: '20px' }} />
+        icon: (active: boolean) => (
+            <ThumbsDown
+                theme={active ? 'filled' : 'outline'}
+                size="20"
+                fill={active ? '#3d80fd' : '#666'}
+                style={{ height: '20px' }}
+            />
         ),
     },
     {
         type: 'collections',
-        icon: <Like theme="outline" size="20" style={{ height: '20px' }} />,
+        icon: (active: boolean) => (
+            <Like
+                theme={active ? 'filled' : 'outline'}
+                size="20"
+                fill={active ? '#3d80fd' : '#666'}
+                style={{ height: '20px' }}
+            />
+        ),
     },
 ];
 
@@ -70,6 +89,7 @@ const Tools = ({ uuid, tool }: SiteProps) => {
         like({
             type,
             siteId: detail.id || 0,
+            value: tool ? tool[type] : 0,
         }).then((res) => {
             console.log('res', res);
             if (!res) {
@@ -88,16 +108,19 @@ const Tools = ({ uuid, tool }: SiteProps) => {
     }, [detail]);
 
     const isTool = (type: TooItemType) => {
-        console.log('type', type);
-        console.log('tool', tool);
         if (!tool) {
             return;
         }
-        console.log('tool[type]=========', tool[type]);
         if (tool[type]) {
-            console.log('tool[type]=========', tool[type]);
             return tool[type] === 1 ? 'active' : undefined;
         }
+    };
+
+    const isActive = (type: TooItemType) => {
+        if (!tool) {
+            return false;
+        }
+        return tool[type] === 1;
     };
 
     return (
@@ -114,7 +137,7 @@ const Tools = ({ uuid, tool }: SiteProps) => {
                         <span
                             onClick={() => handleClick(item.type)}
                             className={styles['tools-btn']}>
-                            {item.icon}
+                            {item.icon(isActive(item.type))}
                         </span>
                     </li>
                 ))}

@@ -3,4 +3,5 @@ export interface LikeParam {
     type: LikeParamType;
     authorId: number;
     siteId: number;
+    value: number;
 }

@@ -29,8 +29,7 @@ export class ToolService {
     }
 
     async like(param: LikeParam) {
-        console.log('x', param);
-        const { type, ...where } = param;
+        const { type, value, ...where } = param;
         const res = await this.toolRepository.findOneBy(where);
         if (!res) {
             const data = {

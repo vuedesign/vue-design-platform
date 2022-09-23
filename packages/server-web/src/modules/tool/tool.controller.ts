@@ -35,7 +35,6 @@ export class ToolController {
     // @Public()
     @Patch('like')
     like(@Body() param: LikeParam, @Req() req) {
-        console.log('req.user', req.user);
         if (!req.user || !req.user.id) {
             return false;
         }

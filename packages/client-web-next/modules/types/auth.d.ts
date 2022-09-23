@@ -38,4 +38,5 @@ export type TooItemType = 'top' | 'down' | 'collections';
 export interface LikeParam {
     type: TooItemType;
     siteId: number;
+    value: number;
 }
