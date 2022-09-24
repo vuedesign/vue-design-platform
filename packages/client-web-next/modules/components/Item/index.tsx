@@ -9,7 +9,6 @@ type ThemeType = 'filled' | 'outline';
 type ColorType = '#3d80fd' | '#666';
 
 const Item = (props: SiteItem) => {
-    console.log('props===========', props);
     const getIconTheme = (type: ToolType, tool?: Tool): ThemeType => {
         if (!tool) {
             return 'outline';

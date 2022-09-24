@@ -83,24 +83,27 @@ const List = ({ pageType, user, query }: ListProps) => {
     const router = useRouter();
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
+    const globalQuery = useSelector(selectCurrentQuery);
     const [currentQuery, setCurrentQuery] = useState({
         ...query,
         page,
         size,
     });
-    const globalQuery = useSelector(selectCurrentQuery);
+    console.log('currentQuery', currentQuery);
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
     } = useSitesQuery(currentQuery);
 
     useEffect(() => {
-        setCurrentQuery({
-            ...currentQuery,
-            ...globalQuery,
-            page,
-            size,
-        });
+        if (pageType !== 'home') {
+            setCurrentQuery({
+                ...currentQuery,
+                ...globalQuery,
+                page,
+                size,
+            });
+        }
     }, [globalQuery, page, size]);
 
     useEffect(() => {

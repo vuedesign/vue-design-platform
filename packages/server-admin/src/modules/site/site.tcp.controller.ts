@@ -20,6 +20,7 @@ export class SiteTcpController {
      */
     @MessagePattern({ module: 'site', method: 'findList' }, Transport.TCP)
     async findList(options: IPaginationOptions<SiteEntity>) {
+        console.log('options', options);
         const { userId, ...other } = options;
         const site = await this.siteService.findList(other);
         if (!userId) {

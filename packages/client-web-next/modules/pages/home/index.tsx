@@ -14,7 +14,12 @@ import styles from './Home.module.scss';
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
         await store.dispatch(navigations.initiate());
-        await store.dispatch(sites.initiate({}));
+        await store.dispatch(
+            sites.initiate({
+                page: 1,
+                size: 20,
+            }),
+        );
         return {
             props: {},
         };

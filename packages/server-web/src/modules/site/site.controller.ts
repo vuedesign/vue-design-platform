@@ -105,6 +105,7 @@ export class SiteController {
         query: SiteListQueryDto,
         @User() user: Record<string, any>,
     ) {
+        console.log('user #', user);
         const {
             title,
             type,
@@ -177,6 +178,7 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
+        console.log('options findList ##', options);
         return this.siteService.findList(options);
     }
 }

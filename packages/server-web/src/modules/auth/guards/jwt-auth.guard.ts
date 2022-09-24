@@ -25,17 +25,18 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // }
 
     handleRequest(err, user, info, context) {
-        // if (err || !user) {
-        //     throw err || new UnauthorizedException('用户没授权');
-        // }
-        // return user;
-        // const request = context.switchToHttp().getRequest();
         const isPublic = this.reflector.getAllAndOverride<boolean>(
             IS_PUBLIC_KEY,
             [context.getHandler(), context.getClass()],
         );
-        if (user) return user;
-        if (isPublic) return true;
-        throw new UnauthorizedException('用户没授权');
+
+        if (isPublic) {
+            if (user) return user;
+            return true;
+        }
+        if (err || !user) {
+            throw err || new UnauthorizedException('用户没授权');
+        }
+        return user;
     }
 }
