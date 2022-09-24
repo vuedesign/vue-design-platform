@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
-
 import Header from '@/modules/components/Header';
 import List from '@/modules/components/List';
 import Buttom from '@/modules/components/Bottom';

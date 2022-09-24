@@ -107,7 +107,9 @@ const List = ({ pageType, user, query }: ListProps) => {
     }, [globalQuery, page, size]);
 
     useEffect(() => {
-        refetch();
+        if (pageType !== 'home') {
+            refetch();
+        }
     }, [currentQuery]);
     return (
         <section className={styles.container}>
