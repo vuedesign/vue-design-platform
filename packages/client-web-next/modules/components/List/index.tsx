@@ -6,7 +6,7 @@ import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './List.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { User } from '@/modules/types/auth';
 
 type PageType = 'home' | 'user' | 'sites';
@@ -47,14 +47,18 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
                 defaultPageSize={size}
                 pageSize={size}
                 total={total}
-                onChange={(page, pageSize) => {
+                onChange={(page: number, pageSize: number) => {
                     if (pageType === 'user' && user) {
                         router.push(`/users/${user.uuid}?page=${page}`);
                     } else if (pageType === 'sites') {
                         router.push(`/sites?page=${page}`);
                     }
                 }}
-                itemRender={(page, type, originalElement) => {
+                itemRender={(
+                    page: number,
+                    type: string,
+                    originalElement: ReactNode,
+                ) => {
                     if (page >= 1 && type === 'page') {
                         let href = '';
                         if (pageType === 'user' && user) {

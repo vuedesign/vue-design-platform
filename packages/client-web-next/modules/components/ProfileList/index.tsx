@@ -4,6 +4,7 @@ import { Pagination } from 'antd';
 import { useSitesQuery } from '@/modules/services/authApi';
 import Item from '@/modules/components/Item';
 import styles from '@/modules/components/list/List.module.scss';
+import { ReactNode } from 'react';
 
 const ProfileList = () => {
     const router = useRouter();
@@ -28,10 +29,14 @@ const ProfileList = () => {
                         defaultPageSize={size}
                         pageSize={size}
                         total={data.total}
-                        onChange={(page, pageSize) => {
+                        onChange={(page: number, pageSize: number) => {
                             router.push(`/profile?page=${page}`);
                         }}
-                        itemRender={(page, type, originalElement) => {
+                        itemRender={(
+                            page: number,
+                            type: string,
+                            originalElement: ReactNode,
+                        ) => {
                             if (page >= 1 && type === 'page') {
                                 return (
                                     <Link

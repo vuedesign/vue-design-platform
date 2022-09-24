@@ -45,7 +45,7 @@ export const siteApi = createApi({
                 method: 'get',
             }),
         }),
-        sitesAssociate: builder.query<SiteItem, Record<string, any>>({
+        sitesAssociate: builder.query<SiteListResponse, Record<string, any>>({
             query: (params = {}) => {
                 const { uuid, ...query } = params;
                 return {
