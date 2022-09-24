@@ -27,7 +27,6 @@ export const authApi = createApi({
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
-            console.log('token', token);
             return headers;
         },
     }),
@@ -68,7 +67,6 @@ export const authApi = createApi({
         }),
         sites: builder.query<SiteListResponse, Record<string, any>>({
             query: (qeury = {}) => {
-                console.log('qeury', stringify(qeury));
                 return {
                     url: `${apis.SITES_PROFILE}?${stringify(qeury)}`,
                     method: 'GET',

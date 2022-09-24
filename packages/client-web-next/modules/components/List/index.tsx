@@ -89,7 +89,6 @@ const List = ({ pageType, user, query }: ListProps) => {
         size,
     });
     const globalQuery = useSelector(selectCurrentQuery);
-    console.log('currentQuery', page);
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
