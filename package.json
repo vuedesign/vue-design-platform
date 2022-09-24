@@ -8,6 +8,8 @@
         "dev:client-web-next": "pnpm run --dir packages/client-web-next dev",
         "dev:server-admin": "pnpm run --dir packages/server-admin start:dev",
         "dev:server-web": "pnpm run --dir packages/server-web start:dev",
+        "build:client-web-next": "pnpm run --dir packages/client-web-next build",
+        "start:client-web-next": "pnpm run --dir packages/client-web-next start",
         "prepare": "husky install",
         "precommit": "lint-staged"
     },

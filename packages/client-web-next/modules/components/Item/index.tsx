@@ -4,7 +4,29 @@ import type { SiteItem } from '@/modules/types/site';
 import styles from './Item.module.scss';
 import { typeMap } from '@/configs/globals.contants';
 
+type Tool = {
+    top: number;
+    down: number;
+    collections: number;
+};
+type ToolType = 'top' | 'down' | 'collections';
+
+type ThemeType = 'filled' | 'outline';
+type ColorType = '#3d80fd' | '#666';
+
 const Item = (props: SiteItem) => {
+    const getIconTheme = (type: ToolType, tool?: Tool): ThemeType => {
+        if (!tool) {
+            return 'outline';
+        }
+        return tool[type] === 1 ? 'filled' : 'outline';
+    };
+    const getIconColor = (type: ToolType, tool?: Tool): ColorType => {
+        if (!tool) {
+            return '#666';
+        }
+        return tool[type] === 1 ? '#3d80fd' : '#666';
+    };
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -24,22 +46,16 @@ const Item = (props: SiteItem) => {
                     <dl>
                         <dd>
                             <ThumbsUp
-                                theme={
-                                    props.tool?.top === 1 ? 'filled' : 'outline'
-                                }
+                                theme={getIconTheme('top', props.tool)}
+                                fill={getIconColor('top', props.tool)}
                                 size="16"
-                                fill="#666"
                             />
                         </dd>
                         <dd>
                             <ThumbsDown
-                                theme={
-                                    props.tool?.down === 1
-                                        ? 'filled'
-                                        : 'outline'
-                                }
+                                theme={getIconTheme('down', props.tool)}
+                                fill={getIconColor('down', props.tool)}
                                 size="16"
-                                fill="#666"
                             />
                         </dd>
                         <dt>
@@ -59,13 +75,9 @@ const Item = (props: SiteItem) => {
                         </dt>
                         <dd>
                             <Star
-                                theme={
-                                    props.tool?.collections === 1
-                                        ? 'filled'
-                                        : 'outline'
-                                }
+                                theme={getIconTheme('collections', props.tool)}
+                                fill={getIconColor('collections', props.tool)}
                                 size="16"
-                                fill="#666"
                             />
                         </dd>
                         <dd>

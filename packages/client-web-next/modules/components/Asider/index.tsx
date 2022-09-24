@@ -28,11 +28,11 @@ const Asider = ({ uuid, authorId, user }: AsiderProps) => {
                     <div className={styles.userinfo}>
                         <dl>
                             <dt>
-                                {/* <Avatar
+                                <Avatar
                                     size={48}
                                     src={user.avatar}
                                     icon={<UserOutlined />}
-                                /> */}
+                                />
                             </dt>
                             <dd>
                                 <h5>{user.username}</h5>

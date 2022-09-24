@@ -36,11 +36,11 @@ const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
         <>
             <dl className={styles['profile-popover-header']}>
                 <dt>
-                    {/* <Avatar
+                    <Avatar
                         size={48}
                         src={profile.avatar}
                         icon={<UserOutlined />}
-                    /> */}
+                    />
                 </dt>
                 <dd>{profile.username}</dd>
             </dl>
@@ -121,7 +121,6 @@ const Profile = () => {
         logout();
         // profileRefetch();
     };
-
     if (!profile) {
         return (
             <div className={styles['btn-login']} onClick={handleGotoLogin}>
@@ -130,7 +129,6 @@ const Profile = () => {
             </div>
         );
     }
-
     return (
         <div className={styles.container}>
             <Popover
@@ -139,11 +137,11 @@ const Profile = () => {
                 title={<ProfilePopoverHeader profile={profile} />}
                 content={<ProfilePopoverContent handleLogout={handleLogout} />}
                 trigger="click">
-                {/* <Avatar
+                <Avatar
                     size={32}
                     src={profile.avatar}
                     icon={<UserOutlined />}
-                /> */}
+                />
             </Popover>
         </div>
     );

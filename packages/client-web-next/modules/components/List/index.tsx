@@ -19,7 +19,7 @@ type ListPropsQuery = {
 type ListProps = {
     pageType: PageType;
     user?: User;
-    query: ListPropsQuery;
+    query?: ListPropsQuery;
     total?: number;
 };
 
@@ -38,7 +38,7 @@ const MoreLink = () => (
  */
 const Paginations = ({ pageType, user, query, total }: ListProps) => {
     const router = useRouter();
-    const { page, size } = query;
+    const { page = 1, size = 20 } = query || {};
     return (
         <div className={styles.page}>
             <Pagination
@@ -47,7 +47,7 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
                 defaultPageSize={size}
                 pageSize={size}
                 total={total}
-                onChange={(page: number, pageSize: number) => {
+                onChange={(page: number) => {
                     if (pageType === 'user' && user) {
                         router.push(`/users/${user.uuid}?page=${page}`);
                     } else if (pageType === 'sites') {
