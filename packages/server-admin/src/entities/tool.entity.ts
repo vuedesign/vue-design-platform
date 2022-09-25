@@ -4,7 +4,10 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     CreateDateColumn,
+    OneToMany,
+    OneToOne,
 } from 'typeorm';
+import { SiteEntity } from './site.entity';
 
 @Entity('tool')
 export class ToolEntity {

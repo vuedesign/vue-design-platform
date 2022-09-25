@@ -24,9 +24,12 @@ export class ToolService {
         return `This action returns a #${id} tool`;
     }
 
+    findOneBy(where) {
+        return this.toolRepository.findOneBy(where);
+    }
+
     async like(param: LikeParam) {
-        console.log('x', param);
-        const { type, ...where } = param;
+        const { type, value, ...where } = param;
         const res = await this.toolRepository.findOneBy(where);
         if (!res) {
             const data = {

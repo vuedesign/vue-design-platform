@@ -40,12 +40,14 @@ export const siteApi = createApi({
             },
         }),
         site: builder.query<SiteItem, string>({
-            query: (uuid) => ({
-                url: `${apis.SITES}/${uuid}`,
-                method: 'get',
-            }),
+            query: (uuid) => {
+                return {
+                    url: `${apis.SITES}/${uuid}`,
+                    method: 'get',
+                };
+            },
         }),
-        sitesAssociate: builder.query<SiteItem, Record<string, any>>({
+        sitesAssociate: builder.query<SiteListResponse, Record<string, any>>({
             query: (params = {}) => {
                 const { uuid, ...query } = params;
                 return {

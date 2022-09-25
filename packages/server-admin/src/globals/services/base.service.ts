@@ -14,6 +14,7 @@ export interface IPaginationResponse<T = any> {
 export interface IPaginationOptions<E> extends FindManyOptions<E> {
     pagination?: IPagination;
     nots?: Record<keyof E, number | string>;
+    userId?: number;
 }
 
 export class BaseService<E> {

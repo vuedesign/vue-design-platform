@@ -6,7 +6,7 @@ import Item from '@/modules/components/Item';
 import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './List.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { User } from '@/modules/types/auth';
 
 type PageType = 'home' | 'user' | 'sites';
@@ -19,7 +19,7 @@ type ListPropsQuery = {
 type ListProps = {
     pageType: PageType;
     user?: User;
-    query: ListPropsQuery;
+    query?: ListPropsQuery;
     total?: number;
 };
 
@@ -38,7 +38,7 @@ const MoreLink = () => (
  */
 const Paginations = ({ pageType, user, query, total }: ListProps) => {
     const router = useRouter();
-    const { page, size } = query;
+    const { page = 1, size = 20 } = query || {};
     return (
         <div className={styles.page}>
             <Pagination
@@ -47,14 +47,18 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
                 defaultPageSize={size}
                 pageSize={size}
                 total={total}
-                onChange={(page, pageSize) => {
+                onChange={(page: number) => {
                     if (pageType === 'user' && user) {
                         router.push(`/users/${user.uuid}?page=${page}`);
                     } else if (pageType === 'sites') {
                         router.push(`/sites?page=${page}`);
                     }
                 }}
-                itemRender={(page, type, originalElement) => {
+                itemRender={(
+                    page: number,
+                    type: string,
+                    originalElement: ReactNode,
+                ) => {
                     if (page >= 1 && type === 'page') {
                         let href = '';
                         if (pageType === 'user' && user) {
@@ -79,29 +83,33 @@ const List = ({ pageType, user, query }: ListProps) => {
     const router = useRouter();
     const page = Number(router.query.page || 1);
     const size = Number(router.query.size || 20);
+    const globalQuery = useSelector(selectCurrentQuery);
     const [currentQuery, setCurrentQuery] = useState({
         ...query,
         page,
         size,
     });
-    const globalQuery = useSelector(selectCurrentQuery);
-    console.log('currentQuery', page);
+    console.log('currentQuery', currentQuery);
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
     } = useSitesQuery(currentQuery);
 
     useEffect(() => {
-        setCurrentQuery({
-            ...currentQuery,
-            ...globalQuery,
-            page,
-            size,
-        });
+        if (pageType !== 'home') {
+            setCurrentQuery({
+                ...currentQuery,
+                ...globalQuery,
+                page,
+                size,
+            });
+        }
     }, [globalQuery, page, size]);
 
     useEffect(() => {
-        refetch();
+        if (pageType !== 'home') {
+            refetch();
+        }
     }, [currentQuery]);
     return (
         <section className={styles.container}>

@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
-
 import Header from '@/modules/components/Header';
 import List from '@/modules/components/List';
 import Buttom from '@/modules/components/Bottom';
@@ -14,7 +13,12 @@ import styles from './Home.module.scss';
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
         await store.dispatch(navigations.initiate());
-        await store.dispatch(sites.initiate({}));
+        await store.dispatch(
+            sites.initiate({
+                page: 1,
+                size: 20,
+            }),
+        );
         return {
             props: {},
         };

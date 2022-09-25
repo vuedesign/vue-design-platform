@@ -42,6 +42,7 @@ export class AuthController {
     async login(
         @Body() body: LoginBodyDto,
         @Res({ passthrough: true }) res: Response,
+        @Req() req,
     ) {
         const { account, password } = body;
         const user = await this.authService.validateUser(account, password);
@@ -50,7 +51,11 @@ export class AuthController {
         }
         const payload = { username: user.username, sub: user.id };
         const token = this.jwtService.sign(payload);
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
+        req.session.token = token;
+        req.session.user = user;
         return {
             token,
             user,
@@ -70,7 +75,9 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
-        res.cookie('token', null);
+        res.clearCookie('token');
+        req.session.user = null;
+        req.session.token = null;
         return true;
     }
 

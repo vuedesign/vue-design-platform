@@ -16,10 +16,12 @@ export class ToolTcpController {
     ) {}
     @MessagePattern({ module: 'tool', method: 'like' }, Transport.TCP)
     async like(param: LikeParam) {
-        console.log('param', param);
         const siteRes = await this.siteService.findOne(param.siteId);
         this.siteService.update(siteRes.id, {
-            [param.type]: siteRes[param.type] + 1,
+            [param.type]:
+                param.value === 1
+                    ? siteRes[param.type] - 1
+                    : siteRes[param.type] + 1,
         });
         const toolRes = await this.toolService.like(param);
         return toolRes;

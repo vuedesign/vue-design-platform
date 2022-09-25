@@ -1,32 +1,56 @@
-import { GithubOne, Home, Like, ThumbsUp, ThumbsDown } from '@icon-park/react';
+import { GithubOne, Home, Star, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import Link from 'next/link';
-import type { SiteItem } from '@/modules/types/site';
+import type { SiteItem, Tool } from '@/modules/types/site';
 import styles from './Item.module.scss';
 import { typeMap } from '@/configs/globals.contants';
 
+type ToolType = 'top' | 'down' | 'collections';
+type ThemeType = 'filled' | 'outline';
+type ColorType = '#3d80fd' | '#666';
+
 const Item = (props: SiteItem) => {
+    const getIconTheme = (type: ToolType, tool?: Tool): ThemeType => {
+        if (!tool) {
+            return 'outline';
+        }
+        return tool[type] === 1 ? 'filled' : 'outline';
+    };
+    const getIconColor = (type: ToolType, tool?: Tool): ColorType => {
+        if (!tool) {
+            return '#666';
+        }
+        return tool[type] === 1 ? '#3d80fd' : '#666';
+    };
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
                 <div className={styles.thumb}>
-                    <Link
-                        href={{
-                            pathname: `/sites/[uuid]`,
-                            query: { uuid: props.uuid },
-                        }}>
-                        <a
-                            style={{
-                                backgroundImage: `url('${props.thumbUrl}')`,
-                            }}></a>
-                    </Link>
+                    {props.uuid && (
+                        <Link href={`/sites/${props.uuid}`}>
+                            <a
+                                style={{
+                                    backgroundImage: props.thumbUrl
+                                        ? `url('${props.thumbUrl}')`
+                                        : 'none',
+                                }}></a>
+                        </Link>
+                    )}
                 </div>
                 <div className={styles.tools}>
                     <dl>
                         <dd>
-                            <ThumbsUp theme="outline" size="16" fill="#666" />
+                            <ThumbsUp
+                                theme={getIconTheme('top', props.tool)}
+                                fill={getIconColor('top', props.tool)}
+                                size="16"
+                            />
                         </dd>
                         <dd>
-                            <ThumbsDown theme="outline" size="16" fill="#666" />
+                            <ThumbsDown
+                                theme={getIconTheme('down', props.tool)}
+                                fill={getIconColor('down', props.tool)}
+                                size="16"
+                            />
                         </dd>
                         <dt>
                             {props.author && (
@@ -44,7 +68,11 @@ const Item = (props: SiteItem) => {
                             )}
                         </dt>
                         <dd>
-                            <Like theme="outline" size="16" fill="#666" />
+                            <Star
+                                theme={getIconTheme('collections', props.tool)}
+                                fill={getIconColor('collections', props.tool)}
+                                size="16"
+                            />
                         </dd>
                         <dd>
                             {props.type === 'site' && (

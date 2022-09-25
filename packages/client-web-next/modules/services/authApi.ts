@@ -45,6 +45,14 @@ export const authApi = createApi({
                 };
             },
         }),
+        logout: builder.mutation<boolean, void>({
+            query: () => {
+                return {
+                    url: apis.AUTH_LOGOUT,
+                    method: 'GET',
+                };
+            },
+        }),
         profile: builder.query<User, void>({
             query: () => ({
                 url: apis.AUTH_PROFILE,
@@ -59,7 +67,6 @@ export const authApi = createApi({
         }),
         sites: builder.query<SiteListResponse, Record<string, any>>({
             query: (qeury = {}) => {
-                console.log('qeury', stringify(qeury));
                 return {
                     url: `${apis.SITES_PROFILE}?${stringify(qeury)}`,
                     method: 'GET',
@@ -103,5 +110,6 @@ export const {
     useProfileQuery,
     useCountsQuery,
     useSitesQuery,
+    useLogoutMutation,
 } = authApi;
-export const { profile, counts, sites, like } = authApi.endpoints;
+export const { profile, counts, sites, like, logout } = authApi.endpoints;

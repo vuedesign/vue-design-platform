@@ -4,6 +4,7 @@ import {
     Param,
     Query,
     Req,
+    Res,
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
@@ -11,6 +12,8 @@ import { UserService } from '../user/user.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
+import { User } from '@/core/decorators/user.decorator';
+import type { AuthUser } from '@/modules/user/dto/user.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { IPaginationOptions } from '@/globals/services/base.service';
@@ -79,14 +82,18 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    @Public()
+    // @Public()
     @Get(':uuid')
     @ApiQuery({
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string) {
-        return this.siteService.findOneByUuid(uuid);
+    findOne(@Param('uuid') uuid: string, @User() user: AuthUser) {
+        console.log('findOne user', user);
+        return this.siteService.findOneBy({
+            uuid,
+            userId: user?.id,
+        });
     }
 
     @Public()
@@ -95,9 +102,10 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    async findAll(
+    findAll(
         @Query(new QueryTransformPipe(['title']))
         query: SiteListQueryDto,
+        @User() user: Record<string, any>,
     ) {
         const {
             title,
@@ -109,11 +117,35 @@ export class SiteController {
             authorId,
         } = query;
         const options: IPaginationOptions = {
+            relations: {
+                tags: true,
+                author: true,
+            },
+            select: {
+                author: {
+                    id: true,
+                    uuid: true,
+                    avatar: true,
+                    username: true,
+                    nickname: true,
+                    email: true,
+                    phone: true,
+                    password: true,
+                    status: true,
+                    rule: true,
+                },
+                tags: {
+                    id: true,
+                    name: true,
+                    description: true,
+                },
+            },
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
             },
             where: {},
+            userId: user?.id,
         };
 
         if (order) {
@@ -147,9 +179,6 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        const data = await this.siteService.findList(options);
-        console.log('options==x=x', options);
-        console.log('options==x=xdata', data);
-        return data;
+        return this.siteService.findList(options);
     }
 }

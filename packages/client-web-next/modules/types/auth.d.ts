@@ -34,8 +34,9 @@ export type UserState = {
     userItem: User | null;
 };
 
-export type LikeParamType = 'top' | 'down';
+export type TooItemType = 'top' | 'down' | 'collections';
 export interface LikeParam {
-    type: LikeParamType;
+    type: TooItemType;
     siteId: number;
+    value: number;
 }
