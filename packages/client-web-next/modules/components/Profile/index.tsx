@@ -64,15 +64,15 @@ const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
     );
 };
 
-const ProfilePopoverContent = ({
-    handleLogout,
-}: {
-    handleLogout: () => void;
-}) => {
-    // const handleClick = () => {
-    //     // logout
-    //     refetch();
-    // };
+type ContentProps = {
+    refetchProfile: () => void;
+};
+const ProfilePopoverContent = ({ refetchProfile }: ContentProps) => {
+    const [logout] = useLogoutMutation();
+    const handleLogout = () => {
+        logout();
+        refetchProfile();
+    };
     return (
         <div className={styles['popover-content']}>
             <ul className={styles['popover-content-menu']}>
@@ -110,17 +110,12 @@ const ProfilePopoverContent = ({
 };
 
 const Profile = () => {
-    const [logout] = useLogoutMutation();
-    const { data: profile } = useProfileQuery();
+    const { data: profile, refetch } = useProfileQuery();
     const router = useRouter();
     const handleGotoLogin = () => {
         router.push('/login');
     };
 
-    const handleLogout = () => {
-        logout();
-        // profileRefetch();
-    };
     if (!profile) {
         return (
             <div className={styles['btn-login']} onClick={handleGotoLogin}>
@@ -135,7 +130,7 @@ const Profile = () => {
                 overlayClassName="profile-popover-overlay"
                 placement="bottomRight"
                 title={<ProfilePopoverHeader profile={profile} />}
-                content={<ProfilePopoverContent handleLogout={handleLogout} />}
+                content={<ProfilePopoverContent refetchProfile={refetch} />}
                 trigger="click">
                 <Avatar
                     size={32}
