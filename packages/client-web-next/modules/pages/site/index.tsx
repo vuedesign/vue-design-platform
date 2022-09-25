@@ -13,6 +13,7 @@ import {
 } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
 import { site, useSiteQuery, sitesAssociate } from '@/modules/services/siteApi';
+import { selectCurrentToken } from '@/modules/features/authSlice';
 import { count } from '@/modules/services/countApi';
 import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
@@ -22,6 +23,8 @@ import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
 import { useLikeMutation } from '@/modules/services/authApi';
 import { typeMap } from '@/configs/globals.contants';
+import { useSelector, useDispatch } from 'react-redux';
+import { setOpen } from '@/modules/features/globalSlice';
 
 type SiteProps = {
     uuid: string;
@@ -85,7 +88,14 @@ const Tools = ({ uuid, tool }: SiteProps) => {
     });
 
     const [like, { isLoading }] = useLikeMutation();
+    const token = useSelector(selectCurrentToken);
+    const dispatch = useDispatch();
     const handleClick = (type: TooItemType) => {
+        console.log('token', token);
+        if (!token) {
+            dispatch(setOpen(true));
+            return;
+        }
         like({
             type,
             siteId: detail.id || 0,
@@ -151,10 +161,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const uuid = getParamsByContext<typeof context>(context, 'uuid');
         const { data: siteItem } = await store.dispatch(site.initiate(uuid));
         const authorId = siteItem?.authorId;
+        await store.dispatch(count.initiate(authorId));
         await store.dispatch(
             sitesAssociate.initiate({ authorId, size: 2, uuid }),
         );
-        await store.dispatch(count.initiate(authorId));
         return {
             props: {
                 uuid,

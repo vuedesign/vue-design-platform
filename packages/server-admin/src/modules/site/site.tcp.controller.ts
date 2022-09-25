@@ -20,7 +20,6 @@ export class SiteTcpController {
      */
     @MessagePattern({ module: 'site', method: 'findList' }, Transport.TCP)
     async findList(options: IPaginationOptions<SiteEntity>) {
-        console.log('options', options);
         const { userId, ...other } = options;
         const site = await this.siteService.findList(other);
         if (!userId) {
@@ -49,20 +48,20 @@ export class SiteTcpController {
     }
 
     @MessagePattern({ module: 'site', method: 'findOneBy' }, Transport.TCP)
-    async findOneBy({ authorId, uuid }) {
+    async findOneBy({ userId, uuid }) {
         const site = await this.siteService.findOneBy({ uuid });
-        if (!authorId) {
+        if (!userId) {
             return site;
         }
         const tool = await this.toolService.findOneBy({
             siteId: site.id,
-            authorId,
+            authorId: userId,
         });
         Object.assign(site, {
             tool: {
-                top: tool.top,
-                down: tool.down,
-                collections: tool.collections,
+                top: tool ? tool.top : 0,
+                down: tool ? tool.down : 0,
+                collections: tool ? tool.collections : 0,
             },
         });
         return site;

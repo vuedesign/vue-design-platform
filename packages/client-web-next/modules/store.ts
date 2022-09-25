@@ -8,6 +8,7 @@ import { userApi } from '@/modules/services/userApi';
 import { tagApi } from '@/modules/services/tagApi';
 import authReducer from '@/modules/features/authSlice';
 import siteReducer from '@/modules/features/siteSlice';
+import globalReducer from '@/modules/features/globalSlice';
 
 export const makeStore = () =>
     configureStore({
@@ -20,6 +21,7 @@ export const makeStore = () =>
             [tagApi.reducerPath]: tagApi.reducer,
             auth: authReducer,
             site: siteReducer,
+            global: globalReducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(

@@ -11,7 +11,9 @@ import {
 import { ToolService } from './tool.service';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { Public } from '@/core/decorators/auth.decorator';
+import { User } from '@/core/decorators/user.decorator';
 import { LikeParam } from './dto/tool.dto';
+import type { AuthUser } from '@/modules/user/dto/user.dto';
 
 @Controller('tools')
 export class ToolController {
@@ -34,13 +36,15 @@ export class ToolController {
 
     // @Public()
     @Patch('like')
-    like(@Body() param: LikeParam, @Req() req) {
-        if (!req.user || !req.user.id) {
+    like(@Body() param: LikeParam, @User() user: AuthUser) {
+        console.log('req===user', user);
+
+        if (!user || !user.id) {
             return false;
         }
         return this.toolService.like({
             ...param,
-            authorId: req.user.id,
+            authorId: user.id,
         });
     }
 

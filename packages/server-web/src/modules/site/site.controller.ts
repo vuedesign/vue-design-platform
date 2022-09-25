@@ -13,6 +13,7 @@ import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like, Not, Equal } from 'typeorm';
 import { Public } from '@/core/decorators/auth.decorator';
 import { User } from '@/core/decorators/user.decorator';
+import type { AuthUser } from '@/modules/user/dto/user.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto } from './dto/site.dto';
 import { IPaginationOptions } from '@/globals/services/base.service';
@@ -81,16 +82,17 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    @Public()
+    // @Public()
     @Get(':uuid')
     @ApiQuery({
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @User() user) {
+    findOne(@Param('uuid') uuid: string, @User() user: AuthUser) {
+        console.log('findOne user', user);
         return this.siteService.findOneBy({
             uuid,
-            authorId: user?.id,
+            userId: user?.id,
         });
     }
 
@@ -105,7 +107,6 @@ export class SiteController {
         query: SiteListQueryDto,
         @User() user: Record<string, any>,
     ) {
-        console.log('user #', user);
         const {
             title,
             type,
@@ -178,7 +179,6 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        console.log('options findList ##', options);
         return this.siteService.findList(options);
     }
 }

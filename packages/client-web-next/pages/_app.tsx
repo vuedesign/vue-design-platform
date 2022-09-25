@@ -1,13 +1,16 @@
 import type { AppProps } from 'next/app';
 import type { IncomingMessage } from 'http';
-import App, { AppInitialProps } from 'next/app';
+import App from 'next/app';
 import { wrapper } from '@/modules/store';
 import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
 import { setToken } from '@/modules/features/authSlice';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import { Provider } from 'react-redux';
+import { selectIsLoginOpen, setOpen } from '@/modules/features/globalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal } from 'antd';
+import LoginPanel from '@/modules/components/LoginPanel';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
@@ -16,13 +19,25 @@ interface CtxReq extends IncomingMessage {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-    // const { store, props } = wrapper.useWrappedStore(pageProps);
-    return <Component {...pageProps} />;
+    const isLoginOpen = useSelector(selectIsLoginOpen);
+    const dispatch = useDispatch();
+    return (
+        <>
+            <Component {...pageProps} />;
+            <Modal
+                open={isLoginOpen}
+                onCancel={() => dispatch(setOpen(false))}
+                footer={null}>
+                <LoginPanel finish={() => dispatch(setOpen(false))} />
+            </Modal>
+        </>
+    );
 };
 
 MyApp.getInitialProps = wrapper.getInitialAppProps(
     (store) => async (context) => {
         const req: CtxReq = context.ctx.req as CtxReq;
+        console.log('req?.cookies?.token', req?.cookies?.token);
         await store.dispatch(setToken(req?.cookies?.token || ''));
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());
