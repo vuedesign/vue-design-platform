@@ -9,7 +9,7 @@ import {
     PreviewOpen,
 } from '@icon-park/react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     useProfileQuery,
     profile,
@@ -20,30 +20,33 @@ import {
     useCountProfileQuery,
     countProfile,
 } from '@/modules/services/countApi';
-import { setToken } from '@/modules/features/authSlice';
+import {
+    selectCurrentUser,
+    setUser,
+    setToken,
+} from '@/modules/features/authSlice';
 import { User } from '@/modules/types/auth';
 import styles from './Profile.module.scss';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-type ProfilePopoverHeaderProps = {
-    profile: User;
-};
-
-const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
+const ProfilePopoverHeader = () => {
+    const profile = useSelector(selectCurrentUser);
     const { data: count } = useCountProfileQuery();
     return (
         <>
-            <dl className={styles['profile-popover-header']}>
-                <dt>
-                    <Avatar
-                        size={48}
-                        src={profile.avatar}
-                        icon={<UserOutlined />}
-                    />
-                </dt>
-                <dd>{profile.username}</dd>
-            </dl>
+            {profile && (
+                <dl className={styles['profile-popover-header']}>
+                    <dt>
+                        <Avatar
+                            size={48}
+                            src={profile.avatar}
+                            icon={<UserOutlined />}
+                        />
+                    </dt>
+                    <dd>{profile.username}</dd>
+                </dl>
+            )}
             {count && (
                 <ul className={styles['popover-content-count']}>
                     <li>
@@ -64,14 +67,13 @@ const ProfilePopoverHeader = ({ profile }: ProfilePopoverHeaderProps) => {
     );
 };
 
-type ContentProps = {
-    refetchProfile: () => void;
-};
-const ProfilePopoverContent = ({ refetchProfile }: ContentProps) => {
+const ProfilePopoverContent = () => {
     const [logout] = useLogoutMutation();
+    const dispatch = useDispatch();
     const handleLogout = () => {
         logout();
-        refetchProfile();
+        dispatch(setUser(null));
+        dispatch(setToken(null));
     };
     return (
         <div className={styles['popover-content']}>
@@ -110,11 +112,19 @@ const ProfilePopoverContent = ({ refetchProfile }: ContentProps) => {
 };
 
 const Profile = () => {
-    const { data: profile, refetch } = useProfileQuery();
+    const { data } = useProfileQuery();
+    const profile = useSelector(selectCurrentUser);
     const router = useRouter();
+    const dispatch = useDispatch();
     const handleGotoLogin = () => {
         router.push('/login');
     };
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setUser(data));
+        }
+    }, [data]);
 
     if (!profile) {
         return (
@@ -129,8 +139,8 @@ const Profile = () => {
             <Popover
                 overlayClassName="profile-popover-overlay"
                 placement="bottomRight"
-                title={<ProfilePopoverHeader profile={profile} />}
-                content={<ProfilePopoverContent refetchProfile={refetch} />}
+                title={<ProfilePopoverHeader />}
+                content={<ProfilePopoverContent />}
                 trigger="click">
                 <Avatar
                     size={32}

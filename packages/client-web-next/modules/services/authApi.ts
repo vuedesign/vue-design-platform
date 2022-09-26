@@ -53,7 +53,7 @@ export const authApi = createApi({
                 };
             },
         }),
-        profile: builder.query<User, void>({
+        profile: builder.query<User | null, void>({
             query: () => ({
                 url: apis.AUTH_PROFILE,
                 method: 'GET',
