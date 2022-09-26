@@ -13,9 +13,11 @@ import {
 } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
 import { site, useSiteQuery, sitesAssociate } from '@/modules/services/siteApi';
-import { selectCurrentToken } from '@/modules/features/authSlice';
+import {
+    selectCurrentToken,
+    selectCurrentUser,
+} from '@/modules/features/authSlice';
 import { count } from '@/modules/services/countApi';
-import { SiteItem } from '@/modules/types/site';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
 import { getParamsByContext } from '@/modules/utils';
@@ -76,7 +78,7 @@ const toolList: Array<TooItem> = [
     },
 ];
 
-const Tools = ({ uuid, tool }: SiteProps) => {
+const Tools = ({ uuid }: SiteProps) => {
     const { data: detail, refetch } = useSiteQuery(uuid);
     if (!detail) {
         return null;
@@ -87,19 +89,28 @@ const Tools = ({ uuid, tool }: SiteProps) => {
         collections: detail.collections || 0,
     });
 
-    const [like, { isLoading }] = useLikeMutation();
+    const [like] = useLikeMutation();
     const token = useSelector(selectCurrentToken);
+    const profile = useSelector(selectCurrentUser);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setTimeout(() => {
+            refetch();
+            console.log('## token detail 1', detail);
+        }, 1000);
+    }, [token, profile]);
+
     const handleClick = (type: TooItemType) => {
-        console.log('token', token);
-        if (!token) {
+        console.log('token', token, profile);
+        if (!token || !profile) {
             dispatch(setOpen(true));
             return;
         }
         like({
             type,
             siteId: detail.id || 0,
-            value: tool ? tool[type] : 0,
+            value: detail.tool ? detail.tool[type] : 0,
         }).then((res) => {
             console.log('res', res);
             if (!res) {
@@ -115,22 +126,24 @@ const Tools = ({ uuid, tool }: SiteProps) => {
             down: detail.down || 0,
             collections: detail.collections || 0,
         });
+        console.log('## token detail 2', detail);
     }, [detail]);
 
     const isTool = (type: TooItemType) => {
-        if (!tool) {
+        if (!detail.tool) {
             return;
         }
-        if (tool[type]) {
-            return tool[type] === 1 ? 'active' : undefined;
+        if (detail.tool[type]) {
+            return detail.tool[type] === 1 ? 'active' : undefined;
         }
     };
 
     const isActive = (type: TooItemType) => {
-        if (!tool) {
+        console.log('isActive', type, detail.tool);
+        if (!detail.tool) {
             return false;
         }
-        return tool[type] === 1;
+        return detail.tool[type] === 1;
     };
 
     return (
@@ -175,7 +188,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
     const { data: detail } = useSiteQuery(uuid);
-    console.log('detail', detail);
     return (
         <div className={styles.container}>
             <Head>

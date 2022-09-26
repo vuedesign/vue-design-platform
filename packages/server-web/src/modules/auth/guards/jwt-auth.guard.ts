@@ -24,16 +24,24 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return super.canActivate(context);
     }
 
+    getToken(context): string {
+        const req = context.getRequest();
+        if (!req.cookies || !req.cookies.token) {
+            return null;
+        }
+        return req.cookies.token;
+    }
+
     handleRequest(err, user, info, context) {
-        console.log('===xxxxxx', err, user);
+        console.log('===xxxxxx handleRequest == ===', err, user);
         // const isPublic = this.reflector.getAllAndOverride<boolean>(
         //     IS_PUBLIC_KEY,
         //     [context.getHandler(), context.getClass()],
         // );
 
         // if (user || isPublic) return user;
-
-        if (err || !user) {
+        const token = this.getToken(context);
+        if (err || !user || !token) {
             return null;
             // throw err || new UnauthorizedException('用户没授权');
         }

@@ -1,4 +1,4 @@
-import { Avatar, Popover } from 'antd';
+import { Avatar, Popover, message } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import {
     ThumbsUp,
@@ -32,7 +32,10 @@ import { useEffect } from 'react';
 
 const ProfilePopoverHeader = () => {
     const profile = useSelector(selectCurrentUser);
-    const { data: count } = useCountProfileQuery();
+    const { data: count, refetch } = useCountProfileQuery();
+    useEffect(() => {
+        refetch();
+    }, [profile]);
     return (
         <>
             {profile && (
@@ -71,9 +74,17 @@ const ProfilePopoverContent = () => {
     const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
     const handleLogout = () => {
-        logout();
-        dispatch(setUser(null));
-        dispatch(setToken(null));
+        logout()
+            .then(() => {
+                message.success('退出登录');
+                setTimeout(() => {
+                    dispatch(setUser(null));
+                    dispatch(setToken(null));
+                }, 200);
+            })
+            .catch(() => {
+                message.warning('退出失败');
+            });
     };
     return (
         <div className={styles['popover-content']}>

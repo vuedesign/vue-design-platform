@@ -75,6 +75,7 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
+        req.user = null;
         res.clearCookie('token');
         req.session.user = null;
         req.session.token = null;
