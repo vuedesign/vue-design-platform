@@ -95,14 +95,10 @@ const Tools = ({ uuid }: SiteProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setTimeout(() => {
-            refetch();
-            console.log('## token detail 1', detail);
-        }, 1000);
+        refetch();
     }, [token, profile]);
 
     const handleClick = (type: TooItemType) => {
-        console.log('token', token, profile);
         if (!token || !profile) {
             dispatch(setOpen(true));
             return;
@@ -126,7 +122,6 @@ const Tools = ({ uuid }: SiteProps) => {
             down: detail.down || 0,
             collections: detail.collections || 0,
         });
-        console.log('## token detail 2', detail);
     }, [detail]);
 
     const isTool = (type: TooItemType) => {
@@ -139,7 +134,6 @@ const Tools = ({ uuid }: SiteProps) => {
     };
 
     const isActive = (type: TooItemType) => {
-        console.log('isActive', type, detail.tool);
         if (!detail.tool) {
             return false;
         }
