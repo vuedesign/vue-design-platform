@@ -6,11 +6,13 @@ import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
 import { setToken } from '@/modules/features/authSlice';
 import '@/assets/styles/normalize.scss';
+import styles from '@/assets/styles/Login.module.scss';
 import 'antd/dist/antd.css';
 import { selectIsLoginOpen, setOpen } from '@/modules/features/globalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'antd';
 import LoginPanel from '@/modules/components/LoginPanel';
+import { CloseSmall } from '@icon-park/react';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
@@ -25,9 +27,16 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <>
             <Component {...pageProps} />;
             <Modal
+                width={360}
+                closable={false}
                 open={isLoginOpen}
-                onCancel={() => dispatch(setOpen(false))}
                 footer={null}>
+                <header className={styles['modal-login-header']}>
+                    <h5>登录</h5>
+                    <span onClick={() => dispatch(setOpen(false))}>
+                        <CloseSmall theme="filled" size="20" />
+                    </span>
+                </header>
                 <LoginPanel finish={() => dispatch(setOpen(false))} />
             </Modal>
         </>

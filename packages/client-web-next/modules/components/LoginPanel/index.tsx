@@ -42,7 +42,6 @@ const LoginPanel = ({ finish }: LoginPanelProps) => {
 
     return (
         <>
-            <Divider orientation="left">登录</Divider>
             <Form
                 form={form}
                 name="basic"

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styles from './Login.module.scss';
 import LoginPanel from '@/modules/components/LoginPanel';
+import { Divider } from 'antd';
 
 const Login: NextPage<any> = () => {
     const router = useRouter();
@@ -23,6 +24,7 @@ const Login: NextPage<any> = () => {
                 <div className={styles.inner}>
                     <div className={styles.left}>
                         <div className={styles['left-inner']}>
+                            <Divider orientation="left">登录</Divider>
                             <LoginPanel finish={finish} />
                         </div>
                     </div>
