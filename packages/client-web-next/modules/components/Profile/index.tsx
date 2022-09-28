@@ -71,20 +71,20 @@ const ProfilePopoverHeader = () => {
 };
 
 const ProfilePopoverContent = () => {
-    const [logout] = useLogoutMutation();
+    // const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
     const handleLogout = () => {
-        logout()
-            .then(() => {
-                message.success('退出登录');
-                setTimeout(() => {
-                    dispatch(setUser(null));
-                    dispatch(setToken(null));
-                }, 200);
-            })
-            .catch(() => {
-                message.warning('退出失败');
-            });
+        // logout()
+        //     .then(() => {
+        //         message.success('退出登录');
+        //         setTimeout(() => {
+        //             dispatch(setUser(null));
+        //             dispatch(setToken(null));
+        //         }, 200);
+        //     })
+        //     .catch(() => {
+        //         message.warning('退出失败');
+        //     });
     };
     return (
         <div className={styles['popover-content']}>
@@ -123,15 +123,19 @@ const ProfilePopoverContent = () => {
 };
 
 const Profile = () => {
-    const { data } = useProfileQuery();
-    const profile = useSelector(selectCurrentUser);
     const router = useRouter();
     const dispatch = useDispatch();
+    const profile = useSelector(selectCurrentUser);
+    const { data, refetch } = useProfileQuery();
+
+    // dispatch(setUser(data || null));
+
     const handleGotoLogin = () => {
         router.push('/login');
     };
 
     useEffect(() => {
+        console.log('Profile data==', data);
         if (data) {
             dispatch(setUser(data));
         }

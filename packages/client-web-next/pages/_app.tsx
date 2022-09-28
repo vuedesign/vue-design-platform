@@ -46,7 +46,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 MyApp.getInitialProps = wrapper.getInitialAppProps(
     (store) => async (context) => {
         const req: CtxReq = context.ctx.req as CtxReq;
-        console.log('req?.cookies?.token', req?.cookies?.token);
+        console.log('app token:', req?.cookies?.token);
         await store.dispatch(setToken(req?.cookies?.token || ''));
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());

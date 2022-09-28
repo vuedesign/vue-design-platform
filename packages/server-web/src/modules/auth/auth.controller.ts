@@ -54,8 +54,9 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
         });
-        req.session.token = token;
-        req.session.user = user;
+        console.log('token login', token);
+        // req.session.token = token;
+        // req.session.user = user;
         return {
             token,
             user,
@@ -64,6 +65,7 @@ export class AuthController {
 
     @Get('profile')
     getProfile(@Req() req) {
+        console.log('req.user.id', req.user.id);
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException();
         }
@@ -75,10 +77,11 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
+        console.log('logout');
         req.user = null;
         res.clearCookie('token');
-        req.session.user = null;
-        req.session.token = null;
+        // req.session.user = null;
+        // req.session.token = null;
         return true;
     }
 

@@ -26,6 +26,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     getToken(context): string {
         const req = context.getRequest();
+        console.log('req.cookies', req.cookies.token);
         if (!req.cookies || !req.cookies.token) {
             return null;
         }
@@ -33,7 +34,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err, user, info, context) {
-        console.log('===xxxxxx handleRequest == ===', err, user);
+        console.log('===xxxxxx handleRequest ===', err, user);
         // const isPublic = this.reflector.getAllAndOverride<boolean>(
         //     IS_PUBLIC_KEY,
         //     [context.getHandler(), context.getClass()],
@@ -41,6 +42,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
         // if (user || isPublic) return user;
         const token = this.getToken(context);
+        console.log('== handleRequest token === ', token);
         if (err || !user || !token) {
             return null;
             // throw err || new UnauthorizedException('用户没授权');
