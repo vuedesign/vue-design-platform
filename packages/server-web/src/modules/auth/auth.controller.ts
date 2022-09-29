@@ -16,6 +16,7 @@ import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { Public } from '@/core/decorators/auth.decorator';
+import { User } from '@/core/decorators/user.decorator';
 import { Response, Request } from 'express';
 import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
@@ -64,12 +65,12 @@ export class AuthController {
     }
 
     @Get('profile')
-    getProfile(@Req() req) {
-        console.log('req.user.id', req.user.id);
-        if (!req.user || !req.user.id) {
+    getProfile(@User() user) {
+        console.log('profile:', user);
+        if (!user || !user.id) {
             throw new UnauthorizedException();
         }
-        return this.authService.findOne({ id: req.user.id });
+        return this.authService.findOne({ id: user.id });
     }
 
     @Get('logout')

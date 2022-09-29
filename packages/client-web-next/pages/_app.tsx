@@ -4,7 +4,7 @@ import App from 'next/app';
 import { wrapper } from '@/modules/store';
 import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
-import { setToken } from '@/modules/features/authSlice';
+import { setToken, setUser } from '@/modules/features/authSlice';
 import '@/assets/styles/normalize.scss';
 import styles from '@/assets/styles/Login.module.scss';
 import 'antd/dist/antd.css';
@@ -51,7 +51,6 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());
         const appProps = await App.getInitialProps(context);
-        console.log('appProps', appProps);
         return { ...appProps };
     },
 );

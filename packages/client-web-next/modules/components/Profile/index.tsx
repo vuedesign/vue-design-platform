@@ -71,20 +71,20 @@ const ProfilePopoverHeader = () => {
 };
 
 const ProfilePopoverContent = () => {
-    // const [logout] = useLogoutMutation();
+    const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
     const handleLogout = () => {
-        // logout()
-        //     .then(() => {
-        //         message.success('退出登录');
-        //         setTimeout(() => {
-        //             dispatch(setUser(null));
-        //             dispatch(setToken(null));
-        //         }, 200);
-        //     })
-        //     .catch(() => {
-        //         message.warning('退出失败');
-        //     });
+        logout()
+            .then(() => {
+                message.success('退出登录');
+                setTimeout(() => {
+                    dispatch(setUser(null));
+                    dispatch(setToken(null));
+                }, 200);
+            })
+            .catch(() => {
+                message.warning('退出失败');
+            });
     };
     return (
         <div className={styles['popover-content']}>
@@ -126,20 +126,14 @@ const Profile = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const profile = useSelector(selectCurrentUser);
-    const { data, refetch } = useProfileQuery();
-
-    // dispatch(setUser(data || null));
+    const { data } = useProfileQuery();
+    useEffect(() => {
+        data && dispatch(setUser(data));
+    });
 
     const handleGotoLogin = () => {
         router.push('/login');
     };
-
-    useEffect(() => {
-        console.log('Profile data==', data);
-        if (data) {
-            dispatch(setUser(data));
-        }
-    }, [data]);
 
     if (!profile) {
         return (
@@ -151,18 +145,20 @@ const Profile = () => {
     }
     return (
         <div className={styles.container}>
-            <Popover
-                overlayClassName="profile-popover-overlay"
-                placement="bottomRight"
-                title={<ProfilePopoverHeader />}
-                content={<ProfilePopoverContent />}
-                trigger="click">
-                <Avatar
-                    size={32}
-                    src={profile.avatar}
-                    icon={<UserOutlined />}
-                />
-            </Popover>
+            {profile && (
+                <Popover
+                    overlayClassName="profile-popover-overlay"
+                    placement="bottomRight"
+                    title={<ProfilePopoverHeader />}
+                    content={<ProfilePopoverContent />}
+                    trigger="click">
+                    <Avatar
+                        size={32}
+                        src={profile.avatar}
+                        icon={<UserOutlined />}
+                    />
+                </Popover>
+            )}
         </div>
     );
 };
