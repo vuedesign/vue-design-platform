@@ -2,22 +2,33 @@ import { Divider, Form, Input, Button, Checkbox } from 'antd';
 import { User, Lock } from '@icon-park/react';
 import { useDispatch } from 'react-redux';
 import { TOKEN_KEY } from '@/configs/globals.contants';
-import { useLoginMutation } from '@/modules/services/authApi';
+import {
+    useLoginMutation,
+    usePublicKeyQuery,
+} from '@/modules/services/authApi';
 import { LoginRequest } from '@/modules/types/auth';
 import { setToken, setUser } from '@/modules/features/authSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { encrypt } from '@/modules/utils';
 
 type LoginPanelProps = {
     finish?: () => void;
 };
 
 const LoginPanel = ({ finish }: LoginPanelProps) => {
+    const { data: publicKey } = usePublicKeyQuery();
     const [form] = Form.useForm();
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
 
     const onFinish = (values: LoginRequest) => {
-        login(values).then((res: any) => {
+        // publicKeyrefetch();
+        console.log('publicKey====', publicKey.data);
+        const data = {
+            ...values,
+            password: encrypt(values.password, publicKey.data),
+        };
+        login(data).then((res: any) => {
             console.log('res', res, values);
             if (res && res.data && res.data.token) {
                 window.localStorage.setItem(TOKEN_KEY, res.data.token);

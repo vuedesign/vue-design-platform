@@ -33,23 +33,13 @@ export function getParamsByContext<C extends Record<string, any>>(
     return params.get(filed) || '';
 }
 
-export function stringify(data: string): string {
+export function encrypt(data: string, publicKey: string): string {
     const JSEncrypt = require('jsencrypt').default;
     if (typeof window !== 'undefined') {
         const encrypt = new JSEncrypt();
-        const publicKey = `-----BEGIN PUBLIC KEY-----
-        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9h2BtInlMMiutMouv2mlXBl3p
-        bgMnsem0wudg10QIeF/EsVy/54CzxJczv7KyPbRGFmDyUveoTsKYekcsh7bwOSKE
-        /BA8e3xO8o55Ggdx4OE7LRAVyM/oH4tZPWDuMsOelWPZPHLvBggY2YT0MixUaDC/
-        tpXyQaLws2SF/keJ8wIDAQAB
-        -----END PUBLIC KEY-----`;
         encrypt.setPublicKey(publicKey);
         const encrypted = encrypt.encrypt(data);
         return encrypted;
     }
     return '';
 }
-
-export const crypt = {
-    stringify,
-};

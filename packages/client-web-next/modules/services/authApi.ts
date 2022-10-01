@@ -14,7 +14,6 @@ import type {
     LikeParam,
 } from '@/modules/types';
 import { stringify } from 'qs';
-import { crypt } from '@/modules/utils';
 
 export const authApi = createApi({
     reducerPath: 'authApi',
@@ -37,27 +36,29 @@ export const authApi = createApi({
         }
     },
     endpoints: (builder) => ({
+        publicKey: builder.query<any, void>({
+            query: () => {
+                return {
+                    url: apis.AUTH_PUBLIC_KEY,
+                    method: 'GET',
+                };
+            },
+        }),
         login: builder.mutation<UserResponse, LoginRequest>({
-            query: (data) => {
+            query: (body) => {
                 return {
                     url: apis.AUTH_LOGIN,
                     method: 'POST',
-                    body: {
-                        ...data,
-                        password: crypt.stringify(data.password),
-                    },
+                    body,
                 };
             },
         }),
         register: builder.mutation<UserResponse, LoginRequest>({
-            query: (data) => {
+            query: (body) => {
                 return {
                     url: apis.AUTH_REGISTER,
                     method: 'POST',
-                    body: {
-                        ...data,
-                        password: crypt.stringify(data.password),
-                    },
+                    body,
                 };
             },
         }),
@@ -122,6 +123,7 @@ export const authApi = createApi({
 
 export const {
     useLoginMutation,
+    usePublicKeyQuery,
     useRegisterMutation,
     useLogoutMutation,
     useLikeMutation,
@@ -129,4 +131,5 @@ export const {
     useCountsQuery,
     useSitesQuery,
 } = authApi;
-export const { profile, counts, sites, like, logout } = authApi.endpoints;
+export const { profile, counts, sites, like, logout, publicKey } =
+    authApi.endpoints;

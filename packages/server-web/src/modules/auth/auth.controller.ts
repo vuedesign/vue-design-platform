@@ -23,10 +23,8 @@ import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Cache } from 'cache-manager';
-import { decrypt } from '@/core/utils';
-// const NodeRSA = require('node-rsa');
-// const key = new NodeRSA({ b: 1024 });
-// key.setOptions({ encryptionScheme: 'pkcs1' }); // 必须加上，加密方式问题。
+// import { decrypt } from '@/core/utils';
+import key, { decrypt } from '@/globals/rsa';
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -37,6 +35,23 @@ export class AuthController {
         private authService: AuthService,
         private jwtService: JwtService,
     ) {}
+
+    @Public()
+    @Get('public-key')
+    publicKey() {
+        // const privateKey = key.exportKey('private');
+        // const publicKey = key.exportKey('public');
+        // console.log('privateKey;', privateKey);
+        // console.log('publicKey:', publicKey);
+        return {
+            data: `-----BEGIN PUBLIC KEY-----
+            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9h2BtInlMMiutMouv2mlXBl3p
+            bgMnsem0wudg10QIeF/EsVy/54CzxJczv7KyPbRGFmDyUveoTsKYekcsh7bwOSKE
+            /BA8e3xO8o55Ggdx4OE7LRAVyM/oH4tZPWDuMsOelWPZPHLvBggY2YT0MixUaDC/
+            tpXyQaLws2SF/keJ8wIDAQAB
+            -----END PUBLIC KEY-----`,
+        };
+    }
 
     @Public()
     @Post('login')
@@ -53,6 +68,7 @@ export class AuthController {
         console.log('password', password);
 
         const decrypted = decrypt(password);
+
         console.log('decrypted', decrypted);
         const user = await this.authService.validateUser(account, decrypted);
         if (!user) {

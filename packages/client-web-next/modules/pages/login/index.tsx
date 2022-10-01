@@ -4,6 +4,16 @@ import { useRouter } from 'next/router';
 import styles from './Login.module.scss';
 import LoginPanel from '@/modules/components/LoginPanel';
 import { Divider } from 'antd';
+import { wrapper } from '@/modules/store';
+import { publicKey } from '@/modules/services/authApi';
+
+export const getServerSideProps = wrapper.getServerSideProps(
+    (store) => async (context) => {
+        return {
+            props: {},
+        };
+    },
+);
 
 const Login: NextPage<any> = () => {
     const router = useRouter();

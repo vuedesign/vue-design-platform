@@ -1,2 +1,3 @@
-import Login from '@/modules/pages/login';
+import Login, { getServerSideProps } from '@/modules/pages/login';
+export { getServerSideProps };
 export default Login;

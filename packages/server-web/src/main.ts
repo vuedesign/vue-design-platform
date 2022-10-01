@@ -7,6 +7,16 @@ import { TransformInterceptor } from '@/core/interceptors/transform.interceptor'
 import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
 import { ConfigService } from '@nestjs/config';
 
+// const NodeRSA = require('node-rsa');
+// const key = new NodeRSA({ b: 1024 });
+
+// const text = 'Hello RSA!';
+// const encrypted = key.encrypt(text, 'base64');
+// console.log('encrypted: ', encrypted);
+// const decrypted = key.decrypt(encrypted, 'utf8');
+// console.log('decrypted: ', decrypted);
+// console.log('pkcs1', key.exportKey('pkcs1'));
+
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const config = app.get(ConfigService);

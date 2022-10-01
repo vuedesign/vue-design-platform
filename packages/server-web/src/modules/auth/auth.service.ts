@@ -5,7 +5,7 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 import { UserEntity } from '@/entities/user.entity';
-import { decrypt } from '@/core/utils';
+import { decrypt } from '@/globals/rsa';
 
 @Injectable()
 export class AuthService extends BaseMicroservice {
@@ -24,7 +24,9 @@ export class AuthService extends BaseMicroservice {
         if (!user) {
             return null;
         }
+        console.log('user', user);
         const oldPassword = decrypt(user.password);
+        console.log('oldPassword', oldPassword);
         if (oldPassword !== newPassword) {
             throw new UnauthorizedException('登录密码错误');
         }
