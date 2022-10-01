@@ -11,7 +11,8 @@
         "build:client-web-next": "pnpm run --dir packages/client-web-next build",
         "start:client-web-next": "pnpm run --dir packages/client-web-next start",
         "prepare": "husky install",
-        "precommit": "lint-staged"
+        "precommit": "lint-staged",
+        "rsa": "openssl genrsa -out rsa_1024_private.pem 1024 && openssl rsa -pubout -in rsa_1024_private.pem -out rsa_1024_public.pem"
     },
     "dependencies": {
         "concurrently": "^7.0.0",

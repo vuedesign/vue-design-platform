@@ -23,6 +23,10 @@ import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Cache } from 'cache-manager';
+import { decrypt } from '@/core/utils';
+// const NodeRSA = require('node-rsa');
+// const key = new NodeRSA({ b: 1024 });
+// key.setOptions({ encryptionScheme: 'pkcs1' }); // 必须加上，加密方式问题。
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -46,7 +50,11 @@ export class AuthController {
         @Req() req,
     ) {
         const { account, password } = body;
-        const user = await this.authService.validateUser(account, password);
+        console.log('password', password);
+
+        const decrypted = decrypt(password);
+        console.log('decrypted', decrypted);
+        const user = await this.authService.validateUser(account, decrypted);
         if (!user) {
             throw new UnauthorizedException('登录校验失败');
         }
@@ -55,9 +63,6 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
         });
-        console.log('token login', token);
-        // req.session.token = token;
-        // req.session.user = user;
         return {
             token,
             user,

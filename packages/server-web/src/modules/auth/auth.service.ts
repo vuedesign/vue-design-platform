@@ -5,10 +5,11 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 import { UserEntity } from '@/entities/user.entity';
+import { decrypt } from '@/core/utils';
 
 @Injectable()
 export class AuthService extends BaseMicroservice {
-    async validateUser(account: string, password: string): Promise<any> {
+    async validateUser(account: string, newPassword: string): Promise<any> {
         let field: string = getFieldType(account);
         const where = {
             [field]: account,
@@ -20,14 +21,16 @@ export class AuthService extends BaseMicroservice {
             { module: 'user', method: 'find-one' },
             where,
         );
-        if (user.password !== password) {
+        if (!user) {
+            return null;
+        }
+        const oldPassword = decrypt(user.password);
+        if (oldPassword !== newPassword) {
             throw new UnauthorizedException('登录密码错误');
         }
-        if (user && user.password === password) {
-            const { password, ...result } = user;
-            return result;
-        }
-        return null;
+
+        const { password, ...result } = user;
+        return result;
     }
 
     findOne(query: Record<string, any>) {
