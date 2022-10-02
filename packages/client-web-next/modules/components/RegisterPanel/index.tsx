@@ -15,9 +15,10 @@ import { encrypt } from '@/modules/utils';
 
 type RegisterPanelProps = {
     finish?: () => void;
+    login?: () => void;
 };
 
-const RegisterPanel = ({ finish }: RegisterPanelProps) => {
+const RegisterPanel = ({ finish, login }: RegisterPanelProps) => {
     const [form] = Form.useForm();
     const [getPublicKey] = usePublicKeyMutation();
     const [register, { isLoading }] = useRegisterMutation();
@@ -29,7 +30,6 @@ const RegisterPanel = ({ finish }: RegisterPanelProps) => {
             account,
             password: encrypt(password, publicKeyBuffer),
         })) as DataResponse<UserResponse>;
-        console.log('auth', auth, error);
         if (error === 'undefined' && auth) {
             finish && finish();
         }
@@ -75,10 +75,7 @@ const RegisterPanel = ({ finish }: RegisterPanelProps) => {
                     </Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button
-                        type="link"
-                        block
-                        onClick={() => finish && finish()}>
+                    <Button type="link" block onClick={login}>
                         马上登录
                     </Button>
                 </Form.Item>

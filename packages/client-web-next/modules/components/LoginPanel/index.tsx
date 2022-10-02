@@ -19,9 +19,10 @@ import { encrypt } from '@/modules/utils';
 
 type LoginPanelProps = {
     finish?: () => void;
+    register?: () => void;
 };
 
-const LoginPanel = ({ finish }: LoginPanelProps) => {
+const LoginPanel = ({ finish, register }: LoginPanelProps) => {
     const [getPublicKey] = usePublicKeyMutation();
     const [form] = Form.useForm();
     const [login, { isLoading }] = useLoginMutation();
@@ -52,8 +53,8 @@ const LoginPanel = ({ finish }: LoginPanelProps) => {
         password: [{ required: true, message: '请输入用户密码!' }],
     };
 
-    const [account, setAccount] = useState('18602042484');
-    const [password, setPassword] = useState('string');
+    const [account, setAccount] = useState('wujian12');
+    const [password, setPassword] = useState('wujian');
 
     return (
         <>
@@ -90,10 +91,7 @@ const LoginPanel = ({ finish }: LoginPanelProps) => {
                     </Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button
-                        type="link"
-                        block
-                        onClick={() => router.push('/register')}>
+                    <Button type="link" block onClick={register}>
                         马上注册
                     </Button>
                 </Form.Item>

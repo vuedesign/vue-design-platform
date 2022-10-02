@@ -8,27 +8,19 @@ import {
     ShareOne,
     PreviewOpen,
 } from '@icon-park/react';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    useProfileQuery,
-    profile,
-    logout,
-    useLogoutMutation,
-} from '@/modules/services/authApi';
-import {
-    useCountProfileQuery,
-    countProfile,
-} from '@/modules/services/countApi';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useProfileQuery, useLogoutMutation } from '@/modules/services/authApi';
+import { useCountProfileQuery } from '@/modules/services/countApi';
 import {
     selectCurrentUser,
     setUser,
     setToken,
 } from '@/modules/features/authSlice';
-import { User } from '@/modules/types/auth';
+
+import { setOpen } from '@/modules/features/globalSlice';
 import styles from './Profile.module.scss';
-import Link from 'next/link';
-import { useEffect } from 'react';
 
 const ProfilePopoverHeader = () => {
     const profile = useSelector(selectCurrentUser);
@@ -73,6 +65,7 @@ const ProfilePopoverHeader = () => {
 const ProfilePopoverContent = () => {
     const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
+
     const handleLogout = () => {
         logout()
             .then(() => {
@@ -123,21 +116,26 @@ const ProfilePopoverContent = () => {
 };
 
 const Profile = () => {
-    const router = useRouter();
     const dispatch = useDispatch();
     const profile = useSelector(selectCurrentUser);
     const { data } = useProfileQuery();
+    const [isRender, setIsRender] = useState(false);
     useEffect(() => {
-        data && dispatch(setUser(data));
+        if (!isRender && data) {
+            data && dispatch(setUser(data));
+            setIsRender(true);
+        }
     });
 
-    const handleGotoLogin = () => {
-        router.push('/login');
+    const handleOpenDialogLogin = () => {
+        dispatch(setOpen(true));
     };
 
     if (!profile) {
         return (
-            <div className={styles['btn-login']} onClick={handleGotoLogin}>
+            <div
+                className={styles['btn-login']}
+                onClick={handleOpenDialogLogin}>
                 <UserSwitchOutlined />
                 <span className={styles.text}>登录/注册</span>
             </div>
