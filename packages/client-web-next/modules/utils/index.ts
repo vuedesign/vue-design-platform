@@ -33,13 +33,19 @@ export function getParamsByContext<C extends Record<string, any>>(
     return params.get(filed) || '';
 }
 
-export function encrypt(data: string, publicKey: string): string {
-    const JSEncrypt = require('jsencrypt').default;
-    if (typeof window !== 'undefined') {
-        const encrypt = new JSEncrypt();
-        encrypt.setPublicKey(publicKey);
-        const encrypted = encrypt.encrypt(data);
-        return encrypted;
+export type BufferJSON = {
+    type: 'Buffer';
+    data: number[];
+};
+
+export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
+    if (typeof window === 'undefined' || !publicKeyJSON) {
+        return '';
     }
-    return '';
+    const JSEncrypt = require('jsencrypt').default;
+    const publicKey = Buffer.from(publicKeyJSON?.data || []).toString();
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encrypted = encrypt.encrypt(data);
+    return encrypted;
 }

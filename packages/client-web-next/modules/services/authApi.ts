@@ -10,8 +10,8 @@ import type {
     LoginRequest,
     User,
     SiteListResponse,
-    SiteItem,
     LikeParam,
+    BufferJSON,
 } from '@/modules/types';
 import { stringify } from 'qs';
 
@@ -36,7 +36,7 @@ export const authApi = createApi({
         }
     },
     endpoints: (builder) => ({
-        publicKey: builder.query<any, void>({
+        publicKey: builder.mutation<BufferJSON, void>({
             query: () => {
                 return {
                     url: apis.AUTH_PUBLIC_KEY,
@@ -123,7 +123,7 @@ export const authApi = createApi({
 
 export const {
     useLoginMutation,
-    usePublicKeyQuery,
+    usePublicKeyMutation,
     useRegisterMutation,
     useLogoutMutation,
     useLikeMutation,

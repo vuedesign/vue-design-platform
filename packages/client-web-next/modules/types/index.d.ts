@@ -4,3 +4,8 @@ export * from './count';
 export * from './navigation';
 export * from './site';
 export * from './tag';
+
+export interface DataResponse<D, E = null> {
+    data: D;
+    error: E;
+}

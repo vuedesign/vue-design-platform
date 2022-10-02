@@ -12,12 +12,13 @@ import { UserModule } from './modules/user/user.module';
 import { ToolModule } from './modules/tool/tool.module';
 import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
+import rsaConfig from '@/configs/rsa.config';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            load: [globalConfig, microservicesConfig],
+            load: [globalConfig, microservicesConfig, rsaConfig],
         }),
         CacheModule.register({
             isGlobal: true,

@@ -1,12 +1,18 @@
 import { Divider, Form, Input, Button, Checkbox } from 'antd';
+import { useRouter } from 'next/router';
 import { User, Lock } from '@icon-park/react';
 import { useDispatch } from 'react-redux';
 import { TOKEN_KEY } from '@/configs/globals.contants';
 import {
     useLoginMutation,
-    usePublicKeyQuery,
+    usePublicKeyMutation,
 } from '@/modules/services/authApi';
-import { LoginRequest } from '@/modules/types/auth';
+import type {
+    DataResponse,
+    LoginRequest,
+    UserResponse,
+    BufferJSON,
+} from '@/modules/types';
 import { setToken, setUser } from '@/modules/features/authSlice';
 import { useEffect, useState } from 'react';
 import { encrypt } from '@/modules/utils';
@@ -16,27 +22,25 @@ type LoginPanelProps = {
 };
 
 const LoginPanel = ({ finish }: LoginPanelProps) => {
-    const { data: publicKey } = usePublicKeyQuery();
+    const [getPublicKey] = usePublicKeyMutation();
     const [form] = Form.useForm();
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
+    const router = useRouter();
 
-    const onFinish = (values: LoginRequest) => {
-        // publicKeyrefetch();
-        console.log('publicKey====', publicKey.data);
-        const data = {
-            ...values,
-            password: encrypt(values.password, publicKey.data),
-        };
-        login(data).then((res: any) => {
-            console.log('res', res, values);
-            if (res && res.data && res.data.token) {
-                window.localStorage.setItem(TOKEN_KEY, res.data.token);
-                dispatch(setToken(res.data.token));
-                dispatch(setUser(res.data.user));
-                finish && finish();
-            }
-        });
+    const onFinish = async ({ account, password }: LoginRequest) => {
+        const { data: publicKeyBuffer } =
+            (await getPublicKey()) as DataResponse<BufferJSON>;
+        const { data: auth } = (await login({
+            account,
+            password: encrypt(password, publicKeyBuffer),
+        })) as DataResponse<UserResponse>;
+        if (auth && auth.token) {
+            window.localStorage.setItem(TOKEN_KEY, auth.token);
+            dispatch(setToken(auth.token));
+            dispatch(setUser(auth.user));
+            finish && finish();
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -83,6 +87,14 @@ const LoginPanel = ({ finish }: LoginPanelProps) => {
                         htmlType="submit"
                         loading={isLoading}>
                         登录
+                    </Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button
+                        type="link"
+                        block
+                        onClick={() => router.push('/register')}>
+                        马上注册
                     </Button>
                 </Form.Item>
             </Form>

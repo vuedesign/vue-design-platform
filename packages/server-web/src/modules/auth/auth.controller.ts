@@ -23,8 +23,8 @@ import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Cache } from 'cache-manager';
-// import { decrypt } from '@/core/utils';
-import key, { decrypt } from '@/globals/rsa';
+import { ConfigService } from '@nestjs/config';
+import { RsaService } from '@/globals/services/rsa.service';
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -34,23 +34,16 @@ export class AuthController {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
         private authService: AuthService,
         private jwtService: JwtService,
+        private configService: ConfigService,
+        private rsaService: RsaService,
     ) {}
 
     @Public()
     @Get('public-key')
     publicKey() {
-        // const privateKey = key.exportKey('private');
-        // const publicKey = key.exportKey('public');
-        // console.log('privateKey;', privateKey);
-        // console.log('publicKey:', publicKey);
-        return {
-            data: `-----BEGIN PUBLIC KEY-----
-            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9h2BtInlMMiutMouv2mlXBl3p
-            bgMnsem0wudg10QIeF/EsVy/54CzxJczv7KyPbRGFmDyUveoTsKYekcsh7bwOSKE
-            /BA8e3xO8o55Ggdx4OE7LRAVyM/oH4tZPWDuMsOelWPZPHLvBggY2YT0MixUaDC/
-            tpXyQaLws2SF/keJ8wIDAQAB
-            -----END PUBLIC KEY-----`,
-        };
+        const value = this.configService.get('PUBLIC_KEY');
+        console.log('value', value);
+        return value;
     }
 
     @Public()
@@ -65,14 +58,15 @@ export class AuthController {
         @Req() req,
     ) {
         const { account, password } = body;
-        console.log('password', password);
 
-        const decrypted = decrypt(password);
-
-        console.log('decrypted', decrypted);
-        const user = await this.authService.validateUser(account, decrypted);
+        const newPassword = this.rsaService.decrypt(password);
+        const user = await this.authService.validateUser(account);
         if (!user) {
-            throw new UnauthorizedException('登录校验失败');
+            throw new UnauthorizedException('用户名错误');
+        }
+        const oldPassword = this.rsaService.decrypt(user.password);
+        if (newPassword !== oldPassword) {
+            throw new UnauthorizedException('用户密码错误');
         }
         const payload = { username: user.username, sub: user.id };
         const token = this.jwtService.sign(payload);
@@ -121,10 +115,7 @@ export class AuthController {
         };
         const user = await this.authService.findOne(where);
         if (user) {
-            return {
-                status: HttpStatus.CONFLICT,
-                error: '用户名、邮箱、电话号已存在',
-            };
+            throw new UnauthorizedException('用户名、邮箱、电话号已存在');
         }
         const res = await this.authService.register({
             ...where,

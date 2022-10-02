@@ -263,6 +263,7 @@ importers:
       lodash-es: ^4.17.21
       next: ^12.3.1
       next-redux-wrapper: ^8.0.0
+      node-rsa: ^1.1.1
       qs: ^6.11.0
       react: 18.2.0
       react-dom: 18.2.0
@@ -282,6 +283,7 @@ importers:
       lodash-es: registry.npmmirror.com/lodash-es/4.17.21
       next: registry.npmmirror.com/next/12.3.1_2mygebwfgdyopr3fy2qddu2eli
       next-redux-wrapper: registry.npmmirror.com/next-redux-wrapper/8.0.0_wnml2u2rjvrq3plu2g7enler3e
+      node-rsa: registry.npmmirror.com/node-rsa/1.1.1
       qs: registry.npmmirror.com/qs/6.11.0
       react: registry.npmmirror.com/react/18.2.0
       react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0

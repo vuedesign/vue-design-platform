@@ -5,34 +5,29 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
 import { UserEntity } from '@/entities/user.entity';
-import { decrypt } from '@/globals/rsa';
+// import { decrypt } from '@/globals/services/rsa.service';
 
 @Injectable()
 export class AuthService extends BaseMicroservice {
-    async validateUser(account: string, newPassword: string): Promise<any> {
+    async validateUser(account: string): Promise<UserEntity | null> {
         let field: string = getFieldType(account);
         const where = {
             [field]: account,
         };
-        type User = {
-            password: string;
-        };
-        const user = await this.send<User>(
+        const user = await this.send<UserEntity>(
             { module: 'user', method: 'find-one' },
             where,
         );
         if (!user) {
             return null;
         }
-        console.log('user', user);
-        const oldPassword = decrypt(user.password);
-        console.log('oldPassword', oldPassword);
+        return user;
+    }
+
+    checkPassword(oldPassword: string, newPassword: string) {
         if (oldPassword !== newPassword) {
             throw new UnauthorizedException('登录密码错误');
         }
-
-        const { password, ...result } = user;
-        return result;
     }
 
     findOne(query: Record<string, any>) {

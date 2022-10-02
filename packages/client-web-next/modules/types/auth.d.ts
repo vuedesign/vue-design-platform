@@ -40,3 +40,8 @@ export interface LikeParam {
     siteId: number;
     value: number;
 }
+
+export type BufferJSON = {
+    type: 'Buffer';
+    data: number[];
+};

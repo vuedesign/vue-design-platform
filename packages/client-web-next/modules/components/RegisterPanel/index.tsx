@@ -1,11 +1,17 @@
-import { Divider, Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { User, Lock } from '@icon-park/react';
-import { useDispatch } from 'react-redux';
-import { TOKEN_KEY } from '@/configs/globals.contants';
-import { useRegisterMutation } from '@/modules/services/authApi';
-import { LoginRequest } from '@/modules/types/auth';
-import { setToken, setUser } from '@/modules/features/authSlice';
+import {
+    useRegisterMutation,
+    usePublicKeyMutation,
+} from '@/modules/services/authApi';
+import type {
+    DataResponse,
+    LoginRequest,
+    UserResponse,
+    BufferJSON,
+} from '@/modules/types';
 import { useState } from 'react';
+import { encrypt } from '@/modules/utils';
 
 type RegisterPanelProps = {
     finish?: () => void;
@@ -13,16 +19,20 @@ type RegisterPanelProps = {
 
 const RegisterPanel = ({ finish }: RegisterPanelProps) => {
     const [form] = Form.useForm();
+    const [getPublicKey] = usePublicKeyMutation();
     const [register, { isLoading }] = useRegisterMutation();
-    const dispatch = useDispatch();
 
-    const onFinish = (values: LoginRequest) => {
-        register(values).then((res: any) => {
-            console.log('res', res, values);
-            if (res && res.data) {
-                finish && finish();
-            }
-        });
+    const onFinish = async ({ account, password }: LoginRequest) => {
+        const { data: publicKeyBuffer } =
+            (await getPublicKey()) as DataResponse<BufferJSON>;
+        const { data: auth, error } = (await register({
+            account,
+            password: encrypt(password, publicKeyBuffer),
+        })) as DataResponse<UserResponse>;
+        console.log('auth', auth, error);
+        if (error === 'undefined' && auth) {
+            finish && finish();
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {

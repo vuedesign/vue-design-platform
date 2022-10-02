@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategys/jwt.strategy';
 import { LocalStrategy } from './strategys/local.strategy';
 import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 import { jwtConstants } from './constants';
+import { RsaService } from '@/globals/services/rsa.service';
 
 @Module({
     imports: [
@@ -21,7 +22,7 @@ import { jwtConstants } from './constants';
         BaseMicroserviceModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, JwtStrategy],
+    providers: [AuthService, LocalStrategy, JwtStrategy, RsaService],
     exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
