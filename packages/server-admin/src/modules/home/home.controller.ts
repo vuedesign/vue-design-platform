@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
 import { NavigationService } from '../navigation/navigation.service';
 import { AuthRequest } from '../auth/dto/auth.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 
 @Controller('home')
 export class HomeController {
@@ -12,7 +13,15 @@ export class HomeController {
         private readonly navigationService: NavigationService,
     ) {}
 
+    @Public()
+    @Get('test')
+    async test() {
+        return this.siteService.findUsers();
+    }
+
     viewCount() {
+        const site = this.siteService.findAll();
+        console.log('site', site);
         return Promise.resolve(22983);
     }
 

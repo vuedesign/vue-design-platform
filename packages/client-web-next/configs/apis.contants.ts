@@ -20,4 +20,5 @@ export const AUTH_PROFILE = '/auth/profile';
 export const SITES_PROFILE = '/sites/profile';
 
 // tools
+export const TOOLS = '/tools';
 export const TOOLS_LIKE = '/tools/like';

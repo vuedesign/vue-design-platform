@@ -14,6 +14,7 @@ import type {
     BufferJSON,
 } from '@/modules/types';
 import { stringify } from 'qs';
+import { Tool } from '../types';
 
 export const authApi = createApi({
     reducerPath: 'authApi',
@@ -118,6 +119,14 @@ export const authApi = createApi({
                 };
             },
         }),
+        tool: builder.query<Tool | null, number | undefined>({
+            query: (siteId: number) => {
+                return {
+                    url: `${apis.TOOLS}/${siteId}`,
+                    method: 'GET',
+                };
+            },
+        }),
     }),
 });
 
@@ -130,6 +139,7 @@ export const {
     useProfileQuery,
     useCountsQuery,
     useSitesQuery,
+    useToolQuery,
 } = authApi;
-export const { profile, counts, sites, like, logout, publicKey } =
+export const { profile, counts, sites, like, logout, publicKey, tool } =
     authApi.endpoints;

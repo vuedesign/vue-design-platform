@@ -13,7 +13,7 @@ export class UpdateFieldDto {
     @ApiProperty({
         description: '要更新的数据',
     })
-    value: string;
+    value: string | number;
 
     @ApiProperty({
         description: '数据类型',

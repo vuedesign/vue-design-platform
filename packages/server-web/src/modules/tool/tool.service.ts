@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateToolDto } from './dto/create-tool.dto';
-import { UpdateToolDto } from './dto/update-tool.dto';
-import { LikeParam } from './dto/tool.dto';
+import { LikeParam, FindOneQuery } from './dto/tool.dto';
 import { BaseMicroservice } from '@/globals/services/base.microservice';
+import { ToolEntity } from '@/entities/tool.entity';
 
 @Injectable()
 export class ToolService extends BaseMicroservice {
@@ -14,11 +14,14 @@ export class ToolService extends BaseMicroservice {
         return `This action returns all tools`;
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} tool`;
+    findOne({ siteId, authorId }: FindOneQuery): Promise<ToolEntity> {
+        return this.send(
+            { module: 'tool', method: 'find-one' },
+            { siteId, authorId },
+        );
     }
 
-    like(param: LikeParam) {
+    like(param: LikeParam): Promise<boolean> {
         return this.send({ module: 'tool', method: 'like' }, param);
     }
 

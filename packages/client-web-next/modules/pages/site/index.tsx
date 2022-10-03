@@ -1,166 +1,21 @@
-import { useEffect, useState } from 'react';
-import type { ReactElement } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import {
-    GithubOne,
-    Home,
-    Star,
-    ThumbsUp,
-    ThumbsDown,
-    TagOne,
-} from '@icon-park/react';
+import { GithubOne, Home, TagOne } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
 import { site, useSiteQuery, sitesAssociate } from '@/modules/services/siteApi';
-import {
-    selectCurrentToken,
-    selectCurrentUser,
-} from '@/modules/features/authSlice';
 import { count } from '@/modules/services/countApi';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
+import Tools from '@/modules/components/Tools';
 import { getParamsByContext } from '@/modules/utils';
 import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
-import { useLikeMutation } from '@/modules/services/authApi';
+import { tool } from '@/modules/services/authApi';
 import { typeMap } from '@/configs/globals.contants';
-import { useSelector, useDispatch } from 'react-redux';
-import { setOpen } from '@/modules/features/globalSlice';
 
 type SiteProps = {
     uuid: string;
-    tool?: {
-        top: number;
-        down: number;
-        collections: number;
-    };
-};
-type TooItemType = 'top' | 'down' | 'collections';
-type TooItem = {
-    type: TooItemType;
-    icon: (active: boolean) => ReactElement;
-};
-
-const toolList: Array<TooItem> = [
-    {
-        type: 'top',
-        icon: (active: boolean) => (
-            <ThumbsUp
-                theme={active ? 'filled' : 'outline'}
-                size="20"
-                fill={active ? '#3d80fd' : '#666'}
-                style={{ height: '20px' }}
-            />
-        ),
-    },
-    {
-        type: 'down',
-        icon: (active: boolean) => (
-            <ThumbsDown
-                theme={active ? 'filled' : 'outline'}
-                size="20"
-                fill={active ? '#3d80fd' : '#666'}
-                style={{ height: '20px' }}
-            />
-        ),
-    },
-    {
-        type: 'collections',
-        icon: (active: boolean) => (
-            <Star
-                theme={active ? 'filled' : 'outline'}
-                size="20"
-                fill={active ? '#3d80fd' : '#666'}
-                style={{ height: '20px' }}
-            />
-        ),
-    },
-];
-
-const Tools = ({ uuid }: SiteProps) => {
-    const { data: detail, refetch } = useSiteQuery(uuid);
-    if (!detail) {
-        return null;
-    }
-    const [badges, setBadges] = useState({
-        top: detail.top || 0,
-        down: detail.down || 0,
-        collections: detail.collections || 0,
-    });
-
-    const [like] = useLikeMutation();
-    const token = useSelector(selectCurrentToken);
-    const profile = useSelector(selectCurrentUser);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        refetch();
-    }, [token, profile]);
-
-    const handleClick = (type: TooItemType) => {
-        if (!token || !profile) {
-            dispatch(setOpen(true));
-            return;
-        }
-        like({
-            type,
-            siteId: detail.id || 0,
-            value: detail.tool ? detail.tool[type] : 0,
-        }).then((res) => {
-            console.log('res', res);
-            if (!res) {
-                return;
-            }
-            refetch();
-        });
-    };
-
-    useEffect(() => {
-        setBadges({
-            top: detail.top || 0,
-            down: detail.down || 0,
-            collections: detail.collections || 0,
-        });
-    }, [detail]);
-
-    const isTool = (type: TooItemType) => {
-        if (!detail.tool) {
-            return;
-        }
-        if (detail.tool[type]) {
-            return detail.tool[type] === 1 ? 'active' : undefined;
-        }
-    };
-
-    const isActive = (type: TooItemType) => {
-        if (!detail.tool) {
-            return false;
-        }
-        return detail.tool[type] === 1;
-    };
-
-    return (
-        <div className={styles.tools}>
-            <ul>
-                {toolList.map((item, index) => (
-                    <li
-                        key={index}
-                        className={isTool(item.type)}
-                        data-type={item.type}>
-                        <span className={styles['tools-text']}>
-                            {badges[item.type]}
-                        </span>
-                        <span
-                            onClick={() => handleClick(item.type)}
-                            className={styles['tools-btn']}>
-                            {item.icon(isActive(item.type))}
-                        </span>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -168,7 +23,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const uuid = getParamsByContext<typeof context>(context, 'uuid');
         const { data: siteItem } = await store.dispatch(site.initiate(uuid));
         const authorId = siteItem?.authorId;
+        const siteId = siteItem?.id;
         await store.dispatch(count.initiate(authorId));
+        await store.dispatch(tool.initiate(siteId));
         await store.dispatch(
             sitesAssociate.initiate({ authorId, size: 2, uuid }),
         );
@@ -268,7 +125,7 @@ const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
                             <div className={styles.content}>
                                 {detail.description}
                             </div>
-                            <Tools uuid={uuid} tool={detail.tool} />
+                            <Tools uuid={uuid} />
                         </article>
                     </>
                 )}

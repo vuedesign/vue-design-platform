@@ -7,6 +7,7 @@ import {
     Param,
     Delete,
     Req,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { ToolService } from './tool.service';
 import { CreateToolDto } from './dto/create-tool.dto';
@@ -24,21 +25,25 @@ export class ToolController {
         return this.toolService.create(createToolDto);
     }
 
-    @Get()
-    findAll() {
-        return this.toolService.findAll();
-    }
-
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.toolService.findOne(+id);
+    @Get(':siteId')
+    findOne(
+        @Param('siteId', ParseIntPipe) siteId: number,
+        @User() user: AuthUser,
+    ) {
+        console.log('siteId', siteId);
+        console.log('user', user);
+        if (!user || !user.id) {
+            return null;
+        }
+        return this.toolService.findOne({
+            siteId,
+            authorId: user.id,
+        });
     }
 
     // @Public()
     @Patch('like')
     like(@Body() param: LikeParam, @User() user: AuthUser) {
-        console.log('req===user', user);
-
         if (!user || !user.id) {
             return false;
         }

@@ -48,22 +48,16 @@ export class SiteTcpController {
     }
 
     @MessagePattern({ module: 'site', method: 'findOneBy' }, Transport.TCP)
-    async findOneBy({ userId, uuid }) {
+    async findOneBy({ uuid }) {
         const site = await this.siteService.findOneBy({ uuid });
-        if (!userId) {
-            return site;
+        if (site && site.id) {
+            console.log('site.id', site.id);
+            await this.siteService.updateField(site.id, {
+                field: 'views',
+                value: site.views + 1,
+                type: 'number',
+            });
         }
-        const tool = await this.toolService.findOneBy({
-            siteId: site.id,
-            authorId: userId,
-        });
-        Object.assign(site, {
-            tool: {
-                top: tool ? tool.top : 0,
-                down: tool ? tool.down : 0,
-                collections: tool ? tool.collections : 0,
-            },
-        });
         return site;
     }
 }

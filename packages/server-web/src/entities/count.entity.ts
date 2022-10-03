@@ -4,13 +4,12 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     CreateDateColumn,
-    Generated,
 } from 'typeorm';
 
-@Entity('navigation')
-export class NavigationEntity {
+@Entity('count')
+export class CountEntity {
     @PrimaryGeneratedColumn({
-        comment: '站点id',
+        comment: '作者id',
     })
     id: number;
 
@@ -18,60 +17,58 @@ export class NavigationEntity {
         type: 'int',
         width: 11,
         nullable: false,
-        comment: '站点id',
-        name: 'site_id',
+        comment: '作者id',
+        name: 'author_id',
     })
-    siteId: number;
-
-    @Column({
-        type: 'varchar',
-        width: 255,
-        nullable: false,
-        comment: '站点地址',
-        name: 'site_url',
-    })
-    siteUrl: string;
-
-    @Column({
-        type: 'varchar',
-        width: 255,
-        nullable: false,
-        comment: '站点地址',
-        name: 'icon_url',
-    })
-    iconUrl: string;
-
-    @Column({
-        type: 'varchar',
-        width: 255,
-        nullable: false,
-        comment: '名称 (标题)',
-    })
-    title: string;
-
-    @Column({
-        type: 'varchar',
-        width: 255,
-        nullable: true,
-        comment: '项目描述',
-    })
-    description: string;
+    authorId: number;
 
     @Column({
         type: 'int',
         width: 11,
         nullable: false,
-        comment: '排序',
+        comment: '站点',
     })
-    order: number;
+    sites: number;
 
     @Column({
         type: 'int',
-        width: 1,
+        width: 11,
         nullable: false,
-        comment: '是否可用：1-可用，2-不可用',
+        comment: '浏览量',
     })
-    status: number;
+    views: number;
+
+    @Column({
+        type: 'int',
+        width: 11,
+        nullable: false,
+        comment: '收藏量',
+    })
+    collections: number;
+
+    @Column({
+        type: 'int',
+        width: 11,
+        nullable: false,
+        comment: '顶',
+    })
+    top: number;
+
+    @Column({
+        type: 'int',
+        width: 11,
+        nullable: false,
+        comment: '踩',
+    })
+    down: number;
+
+    @Column({
+        type: 'varchar',
+        width: 36,
+        nullable: false,
+        comment: '类型: site code',
+    })
+    type: string;
 
     @CreateDateColumn({
         name: 'created_at',

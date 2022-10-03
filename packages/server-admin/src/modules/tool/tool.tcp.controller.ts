@@ -2,8 +2,7 @@ import { Controller } from '@nestjs/common';
 import { ToolService } from './tool.service';
 import { SiteService } from '@/modules/site/site.service';
 import { MessagePattern, Transport } from '@nestjs/microservices';
-
-import { LikeParam } from './dto/tool.dto';
+import { LikeParam, FindOneQuery } from './dto/tool.dto';
 
 /**
  * 工具模块
@@ -25,5 +24,13 @@ export class ToolTcpController {
         });
         const toolRes = await this.toolService.like(param);
         return toolRes;
+    }
+
+    @MessagePattern({ module: 'tool', method: 'find-one' }, Transport.TCP)
+    findOne({ siteId, authorId }: FindOneQuery) {
+        return this.toolService.findOneBy({
+            siteId,
+            authorId,
+        });
     }
 }
