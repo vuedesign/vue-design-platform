@@ -20,7 +20,7 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Public()
+    // @Public()
     @Post()
     @ApiBody({
         description: '添加用户信息',
@@ -30,13 +30,13 @@ export class UserController {
         return this.userService.create(createUserDto);
     }
 
-    @Public()
+    // @Public()
     @Get(':uuid')
     findOneByUuid(@Param('uuid') uuid: string) {
         return this.userService.findOne({ uuid });
     }
 
-    @Public()
+    // @Public()
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
         return this.userService.findOne({
@@ -44,7 +44,7 @@ export class UserController {
         });
     }
 
-    @Public()
+    // @Public()
     @Get()
     findList(@Query() query: UserListQueryDto) {
         const { size = 20, page = 1 } = query;

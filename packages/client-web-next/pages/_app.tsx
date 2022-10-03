@@ -4,10 +4,10 @@ import App from 'next/app';
 import { wrapper } from '@/modules/store';
 import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
-import { setToken, setUser } from '@/modules/features/authSlice';
+import { setToken } from '@/modules/features/authSlice';
+import { setCookie } from '@/modules/features/globalSlice';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import { useDispatch, useSelector } from 'react-redux';
 import ModalAuth from '@/modules/components/ModalAuth';
 
 interface CtxReq extends IncomingMessage {
@@ -28,6 +28,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 MyApp.getInitialProps = wrapper.getInitialAppProps(
     (store) => async (context) => {
         const req: CtxReq = context.ctx.req as CtxReq;
+        await store.dispatch(setCookie(req?.headers?.cookie || null));
         await store.dispatch(setToken(req?.cookies?.token || ''));
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());

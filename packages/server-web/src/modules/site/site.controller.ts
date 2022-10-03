@@ -26,6 +26,7 @@ export class SiteController {
         private readonly siteService: SiteService,
         private readonly userService: UserService,
     ) {}
+
     @Get('profile')
     @ApiQuery({
         description: '项目列表',
@@ -54,7 +55,7 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    @Public()
+    // @Public()
     @Get(':uuid/associate')
     @ApiQuery({
         description: '详情相关项目列表',

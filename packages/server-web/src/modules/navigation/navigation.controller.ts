@@ -22,7 +22,7 @@ export class NavigationController {
     //   return this.navigationService.create(createNavigationDto);
     // }
 
-    @Public()
+    // @Public()
     @Get()
     findAll() {
         const options: IPaginationOptions = {

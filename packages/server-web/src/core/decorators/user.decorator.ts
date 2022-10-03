@@ -6,7 +6,6 @@ export const User = createParamDecorator(
         if (!request.cookies || !request.cookies.token) {
             return null;
         }
-        console.log('data User', data);
         if (data && request.user) {
             return request.user[data];
         }

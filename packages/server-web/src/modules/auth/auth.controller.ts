@@ -38,7 +38,7 @@ export class AuthController {
         private rsaService: RsaService,
     ) {}
 
-    @Public()
+    // @Public()
     @Get('public-key')
     publicKey() {
         const value = this.configService.get('PUBLIC_KEY');
@@ -46,7 +46,7 @@ export class AuthController {
         return value;
     }
 
-    @Public()
+    // @Public()
     @Post('login')
     @ApiBody({
         description: '添加用户信息',
@@ -79,13 +79,13 @@ export class AuthController {
         };
     }
 
+    // @Public()
     @Get('profile')
-    getProfile(@User() user) {
-        console.log('profile:', user);
-        if (!user || !user.id) {
-            throw new UnauthorizedException();
+    getProfile(@User('id') userId: number) {
+        if (!userId) {
+            return null;
         }
-        return this.authService.findOne({ id: user.id });
+        return this.authService.findOne({ id: userId });
     }
 
     @Get('logout')
@@ -93,7 +93,7 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
-        console.log('logout');
+        console.log('# =================logout');
         req.user = null;
         res.clearCookie('token');
         // req.session.user = null;
@@ -101,7 +101,7 @@ export class AuthController {
         return true;
     }
 
-    @Public()
+    // @Public()
     @ApiBody({
         description: '注册',
         type: LoginBodyDto,
