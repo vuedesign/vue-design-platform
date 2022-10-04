@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Avatar, Popover, message } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import {
@@ -8,7 +10,6 @@ import {
     ShareOne,
     PreviewOpen,
 } from '@icon-park/react';
-import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import {
     useProfileQuery,
@@ -16,7 +17,7 @@ import {
     profile,
 } from '@/modules/services/authApi';
 import { useCountProfileQuery } from '@/modules/services/countApi';
-import { setToken } from '@/modules/features/authSlice';
+import { setToken, setUser } from '@/modules/features/authSlice';
 import { setLoginState } from '@/modules/features/globalSlice';
 import { AppDispatch } from '@/modules/store';
 import { setOpen } from '@/modules/features/globalSlice';
@@ -75,6 +76,7 @@ const ProfilePopoverContent = () => {
                         }),
                     );
                     dispatch(setToken(null));
+                    dispatch(setUser(null));
                     dispatch(setLoginState());
                 }, 200);
             })
@@ -120,15 +122,10 @@ const ProfilePopoverContent = () => {
 
 const Profile = () => {
     const dispatch = useDispatch();
-    // const profile = useSelector(selectCurrentUser);
     const { data: profile } = useProfileQuery();
-    // const [isRender, setIsRender] = useState(false);
-    // useEffect(() => {
-    //     if (!isRender && data) {
-    //         data && dispatch(setUser(data));
-    //         setIsRender(true);
-    //     }
-    // });
+    useEffect(() => {
+        profile && dispatch(setUser(profile));
+    });
 
     const handleOpenDialogLogin = () => {
         dispatch(setOpen(true));
@@ -144,6 +141,7 @@ const Profile = () => {
             </div>
         );
     }
+
     return (
         <div className={styles.container}>
             {profile && (

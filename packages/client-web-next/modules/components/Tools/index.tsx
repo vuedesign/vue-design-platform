@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThumbsUp, ThumbsDown, Star } from '@icon-park/react';
 import { useLikeMutation, useToolQuery } from '@/modules/services/authApi';
 import { useSiteQuery } from '@/modules/services/siteApi';
-import { setOpen } from '@/modules/features/globalSlice';
+import { selectLoginState, setOpen } from '@/modules/features/globalSlice';
 import { selectCurrentUser } from '@/modules/features/authSlice';
 import styles from './Tools.module.scss';
 
@@ -68,18 +68,16 @@ const Tools = ({ uuid }: SiteProps) => {
 
     const [like] = useLikeMutation();
     const profile = useSelector(selectCurrentUser);
+    const loginState = useSelector(selectLoginState);
     const dispatch = useDispatch();
 
     useEffect(() => {
         refetchTool();
-    }, [profile]);
+    }, [loginState]);
 
     const handleClick = (type: TooItemType) => {
         if (!profile) {
             dispatch(setOpen(true));
-            return;
-        }
-        if (!tool) {
             return;
         }
         like({
@@ -105,7 +103,7 @@ const Tools = ({ uuid }: SiteProps) => {
 
     const isTool = (type: TooItemType) => {
         if (!tool) {
-            return;
+            return undefined;
         }
         if (tool[type]) {
             return tool[type] === 1 ? 'active' : undefined;
@@ -113,7 +111,6 @@ const Tools = ({ uuid }: SiteProps) => {
     };
 
     const isActive = (type: TooItemType) => {
-        console.log('tool', tool);
         if (!tool) {
             return false;
         }

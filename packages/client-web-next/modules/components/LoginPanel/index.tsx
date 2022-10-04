@@ -42,6 +42,7 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
         if (auth && auth.token) {
             window.localStorage.setItem(TOKEN_KEY, auth.token);
             dispatch(setToken(auth.token));
+            dispatch(setUser(auth.user));
             dispatch(
                 profile.initiate(undefined, {
                     subscribe: false,

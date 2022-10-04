@@ -26,19 +26,21 @@ export class ToolController {
     }
 
     @Get(':siteId')
-    findOne(
+    async findOne(
         @Param('siteId', ParseIntPipe) siteId: number,
-        @User() user: AuthUser,
+        @User('id') userId: number,
     ) {
-        console.log('siteId', siteId);
-        console.log('user', user);
-        if (!user || !user.id) {
+        console.log('siteId======tool', siteId);
+        console.log('userId', userId);
+        if (!userId) {
             return null;
         }
-        return this.toolService.findOne({
+        const a = await this.toolService.findOne({
             siteId,
-            authorId: user.id,
+            authorId: userId,
         });
+        console.log('abc', a);
+        return a;
     }
 
     @Patch('like')
