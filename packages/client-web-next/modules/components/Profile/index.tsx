@@ -8,26 +8,23 @@ import {
     ShareOne,
     PreviewOpen,
 } from '@icon-park/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useProfileQuery, useLogoutMutation } from '@/modules/services/authApi';
-import { useCountProfileQuery } from '@/modules/services/countApi';
 import {
-    selectCurrentUser,
-    setUser,
-    setToken,
-} from '@/modules/features/authSlice';
-
+    useProfileQuery,
+    useLogoutMutation,
+    profile,
+} from '@/modules/services/authApi';
+import { useCountProfileQuery } from '@/modules/services/countApi';
+import { setToken } from '@/modules/features/authSlice';
+import { setLoginState } from '@/modules/features/globalSlice';
+import { AppDispatch } from '@/modules/store';
 import { setOpen } from '@/modules/features/globalSlice';
 import styles from './Profile.module.scss';
 
 const ProfilePopoverHeader = () => {
-    const profile = useSelector(selectCurrentUser);
-    const { data: count, refetch } = useCountProfileQuery();
-    useEffect(() => {
-        refetch();
-    }, [profile]);
+    const { data: profile } = useProfileQuery();
+    const { data: count } = useCountProfileQuery();
     return (
         <>
             {profile && (
@@ -64,15 +61,21 @@ const ProfilePopoverHeader = () => {
 
 const ProfilePopoverContent = () => {
     const [logout] = useLogoutMutation();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleLogout = () => {
         logout()
             .then(() => {
                 message.success('退出登录');
                 setTimeout(() => {
-                    dispatch(setUser(null));
+                    dispatch(
+                        profile.initiate(undefined, {
+                            subscribe: false,
+                            forceRefetch: true,
+                        }),
+                    );
                     dispatch(setToken(null));
+                    dispatch(setLoginState());
                 }, 200);
             })
             .catch(() => {
@@ -117,15 +120,15 @@ const ProfilePopoverContent = () => {
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const profile = useSelector(selectCurrentUser);
-    const { data } = useProfileQuery();
-    const [isRender, setIsRender] = useState(false);
-    useEffect(() => {
-        if (!isRender && data) {
-            data && dispatch(setUser(data));
-            setIsRender(true);
-        }
-    });
+    // const profile = useSelector(selectCurrentUser);
+    const { data: profile } = useProfileQuery();
+    // const [isRender, setIsRender] = useState(false);
+    // useEffect(() => {
+    //     if (!isRender && data) {
+    //         data && dispatch(setUser(data));
+    //         setIsRender(true);
+    //     }
+    // });
 
     const handleOpenDialogLogin = () => {
         dispatch(setOpen(true));

@@ -16,28 +16,28 @@ type SitesPropsQuery = {
     size: number;
 };
 type SitesProps = {
-    query: SitesPropsQuery;
+    params: SitesPropsQuery;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const query: SitesPropsQuery = {
+        const params: SitesPropsQuery = {
             order: String(context.query.order || 'new'),
             type: String(context.query.type || 'all'),
             page: Number(context.query.page || 1),
             size: Number(context.query.size || 20),
         };
-        await store.dispatch(setQuery(query));
-        await store.dispatch(sites.initiate(query));
+        await store.dispatch(setQuery(params));
+        await store.dispatch(sites.initiate(params));
         return {
             props: {
-                query,
+                params,
             },
         };
     },
 );
 
-const Sites: NextPage<SitesProps> = ({ query }: SitesProps) => {
+const Sites: NextPage<SitesProps> = ({ params }: SitesProps) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -54,7 +54,7 @@ const Sites: NextPage<SitesProps> = ({ query }: SitesProps) => {
             <section className={styles.main}>
                 <Nav />
             </section>
-            <List pageType="sites" query={query} />
+            <List pageType="sites" params={params} />
             <Footer />
         </div>
     );

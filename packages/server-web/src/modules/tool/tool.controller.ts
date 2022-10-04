@@ -41,7 +41,6 @@ export class ToolController {
         });
     }
 
-    // @Public()
     @Patch('like')
     like(@Body() param: LikeParam, @User() user: AuthUser) {
         if (!user || !user.id) {

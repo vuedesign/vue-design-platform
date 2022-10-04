@@ -6,6 +6,7 @@ import { TOKEN_KEY } from '@/configs/globals.contants';
 import {
     useLoginMutation,
     usePublicKeyMutation,
+    profile,
 } from '@/modules/services/authApi';
 import type {
     DataResponse,
@@ -14,8 +15,10 @@ import type {
     BufferJSON,
 } from '@/modules/types';
 import { setToken, setUser } from '@/modules/features/authSlice';
+import { setLoginState } from '@/modules/features/globalSlice';
 import { useEffect, useState } from 'react';
 import { encrypt } from '@/modules/utils';
+import { AppDispatch } from '@/modules/store';
 
 type LoginPanelProps = {
     finish?: () => void;
@@ -26,7 +29,7 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
     const [getPublicKey] = usePublicKeyMutation();
     const [form] = Form.useForm();
     const [login, { isLoading }] = useLoginMutation();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     const onFinish = async ({ account, password }: LoginRequest) => {
@@ -39,7 +42,13 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
         if (auth && auth.token) {
             window.localStorage.setItem(TOKEN_KEY, auth.token);
             dispatch(setToken(auth.token));
-            dispatch(setUser(auth.user));
+            dispatch(
+                profile.initiate(undefined, {
+                    subscribe: false,
+                    forceRefetch: true,
+                }),
+            );
+            dispatch(setLoginState());
             finish && finish();
         }
     };
@@ -53,7 +62,7 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
         password: [{ required: true, message: '请输入用户密码!' }],
     };
 
-    const [account, setAccount] = useState('wujian12');
+    const [account, setAccount] = useState('18602042484');
     const [password, setPassword] = useState('wujian');
 
     return (

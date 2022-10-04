@@ -38,15 +38,12 @@ export class AuthController {
         private rsaService: RsaService,
     ) {}
 
-    // @Public()
     @Get('public-key')
     publicKey() {
         const value = this.configService.get('PUBLIC_KEY');
-        console.log('value', value);
         return value;
     }
 
-    // @Public()
     @Post('login')
     @ApiBody({
         description: '添加用户信息',
@@ -79,7 +76,6 @@ export class AuthController {
         };
     }
 
-    // @Public()
     @Get('profile')
     getProfile(@User('id') userId: number) {
         if (!userId) {
@@ -101,7 +97,6 @@ export class AuthController {
         return true;
     }
 
-    // @Public()
     @ApiBody({
         description: '注册',
         type: LoginBodyDto,

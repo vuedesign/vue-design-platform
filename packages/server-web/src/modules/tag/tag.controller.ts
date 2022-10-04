@@ -29,7 +29,6 @@ export class TagController {
         return this.tagService.create(createTagDto);
     }
 
-    // @Public()
     @Get()
     findList(@Query() query: TagListQueryDto) {
         const { size, page } = query;

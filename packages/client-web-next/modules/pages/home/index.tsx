@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import type { NextPage } from 'next';
 import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
+import { setQuery } from '@/modules/features/siteSlice';
 import Header from '@/modules/components/Header';
 import List from '@/modules/components/List';
 import Buttom from '@/modules/components/Bottom';
@@ -11,23 +11,30 @@ import Footer from '@/modules/components/Footer';
 import styles from './Home.module.scss';
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) => async (context) => {
+    (store) => async () => {
+        const params = {
+            page: 1,
+            size: 20,
+        };
         await store.dispatch(navigations.initiate());
-        await store.dispatch(
-            sites.initiate({
-                page: 1,
-                size: 20,
-            }),
-        );
+        await store.dispatch(sites.initiate(params));
+        await store.dispatch(setQuery(params));
         return {
-            props: {},
+            props: {
+                params,
+            },
         };
     },
 );
 
-type HomeProps = {};
+type HomeProps = {
+    params: {
+        page: number;
+        size: number;
+    };
+};
 
-const Home: NextPage<HomeProps> = ({}: HomeProps) => {
+const Home: NextPage<HomeProps> = ({ params }: HomeProps) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -39,7 +46,7 @@ const Home: NextPage<HomeProps> = ({}: HomeProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <List pageType="home" />
+            <List pageType="home" params={params} />
             <Buttom />
             <Footer />
         </div>

@@ -80,25 +80,25 @@ export const authApi = createApi({
                     method: 'GET',
                 };
             },
-            transformResponse: (data: any) => {
-                console.log('sites', data);
-                if (data && data.status === HttpStatus.UNAUTHORIZED) {
-                    return null;
-                }
-                return data;
-            },
+            // transformResponse: (data: any) => {
+            //     console.log('sites', data);
+            //     if (data && data.status === HttpStatus.UNAUTHORIZED) {
+            //         return null;
+            //     }
+            //     return data;
+            // },
         }),
         counts: builder.query<any, void>({
             query: () => ({
                 url: apis.COUNTS_PROFILE,
                 method: 'GET',
             }),
-            transformResponse: (data: any) => {
-                if (data && data.status === HttpStatus.UNAUTHORIZED) {
-                    return null;
-                }
-                return data;
-            },
+            // transformResponse: (data: any) => {
+            //     if (data && data.status === HttpStatus.UNAUTHORIZED) {
+            //         return null;
+            //     }
+            //     return data;
+            // },
         }),
         like: builder.mutation<boolean, LikeParam>({
             query: (data) => {

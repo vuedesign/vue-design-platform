@@ -27,7 +27,6 @@ export class CountController {
         return this.countService.findOneByAuthorId(req.user.id);
     }
 
-    // @Public()
     @Get(':authorId')
     findOne(@Param('authorId', ParseIntPipe) authorId: number) {
         return this.countService.findOneByAuthorId(authorId);

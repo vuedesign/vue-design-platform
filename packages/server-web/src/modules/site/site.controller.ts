@@ -55,7 +55,6 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    // @Public()
     @Get(':uuid/associate')
     @ApiQuery({
         description: '详情相关项目列表',

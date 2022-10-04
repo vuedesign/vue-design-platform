@@ -1,4 +1,5 @@
 export const isServer = typeof window === 'undefined';
+export const isClient = typeof window !== 'undefined';
 
 export function getUuid(uuid?: string | string[]) {
     console.log('uuid', uuid);

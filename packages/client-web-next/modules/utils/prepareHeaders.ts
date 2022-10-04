@@ -1,9 +1,9 @@
-import { RootState } from '@/modules/store';
+// import { RootState } from '@/modules/store';
 export const isServer = typeof window === 'undefined';
 import { TOKEN_KEY } from '@/configs/globals.contants';
 export default function prepareHeaders(
     headers: Headers,
-    { getState }: { getState: () => RootState },
+    { getState }: { getState: () => any },
 ) {
     let token = '';
     if (isServer) {

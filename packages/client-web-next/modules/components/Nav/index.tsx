@@ -1,10 +1,12 @@
-import styles from './Nav.module.scss';
-import { ReactElement } from 'react';
-import { Time, Fire, ThumbsUp } from '@icon-park/react';
-import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import { ReactElement, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import { Time, Fire, ThumbsUp } from '@icon-park/react';
 import { typeList, TypeItem } from '@/configs/globals.contants';
+import { AppDispatch } from '@/modules/store';
+import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import styles from './Nav.module.scss';
+import { stringify } from 'qs';
 
 type OrderItem = {
     value: string;
@@ -31,11 +33,14 @@ const orderList: Array<OrderItem> = [
 
 const Nav = () => {
     const router = useRouter();
-    const useNavDispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const query = useSelector(selectCurrentQuery);
     const hanldeCheckOrderClick = (item: OrderItem) => {
-        router.push('/sites?page=1');
-        useNavDispatch(
+        const queryString = stringify(
+            Object.assign({}, query, { order: item.value, page: 1 }),
+        );
+        router.push(`/sites?${queryString}`);
+        dispatch(
             setQuery({
                 order: item.value,
                 page: 1,
@@ -43,8 +48,11 @@ const Nav = () => {
         );
     };
     const hanldeCheckTypeClick = (item: TypeItem) => {
-        router.push('/sites?page=1');
-        useNavDispatch(
+        const queryString = stringify(
+            Object.assign({}, query, { type: item.value, page: 1 }),
+        );
+        router.push(`/sites?${queryString}`);
+        dispatch(
             setQuery({
                 type: item.value,
                 page: 1,
