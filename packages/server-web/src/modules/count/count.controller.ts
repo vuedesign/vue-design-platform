@@ -22,15 +22,13 @@ export class CountController {
     @Get('profile')
     findMyCount(@Req() req) {
         if (!req.user || !req.user.id) {
-            throw new UnauthorizedException();
+            return null;
         }
         return this.countService.findOneByAuthorId(req.user.id);
     }
 
-    @Public()
     @Get(':authorId')
     findOne(@Param('authorId', ParseIntPipe) authorId: number) {
-        console.log('authorIdauthorIdauthorId', authorId);
         return this.countService.findOneByAuthorId(authorId);
     }
 }

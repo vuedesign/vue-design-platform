@@ -20,7 +20,7 @@ type UserPropsQuery = {
 };
 type UserProps = {
     user: User;
-    query: UserPropsQuery;
+    params: UserPropsQuery;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -34,24 +34,24 @@ export const getServerSideProps = wrapper.getServerSideProps(
             };
         }
         console.log('userData', userData);
-        const query = {
+        const params = {
             page: Number(context.query.page || 1),
             size: Number(context.query.size || 20),
             authorId: userData.id,
         };
-        await store.dispatch(setQuery(query));
-        await store.dispatch(sites.initiate(query));
+        await store.dispatch(setQuery(params));
+        await store.dispatch(sites.initiate(params));
         await store.dispatch(count.initiate(userData.id));
         return {
             props: {
                 user: userData,
-                query,
+                params,
             },
         };
     },
 );
 
-const User: NextPage<UserProps> = ({ user, query }: UserProps) => {
+const User: NextPage<UserProps> = ({ user, params }: UserProps) => {
     return (
         user && (
             <div className={styles.container}>
@@ -67,7 +67,7 @@ const User: NextPage<UserProps> = ({ user, query }: UserProps) => {
                     <Top />
                 </div>
                 <UserHeader user={user} />
-                <List pageType="user" user={user} query={query} />
+                <List pageType="user" user={user} params={params} />
                 <Footer />
             </div>
         )

@@ -7,8 +7,13 @@ import {
     Generated,
     ManyToOne,
     JoinColumn,
+    JoinTable,
+    ManyToMany,
+    OneToOne,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { TagEntity } from './tag.entity';
+import { ToolEntity } from './tool.entity';
 
 @Entity('site')
 export class SiteEntity {
@@ -49,7 +54,7 @@ export class SiteEntity {
         comment: 'logo url',
         name: 'logo_url',
     })
-    logoUrl?: string;
+    logoUrl: string;
 
     @Column({
         type: 'varchar',
@@ -58,7 +63,7 @@ export class SiteEntity {
         comment: 'icon url',
         name: 'icon_url',
     })
-    iconUrl?: string;
+    iconUrl: string;
 
     @Column({
         type: 'varchar',
@@ -67,7 +72,7 @@ export class SiteEntity {
         comment: '网站 url',
         name: 'site_url',
     })
-    siteUrl?: string;
+    siteUrl: string;
 
     @Column({
         type: 'varchar',
@@ -173,4 +178,10 @@ export class SiteEntity {
         name: 'author_id',
     })
     author: UserEntity;
+
+    @ManyToMany(() => TagEntity, {
+        cascade: ['insert', 'remove', 'update'],
+    })
+    @JoinTable()
+    tags: TagEntity[];
 }

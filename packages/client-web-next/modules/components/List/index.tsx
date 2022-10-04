@@ -1,13 +1,16 @@
+import { useEffect, ReactNode } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-import { useSitesQuery } from '@/modules/services/siteApi';
-import { selectCurrentQuery } from '@/modules/features/siteSlice';
-import { useSelector } from 'react-redux';
-import Item from '@/modules/components/Item';
-import { Pagination } from 'antd';
 import { useRouter } from 'next/router';
-import styles from './List.module.scss';
-import { useEffect, useState, ReactNode } from 'react';
+import { Pagination } from 'antd';
+import { isClient } from '@/modules/utils';
+import Item from '@/modules/components/Item';
+import { useSitesQuery } from '@/modules/services/siteApi';
+import { selectLoginState } from '@/modules/features/globalSlice';
+import { selectCurrentQuery, setQuery } from '@/modules/features/siteSlice';
 import { User } from '@/modules/types/auth';
+import { stringify } from 'qs';
+import styles from './List.module.scss';
 
 type PageType = 'home' | 'user' | 'sites';
 type ListPropsQuery = {
@@ -19,7 +22,7 @@ type ListPropsQuery = {
 type ListProps = {
     pageType: PageType;
     user?: User;
-    query?: ListPropsQuery;
+    params?: ListPropsQuery;
     total?: number;
 };
 
@@ -36,9 +39,9 @@ const MoreLink = () => (
  * @param param0
  * @returns
  */
-const Paginations = ({ pageType, user, query, total }: ListProps) => {
+const Paginations = ({ pageType, user, params, total }: ListProps) => {
     const router = useRouter();
-    const { page = 1, size = 20 } = query || {};
+    const { page = 1, size = 20 } = params || {};
     return (
         <div className={styles.page}>
             <Pagination
@@ -48,10 +51,13 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
                 pageSize={size}
                 total={total}
                 onChange={(page: number) => {
+                    const queryString = stringify(
+                        Object.assign({}, params, { page }),
+                    );
                     if (pageType === 'user' && user) {
-                        router.push(`/users/${user.uuid}?page=${page}`);
+                        router.push(`/users/${user.uuid}?${queryString}`);
                     } else if (pageType === 'sites') {
-                        router.push(`/sites?page=${page}`);
+                        router.push(`/sites?${queryString}`);
                     }
                 }}
                 itemRender={(
@@ -60,11 +66,14 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
                     originalElement: ReactNode,
                 ) => {
                     if (page >= 1 && type === 'page') {
+                        const queryString = stringify(
+                            Object.assign({}, params, { page }),
+                        );
                         let href = '';
                         if (pageType === 'user' && user) {
-                            href = `/users/${user.uuid}?page=${page}`;
+                            href = `/users/${user.uuid}?${queryString}`;
                         } else if (pageType === 'sites') {
-                            href = `/sites?page=${page}`;
+                            href = `/sites?${queryString}`;
                         }
                         return (
                             <Link href={href} passHref={true}>
@@ -79,38 +88,22 @@ const Paginations = ({ pageType, user, query, total }: ListProps) => {
     );
 };
 
-const List = ({ pageType, user, query }: ListProps) => {
-    const router = useRouter();
-    const page = Number(router.query.page || 1);
-    const size = Number(router.query.size || 20);
-    const globalQuery = useSelector(selectCurrentQuery);
-    const [currentQuery, setCurrentQuery] = useState({
-        ...query,
-        page,
-        size,
-    });
-    console.log('currentQuery', currentQuery);
+const List = ({
+    pageType,
+    user,
+    params = { size: 20, page: 1 },
+}: ListProps) => {
+    const { page, size } = params;
     const {
         data = { list: [], pagination: { page, size }, total: 0 },
         refetch,
-    } = useSitesQuery(currentQuery);
+    } = useSitesQuery(params);
+    // 登录、退出状态更新
+    const loginState = useSelector(selectLoginState);
 
     useEffect(() => {
-        if (pageType !== 'home') {
-            setCurrentQuery({
-                ...currentQuery,
-                ...globalQuery,
-                page,
-                size,
-            });
-        }
-    }, [globalQuery, page, size]);
-
-    useEffect(() => {
-        if (pageType !== 'home') {
-            refetch();
-        }
-    }, [currentQuery]);
+        isClient && refetch();
+    }, [loginState]);
     return (
         <section className={styles.container}>
             <section className={styles.main}>
@@ -127,7 +120,7 @@ const List = ({ pageType, user, query }: ListProps) => {
                         pageType={pageType}
                         user={user}
                         total={data.total}
-                        query={query}
+                        params={params}
                     />
                 )}
             </section>

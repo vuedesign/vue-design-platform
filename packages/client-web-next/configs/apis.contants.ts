@@ -2,6 +2,7 @@
 export const AUTH_LOGIN = '/auth/login';
 export const AUTH_LOGOUT = '/auth/logout';
 export const AUTH_REGISTER = '/auth/register';
+export const AUTH_PUBLIC_KEY = '/auth/public-key';
 
 // 内容
 export const TAGS = '/tags';
@@ -19,4 +20,5 @@ export const AUTH_PROFILE = '/auth/profile';
 export const SITES_PROFILE = '/sites/profile';
 
 // tools
+export const TOOLS = '/tools';
 export const TOOLS_LIKE = '/tools/like';

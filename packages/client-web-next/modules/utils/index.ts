@@ -1,4 +1,5 @@
 export const isServer = typeof window === 'undefined';
+export const isClient = typeof window !== 'undefined';
 
 export function getUuid(uuid?: string | string[]) {
     console.log('uuid', uuid);
@@ -31,4 +32,21 @@ export function getParamsByContext<C extends Record<string, any>>(
         return uuid[0];
     }
     return params.get(filed) || '';
+}
+
+export type BufferJSON = {
+    type: 'Buffer';
+    data: number[];
+};
+
+export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
+    if (typeof window === 'undefined' || !publicKeyJSON) {
+        return '';
+    }
+    const JSEncrypt = require('jsencrypt').default;
+    const publicKey = Buffer.from(publicKeyJSON?.data || []).toString();
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encrypted = encrypt.encrypt(data);
+    return encrypted;
 }

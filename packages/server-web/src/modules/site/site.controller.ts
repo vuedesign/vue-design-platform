@@ -26,6 +26,7 @@ export class SiteController {
         private readonly siteService: SiteService,
         private readonly userService: UserService,
     ) {}
+
     @Get('profile')
     @ApiQuery({
         description: '项目列表',
@@ -54,7 +55,6 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    @Public()
     @Get(':uuid/associate')
     @ApiQuery({
         description: '详情相关项目列表',
@@ -82,21 +82,18 @@ export class SiteController {
         return this.siteService.findList(options);
     }
 
-    // @Public()
     @Get(':uuid')
     @ApiQuery({
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @User() user: AuthUser) {
-        console.log('findOne user', user);
+    findOne(@Param('uuid') uuid: string, @User('id') userId: number) {
         return this.siteService.findOneBy({
             uuid,
-            userId: user?.id,
+            userId,
         });
     }
 
-    @Public()
     @Get()
     @ApiQuery({
         description: '项目列表',
@@ -105,7 +102,7 @@ export class SiteController {
     findAll(
         @Query(new QueryTransformPipe(['title']))
         query: SiteListQueryDto,
-        @User() user: Record<string, any>,
+        @User('id') userId: number,
     ) {
         const {
             title,
@@ -145,7 +142,7 @@ export class SiteController {
                 updatedAt: 'DESC',
             },
             where: {},
-            userId: user?.id,
+            userId,
         };
 
         if (order) {

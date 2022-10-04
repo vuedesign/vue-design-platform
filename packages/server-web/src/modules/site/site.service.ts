@@ -15,7 +15,7 @@ export class SiteService extends BaseMicroservice {
         return this.send({ module: 'site', method: 'findList' }, options);
     }
 
-    findOneBy(where) {
+    findOneBy(where: Record<string, any>): Promise<SiteEntity> {
         return this.send({ module: 'site', method: 'findOneBy' }, where);
     }
 }

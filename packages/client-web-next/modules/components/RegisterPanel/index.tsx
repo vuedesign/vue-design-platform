@@ -1,12 +1,8 @@
-import { Divider, Form, Input, Button, Checkbox } from 'antd';
-import { useRouter } from 'next/router';
+import { Form, Input, Button } from 'antd';
 import { User, Lock } from '@icon-park/react';
-import { useDispatch } from 'react-redux';
-import { TOKEN_KEY } from '@/configs/globals.contants';
 import {
-    useLoginMutation,
+    useRegisterMutation,
     usePublicKeyMutation,
-    profile,
 } from '@/modules/services/authApi';
 import type {
     DataResponse,
@@ -14,42 +10,27 @@ import type {
     UserResponse,
     BufferJSON,
 } from '@/modules/types';
-import { setToken, setUser } from '@/modules/features/authSlice';
-import { setLoginState } from '@/modules/features/globalSlice';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { encrypt } from '@/modules/utils';
-import { AppDispatch } from '@/modules/store';
 
-type LoginPanelProps = {
+type RegisterPanelProps = {
     finish?: () => void;
-    register?: () => void;
+    login?: () => void;
 };
 
-const LoginPanel = ({ finish, register }: LoginPanelProps) => {
-    const [getPublicKey] = usePublicKeyMutation();
+const RegisterPanel = ({ finish, login }: RegisterPanelProps) => {
     const [form] = Form.useForm();
-    const [login, { isLoading }] = useLoginMutation();
-    const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
+    const [getPublicKey] = usePublicKeyMutation();
+    const [register, { isLoading }] = useRegisterMutation();
 
     const onFinish = async ({ account, password }: LoginRequest) => {
         const { data: publicKeyBuffer } =
             (await getPublicKey()) as DataResponse<BufferJSON>;
-        const { data: auth } = (await login({
+        const { data: auth, error } = (await register({
             account,
             password: encrypt(password, publicKeyBuffer),
         })) as DataResponse<UserResponse>;
-        if (auth && auth.token) {
-            window.localStorage.setItem(TOKEN_KEY, auth.token);
-            dispatch(setToken(auth.token));
-            dispatch(setUser(auth.user));
-            dispatch(
-                profile.initiate(undefined, {
-                    subscribe: false,
-                    forceRefetch: true,
-                }),
-            );
-            dispatch(setLoginState());
+        if (error === 'undefined' && auth) {
             finish && finish();
         }
     };
@@ -63,8 +44,8 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
         password: [{ required: true, message: '请输入用户密码!' }],
     };
 
-    const [account, setAccount] = useState('18602042484');
-    const [password, setPassword] = useState('wujian');
+    const [account, setAccount] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
         <>
@@ -72,7 +53,6 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
                 form={form}
                 name="basic"
                 initialValues={{
-                    remember: true,
                     account,
                     password,
                 }}
@@ -82,27 +62,21 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
                 <Form.Item name="account" rules={rules.account}>
                     <Input prefix={<User />} />
                 </Form.Item>
-
                 <Form.Item name="password" rules={rules.password}>
                     <Input.Password prefix={<Lock />} />
                 </Form.Item>
-
-                <Form.Item name="remember" valuePropName="checked">
-                    <Checkbox>记住密码</Checkbox>
-                </Form.Item>
-
                 <Form.Item>
                     <Button
                         type="primary"
                         block
                         htmlType="submit"
                         loading={isLoading}>
-                        登录
+                        注册
                     </Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="link" block onClick={register}>
-                        马上注册
+                    <Button type="link" block onClick={login}>
+                        马上登录
                     </Button>
                 </Form.Item>
             </Form>
@@ -110,4 +84,4 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
     );
 };
 
-export default LoginPanel;
+export default RegisterPanel;

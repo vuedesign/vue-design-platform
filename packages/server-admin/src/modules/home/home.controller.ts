@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
 import { NavigationService } from '../navigation/navigation.service';
 import { AuthRequest } from '../auth/dto/auth.dto';
+import { Public } from '@/core/decorators/auth.decorator';
 
 @Controller('home')
 export class HomeController {
@@ -13,7 +14,7 @@ export class HomeController {
     ) {}
 
     viewCount() {
-        return Promise.resolve(22983);
+        return Promise.resolve(0);
     }
 
     @Get('count')

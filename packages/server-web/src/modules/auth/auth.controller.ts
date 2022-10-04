@@ -16,12 +16,15 @@ import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { Public } from '@/core/decorators/auth.decorator';
+import { User } from '@/core/decorators/user.decorator';
 import { Response, Request } from 'express';
 import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Cache } from 'cache-manager';
+import { ConfigService } from '@nestjs/config';
+import { RsaService } from '@/globals/services/rsa.service';
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -31,9 +34,16 @@ export class AuthController {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
         private authService: AuthService,
         private jwtService: JwtService,
+        private configService: ConfigService,
+        private rsaService: RsaService,
     ) {}
 
-    @Public()
+    @Get('public-key')
+    publicKey() {
+        const value = this.configService.get('PUBLIC_KEY');
+        return value;
+    }
+
     @Post('login')
     @ApiBody({
         description: '添加用户信息',
@@ -45,17 +55,21 @@ export class AuthController {
         @Req() req,
     ) {
         const { account, password } = body;
-        const user = await this.authService.validateUser(account, password);
+
+        const newPassword = this.rsaService.decrypt(password);
+        const user = await this.authService.validateUser(account);
         if (!user) {
-            throw new UnauthorizedException('登录校验失败');
+            throw new UnauthorizedException('用户名错误');
+        }
+        const oldPassword = this.rsaService.decrypt(user.password);
+        if (newPassword !== oldPassword) {
+            throw new UnauthorizedException('用户密码错误');
         }
         const payload = { username: user.username, sub: user.id };
         const token = this.jwtService.sign(payload);
         res.cookie('token', token, {
             httpOnly: true,
         });
-        req.session.token = token;
-        req.session.user = user;
         return {
             token,
             user,
@@ -63,11 +77,11 @@ export class AuthController {
     }
 
     @Get('profile')
-    getProfile(@Req() req) {
-        if (!req.user || !req.user.id) {
-            throw new UnauthorizedException();
+    getProfile(@User('id') userId: number) {
+        if (!userId) {
+            return null;
         }
-        return this.authService.findOne({ id: req.user.id });
+        return this.authService.findOne({ id: userId });
     }
 
     @Get('logout')
@@ -75,13 +89,14 @@ export class AuthController {
         if (!req.user || !req.user.id) {
             throw new UnauthorizedException('用户没授权');
         }
+        console.log('# =================logout');
+        req.user = null;
         res.clearCookie('token');
-        req.session.user = null;
-        req.session.token = null;
+        // req.session.user = null;
+        // req.session.token = null;
         return true;
     }
 
-    @Public()
     @ApiBody({
         description: '注册',
         type: LoginBodyDto,
@@ -95,10 +110,7 @@ export class AuthController {
         };
         const user = await this.authService.findOne(where);
         if (user) {
-            return {
-                status: HttpStatus.CONFLICT,
-                error: '用户名、邮箱、电话号已存在',
-            };
+            throw new UnauthorizedException('用户名、邮箱、电话号已存在');
         }
         const res = await this.authService.register({
             ...where,

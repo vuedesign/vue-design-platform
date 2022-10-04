@@ -16,39 +16,42 @@ const ProfileList = () => {
         <section className={styles.container}>
             <section className={styles.main}>
                 <ul className={styles.list}>
-                    {data.list.map((item, index) => (
-                        <li key={index}>
-                            <Item {...item}></Item>
-                        </li>
-                    ))}
+                    {data &&
+                        data.list.map((item, index) => (
+                            <li key={index}>
+                                <Item {...item}></Item>
+                            </li>
+                        ))}
                 </ul>
                 <div className={styles.page}>
-                    <Pagination
-                        current={page}
-                        defaultCurrent={page}
-                        defaultPageSize={size}
-                        pageSize={size}
-                        total={data.total}
-                        onChange={(page: number, pageSize: number) => {
-                            router.push(`/profile?page=${page}`);
-                        }}
-                        itemRender={(
-                            page: number,
-                            type: string,
-                            originalElement: ReactNode,
-                        ) => {
-                            if (page >= 1 && type === 'page') {
-                                return (
-                                    <Link
-                                        href={`/profile?page=${page}`}
-                                        passHref={true}>
-                                        <a>{page}</a>
-                                    </Link>
-                                );
-                            }
-                            return originalElement;
-                        }}
-                    />
+                    {data && (
+                        <Pagination
+                            current={page}
+                            defaultCurrent={page}
+                            defaultPageSize={size}
+                            pageSize={size}
+                            total={data.total}
+                            onChange={(page: number, pageSize: number) => {
+                                router.push(`/profile?page=${page}`);
+                            }}
+                            itemRender={(
+                                page: number,
+                                type: string,
+                                originalElement: ReactNode,
+                            ) => {
+                                if (page >= 1 && type === 'page') {
+                                    return (
+                                        <Link
+                                            href={`/profile?page=${page}`}
+                                            passHref={true}>
+                                            <a>{page}</a>
+                                        </Link>
+                                    );
+                                }
+                                return originalElement;
+                            }}
+                        />
+                    )}
                 </div>
             </section>
         </section>

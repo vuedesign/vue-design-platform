@@ -4,11 +4,13 @@ import { baseURL } from '@/configs/globals.contants';
 import * as apis from '@/configs/apis.contants';
 import { User, UserListResponse } from '@/modules/types';
 import { stringify } from 'qs';
+import prepareHeaders from '@/modules/utils/prepareHeaders';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: baseURL,
+        prepareHeaders,
     }),
     extractRehydrationInfo(action, { reducerPath }) {
         if (action.type === HYDRATE) {

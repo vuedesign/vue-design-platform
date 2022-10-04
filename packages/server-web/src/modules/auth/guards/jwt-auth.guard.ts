@@ -13,26 +13,30 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         super();
     }
 
-    canActivate(context: ExecutionContext) {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(
-            IS_PUBLIC_KEY,
-            [context.getHandler(), context.getClass()],
-        );
-        if (isPublic) {
-            return true;
+    // canActivate(context: ExecutionContext) {
+    //     const isPublic = this.reflector.getAllAndOverride<boolean>(
+    //         IS_PUBLIC_KEY,
+    //         [context.getHandler(), context.getClass()],
+    //     );
+    //     if (isPublic) {
+    //         return true;
+    //     }
+    //     return super.canActivate(context);
+    // }
+
+    getToken(context): string {
+        const req = context.getRequest();
+        console.log('# 1 req.cookies', req.cookies);
+        if (!req.cookies || !req.cookies.token) {
+            return null;
         }
-        return super.canActivate(context);
+        return req.cookies.token;
     }
 
     handleRequest(err, user, info, context) {
-        console.log('===xxxxxx', err, user);
-        // const isPublic = this.reflector.getAllAndOverride<boolean>(
-        //     IS_PUBLIC_KEY,
-        //     [context.getHandler(), context.getClass()],
-        // );
-
-        // if (user || isPublic) return user;
-
+        // console.log('===xxxxxx handleRequest ===', err, user);
+        // const token = this.getToken(context);
+        // console.log('== handleRequest token === ', token);
         if (err || !user) {
             return null;
             // throw err || new UnauthorizedException('用户没授权');

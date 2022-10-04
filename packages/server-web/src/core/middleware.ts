@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
 // import * as csurf from 'csurf';
 import { ConfigService } from '@nestjs/config';
+// import { cookieParser } from './middlewares/cookie.middleware';
 
 export default (app: INestApplication) => {
     const config = app.get(ConfigService);

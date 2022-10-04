@@ -8,10 +8,10 @@ const slice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setUser: (state, { payload }: PayloadAction<User>) => {
+        setUser: (state, { payload }: PayloadAction<User | null>) => {
             state.user = payload;
         },
-        setToken: (state, { payload }: PayloadAction<string>) => {
+        setToken: (state, { payload }: PayloadAction<string | null>) => {
             state.token = payload;
         },
     },

@@ -5,12 +5,10 @@ import { wrapper } from '@/modules/store';
 import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
 import { setToken } from '@/modules/features/authSlice';
+import { setCookie } from '@/modules/features/globalSlice';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import { selectIsLoginOpen, setOpen } from '@/modules/features/globalSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from 'antd';
-import LoginPanel from '@/modules/components/LoginPanel';
+import ModalAuth from '@/modules/components/ModalAuth';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
@@ -19,17 +17,10 @@ interface CtxReq extends IncomingMessage {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-    const isLoginOpen = useSelector(selectIsLoginOpen);
-    const dispatch = useDispatch();
     return (
         <>
             <Component {...pageProps} />;
-            <Modal
-                open={isLoginOpen}
-                onCancel={() => dispatch(setOpen(false))}
-                footer={null}>
-                <LoginPanel finish={() => dispatch(setOpen(false))} />
-            </Modal>
+            <ModalAuth />
         </>
     );
 };
@@ -37,12 +28,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 MyApp.getInitialProps = wrapper.getInitialAppProps(
     (store) => async (context) => {
         const req: CtxReq = context.ctx.req as CtxReq;
-        console.log('req?.cookies?.token', req?.cookies?.token);
+        await store.dispatch(setCookie(req?.headers?.cookie || null));
         await store.dispatch(setToken(req?.cookies?.token || ''));
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());
         const appProps = await App.getInitialProps(context);
-        console.log('appProps', appProps);
         return { ...appProps };
     },
 );
