@@ -3,13 +3,15 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@/modules/store';
 
 export interface GlobalState {
-    isLoginOpen: boolean;
+    isLoginVisible: boolean;
+    isSettingVisible: boolean;
     loginState: number;
     cookie: string | null;
 }
 
 const initialState: GlobalState = {
-    isLoginOpen: false,
+    isLoginVisible: false,
+    isSettingVisible: false,
     cookie: '',
     loginState: 0,
 };
@@ -19,7 +21,7 @@ export const slice = createSlice({
     initialState,
     reducers: {
         setOpen: (state, { payload }: PayloadAction<boolean>) => {
-            state.isLoginOpen = payload;
+            state.isLoginVisible = payload;
         },
         setCookie: (state, { payload }: PayloadAction<string | null>) => {
             state.cookie = payload;
@@ -27,12 +29,19 @@ export const slice = createSlice({
         setLoginState: (state) => {
             state.loginState = state.loginState + 1;
         },
+        setIsSettingVisible: (state, { payload }: PayloadAction<boolean>) => {
+            state.isSettingVisible = payload;
+        },
     },
 });
 
-export const { setOpen, setCookie, setLoginState } = slice.actions;
+export const { setOpen, setCookie, setLoginState, setIsSettingVisible } =
+    slice.actions;
 
 export default slice.reducer;
-export const selectIsLoginOpen = (state: RootState) => state.global.isLoginOpen;
+export const selectIsLoginVisible = (state: RootState) =>
+    state.global.isLoginVisible;
 export const selectCookie = (state: RootState) => state.global.cookie;
 export const selectLoginState = (state: RootState) => state.global.loginState;
+export const selectIsSettingVisible = (state: RootState) =>
+    state.global.isSettingVisible;

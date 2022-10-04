@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'antd';
 import { CloseSmall } from '@icon-park/react';
-import { selectIsLoginOpen, setOpen } from '@/modules/features/globalSlice';
+import { selectIsLoginVisible, setOpen } from '@/modules/features/globalSlice';
 import LoginPanel from '@/modules/components/LoginPanel';
 import RegisterPanel from '@/modules/components/RegisterPanel';
 import styles from './ModalAuth.module.scss';
 
 const ModalAuth = () => {
-    const isLoginOpen = useSelector(selectIsLoginOpen);
+    const isLoginVisible = useSelector(selectIsLoginVisible);
     const [model, setModel] = useState('login');
     const [title, setTitle] = useState('登录');
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const ModalAuth = () => {
         setTitle('登录');
     };
     return (
-        <Modal width={360} closable={false} open={isLoginOpen} footer={null}>
+        <Modal width={360} closable={false} open={isLoginVisible} footer={null}>
             <header className={styles['modal-auth-header']}>
                 <h5>{title}</h5>
                 <span onClick={() => dispatch(setOpen(false))}>

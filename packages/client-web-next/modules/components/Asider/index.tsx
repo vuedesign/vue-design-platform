@@ -41,7 +41,7 @@ const Asider = ({ uuid, authorId, user }: AsiderProps) => {
                                         <a className={styles.link}>
                                             <span
                                                 className={styles['link-text']}>
-                                                个人中心
+                                                个人主页
                                             </span>
                                             <ArrowCircleRight
                                                 theme="outline"
