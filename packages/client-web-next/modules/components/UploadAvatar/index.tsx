@@ -2,7 +2,7 @@ import { LoadingOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { message, Upload, Avatar } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -23,12 +23,18 @@ const beforeUpload = (file: RcFile) => {
 };
 
 type UploadAvatarProps = {
-    src: string;
+    src?: string;
     finish: (url: string) => void;
 };
-const UploadAvatar: React.FC<UploadAvatarProps> = ({ src, finish }) => {
+const UploadAvatar: React.FC<UploadAvatarProps> = ({ src = '', finish }) => {
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState<string>(src);
+    console.log('srcsrcsrcsrc', src);
+    const [imageUrl, setImageUrl] = useState<string>();
+
+    useEffect(() => {
+        src && setImageUrl(src);
+    }, [src]);
+    console.log('imageUrl', imageUrl);
 
     const handleChange: UploadProps['onChange'] = (
         info: UploadChangeParam<UploadFile>,
@@ -64,7 +70,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ src, finish }) => {
             beforeUpload={beforeUpload}
             onChange={handleChange}>
             {imageUrl ? (
-                <Avatar size={48} icon={<UserOutlined />} />
+                <Avatar size={64} icon={<UserOutlined />} src={imageUrl} />
             ) : (
                 uploadButton
             )}

@@ -13,6 +13,7 @@
     "@icon-park/react": "^1.4.2",
     "@reduxjs/toolkit": "^1.8.5",
     "antd": "^4.23.2",
+    "antd-img-crop": "^4.2.5",
     "axios": "^0.27.2",
     "deepmerge": "^4.2.2",
     "jsencrypt": "^3.2.1",

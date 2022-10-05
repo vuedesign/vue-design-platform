@@ -252,6 +252,7 @@ importers:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       antd: ^4.23.2
+      antd-img-crop: ^4.2.5
       axios: ^0.27.2
       css-loader: ^6.7.1
       deepmerge: ^4.2.2
@@ -277,6 +278,7 @@ importers:
       '@icon-park/react': registry.npmmirror.com/@icon-park/react/1.4.2_biqbaboplfbrettd7655fr4n2y
       '@reduxjs/toolkit': registry.npmmirror.com/@reduxjs/toolkit/1.8.5_kuo2ie247izvzll3jejufdtq3q
       antd: registry.npmmirror.com/antd/4.23.3_biqbaboplfbrettd7655fr4n2y
+      antd-img-crop: registry.npmmirror.com/antd-img-crop/4.2.5_fsot4lcpcxpel262n4c7b2ox34
       axios: registry.npmmirror.com/axios/0.27.2
       deepmerge: registry.npmmirror.com/deepmerge/4.2.2
       jsencrypt: registry.npmmirror.com/jsencrypt/3.2.1
@@ -5055,6 +5057,22 @@ packages:
       warning: registry.npmmirror.com/warning/4.0.3
     dev: false
 
+  registry.npmmirror.com/antd-img-crop/4.2.5_fsot4lcpcxpel262n4c7b2ox34:
+    resolution: {integrity: sha512-XdCj58rnnsetky3WENoDK9Vt+j1/WKAvKL3yjaypFY0PpM42lE2seBUKRKXu3xcyxctA0TE+YTdjP7EpEhL9Ng==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/antd-img-crop/-/antd-img-crop-4.2.5.tgz}
+    id: registry.npmmirror.com/antd-img-crop/4.2.5
+    name: antd-img-crop
+    version: 4.2.5
+    peerDependencies:
+      antd: '>=4.0.0'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      antd: registry.npmmirror.com/antd/4.23.3_biqbaboplfbrettd7655fr4n2y
+      react: registry.npmmirror.com/react/18.2.0
+      react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
+      react-easy-crop: registry.npmmirror.com/react-easy-crop/4.5.1_biqbaboplfbrettd7655fr4n2y
+    dev: false
+
   registry.npmmirror.com/antd/4.23.3_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-qkvb9BAlkBRkPyFgjfDgTEiWwyMG85pTrcsfFq2VGUr4NLuCIDIQiAqTjQYk4qJ7iGYghPomrLXkulHUofswWg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/antd/-/antd-4.23.3.tgz}
     id: registry.npmmirror.com/antd/4.23.3
@@ -7808,6 +7826,7 @@ packages:
     name: errno
     version: 0.1.8
     hasBin: true
+    requiresBuild: true
     dependencies:
       prr: registry.npmmirror.com/prr/1.0.1
     dev: true
@@ -12855,6 +12874,7 @@ packages:
     version: 1.6.0
     engines: {node: '>=4'}
     hasBin: true
+    requiresBuild: true
 
   registry.npmmirror.com/mime/2.5.2:
     resolution: {integrity: sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mime/-/mime-2.5.2.tgz}
@@ -13459,6 +13479,12 @@ packages:
     resolution: {integrity: sha512-Wj7+EJQ8mSuXr2iWfnujrimU35R2W4FAErEyTmJoJ7ucwTn2hOUSsRehMb5RSYkxXGTM7Y9QpvPmp++w5ftoJw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/normalize-wheel-es/-/normalize-wheel-es-1.2.0.tgz}
     name: normalize-wheel-es
     version: 1.2.0
+    dev: false
+
+  registry.npmmirror.com/normalize-wheel/1.0.1:
+    resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/normalize-wheel/-/normalize-wheel-1.0.1.tgz}
+    name: normalize-wheel
+    version: 1.0.1
     dev: false
 
   registry.npmmirror.com/normalize.css/8.0.1:
@@ -15772,6 +15798,21 @@ packages:
       scheduler: registry.npmmirror.com/scheduler/0.23.0
     dev: false
 
+  registry.npmmirror.com/react-easy-crop/4.5.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-MVzCWmKXTwZTK0iYqlF/gPLdLqvUGrLGX7SQ4g+DO3b/lCiVAwxZKLeZ1wjDfG+r/yEWUoL7At5a0kkDJeU+rQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-easy-crop/-/react-easy-crop-4.5.1.tgz}
+    id: registry.npmmirror.com/react-easy-crop/4.5.1
+    name: react-easy-crop
+    version: 4.5.1
+    peerDependencies:
+      react: '>=16.4.0'
+      react-dom: '>=16.4.0'
+    dependencies:
+      normalize-wheel: registry.npmmirror.com/normalize-wheel/1.0.1
+      react: registry.npmmirror.com/react/18.2.0
+      react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
+      tslib: registry.npmmirror.com/tslib/2.0.1
+    dev: false
+
   registry.npmmirror.com/react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz}
     name: react-is
@@ -17892,6 +17933,12 @@ packages:
     name: tslib
     version: 1.14.1
     dev: true
+
+  registry.npmmirror.com/tslib/2.0.1:
+    resolution: {integrity: sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tslib/-/tslib-2.0.1.tgz}
+    name: tslib
+    version: 2.0.1
+    dev: false
 
   registry.npmmirror.com/tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tslib/-/tslib-2.4.0.tgz}

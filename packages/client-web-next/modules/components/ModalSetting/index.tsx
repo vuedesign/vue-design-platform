@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Avatar, Form, Input, Button } from 'antd';
-import { CloseSmall, DataAll } from '@icon-park/react';
-import { UserOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, Alert } from 'antd';
 import {
     selectIsSettingVisible,
     setIsSettingVisible,
@@ -34,89 +32,82 @@ const ModalSetting: FC = () => {
         dispatch(setIsSettingVisible(false));
     };
 
-    const editor = new Map([
-        ['close', '关闭'],
-        ['edit', '编辑中...'],
-        ['save', '保存中...'],
-    ]);
-    const [editState, setEditState] = useState<'close' | 'edit' | 'save'>(
-        'close',
-    );
+    const [isSave, setIsSave] = useState(false);
+    const [alerText, setAlerText] = useState('数据没变化，无需保存！');
 
     const onFinish = (values: any) => {
         if (diffObject(cacheData, values)) {
-            setEditState('close');
             return;
         }
-        setEditState('save');
+
         update(values)
             .then((res: any) => {
                 if (res && res.data) {
+                    setAlerText('数据保存成功！');
+                    setIsSave(true);
                     refetch();
                 }
             })
-            .catch(() => {})
+            .catch(() => {
+                setAlerText('数据保存失败！');
+            })
             .finally(() => {
                 setTimeout(() => {
-                    setEditState('close');
+                    setAlerText('数据没变化，无需保存！');
                 }, 300);
             });
     };
 
-    const handleFocus = () => {
-        setEditState('edit');
-    };
+    const handleFocus = () => {};
     let timer: ReturnType<typeof setTimeout>;
     const handleBlue = () => {
         const formData = form.getFieldsValue(formFileds);
         if (diffObject(cacheData, formData)) {
-            setEditState('close');
             return;
         }
         form.submit();
     };
 
     const handleChange = debounce(() => {
-        setEditState('edit');
-        form.submit();
-    }, 500);
+        // form.submit();
+        const formData = form.getFieldsValue(formFileds);
+        setIsSave(diffObject(cacheData, formData));
+    }, 200);
 
     const handleOk = () => {
-        if (editState === 'close') {
-            handleCancel();
-        } else if (editState === 'save') {
-            form.submit();
-        }
+        form.submit();
     };
-
+    const handleUploadFinish = () => {};
     return (
         <Modal
-            width={528}
+            width={600}
             open={isSettingVisible}
             title="我的设置"
             centered
             onCancel={handleCancel}
+            cancelText={'关闭'}
+            onOk={handleOk}
+            okText={'保存'}
+            okButtonProps={{ disabled: isSave }}
             wrapClassName="modal-setting"
-            zIndex={2000}
-            footer={[
-                <Button key="submit" shape="round" onClick={handleOk}>
-                    {editor.get(editState)}
-                </Button>,
-            ]}>
+            zIndex={2000}>
+            <div className={styles['alert']}>
+                <Alert message={alerText} type="warning" />
+            </div>
             <div>
                 <Form
                     form={form}
                     labelAlign="left"
                     labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 14 }}
+                    wrapperCol={{ span: 16 }}
                     onFinish={onFinish}
                     layout="horizontal">
                     <Form.Item label="头像" name="avatar" valuePropName="src">
-                        <UploadAvatar></UploadAvatar>
+                        <UploadAvatar
+                            finish={handleUploadFinish}></UploadAvatar>
                     </Form.Item>
                     <Form.Item label="昵称" name="nickname">
                         <Input
-                            bordered={false}
                             onBlur={handleBlue}
                             onFocus={handleFocus}
                             onChange={handleChange}
@@ -124,7 +115,6 @@ const ModalSetting: FC = () => {
                     </Form.Item>
                     <Form.Item label="用户名" name="username">
                         <Input
-                            bordered={false}
                             onBlur={handleBlue}
                             onFocus={handleFocus}
                             onChange={handleChange}
@@ -132,7 +122,6 @@ const ModalSetting: FC = () => {
                     </Form.Item>
                     <Form.Item label="邮箱" name="email">
                         <Input
-                            bordered={false}
                             onBlur={handleBlue}
                             onFocus={handleFocus}
                             onChange={handleChange}
@@ -140,7 +129,6 @@ const ModalSetting: FC = () => {
                     </Form.Item>
                     <Form.Item label="手机号" name="phone">
                         <Input
-                            bordered={false}
                             onBlur={handleBlue}
                             onFocus={handleFocus}
                             onChange={handleChange}
