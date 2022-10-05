@@ -10,6 +10,7 @@ import {
     Inject,
     CACHE_MANAGER,
     Param,
+    Put,
 } from '@nestjs/common';
 // import { CACHE_MANAGER } from '@nestjs/core';
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -25,6 +26,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { RsaService } from '@/globals/services/rsa.service';
+import { UserEntity } from '@/entities/user.entity';
 
 @Controller('auth')
 @ApiTags('登录模块')
@@ -82,6 +84,18 @@ export class AuthController {
             return null;
         }
         return this.authService.findOne({ id: userId });
+    }
+
+    @Put('profile')
+    updateProfile(
+        @Body() body: Partial<UserEntity>,
+        @User('id') userId: number,
+    ) {
+        console.log('body', userId, body);
+        if (!userId) {
+            return null;
+        }
+        return this.authService.update(Object.assign({}, body, { id: userId }));
     }
 
     @Get('logout')

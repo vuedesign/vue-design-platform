@@ -59,6 +59,7 @@ export class UserEntity {
         width: 255,
         nullable: true,
         comment: '密码',
+        select: false,
     })
     password: string;
 

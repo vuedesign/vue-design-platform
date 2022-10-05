@@ -13,9 +13,16 @@ export class AuthTcpController {
         private userService: UserService,
     ) {}
 
-    @MessagePattern({ module: 'user', method: 'find-one' }, Transport.TCP)
+    @MessagePattern({ module: 'auth', method: 'find-one' }, Transport.TCP)
     findOne(query: Record<string, any>) {
         return this.userService.findOne(query);
+    }
+
+    @MessagePattern({ module: 'auth', method: 'update' }, Transport.TCP)
+    async update(data: Record<string, any>) {
+        const { id, ...otherData } = data;
+        const res = await this.userService.update(id, otherData);
+        return !!res.affected;
     }
 
     @MessagePattern({ module: 'auth', method: 'register' }, Transport.TCP)

@@ -31,7 +31,11 @@ export class AuthService extends BaseMicroservice {
     }
 
     findOne(query: Record<string, any>) {
-        return this.send({ module: 'user', method: 'find-one' }, query);
+        return this.send({ module: 'auth', method: 'find-one' }, query);
+    }
+
+    update(data: Record<string, any>) {
+        return this.send({ module: 'auth', method: 'update' }, data);
     }
 
     register(registerData: LoginParam) {

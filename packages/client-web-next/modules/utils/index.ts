@@ -50,3 +50,10 @@ export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
     const encrypted = encrypt.encrypt(data);
     return encrypted;
 }
+
+export function diffObject(
+    cacheData: Record<string, any>,
+    data: Record<string, any>,
+) {
+    return Object.keys(data).every((key) => data[key] === cacheData[key]);
+}
