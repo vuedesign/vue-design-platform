@@ -16,6 +16,7 @@ import {
 import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginBodyDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
+import { UserService } from '@/modules/user/user.service';
 import { Public } from '@/core/decorators/auth.decorator';
 import { User } from '@/core/decorators/user.decorator';
 import { Response, Request } from 'express';
@@ -23,7 +24,6 @@ import { LoginParam } from './dto/auth.dto';
 import { getFieldType } from '@/core/utils';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { RsaService } from '@/globals/services/rsa.service';
 import { UserEntity } from '@/entities/user.entity';
@@ -33,7 +33,7 @@ import { UserEntity } from '@/entities/user.entity';
 @ApiBearerAuth()
 export class AuthController {
     constructor(
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private userService: UserService,
         private authService: AuthService,
         private jwtService: JwtService,
         private configService: ConfigService,
@@ -54,7 +54,6 @@ export class AuthController {
     async login(
         @Body() body: LoginBodyDto,
         @Res({ passthrough: true }) res: Response,
-        @Req() req,
     ) {
         const { account, password } = body;
 
@@ -83,7 +82,7 @@ export class AuthController {
         if (!userId) {
             return null;
         }
-        return this.authService.findOne({ id: userId });
+        return this.userService.findOneBy({ id: userId });
     }
 
     @Put('profile')
@@ -95,7 +94,7 @@ export class AuthController {
         if (!userId) {
             return null;
         }
-        return this.authService.update(Object.assign({}, body, { id: userId }));
+        return this.userService.update(userId, Object.assign({}, body));
     }
 
     @Get('logout')
@@ -122,7 +121,7 @@ export class AuthController {
         const where = {
             [field]: account,
         };
-        const user = await this.authService.findOne(where);
+        const user = await this.userService.findOneBy(where);
         if (user) {
             throw new UnauthorizedException('用户名、邮箱、电话号已存在');
         }

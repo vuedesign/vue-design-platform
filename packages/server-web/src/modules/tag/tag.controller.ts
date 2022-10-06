@@ -12,7 +12,8 @@ import { TagService } from './tag.service';
 import { IPaginationOptions } from '@/globals/services/base.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagListQueryDto } from './dto/tag.dto';
-import { Public } from '@/core/decorators/auth.decorator';
+import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
+import { TagEntity } from '@/entities/tag.entity';
 
 @Controller('tags')
 @ApiTags('标签模块')
@@ -20,19 +21,10 @@ import { Public } from '@/core/decorators/auth.decorator';
 export class TagController {
     constructor(private readonly tagService: TagService) {}
 
-    @Post()
-    @ApiBody({
-        description: '添加项目',
-        type: CreateTagDto,
-    })
-    create(@Body() createTagDto: CreateTagDto) {
-        return this.tagService.create(createTagDto);
-    }
-
     @Get()
-    findList(@Query() query: TagListQueryDto) {
-        const { size, page } = query;
-        const opitions: IPaginationOptions = {
+    findList(@Query(new QueryTransformPipe()) query: TagListQueryDto) {
+        const { size = 20, page = 1 } = query;
+        const opitions: IPaginationOptions<TagEntity> = {
             order: {
                 updatedAt: 'DESC',
             },

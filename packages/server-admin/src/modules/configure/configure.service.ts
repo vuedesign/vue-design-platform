@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere } from 'typeorm';
-import { CreateConfigDto } from './dto/create-config.dto';
-import { UpdateConfigDto } from './dto/update-config.dto';
-import { ConfigEntity } from '@/entities/config.entity';
+import { CreateConfigureDto } from './dto/create-configure.dto';
+import { UpdateConfigureDto } from './dto/update-configure.dto';
+import { ConfigureEntity } from '@/entities/configure.entity';
 import {
     BaseService,
     IPaginationResponse,
@@ -11,27 +11,27 @@ import {
 } from '@/globals/services/base.service';
 
 @Injectable()
-export class ConfigService extends BaseService<ConfigEntity> {
+export class ConfigureService extends BaseService<ConfigureEntity> {
     constructor(
-        @InjectRepository(ConfigEntity)
-        private readonly configRepository: Repository<ConfigEntity>,
+        @InjectRepository(ConfigureEntity)
+        private readonly configRepository: Repository<ConfigureEntity>,
     ) {
         super(configRepository);
     }
 
-    async create(createConfig: CreateConfigDto) {
+    async create(createConfigure: CreateConfigureDto) {
         const config = await this.configRepository.findOneBy({
-            key: createConfig.key,
+            key: createConfigure.key,
         });
         if (config) {
             return config;
         }
-        this.configRepository.create(createConfig);
-        return this.configRepository.save(createConfig);
+        this.configRepository.create(createConfigure);
+        return this.configRepository.save(createConfigure);
     }
 
     findList(
-        options: IPaginationOptions<ConfigEntity>,
+        options: IPaginationOptions<ConfigureEntity>,
     ): Promise<IPaginationResponse> {
         return this.findListAndPage(options);
     }
@@ -48,8 +48,8 @@ export class ConfigService extends BaseService<ConfigEntity> {
         });
     }
 
-    update(id: number, updateConfigDto: UpdateConfigDto) {
-        return this.configRepository.update(id, updateConfigDto);
+    update(id: number, updateConfigureDto: UpdateConfigureDto) {
+        return this.configRepository.update(id, updateConfigureDto);
     }
 
     remove(id: number) {

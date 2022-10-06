@@ -1,6 +1,17 @@
+import {
+    IPaginationOptions,
+    IPaginationResponse,
+} from '@/globals/services/base.service';
+import { SiteEntity } from '@/entities/site.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Repository, FindManyOptions, FindOptionsWhere } from 'typeorm';
 import { Transform } from 'class-transformer';
 import { IsString, IsInt, IsNotEmpty, isNumberString } from 'class-validator';
+
+export type IOptions = IPaginationOptions<SiteEntity>;
+export type IWhere = FindOptionsWhere<SiteEntity>;
+export type IRepository = Repository<SiteEntity>;
+export type IResponse = IPaginationResponse<SiteEntity>;
 
 export enum SiteType {
     ALL = 'all',

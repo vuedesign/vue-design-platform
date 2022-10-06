@@ -1,3 +1,4 @@
+import { ToolEntity } from './../../entities/tool.entity';
 import {
     Controller,
     Get,
@@ -20,27 +21,18 @@ import type { AuthUser } from '@/modules/user/dto/user.dto';
 export class ToolController {
     constructor(private readonly toolService: ToolService) {}
 
-    @Post()
-    create(@Body() createToolDto: CreateToolDto) {
-        return this.toolService.create(createToolDto);
-    }
-
     @Get(':siteId')
-    async findOne(
+    findOne(
         @Param('siteId', ParseIntPipe) siteId: number,
         @User('id') userId: number,
     ) {
-        console.log('siteId======tool', siteId);
-        console.log('userId', userId);
         if (!userId) {
             return null;
         }
-        const a = await this.toolService.findOne({
+        return this.toolService.findOne({
             siteId,
             authorId: userId,
         });
-        console.log('abc', a);
-        return a;
     }
 
     @Patch('like')
@@ -52,10 +44,5 @@ export class ToolController {
             ...param,
             authorId: user.id,
         });
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.toolService.remove(+id);
     }
 }

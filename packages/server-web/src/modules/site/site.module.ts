@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { UserService } from '../user/user.service';
 import { SiteController } from './site.controller';
-import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SiteEntity } from '@/entities/site.entity';
+import { UserEntity } from '@/entities/user.entity';
 
 @Module({
-    imports: [BaseMicroserviceModule],
+    imports: [TypeOrmModule.forFeature([SiteEntity, UserEntity])],
     controllers: [SiteController],
     providers: [SiteService, UserService],
     exports: [SiteService],

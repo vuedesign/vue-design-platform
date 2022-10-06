@@ -9,37 +9,37 @@ import {
     ParseIntPipe,
     Query,
 } from '@nestjs/common';
-import { ConfigService } from './config.service';
-import { CreateConfigDto } from './dto/create-config.dto';
-import { ConfigListQueryDto } from './dto/config.dto';
-import { UpdateConfigDto } from './dto/update-config.dto';
+import { ConfigureService } from './configure.service';
+import { CreateConfigureDto } from './dto/create-configure.dto';
+import { ConfigureListQueryDto } from './dto/configure.dto';
+import { UpdateConfigureDto } from './dto/update-configure.dto';
 import { ApiBody, ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { IPaginationOptions } from '@/globals/services/base.service';
-import { ConfigEntity } from '@/entities/config.entity';
+import { ConfigureEntity } from '@/entities/configure.entity';
 import { Like } from 'typeorm';
 
 @ApiTags('配置模块')
 // @ApiBearerAuth()
 @Controller('configs')
-export class ConfigController {
-    constructor(private readonly configService: ConfigService) {}
+export class ConfigureController {
+    constructor(private readonly configService: ConfigureService) {}
 
     @Post()
-    create(@Body() createConfigDto: CreateConfigDto) {
-        return this.configService.create(createConfigDto);
+    create(@Body() createConfigureDto: CreateConfigureDto) {
+        return this.configService.create(createConfigureDto);
     }
 
     @Get()
     @ApiQuery({
         description: '用户列表',
-        type: ConfigListQueryDto,
+        type: ConfigureListQueryDto,
     })
     findAll(
-        @Query(new QueryTransformPipe(['search'])) query: ConfigListQueryDto,
+        @Query(new QueryTransformPipe(['search'])) query: ConfigureListQueryDto,
     ) {
         const { size, page, search, status } = query;
-        const options: IPaginationOptions<ConfigEntity> = {
+        const options: IPaginationOptions<ConfigureEntity> = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
@@ -83,10 +83,10 @@ export class ConfigController {
     @Put(':id')
     update(
         @Param('id', ParseIntPipe) id: number,
-        @Body() updateConfigDto: UpdateConfigDto,
+        @Body() updateConfigureDto: UpdateConfigureDto,
     ) {
-        console.log('updateConfigDto', updateConfigDto);
-        return this.configService.update(id, updateConfigDto);
+        console.log('updateConfigureDto', updateConfigureDto);
+        return this.configService.update(id, updateConfigureDto);
     }
 
     @Delete(':id')

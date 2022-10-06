@@ -1,4 +1,4 @@
-export class CreateConfigDto {
+export class CreateConfigureDto {
     key: string;
     value: string;
     group?: string;

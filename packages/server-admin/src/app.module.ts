@@ -16,7 +16,7 @@ import { HomeModule } from '@/modules/home/home.module';
 import { CountModule } from '@/modules/count/count.module';
 import { TaskModule } from '@/modules/task/task.module';
 import { ToolModule } from '@/modules/tool/tool.module';
-import { ConfigModule } from './modules/config/config.module';
+import { ConfigureModule } from './modules/configure/configure.module';
 
 @Module({
     imports: [
@@ -32,7 +32,7 @@ import { ConfigModule } from './modules/config/config.module';
         CountModule,
         TaskModule,
         ToolModule,
-        ConfigModule,
+        ConfigureModule,
     ],
     controllers: [AppController],
     providers: [

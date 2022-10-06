@@ -8,24 +8,17 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
-import { UserService } from '../user/user.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { Like, Not, Equal } from 'typeorm';
-import { Public } from '@/core/decorators/auth.decorator';
+import { Like } from 'typeorm';
 import { User } from '@/core/decorators/user.decorator';
-import type { AuthUser } from '@/modules/user/dto/user.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
-import { SiteListQueryDto } from './dto/site.dto';
-import { IPaginationOptions } from '@/globals/services/base.service';
+import { SiteListQueryDto, IOptions } from './dto/site.dto';
 
 @Controller('sites')
 @ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
-    constructor(
-        private readonly siteService: SiteService,
-        private readonly userService: UserService,
-    ) {}
+    constructor(private readonly siteService: SiteService) {}
 
     @Get('profile')
     @ApiQuery({
@@ -40,7 +33,7 @@ export class SiteController {
             throw new UnauthorizedException();
         }
         const { size = 20, page = 1 } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
@@ -65,7 +58,7 @@ export class SiteController {
         @Query(new QueryTransformPipe()) query: SiteListQueryDto,
     ) {
         const { size = 2, page = 1, authorId } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
@@ -87,10 +80,10 @@ export class SiteController {
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @User('id') userId: number) {
+    findOne(@Param('uuid') uuid: string, @User('id') authorId: number) {
         return this.siteService.findOneBy({
             uuid,
-            userId,
+            authorId,
         });
     }
 
@@ -113,28 +106,20 @@ export class SiteController {
             order,
             authorId,
         } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             relations: {
                 tags: true,
                 author: true,
             },
             select: {
                 author: {
-                    id: true,
                     uuid: true,
                     avatar: true,
-                    username: true,
                     nickname: true,
-                    email: true,
-                    phone: true,
-                    password: true,
-                    status: true,
-                    rule: true,
                 },
                 tags: {
                     id: true,
                     name: true,
-                    description: true,
                 },
             },
             pagination: { size, page },

@@ -1,16 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { NavigationEntity } from '@/entities/navigation.entity';
 import {
+    BaseService,
     IPaginationOptions,
     IPaginationResponse,
 } from '@/globals/services/base.service';
-import { BaseMicroservice } from '@/globals/services/base.microservice';
 
 @Injectable()
-export class NavigationService extends BaseMicroservice {
+export class NavigationService extends BaseService<NavigationEntity> {
+    constructor(
+        @InjectRepository(NavigationEntity)
+        private readonly navigationRepository: Repository<NavigationEntity>,
+    ) {
+        super(navigationRepository);
+    }
     findList(
-        options: IPaginationOptions,
+        options: IPaginationOptions<NavigationEntity>,
     ): Promise<IPaginationResponse<NavigationEntity>> {
-        return this.send({ module: 'navigation', method: 'find' }, options);
+        return this.findListAndPage(options);
     }
 }

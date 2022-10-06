@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ListQueryDto } from '@/dtos/query.dto';
 
-export class ConfigListQueryDto extends ListQueryDto {
+export class ConfigureListQueryDto extends ListQueryDto {
     @ApiProperty({
         description: '搜索',
         required: false,
@@ -11,7 +11,7 @@ export class ConfigListQueryDto extends ListQueryDto {
     search?: string;
 }
 
-export class findConfigItemQuery {
+export class findConfigureItemQuery {
     @ApiProperty({
         required: false,
     })
