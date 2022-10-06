@@ -65,6 +65,5 @@ export default <MenuNode[]>[
         value: 'config',
         icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
-        children: [],
     },
 ];

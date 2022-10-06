@@ -85,7 +85,7 @@ function getFileType(mimetype: string) {
 }
 
 @Controller('files')
-@ApiTags('公共模块')
+@ApiTags('文件模块')
 @ApiBearerAuth()
 export class FileController {
     constructor(

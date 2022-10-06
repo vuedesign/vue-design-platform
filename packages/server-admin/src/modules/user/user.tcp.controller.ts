@@ -16,7 +16,16 @@ export class UserTcpController {
      */
     @MessagePattern({ module: 'user', method: 'findList' }, Transport.TCP)
     findList(options: IPaginationOptions<UserEntity>) {
-        return this.userService.findList(options);
+        const query = Object.assign(options, {
+            select: {
+                id: true,
+                uuid: true,
+                username: true,
+                nickname: true,
+                avatar: true,
+            },
+        });
+        return this.userService.findList(query);
     }
 
     @MessagePattern({ module: 'user', method: 'findOne' }, Transport.TCP)

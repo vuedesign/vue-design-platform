@@ -29,18 +29,9 @@ export class UserService extends BaseService<UserEntity> {
     }
 
     findList(
-        opitons: IPaginationOptions<UserEntity>,
+        options: IPaginationOptions<UserEntity>,
     ): Promise<IPaginationResponse> {
-        const query = Object.assign(opitons, {
-            select: {
-                id: true,
-                uuid: true,
-                username: true,
-                nickname: true,
-                avatar: true,
-            },
-        });
-        return this.findListAndPage(query);
+        return this.findListAndPage(options);
     }
 
     findOne(query: findUserItemQuery): Promise<UserEntity | undefined> {

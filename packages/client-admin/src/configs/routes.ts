@@ -7,6 +7,7 @@ import navigationRoutes from '../modules/navigation/routes';
 import siteRoutes from '../modules/site/routes';
 import countRoutes from '../modules/count/routes';
 import tagRoutes from '../modules/tag/routes';
+import configRoutes from '../modules/config/routes';
 
 export default [
     {
@@ -25,6 +26,7 @@ export default [
             ...navigationRoutes,
             ...siteRoutes,
             ...tagRoutes,
+            ...configRoutes,
         ],
     },
     ...globals,
