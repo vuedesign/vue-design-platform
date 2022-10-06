@@ -8,6 +8,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
+import { ToolService } from '../tool/tool.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Like } from 'typeorm';
 import { User } from '@/core/decorators/user.decorator';
@@ -18,7 +19,10 @@ import { SiteListQueryDto, IOptions } from './dto/site.dto';
 @ApiTags('站点模块')
 @ApiBearerAuth()
 export class SiteController {
-    constructor(private readonly siteService: SiteService) {}
+    constructor(
+        private readonly siteService: SiteService,
+        private readonly toolService: ToolService,
+    ) {}
 
     @Get('profile')
     @ApiQuery({
@@ -92,7 +96,7 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    findAll(
+    async findAll(
         @Query(new QueryTransformPipe(['title']))
         query: SiteListQueryDto,
         @User('id') userId: number,
@@ -161,6 +165,28 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        return this.siteService.findList(options);
+        const site = await this.siteService.findList(options);
+
+        if (!userId) {
+            return site;
+        }
+        const siteList = site.list || [];
+        let list = [];
+        for await (const siteItem of siteList) {
+            const tool = await this.toolService.findOne({
+                siteId: siteItem.id,
+                authorId,
+            });
+            if (tool) {
+                Object.assign(siteItem, {
+                    tool,
+                });
+            }
+            list.push(siteItem);
+        }
+        return {
+            ...site,
+            list,
+        };
     }
 }
