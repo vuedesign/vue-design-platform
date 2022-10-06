@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere } from 'typeorm';
+import { Repository, FindManyOptions } from 'typeorm';
 import { CreateConfigureDto } from './dto/create-configure.dto';
 import { UpdateConfigureDto } from './dto/update-configure.dto';
 import { ConfigureEntity } from '@/entities/configure.entity';
@@ -31,9 +31,9 @@ export class ConfigureService extends BaseService<ConfigureEntity> {
     }
 
     findList(
-        options: IPaginationOptions<ConfigureEntity>,
-    ): Promise<IPaginationResponse> {
-        return this.findListAndPage(options);
+        options: FindManyOptions<ConfigureEntity>,
+    ): Promise<ConfigureEntity[]> {
+        return this.configRepository.find(options);
     }
 
     findOne(id: number) {

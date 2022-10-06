@@ -62,6 +62,15 @@ export class ConfigureEntity {
     })
     remark: string;
 
+    @Column({
+        type: 'int',
+        width: 3,
+        nullable: true,
+        comment: '排序',
+        default: 1,
+    })
+    order: number;
+
     @CreateDateColumn({
         name: 'created_at',
         type: 'timestamp',

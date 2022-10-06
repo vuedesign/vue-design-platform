@@ -21,7 +21,7 @@ import { Like } from 'typeorm';
 
 @ApiTags('配置模块')
 // @ApiBearerAuth()
-@Controller('configs')
+@Controller('configures')
 export class ConfigureController {
     constructor(private readonly configService: ConfigureService) {}
 
@@ -35,39 +35,44 @@ export class ConfigureController {
         description: '用户列表',
         type: ConfigureListQueryDto,
     })
-    findAll(
-        @Query(new QueryTransformPipe(['search'])) query: ConfigureListQueryDto,
-    ) {
-        const { size, page, search, status } = query;
+    async findAll() {
         const options: IPaginationOptions<ConfigureEntity> = {
-            pagination: { size, page },
+            pagination: { size: 20, page: 1 },
             order: {
-                updatedAt: 'DESC',
+                order: 'DESC',
             },
-            where: {},
+            where: {
+                status: 1,
+            },
         };
 
-        console.log('options', options);
-
-        const isPhone = (str: string) => {
-            return !isNaN(Number(str));
-        };
-
-        if (search) {
-            if (isPhone(search)) {
-                options.where['key'] = Like(`%${search}%`);
+        const configureList = await this.configService.findList(options);
+        console.log('configureList', configureList);
+        let config = {};
+        configureList.forEach((item) => {
+            const { key, value, remark, link, group } = item;
+            if (group) {
+                if (!config[group]) {
+                    config[group] = [];
+                }
+                config[group].push({
+                    value,
+                    remark,
+                    link,
+                    key,
+                });
             } else {
-                options.where['value'] = Like(`%${search}%`);
+                if (key) {
+                    config[key] = {
+                        value,
+                        remark,
+                        link,
+                    };
+                }
             }
-        }
+        });
 
-        if (status) {
-            options.where['status'] = status;
-        }
-
-        console.log('options.where===', options);
-
-        return this.configService.findList(options);
+        return config;
     }
 
     @Get(':key/key')

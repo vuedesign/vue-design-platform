@@ -36,6 +36,13 @@
                             class="form-item-width"
                         />
                     </el-form-item>
+                    <el-form-item label="排序">
+                        <el-input
+                            v-model="detail.order"
+                            autocomplete="off"
+                            class="form-item-width"
+                        />
+                    </el-form-item>
                     <el-form-item label="链接">
                         <el-input
                             v-model="detail.link"
@@ -43,19 +50,18 @@
                             class="form-item-width"
                         />
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input
-                            v-model="detail.remark"
-                            autocomplete="off"
-                            class="form-item-width"
-                        />
-                    </el-form-item>
-
                     <el-form-item label="状态">
                         <el-switch
                             v-model="detail.status"
                             :active-value="1"
                             :inactive-value="2"
+                        />
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input
+                            v-model="detail.remark"
+                            autocomplete="off"
+                            class="form-item-width"
                         />
                     </el-form-item>
                 </el-form>

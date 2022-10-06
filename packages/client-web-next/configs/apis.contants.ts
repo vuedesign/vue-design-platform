@@ -22,3 +22,6 @@ export const SITES_PROFILE = '/sites/profile';
 // tools
 export const TOOLS = '/tools';
 export const TOOLS_LIKE = '/tools/like';
+
+// 配置
+export const CONFIGURES = '/configures';

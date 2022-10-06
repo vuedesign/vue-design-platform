@@ -60,9 +60,10 @@
             >
                 <el-table-column prop="id" label="ID" width="48" />
                 <el-table-column prop="key" label="配置键" width="100" />
-                <el-table-column prop="value" label="配置值" width="120" />
+                <el-table-column prop="value" label="配置值" width="200" />
                 <el-table-column prop="group" label="分组" width="160" />
-                <el-table-column prop="link" label="链接" width="100" />
+                <el-table-column prop="order" label="排序" width="60" />
+                <el-table-column prop="link" label="链接" width="200" />
                 <el-table-column label="状态" width="80">
                     <template #default="scope">
                         <el-tag v-if="scope.row.status === STATUS.AVAILABLE">

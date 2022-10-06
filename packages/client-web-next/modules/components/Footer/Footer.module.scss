@@ -17,9 +17,10 @@
 }
 
 .logo {
-    margin-right: 30px;
+    margin-right: 16px;
     display: flex;
     align-items: center;
+    width: 256px;
 }
 
 .about-right {
@@ -68,6 +69,8 @@
     dd {
         float: left;
         margin-bottom: 0;
+        display: flex;
+        align-items: center;
         a {
             color: #666;
             &:hover {

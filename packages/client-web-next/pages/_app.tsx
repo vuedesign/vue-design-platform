@@ -4,6 +4,7 @@ import App from 'next/app';
 import { wrapper } from '@/modules/store';
 import { profile } from '@/modules/services/authApi';
 import { countProfile } from '@/modules/services/countApi';
+import { configures } from '@/modules/services/configureApi';
 import { setToken } from '@/modules/features/authSlice';
 import { setCookie } from '@/modules/features/globalSlice';
 import '@/assets/styles/normalize.scss';
@@ -34,6 +35,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         await store.dispatch(setToken(req?.cookies?.token || ''));
         await store.dispatch(profile.initiate());
         await store.dispatch(countProfile.initiate());
+        // await store.dispatch(configures.initiate());
         const appProps = await App.getInitialProps(context);
         return { ...appProps };
     },
