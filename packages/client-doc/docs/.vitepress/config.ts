@@ -1,0 +1,61 @@
+import { defineConfig, DefaultTheme } from 'vitepress';
+
+export default defineConfig({
+    title: 'VueDesign',
+    description:
+        '一个由当今世界最流行javascript框架（nest、next、vue3）构建的完整链路开源项目',
+    themeConfig: {
+        siteTitle: '文档',
+        logo: '/logo.svg',
+        nav: [
+            { text: '指导', link: '/guide/' },
+            {
+                text: '架构',
+                items: [
+                    { text: '前台前端（nextjs）', link: '/item-1' },
+                    { text: '前台后端（nestjs）', link: '/item-2' },
+                    { text: '前台插件（chrome）', link: '/item-3' },
+                    { text: '后台前端（vue3）', link: '/item-3' },
+                    { text: '后台后端（nestjs）', link: '/item-3' },
+                ],
+            },
+            { text: '配置', link: '/config/' },
+            { text: '变更日志', link: '/change-log' },
+        ],
+        sidebar: {
+            '/guide/': [
+                {
+                    text: '介绍',
+                    items: [
+                        { text: 'Introduction', link: '/introduction' },
+                        { text: 'Getting Started', link: '/getting-started' },
+                    ],
+                },
+            ],
+
+            '/config/': [
+                {
+                    text: '配置',
+                    items: [
+                        // This shows `/config/index.md` page.
+                        { text: 'Index', link: '/config/' }, // /config/index.md
+                        { text: 'Three', link: '/config/three' }, // /config/three.md
+                        { text: 'Four', link: '/config/four' }, // /config/four.md
+                    ],
+                },
+            ],
+        },
+        algolia: {
+            appId: '0X4S46JRX9',
+            apiKey: '6ae4ce66ee61b418df0f3bfb1725ed21',
+            indexName: 'vue design',
+            searchParameters: {
+                facetFilters: ['tags:en'],
+            },
+        },
+        footer: {
+            message: 'Released under the MIT License.',
+            copyright: 'Copyright © 2022-present n.see',
+        },
+    },
+});
