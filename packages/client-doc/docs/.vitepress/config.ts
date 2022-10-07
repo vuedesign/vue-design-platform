@@ -19,7 +19,14 @@ export default defineConfig({
                     { text: '后台后端（nestjs）', link: '/item-3' },
                 ],
             },
-            { text: '配置', link: '/config/' },
+            {
+                text: '关于',
+                items: [
+                    { text: '关于我们', link: '/about/' }, // /about/index.md
+                    { text: '使用文档', link: '/about/team' }, // /about/three.md
+                    { text: '友情链接', link: '/about/link' }, // /about/four.md
+                ],
+            },
             { text: '变更日志', link: '/change-log' },
         ],
         sidebar: {
@@ -32,15 +39,14 @@ export default defineConfig({
                     ],
                 },
             ],
-
-            '/config/': [
+            '/about/': [
                 {
-                    text: '配置',
+                    text: '关于',
                     items: [
-                        // This shows `/config/index.md` page.
-                        { text: 'Index', link: '/config/' }, // /config/index.md
-                        { text: 'Three', link: '/config/three' }, // /config/three.md
-                        { text: 'Four', link: '/config/four' }, // /config/four.md
+                        // This shows `/about/index.md` page.
+                        { text: '关于我们', link: '/about/' }, // /about/index.md
+                        { text: '使用文档', link: '/about/team' }, // /about/three.md
+                        { text: '友情链接', link: '/about/link' }, // /about/four.md
                     ],
                 },
             ],
