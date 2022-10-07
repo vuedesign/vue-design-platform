@@ -84,10 +84,9 @@ export class SiteController {
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @User('id') authorId: number) {
+    findOne(@Param('uuid') uuid: string) {
         return this.siteService.findOneBy({
             uuid,
-            authorId,
         });
     }
 

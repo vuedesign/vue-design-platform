@@ -26,7 +26,7 @@ export class ToolController {
         @Param('siteId', ParseIntPipe) siteId: number,
         @User('id') userId: number,
     ) {
-        if (!userId) {
+        if (!userId || !siteId) {
             return null;
         }
         return this.toolService.findOne({

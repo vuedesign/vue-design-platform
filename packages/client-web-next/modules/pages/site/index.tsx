@@ -38,6 +38,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 
 const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
+    console.log('uuid', uuid);
     const { data: detail } = useSiteQuery(uuid);
     return (
         <div className={styles.container}>
