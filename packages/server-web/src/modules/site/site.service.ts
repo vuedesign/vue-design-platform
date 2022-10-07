@@ -20,4 +20,8 @@ export class SiteService extends BaseService<SiteEntity> {
     findOneBy(where: IWhere): Promise<SiteEntity> {
         return this.siteRepository.findOneBy(where);
     }
+
+    findOne(options: IOptions): Promise<SiteEntity> {
+        return this.siteRepository.findOne(options);
+    }
 }

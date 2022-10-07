@@ -1,0 +1,15 @@
+.recommend {
+    margin-top: 8px;
+    width: 100%;
+    ul {
+        display: flex;
+        width: 100%;
+        flex-flow: wrap;
+        margin: 0 -4px;
+        padding: 0;
+        list-style: none;
+        li {
+            margin-top: 8px;
+        }
+    }
+}

@@ -85,9 +85,25 @@ export class SiteController {
         type: String,
     })
     findOne(@Param('uuid') uuid: string) {
-        return this.siteService.findOneBy({
-            uuid,
-        });
+        const options: IOptions = {
+            where: { uuid },
+            relations: {
+                tags: true,
+                author: true,
+            },
+            select: {
+                author: {
+                    uuid: true,
+                    avatar: true,
+                    nickname: true,
+                },
+                tags: {
+                    id: true,
+                    name: true,
+                },
+            },
+        };
+        return this.siteService.findOne(options);
     }
 
     @Get()
