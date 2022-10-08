@@ -95,7 +95,7 @@
                     width="160"
                     :formatter="tableDateFormatter('updatedAt')"
                 />
-                <el-table-column fixed="right" label="操作" width="210">
+                <el-table-column fixed="right" label="操作" width="280">
                     <template #default="{ row }">
                         <span class="btn-switch">
                             <el-switch
@@ -114,6 +114,13 @@
                         <el-button
                             type="primary"
                             text
+                            @click="handleContentUpdate(row.id)"
+                        >
+                            内容
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            text
                             @click="handleDel(row.id)"
                         >
                             删除
@@ -123,6 +130,9 @@
             </el-table>
             <vd-popup v-model="isDrawerUpdateVisible">
                 <drawer-config-update />
+            </vd-popup>
+            <vd-popup v-model="isDrawerContentUpdateVisible">
+                <drawer-config-content-update />
             </vd-popup>
         </template>
         <template #pagination>
@@ -154,9 +164,16 @@ import VdFilter from '@/components/VdFilter';
 import VdPopup from '@/components/VdPopup';
 import useConfigStore from '../useConfigStore';
 import DrawerConfigUpdate from '../components/DrawerConfigUpdate.vue';
+import DrawerConfigContentUpdate from '../components/DrawerConfigContentUpdate.vue';
 
 const configStore = useConfigStore();
-const { filter, total, list, isDrawerUpdateVisible } = storeToRefs(configStore);
+const {
+    filter,
+    total,
+    list,
+    isDrawerUpdateVisible,
+    isDrawerContentUpdateVisible,
+} = storeToRefs(configStore);
 
 configStore.find(filter.value);
 
@@ -166,8 +183,10 @@ const handleSearch = () => {
 const handleUpdate = (id: number) => {
     configStore.openDrawerConfig('update', id);
 };
+const handleContentUpdate = (id: number) => {
+    configStore.openDrawerConfig('contentUpdate', id);
+};
 const handleDel = (id: number) => {
-    console.log('id', id);
     configStore.openDrawerConfig('delete', id);
 };
 const handleCreate = () => {

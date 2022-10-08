@@ -63,6 +63,14 @@ export class ConfigureEntity {
     remark: string;
 
     @Column({
+        type: 'text',
+        width: 60000,
+        nullable: true,
+        comment: '配置备注',
+    })
+    content: string;
+
+    @Column({
         type: 'int',
         width: 3,
         nullable: true,

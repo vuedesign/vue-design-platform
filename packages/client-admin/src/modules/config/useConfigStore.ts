@@ -80,6 +80,7 @@ export default defineStore(USER_STORE_KEY, () => {
     };
 
     const isDrawerUpdateVisible = ref(false);
+    const isDrawerContentUpdateVisible = ref(false);
 
     const resetDetail = () => {
         Object.assign(detail, defaultCache);
@@ -115,6 +116,9 @@ export default defineStore(USER_STORE_KEY, () => {
         } else if (type === 'update' && id) {
             isDrawerUpdateVisible.value = true;
             findOne(id);
+        } else if (type === 'contentUpdate' && id) {
+            isDrawerContentUpdateVisible.value = true;
+            findOne(id);
         } else if (type === 'delete' && id) {
             del(id);
         }
@@ -131,6 +135,7 @@ export default defineStore(USER_STORE_KEY, () => {
         update,
         destroy,
         isDrawerUpdateVisible,
+        isDrawerContentUpdateVisible,
         openDrawerConfig,
         drawerType,
     };

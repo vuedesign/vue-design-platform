@@ -122,16 +122,15 @@ const { detail, drawerType } = storeToRefs(configStore);
 
 const title = computed(() => {
     if (drawerType.value === 'create') {
-        return '新增用户';
+        return '新增配置';
     } else if (drawerType.value === 'update') {
-        return '编辑用户信息';
+        return '编辑配置信息';
     }
 });
 
 const loading = ref(false);
 
 const handleUpdateClick = async () => {
-    console.log('detail', detail.value);
     loading.value = true;
     if (drawerType.value === 'create') {
         await configStore.create(detail.value);
