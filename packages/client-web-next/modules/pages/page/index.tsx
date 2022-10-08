@@ -1,17 +1,35 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { GithubOne, Home, TagOne } from '@icon-park/react';
+import { Info, PersonalPrivacy, Connect, Help } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import { count } from '@/modules/services/countApi';
 import Top from '@/modules/components/Top';
 import Footer from '@/modules/components/Footer';
-import Tools from '@/modules/components/Tools';
 import { getParamsByContext } from '@/modules/utils';
-import Asider from '@/modules/components/Asider';
 import styles from './Page.module.scss';
-import { tool } from '@/modules/services/authApi';
-import { typeMap } from '@/configs/globals.contants';
+
+const leftNav = [
+    {
+        path: 'about',
+        name: '关于我们',
+        component: <Info theme="filled" size="14" />,
+    },
+    {
+        path: 'privacy',
+        name: '隐私政策',
+        component: <PersonalPrivacy theme="filled" size="14" />,
+    },
+    {
+        path: 'help',
+        name: '使用文档',
+        component: <Help theme="filled" size="14" />,
+    },
+    {
+        path: 'link',
+        name: '友情链接',
+        component: <Connect theme="filled" size="14" />,
+    },
+];
 
 type PageProps = {
     pageName: string;
@@ -54,24 +72,32 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
             <section className={styles.main}>
                 <aside className={styles['asider-left']}>
                     <ul>
-                        <li className={'active'}>
-                            <a>关于我们</a>
-                        </li>
-                        <li>
-                            <a>隐私政策</a>
-                        </li>
-                        <li>
-                            <a>关于我们</a>
-                        </li>
+                        {leftNav.map((item, key) => {
+                            return (
+                                <li
+                                    key={key}
+                                    className={
+                                        item.path === pageName
+                                            ? styles.active
+                                            : undefined
+                                    }>
+                                    {item.component}
+                                    <Link href={`/page/${item.path}`}>
+                                        {item.name}
+                                    </Link>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </aside>
                 <article className={styles.article}>
                     <header className={styles.title}>
-                        <h1>{detail.title}</h1>
+                        <h1>
+                            {detail.title}-{pageName}
+                        </h1>
                     </header>
                     <div className={styles.content}>
                         <div className="draft-container">
-                            <p></p>
                             <p>
                                 <strong>
                                     <span>

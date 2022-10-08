@@ -96,20 +96,29 @@
     width: 128px;
     margin-right: 16px;
     ul {
-        background-color: #e5eaed;
         padding: 16px 0;
     }
     li {
         line-height: 32px;
         margin-bottom: 8px;
         padding: 0 16px;
+        display: flex;
+        align-items: center;
         &.active {
-            a {
+            background-color: #e5eaed;
+            border-radius: 3px;
+            a,
+            span {
                 color: #3d7eff;
             }
         }
-        a {
+        a,
+        span {
             color: #666;
+            display: inline-flex;
+        }
+        a {
+            margin-left: 8px;
         }
     }
 }
