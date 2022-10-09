@@ -51,11 +51,9 @@ const bodyStyle = computed(() => {
     height: 100%;
     background-color: #fff;
     border-radius: 8px;
-    // box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.02);
     width: 100%;
     display: flex;
     flex-direction: column;
-    border-radius: 8px;
     overflow: hidden;
 }
 .vd-card-header {
