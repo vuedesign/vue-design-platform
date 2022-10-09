@@ -12,6 +12,8 @@
             <div class="drawer-config-content-update-card">
                 <div style="width: 100%; height: 100%">
                     <Editor
+                        placeholder="请输入markdown内容"
+                        :locale="zh"
                         :value="editorValue"
                         :plugins="plugins"
                         @change="handleEditorChange"
@@ -54,11 +56,16 @@ import { Send, CloseOne } from '@icon-park/vue-next';
 import useConfigStore from '../useConfigStore';
 import VdCard from '@/components/VdCard.vue';
 import { Editor, Viewer } from '@bytemd/vue-next';
+import zh from 'bytemd/locales/zh_Hans.json';
 import 'bytemd/dist/index.css';
+import frontmatter from '@bytemd/plugin-frontmatter';
 import gfm from '@bytemd/plugin-gfm';
 import highlight from '@bytemd/plugin-highlight';
+import gemoji from '@bytemd/plugin-gemoji';
+import mermaid from '@bytemd/plugin-mermaid';
+import './styles/juejin-markdown-theme-default.scss';
 
-const plugins = [gfm(), highlight()];
+const plugins = [frontmatter(), gemoji(), gfm(), highlight(), mermaid()];
 
 const props = defineProps({
     modelValue: {
@@ -98,7 +105,15 @@ const handleCancelClick = () => {
 };
 
 const editorValue = ref('');
+
+watch(
+    () => detail.value.content,
+    (v = '') => {
+        editorValue.value = v || '';
+    },
+);
 const handleEditorChange = (v: string) => {
+    detail.value.content = v;
     editorValue.value = v;
 };
 </script>
@@ -112,14 +127,22 @@ const handleEditorChange = (v: string) => {
 }
 </style>
 <style lang="scss">
-// @import './styles/editor.scss';
+.bytemd {
+    height: calc(100vh - 144px);
+    border-radius: 8px;
+    border: none !important;
+
+    .bytemd-status-right input {
+        // 修复 checkbox与文字垂直居中
+        vertical-align: text-bottom !important;
+    }
+}
 .drawer-config-content-update {
     width: calc(100% - 280px) !important;
     background-color: #f2f3f5;
 }
 .drawer-config-content-update-card {
     width: 100%;
-    padding: 24px;
 }
 .drawer-config-content-update-footer {
     display: flex;

@@ -18,6 +18,7 @@ export interface ConfigItem extends BaseItem {
     group?: string;
     link?: string;
     remark?: string;
+    content?: string;
 }
 export type ConfigList = Array<ConfigItem>;
 
@@ -35,6 +36,7 @@ export default defineStore(USER_STORE_KEY, () => {
         group: '',
         link: '',
         remark: '',
+        content: '',
         status: STATUS.AVAILABLE,
     });
     const defaultCache = cloneDeep(detail);

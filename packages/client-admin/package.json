@@ -9,8 +9,11 @@
         "prettier": "npx prettier --write ./src"
     },
     "dependencies": {
+        "@bytemd/plugin-frontmatter": "^1.17.2",
+        "@bytemd/plugin-gemoji": "^1.17.2",
         "@bytemd/plugin-gfm": "^1.17.2",
         "@bytemd/plugin-highlight": "^1.17.2",
+        "@bytemd/plugin-mermaid": "^1.17.2",
         "@bytemd/vue-next": "^1.17.2",
         "@element-plus/icons-vue": "^1.1.4",
         "@icon-park/vue-next": "^1.4.0",

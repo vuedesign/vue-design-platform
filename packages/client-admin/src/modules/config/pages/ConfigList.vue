@@ -4,7 +4,7 @@
             <vd-filter>
                 <template #default>
                     <el-input
-                        placeholder="请输入用户名或电话"
+                        placeholder="请输入用键或值"
                         clearable
                         style="width: 211px"
                         v-model="filter.search"
@@ -44,7 +44,7 @@
                 <template #right>
                     <el-button type="success" @click="handleCreate">
                         <el-icon>
-                            <add-config />
+                            <plus />
                         </el-icon>
                         <span>新增</span>
                     </el-button>
@@ -112,7 +112,7 @@
                             编辑
                         </el-button>
                         <el-button
-                            type="primary"
+                            :type="row.content ? 'primary' : ''"
                             text
                             @click="handleContentUpdate(row.id)"
                         >
@@ -155,7 +155,12 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { Search, Broadcast, Filter as IconFilter } from '@icon-park/vue-next';
+import {
+    Search,
+    Broadcast,
+    Filter as IconFilter,
+    Plus,
+} from '@icon-park/vue-next';
 import { STATUS, statusMap, PAGINATION_LAYOUT } from '@/configs/constants';
 import { headerCellStyle } from '@/configs/styles';
 import { tableDateFormatter } from '@/utils/useTable';
