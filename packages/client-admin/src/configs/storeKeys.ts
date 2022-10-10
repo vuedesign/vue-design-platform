@@ -1,7 +1,11 @@
 export const BURIED_STORE_KEY = 'buried';
+export const CONFIG_STORE_KEY = 'config';
+export const COUNT_STORE_KEY = 'count';
+export const FILE_STORE_KEY = 'file';
 export const GLOBAL_STORE_KEY = 'global';
 export const HOME_STORE_KEY = 'home';
-export const MATERIAL_STORE_KEY = 'material';
 export const NAVIGATION_STORE_KEY = 'navigation';
-export const USER_STORE_KEY = 'user';
+export const MATERIAL_STORE_KEY = 'material';
 export const SITE_STORE_KEY = 'site';
+export const TAG_STORE_KEY = 'tag';
+export const USER_STORE_KEY = 'user';

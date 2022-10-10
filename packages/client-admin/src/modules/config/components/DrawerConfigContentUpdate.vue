@@ -16,6 +16,7 @@
                         :locale="zh"
                         :value="editorValue"
                         :plugins="plugins"
+                        :uploadImages="uploadImages"
                         @change="handleEditorChange"
                     />
                     <Viewer />
@@ -76,6 +77,13 @@ const plugins = [
     math(),
     mermaid(),
 ];
+const uploadImages = (files: any[]) => {
+    return Promise.all(
+        files.map((file) => {
+            return { url: 'https://picsum.photos/300' };
+        }),
+    );
+};
 
 const props = defineProps({
     modelValue: {

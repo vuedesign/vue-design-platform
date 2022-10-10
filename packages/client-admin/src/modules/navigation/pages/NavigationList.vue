@@ -64,97 +64,89 @@
             </vd-filter>
         </template>
         <template #default>
-            <div class="page-navigation-container">
-                <el-table
-                    :data="list"
-                    stripe
-                    style="width: 100%"
-                    :header-cell-style="headerCellStyle"
-                >
-                    <el-table-column prop="siteId" label="站点ID" width="80" />
-                    <el-table-column label="Icon" width="64">
-                        <template #default="scope">
-                            <el-avatar
-                                shape="square"
-                                :size="40"
-                                :src="scope.row.iconUrl"
-                                style="display: block"
+            <el-table
+                :data="list"
+                stripe
+                style="width: 100%"
+                :header-cell-style="headerCellStyle"
+            >
+                <el-table-column prop="siteId" label="站点ID" width="80" />
+                <el-table-column label="Icon" width="64">
+                    <template #default="scope">
+                        <el-avatar
+                            shape="square"
+                            :size="40"
+                            :src="scope.row.iconUrl"
+                            style="display: block"
+                        />
+                    </template>
+                </el-table-column>
+                <el-table-column prop="order" label="排序" width="64" />
+                <el-table-column prop="title" label="站点名称" width="120" />
+                <el-table-column
+                    prop="description"
+                    label="站点描述"
+                    width="300"
+                />
+                <el-table-column label="状态" width="80">
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.status === STATUS.AVAILABLE">
+                            {{
+                                statusMap.get(
+                                    scope.row.status || STATUS.AVAILABLE,
+                                )
+                            }}
+                        </el-tag>
+                        <el-tag v-else type="info">
+                            {{
+                                statusMap.get(
+                                    scope.row.status || STATUS.DISABLE,
+                                )
+                            }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="createdAt"
+                    label="创建时间"
+                    width="160"
+                    :formatter="tableDateFormatter('createdAt')"
+                />
+                <el-table-column
+                    prop="updatedAt"
+                    label="更改时间"
+                    width="160"
+                    :formatter="tableDateFormatter('updatedAt')"
+                />
+                <el-table-column fixed="right" label="操作" width="210">
+                    <template #default="{ row }">
+                        <span class="btn-switch">
+                            <el-switch
+                                v-model="row.status"
+                                :active-value="STATUS.AVAILABLE"
+                                :inactive-value="STATUS.DISABLE"
+                                @change="
+                                    (status) => handleStatus(status, row.id)
+                                "
                             />
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="order" label="排序" width="64" />
-                    <el-table-column
-                        prop="title"
-                        label="站点名称"
-                        width="120"
-                    />
-                    <el-table-column
-                        prop="description"
-                        label="站点描述"
-                        width="300"
-                    />
-                    <el-table-column label="状态" width="80">
-                        <template #default="scope">
-                            <el-tag
-                                v-if="scope.row.status === STATUS.AVAILABLE"
-                            >
-                                {{
-                                    statusMap.get(
-                                        scope.row.status || STATUS.AVAILABLE,
-                                    )
-                                }}
-                            </el-tag>
-                            <el-tag v-else type="info">
-                                {{
-                                    statusMap.get(
-                                        scope.row.status || STATUS.DISABLE,
-                                    )
-                                }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="createdAt"
-                        label="创建时间"
-                        width="160"
-                        :formatter="tableDateFormatter('createdAt')"
-                    />
-                    <el-table-column
-                        prop="updatedAt"
-                        label="更改时间"
-                        width="160"
-                        :formatter="tableDateFormatter('updatedAt')"
-                    />
-                    <el-table-column fixed="right" label="操作" width="210">
-                        <template #default="{ row }">
-                            <span class="btn-switch">
-                                <el-switch
-                                    v-model="row.status"
-                                    :active-value="STATUS.AVAILABLE"
-                                    :inactive-value="STATUS.DISABLE"
-                                    @change="
-                                        (status) => handleStatus(status, row.id)
-                                    "
-                                />
-                            </span>
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleEidt(row.id)"
-                            >
-                                编辑
-                            </el-button>
-                            <el-button
-                                type="primary"
-                                text
-                                @click="handleDel(row.id)"
-                            >
-                                删除
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+                        </span>
+                        <el-button
+                            type="primary"
+                            text
+                            @click="handleEidt(row.id)"
+                        >
+                            编辑
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            text
+                            @click="handleDel(row.id)"
+                        >
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
             <!-- 编辑推荐站点信息  -->
             <vd-popup v-model="isDrawerUpdateVisible">
                 <drawer-navigation-update />

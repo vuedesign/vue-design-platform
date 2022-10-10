@@ -2,7 +2,7 @@ import { reactive, Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { findData, findOneData } from './api';
 import { STATUS, RULE } from './constants';
-import { BURIED_STORE_KEY } from '@/configs/storeKeys';
+import { COUNT_STORE_KEY } from '@/configs/storeKeys';
 
 export interface CountItem {
     id?: number;
@@ -38,7 +38,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore(BURIED_STORE_KEY, () => {
+export default defineStore(COUNT_STORE_KEY, () => {
     const detail: CountItem = reactive({
         id: undefined,
         authorId: 0,

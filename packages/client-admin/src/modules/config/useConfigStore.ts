@@ -8,7 +8,7 @@ import {
     destroyData,
 } from './api';
 import { Ref } from 'vue';
-import { USER_STORE_KEY } from '@/configs/storeKeys';
+import { CONFIG_STORE_KEY } from '@/configs/storeKeys';
 import { STATUS } from '@/configs/constants';
 import { ListFilter, BaseItem } from '@/types/globals';
 
@@ -27,7 +27,7 @@ export interface ConfigListFilter extends ListFilter {
     search?: string;
 }
 
-export default defineStore(USER_STORE_KEY, () => {
+export default defineStore(CONFIG_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: ConfigItem = reactive({
         id: undefined,
