@@ -8,6 +8,7 @@ import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import styles from './Sites.module.scss';
 import { setQuery } from '@/modules/features/siteSlice';
+import { containerStyle, headerStyle } from '@/modules/utils/style';
 
 type SitesPropsQuery = {
     order: string;
@@ -39,7 +40,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 const Sites: NextPage<SitesProps> = ({ params }: SitesProps) => {
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={containerStyle}>
             <Head>
                 <title>vue.design-find</title>
                 <meta
@@ -48,7 +49,7 @@ const Sites: NextPage<SitesProps> = ({ params }: SitesProps) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <header className={styles.header}>
+            <header className={styles.header} style={headerStyle}>
                 <Top />
             </header>
             <section className={styles.main}>

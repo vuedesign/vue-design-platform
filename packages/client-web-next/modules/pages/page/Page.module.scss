@@ -96,8 +96,9 @@
 .asider-left {
     width: 128px;
     margin-right: 16px;
+    display: flex;
     ul {
-        padding: 16px 0;
+        flex: 1;
     }
     li {
         line-height: 32px;

@@ -8,6 +8,7 @@ import ProfileList from '@/modules/components/ProfileList';
 import { wrapper } from '@/modules/store';
 import { profile, sites, counts } from '@/modules/services/authApi';
 import styles from './Profile.module.scss';
+import { containerStyle, headerStyle } from '@/modules/utils/style';
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
@@ -29,7 +30,7 @@ type ProfileProps = {};
 
 const Profile: NextPage<ProfileProps> = () => {
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={containerStyle}>
             <Head>
                 <title>vue.design-profile</title>
                 <meta
@@ -38,7 +39,7 @@ const Profile: NextPage<ProfileProps> = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className={styles['top-bg']}>
+            <div className={styles['top-bg']} style={headerStyle}>
                 <Top />
             </div>
             <ProfileHeader />

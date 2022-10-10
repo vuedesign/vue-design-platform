@@ -11,7 +11,8 @@ import { count } from '@/modules/services/countApi';
 import { User } from '@/modules/types/auth';
 import { getParamsByContext } from '@/modules/utils';
 import styles from './User.module.scss';
-import { setQuery, selectCurrentQuery } from '@/modules/features/siteSlice';
+import { setQuery } from '@/modules/features/siteSlice';
+import { containerStyle, headerStyle } from '@/modules/utils/style';
 
 type UserPropsQuery = {
     page: number;
@@ -54,7 +55,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 const User: NextPage<UserProps> = ({ user, params }: UserProps) => {
     return (
         user && (
-            <div className={styles.container}>
+            <div className={styles.container} style={containerStyle}>
                 <Head>
                     <title>vue.design-profile</title>
                     <meta
@@ -63,7 +64,7 @@ const User: NextPage<UserProps> = ({ user, params }: UserProps) => {
                     />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <div className={styles['top-bg']}>
+                <div className={styles['top-bg']} style={headerStyle}>
                     <Top />
                 </div>
                 <UserHeader user={user} />

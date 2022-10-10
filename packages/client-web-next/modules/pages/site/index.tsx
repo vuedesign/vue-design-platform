@@ -13,6 +13,7 @@ import Asider from '@/modules/components/Asider';
 import styles from './Site.module.scss';
 import { tool } from '@/modules/services/authApi';
 import { typeMap } from '@/configs/globals.contants';
+import { containerStyle, headerStyle } from '@/modules/utils/style';
 
 type SiteProps = {
     uuid: string;
@@ -38,10 +39,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 
 const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
-    console.log('uuid', uuid);
     const { data: detail } = useSiteQuery(uuid);
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={containerStyle}>
             <Head>
                 <title>vue.design-site</title>
                 <meta
@@ -50,7 +50,7 @@ const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <header className={styles.header}>
+            <header className={styles.header} style={headerStyle}>
                 <Top />
             </header>
             <section className={styles.main}>

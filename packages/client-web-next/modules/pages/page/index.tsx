@@ -15,6 +15,7 @@ import gfm from '@bytemd/plugin-gfm';
 import highlightSsr from '@bytemd/plugin-highlight-ssr';
 import mathSsr from '@bytemd/plugin-math-ssr';
 import mermaid from '@bytemd/plugin-mermaid';
+import { containerStyle, headerStyle } from '@/modules/utils/style';
 
 // 编辑插件
 const plugins = [
@@ -55,12 +56,10 @@ type PageProps = {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        console.log('context', context.params);
         const pageName = getParamsByContext<typeof context>(
             context,
             'pageName',
         );
-        console.log('context pageName', pageName);
         await store.dispatch(configure.initiate(pageName));
         return {
             props: {
@@ -73,7 +72,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 const Page: NextPage<PageProps> = ({ pageName }) => {
     const { data: detail } = useConfigureQuery(pageName);
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={containerStyle}>
             <Head>
                 <title>vue.design-site</title>
                 <meta
@@ -82,7 +81,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <header className={styles.header}>
+            <header className={styles.header} style={headerStyle}>
                 <Top />
             </header>
             <section className={styles.main}>
