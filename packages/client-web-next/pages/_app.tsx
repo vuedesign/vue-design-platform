@@ -8,7 +8,8 @@ import { setToken } from '@/modules/features/authSlice';
 import { setCookie } from '@/modules/features/globalSlice';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import '@/assets/styles/highlight-github.css';
+import 'highlight.js/styles/vs.css';
+import 'github-markdown-css';
 import ModalAuth from '@/modules/components/ModalAuth';
 import ModalSetting from '@/modules/components/ModalSetting';
 
