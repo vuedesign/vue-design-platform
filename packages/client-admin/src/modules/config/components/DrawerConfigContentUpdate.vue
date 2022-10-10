@@ -57,15 +57,26 @@ import useConfigStore from '../useConfigStore';
 import VdCard from '@/components/VdCard.vue';
 import { Editor, Viewer } from '@bytemd/vue-next';
 import zh from 'bytemd/locales/zh_Hans.json';
-import 'bytemd/dist/index.css';
+
 import frontmatter from '@bytemd/plugin-frontmatter';
 import gfm from '@bytemd/plugin-gfm';
 import highlight from '@bytemd/plugin-highlight';
 import gemoji from '@bytemd/plugin-gemoji';
+import math from '@bytemd/plugin-math';
 import mermaid from '@bytemd/plugin-mermaid';
-import './styles/juejin-markdown-theme-default.scss';
+import 'bytemd/dist/index.css';
+import '@/assets/styles/bytemd/highlight-github.css';
+import '@/assets/styles/bytemd/juejin-markdown-theme-default.scss';
 
-const plugins = [frontmatter(), gemoji(), gfm(), highlight(), mermaid()];
+// 编辑插件
+const plugins = [
+    frontmatter(),
+    gemoji(),
+    gfm(),
+    highlight(),
+    mermaid(),
+    math(),
+];
 
 const props = defineProps({
     modelValue: {
