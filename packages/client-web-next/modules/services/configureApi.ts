@@ -3,6 +3,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { baseURL } from '@/configs/globals.contants';
 import * as apis from '@/configs/apis.contants';
 import prepareHeaders from '@/modules/utils/prepareHeaders';
+import { Configure } from '../types/configure';
 
 export type ReturnData = Record<
     string,
@@ -27,8 +28,16 @@ export const configureApi = createApi({
                 method: 'GET',
             }),
         }),
+        configure: builder.query<Configure, string>({
+            query: (key) => {
+                return {
+                    url: `${apis.CONFIGURES}/${key}/key`,
+                    method: 'GET',
+                };
+            },
+        }),
     }),
 });
 
-export const { useConfiguresQuery } = configureApi;
-export const { configures } = configureApi.endpoints;
+export const { useConfiguresQuery, useConfigureQuery } = configureApi;
+export const { configures, configure } = configureApi.endpoints;
