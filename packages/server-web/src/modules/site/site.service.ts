@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { SiteEntity } from '@/entities/site.entity';
-import { FindManyOptions } from 'typeorm';
-import {
-    IPaginationOptions,
-    IPaginationResponse,
-} from '@/globals/services/base.service';
-import { BaseMicroservice } from '@/globals/services/base.microservice';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BaseService } from '@/globals/services/base.service';
+import type { IOptions, IWhere, IRepository, IResponse } from './dto/site.dto';
 
 @Injectable()
-export class SiteService extends BaseMicroservice {
-    findList(
-        options: IPaginationOptions,
-    ): Promise<IPaginationResponse<SiteEntity>> {
-        return this.send({ module: 'site', method: 'findList' }, options);
+export class SiteService extends BaseService<SiteEntity> {
+    constructor(
+        @InjectRepository(SiteEntity)
+        private readonly siteRepository: IRepository,
+    ) {
+        super(siteRepository);
     }
 
-    findOneBy(where: Record<string, any>): Promise<SiteEntity> {
-        return this.send({ module: 'site', method: 'findOneBy' }, where);
+    findList(options: IOptions): Promise<IResponse> {
+        return this.findListAndPage(options);
+    }
+
+    findOneBy(where: IWhere): Promise<SiteEntity> {
+        return this.siteRepository.findOneBy(where);
+    }
+
+    findOne(options: IOptions): Promise<SiteEntity> {
+        return this.siteRepository.findOne(options);
     }
 }

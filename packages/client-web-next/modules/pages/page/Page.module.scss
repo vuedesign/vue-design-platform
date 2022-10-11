@@ -1,0 +1,138 @@
+.container {
+    width: 100%;
+    height: auto;
+    background-color: #eff3f5;
+}
+
+.header {
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.main {
+    position: relative;
+    width: 100%;
+    padding: 0 32px;
+    // 1072 + 8 + 8 + 64;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding-bottom: 16px;
+    display: flex;
+    margin-top: 16px;
+    min-height: calc(100vh - 184px);
+}
+
+.article {
+    flex: 1;
+    background-color: #fff;
+    padding: 0 24px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-left: 144px;
+    margin-right: 144px;
+    h1 {
+        font-size: 24px;
+        line-height: 48px;
+        margin-top: 16px;
+        margin-bottom: 0;
+        flex: 1;
+    }
+}
+
+.title {
+    display: flex;
+}
+
+.link {
+    width: 80px;
+    margin-left: 16px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 16px;
+    height: 48px;
+    align-items: center;
+}
+
+.link-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px dashed #ddd;
+    cursor: pointer;
+    &:hover {
+        border-color: #1890ff;
+    }
+}
+
+.meta {
+    //   border-top: 1px dashed #ddd;
+    margin: 4px 0;
+    align-items: center;
+    height: 18px;
+    line-height: 18px;
+
+    span,
+    time {
+        display: inline-block;
+        vertical-align: middle;
+        height: 18px;
+        line-height: 18px;
+        color: #666;
+        font-size: 12px;
+        &.dot {
+            margin: 0 4px;
+            width: 8px;
+            font-weight: 700;
+        }
+        &.tag {
+            margin-left: 8px;
+        }
+    }
+}
+
+.asider-left {
+    width: 128px;
+    position: fixed;
+    ul {
+        width: 100%;
+    }
+    li {
+        line-height: 32px;
+        margin-bottom: 8px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        &.active {
+            background-color: #e5eaed;
+            border-radius: 3px;
+            a,
+            span {
+                color: #3d7eff;
+            }
+        }
+        a,
+        span {
+            color: #666;
+            display: inline-flex;
+        }
+        a {
+            margin-left: 8px;
+        }
+    }
+}
+
+.asider-right {
+    width: 128px;
+    position: fixed;
+    left: 100%;
+    margin-left: -128px;
+}
+
+.content {
+    margin-top: 32px;
+}

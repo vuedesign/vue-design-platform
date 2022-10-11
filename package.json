@@ -42,6 +42,9 @@
         ],
         "./packages/server-web/src/**/*.{ts,js}": [
             "eslint --fix"
+        ],
+        "./packages/client-doc/src/**/*.{ts,js}": [
+            "eslint --fix"
         ]
     }
 }

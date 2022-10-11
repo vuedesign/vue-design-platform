@@ -11,6 +11,11 @@
     border-radius: 3px;
 }
 
+.user {
+    background-color: #e5eaed;
+    border-radius: 3px;
+}
+
 .userinfo {
     width: inherit;
     height: 80px;
@@ -46,26 +51,11 @@
     }
 }
 
-.recommend {
-    margin-top: 8px;
-    width: 100%;
-    ul {
-        display: flex;
-        width: 100%;
-        flex-flow: wrap;
-        margin: 0 -4px;
-        padding: 0;
-        list-style: none;
-        li {
-            margin-top: 8px;
-        }
-    }
-}
-
 .count {
     margin: 0;
     display: flex;
     width: 100%;
+
     li {
         height: 40px;
         display: flex;

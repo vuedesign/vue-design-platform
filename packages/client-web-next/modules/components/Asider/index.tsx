@@ -10,6 +10,7 @@ import {
 import { useSitesAssociateQuery } from '@/modules/services/siteApi';
 import { useCountQuery } from '@/modules/services/countApi';
 import Item from '@/modules/components/Item';
+import Associate from '@/modules/components/Associate';
 import { User } from '@/modules/types/auth';
 import styles from './Asider.module.scss';
 
@@ -19,7 +20,7 @@ type AsiderProps = {
     user: Partial<User>;
 };
 const Asider = ({ uuid, authorId, user }: AsiderProps) => {
-    const { data: site } = useSitesAssociateQuery({ authorId, size: 2, uuid });
+    // const { data: site } = useSitesAssociateQuery({ authorId, size: 2, uuid });
     const { data: count } = useCountQuery(authorId);
     return (
         <aside className={styles.container}>
@@ -41,7 +42,7 @@ const Asider = ({ uuid, authorId, user }: AsiderProps) => {
                                         <a className={styles.link}>
                                             <span
                                                 className={styles['link-text']}>
-                                                个人中心
+                                                个人主页
                                             </span>
                                             <ArrowCircleRight
                                                 theme="outline"
@@ -76,17 +77,7 @@ const Asider = ({ uuid, authorId, user }: AsiderProps) => {
                     </ul>
                 )}
             </div>
-            <div className={styles.recommend}>
-                <ul>
-                    {site &&
-                        site.list &&
-                        site.list.map((item, index) => (
-                            <li key={index}>
-                                <Item {...item}></Item>
-                            </li>
-                        ))}
-                </ul>
-            </div>
+            <Associate authorId={authorId} uuid={uuid} />
         </aside>
     );
 };

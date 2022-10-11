@@ -1,7 +1,7 @@
 import {
     Controller,
     Get,
-    Post,
+    Put,
     Body,
     Param,
     ParseIntPipe,
@@ -11,8 +11,8 @@ import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserListQueryDto } from './dto/user.dto';
-import { Public } from '@/core/decorators/auth.decorator';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { UserEntity } from '@/entities/user.entity';
 
 @Controller('users')
 @ApiTags('用户模块')
@@ -20,23 +20,26 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Post()
+    @Put(':id')
     @ApiBody({
         description: '添加用户信息',
         type: CreateUserDto,
     })
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+    update(
+        @Body() createUserDto: Partial<UserEntity>,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.userService.update(id, createUserDto);
     }
 
     @Get(':uuid')
     findOneByUuid(@Param('uuid') uuid: string) {
-        return this.userService.findOne({ uuid });
+        return this.userService.findOneBy({ uuid });
     }
 
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.findOne({
+        return this.userService.findOneBy({
             id,
         });
     }
@@ -44,7 +47,7 @@ export class UserController {
     @Get()
     findList(@Query() query: UserListQueryDto) {
         const { size = 20, page = 1 } = query;
-        const options: IPaginationOptions = {
+        const options: IPaginationOptions<UserEntity> = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',

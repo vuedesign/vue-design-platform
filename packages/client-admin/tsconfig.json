@@ -7,6 +7,7 @@
         "allowJs": true,
         "noEmit": true,
         "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
         "types": ["node", "vite/client", "element-plus/global"],
         "baseUrl": "./",
         "paths": {

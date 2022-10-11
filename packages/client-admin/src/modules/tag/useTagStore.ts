@@ -1,6 +1,6 @@
 import { findData, findOneData, updateData } from './api';
 import { Ref } from 'vue';
-import { USER_STORE_KEY } from '@/configs/storeKeys';
+import { TAG_STORE_KEY } from '@/configs/storeKeys';
 import { ListFilter, BaseItem } from '@/types/globals';
 
 export interface TagItem extends BaseItem {
@@ -13,7 +13,7 @@ export interface TagListFilter extends ListFilter {
     name?: string;
 }
 
-export default defineStore(USER_STORE_KEY, () => {
+export default defineStore(TAG_STORE_KEY, () => {
     const drawerType = ref('create');
     const detail: TagItem = reactive({
         id: undefined,

@@ -20,6 +20,7 @@ export class AuthService {
         };
         console.log('where', where);
         const user = await this.userService.findOne(where);
+        console.log('where', user);
         if (user && user.password === password) {
             const { password, ...result } = user;
             return result;

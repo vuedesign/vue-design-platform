@@ -8,7 +8,9 @@ import { setToken } from '@/modules/features/authSlice';
 import { setCookie } from '@/modules/features/globalSlice';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import ModalAuth from '@/modules/components/ModalAuth';
+import 'highlight.js/styles/vs.css';
+import 'github-markdown-css';
+import Global from '@/modules/components/Global';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
@@ -19,8 +21,8 @@ interface CtxReq extends IncomingMessage {
 const MyApp = ({ Component, pageProps }: AppProps) => {
     return (
         <>
-            <Component {...pageProps} />;
-            <ModalAuth />
+            <Component {...pageProps} />
+            <Global />
         </>
     );
 };

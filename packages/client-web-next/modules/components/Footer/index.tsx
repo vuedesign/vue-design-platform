@@ -1,10 +1,18 @@
 import styles from './Footer.module.scss';
-import { RankingList, TagOne, Help, Github } from '@icon-park/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logoImage from '@/public/images/logo.png';
+import { useConfiguresQuery } from '@/modules/services/configureApi';
 
+type PropItem = Record<string, string>;
 const Footer = () => {
+    const { data } = useConfiguresQuery();
+    if (!data) {
+        return null;
+    }
+    const icp = data.icp as PropItem;
+    const FOOTER_HUB = data.FOOTER_HUB as PropItem[];
+    const FOOTER_NAV = data.FOOTER_NAV as PropItem[];
     return (
         <footer className={styles.container}>
             <div className={styles.inner}>
@@ -22,28 +30,24 @@ const Footer = () => {
                         </Link>
                     </div>
                     <div className={styles['about-right']}>
-                        <ul className={styles.nav}>
-                            <li>
-                                <Link href={'#'}>
-                                    <a>关于我们</a>
+                        {FOOTER_NAV && (
+                            <ul className={styles.nav}>
+                                {FOOTER_NAV.map((item, index) => (
+                                    <li key={index}>
+                                        <Link href={item.link || '#'}>
+                                            <a>{item.value}</a>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {icp && (
+                            <div className={styles.copyright}>
+                                <Link href={icp.link || '#'}>
+                                    <a>{icp.value}</a>
                                 </Link>
-                            </li>
-                            <li>
-                                <Link href={'#'}>
-                                    <a>使用文档</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href={'#'}>
-                                    <a>友情链接</a>
-                                </Link>
-                            </li>
-                        </ul>
-                        <div className={styles.copyright}>
-                            <Link href={'#'}>
-                                <a>京ICP备18012699号-3</a>
-                            </Link>
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={styles.open}>
@@ -58,27 +62,19 @@ const Footer = () => {
                                     className={styles.github}></a>
                             </Link>
                         </dt>
-                        <dd>
-                            <Link href={'#'}>
-                                <a>设计文档</a>
-                            </Link>
-                        </dd>
-                        <dd>
-                            <span className={styles.dot}></span>
-                        </dd>
-                        <dd>
-                            <Link href={'#'}>
-                                <a>开发文档</a>
-                            </Link>
-                        </dd>
-                        <dd>
-                            <span className={styles.dot}></span>
-                        </dd>
-                        <dd>
-                            <Link href={'#'}>
-                                <a>版本迭代</a>
-                            </Link>
-                        </dd>
+                        {FOOTER_HUB &&
+                            FOOTER_HUB.map((item, index) => {
+                                return (
+                                    <dd key={index}>
+                                        {index > 0 && (
+                                            <span className={styles.dot}></span>
+                                        )}
+                                        <Link href={item.link || '#'}>
+                                            <a>{item.value}</a>
+                                        </Link>
+                                    </dd>
+                                );
+                            })}
                     </dl>
                 </div>
             </div>

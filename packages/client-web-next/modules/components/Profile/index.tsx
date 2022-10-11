@@ -18,7 +18,10 @@ import {
 } from '@/modules/services/authApi';
 import { useCountProfileQuery } from '@/modules/services/countApi';
 import { setToken, setUser } from '@/modules/features/authSlice';
-import { setLoginState } from '@/modules/features/globalSlice';
+import {
+    setLoginState,
+    setIsSettingVisible,
+} from '@/modules/features/globalSlice';
 import { AppDispatch } from '@/modules/store';
 import { setOpen } from '@/modules/features/globalSlice';
 import styles from './Profile.module.scss';
@@ -106,7 +109,7 @@ const ProfilePopoverContent = () => {
             </ul>
             <dl className={styles['popover-content-buttom']}>
                 <dt>
-                    <a>
+                    <a onClick={() => dispatch(setIsSettingVisible(true))}>
                         <span className={styles['btn-text']}>我的设置</span>
                     </a>
                 </dt>

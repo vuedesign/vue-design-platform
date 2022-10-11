@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ToolService } from './tool.service';
 import { ToolController } from './tool.controller';
-import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ToolEntity } from '@/entities/tool.entity';
 
 @Module({
-    imports: [BaseMicroserviceModule],
+    imports: [TypeOrmModule.forFeature([ToolEntity])],
     controllers: [ToolController],
     providers: [ToolService],
 })

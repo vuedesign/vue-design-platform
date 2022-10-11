@@ -9,7 +9,7 @@ export type MenuNode = {
 
 export default <MenuNode[]>[
     {
-        label: '内容管理',
+        label: '内容中心',
         value: 'content',
         icon: ['FolderOpen', 'FolderClose'],
         isOpen: true,
@@ -24,6 +24,20 @@ export default <MenuNode[]>[
                 value: 'navigation',
                 icon: 'Navigation',
             },
+        ],
+    },
+    {
+        label: '基础模块',
+        value: 'base',
+        icon: ['FolderOpen', 'FolderClose'],
+        isOpen: true,
+        children: [
+            {
+                label: '用户管理',
+                value: 'user',
+                active: true,
+                icon: 'User',
+            },
             {
                 label: '标签管理',
                 value: 'tag',
@@ -34,13 +48,12 @@ export default <MenuNode[]>[
                 value: 'file',
                 icon: 'PictureOne',
             },
+            {
+                label: '配置管理',
+                value: 'config',
+                icon: 'Analysis',
+            },
         ],
-    },
-    {
-        label: '用户管理',
-        value: 'user',
-        active: true,
-        icon: 'User',
     },
     {
         label: '数据中心',
@@ -59,12 +72,5 @@ export default <MenuNode[]>[
                 icon: 'Analysis',
             },
         ],
-    },
-    {
-        label: '配置管理',
-        value: 'config',
-        icon: ['FolderOpen', 'FolderClose'],
-        isOpen: true,
-        children: [],
     },
 ];

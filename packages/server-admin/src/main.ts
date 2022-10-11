@@ -6,23 +6,9 @@ import middleware from '@/core/middleware';
 import swagger from '@/core/swagger';
 import { TransformInterceptor } from '@/core/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@/core/filters/httpException.filter';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-
-    // 提供给前台微服务
-    const tcpMicroservice = app.connectMicroservice<MicroserviceOptions>({
-        // name: 'BASE_MICROSERVICE',
-        transport: Transport.TCP,
-        options: {
-            port: 8071,
-            host: '127.0.0.1',
-        },
-    });
-
-    await app.startAllMicroservices();
-
     // 中间健
     middleware(app);
 

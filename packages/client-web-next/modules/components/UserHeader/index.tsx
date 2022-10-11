@@ -4,6 +4,7 @@ import { Avatar } from 'antd';
 import { useCountQuery } from '@/modules/services/countApi';
 import {
     Like,
+    Star,
     ThumbsUp,
     ThumbsDown,
     PreviewOpen,
@@ -51,7 +52,7 @@ const UserHeader = ({ user }: UserHeaderProps) => {
                     </li>
                     <li>
                         <span className={styles['count-icon']}>
-                            <Like theme="outline" size="14" fill="#3d80fd" />
+                            <Star theme="outline" size="14" fill="#3d80fd" />
                         </span>
                         <span className={styles['count-text']}>
                             {count.collections}

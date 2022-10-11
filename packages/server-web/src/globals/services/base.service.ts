@@ -1,4 +1,4 @@
-import { Repository, FindOptionsRelations } from 'typeorm';
+import { Repository, FindOptionsRelations, FindManyOptions } from 'typeorm';
 
 export interface IPagination {
     page?: number;
@@ -11,20 +11,16 @@ export interface IPaginationResponse<T = any> {
     total: number;
 }
 
-export interface IPaginationOptions {
+export interface IPaginationOptions<E> extends FindManyOptions<E> {
     pagination?: IPagination;
-    order?: object;
-    where?: object;
-    relations?: FindOptionsRelations<any>;
-    select?: object;
     nots?: object;
     userId?: number;
 }
 
-export class BaseService {
+export class BaseService<E> {
     constructor(private readonly currentRepository: Repository<any>) {}
     async findListAndPage(
-        options: IPaginationOptions,
+        options: IPaginationOptions<E>,
     ): Promise<IPaginationResponse> {
         const {
             pagination = { page: 1, size: 20 },

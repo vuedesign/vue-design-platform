@@ -6,6 +6,7 @@ import { navigationApi } from '@/modules/services/navigationApi';
 import { countApi } from '@/modules/services/countApi';
 import { userApi } from '@/modules/services/userApi';
 import { tagApi } from '@/modules/services/tagApi';
+import { configureApi } from './services/configureApi';
 import authReducer from '@/modules/features/authSlice';
 import siteReducer from '@/modules/features/siteSlice';
 import globalReducer from '@/modules/features/globalSlice';
@@ -19,6 +20,7 @@ export const makeStore = () =>
             [countApi.reducerPath]: countApi.reducer,
             [userApi.reducerPath]: userApi.reducer,
             [tagApi.reducerPath]: tagApi.reducer,
+            [configureApi.reducerPath]: configureApi.reducer,
             auth: authReducer,
             site: siteReducer,
             global: globalReducer,
@@ -31,6 +33,7 @@ export const makeStore = () =>
                 countApi.middleware,
                 userApi.middleware,
                 tagApi.middleware,
+                configureApi.middleware,
             ),
     });
 

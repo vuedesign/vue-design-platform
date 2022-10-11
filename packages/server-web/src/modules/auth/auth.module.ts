@@ -1,20 +1,21 @@
 import { ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
-import { UserModule } from '../user/user.module';
+import { UserService } from '../user/user.service';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 
 import { JwtStrategy } from './strategys/jwt.strategy';
 import { LocalStrategy } from './strategys/local.strategy';
-import { BaseMicroserviceModule } from '@/globals/microservices/base.module';
 import globalConfig from '@/configs/global.config';
 import { RsaService } from '@/globals/services/rsa.service';
+import { UserEntity } from '@/entities/user.entity';
 
 @Module({
     imports: [
-        UserModule,
+        TypeOrmModule.forFeature([UserEntity]),
         PassportModule,
         JwtModule.registerAsync({
             inject: [ConfigService],
@@ -25,10 +26,15 @@ import { RsaService } from '@/globals/services/rsa.service';
                 };
             },
         }),
-        BaseMicroserviceModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, JwtStrategy, RsaService],
+    providers: [
+        UserService,
+        AuthService,
+        LocalStrategy,
+        JwtStrategy,
+        RsaService,
+    ],
     exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

@@ -4,8 +4,8 @@ import { Like } from 'typeorm';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { NavigationService } from './navigation.service';
 import { NavigationListDto } from './dto/navigation.dto';
-import { Public } from '@/core/decorators/auth.decorator';
 import { IPaginationOptions } from '@/globals/services/base.service';
+import { NavigationEntity } from '@/entities/navigation.entity';
 
 @Controller('navigations')
 @ApiTags('导航模块')
@@ -24,7 +24,7 @@ export class NavigationController {
 
     @Get()
     findAll() {
-        const options: IPaginationOptions = {
+        const options: IPaginationOptions<NavigationEntity> = {
             pagination: { size: 20, page: 1 },
             order: {
                 updatedAt: 'DESC',

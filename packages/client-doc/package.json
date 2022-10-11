@@ -1,0 +1,19 @@
+{
+    "name": "@vue-design/client-doc",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:serve": "vitepress serve docs"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@docsearch/js": "3",
+        "vitepress": "1.0.0-alpha.19",
+        "vue": "^3.2.40"
+    }
+}

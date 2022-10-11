@@ -2,7 +2,7 @@ import { Ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { findData, findOneData, updateFieldData, destroyData } from './api';
 import { STATUS, TYPE } from './constants';
-import { MATERIAL_STORE_KEY } from '@/configs/storeKeys';
+import { FILE_STORE_KEY } from '@/configs/storeKeys';
 import { BaseItem, UpdateFieldParmas, ListFilter } from '@/types/globals';
 
 export interface FileItem extends BaseItem {
@@ -27,7 +27,7 @@ export interface UpdateFieldPamas {
     type: string;
 }
 
-export default defineStore(MATERIAL_STORE_KEY, () => {
+export default defineStore(FILE_STORE_KEY, () => {
     const detail: FileItem = reactive({
         id: undefined,
         uuid: undefined,

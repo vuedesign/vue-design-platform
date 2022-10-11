@@ -8,15 +8,12 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
-import { UserService } from '../user/user.service';
+import { ToolService } from '../tool/tool.service';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { Like, Not, Equal } from 'typeorm';
-import { Public } from '@/core/decorators/auth.decorator';
+import { Like } from 'typeorm';
 import { User } from '@/core/decorators/user.decorator';
-import type { AuthUser } from '@/modules/user/dto/user.dto';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
-import { SiteListQueryDto } from './dto/site.dto';
-import { IPaginationOptions } from '@/globals/services/base.service';
+import { SiteListQueryDto, IOptions } from './dto/site.dto';
 
 @Controller('sites')
 @ApiTags('站点模块')
@@ -24,7 +21,7 @@ import { IPaginationOptions } from '@/globals/services/base.service';
 export class SiteController {
     constructor(
         private readonly siteService: SiteService,
-        private readonly userService: UserService,
+        private readonly toolService: ToolService,
     ) {}
 
     @Get('profile')
@@ -40,7 +37,7 @@ export class SiteController {
             throw new UnauthorizedException();
         }
         const { size = 20, page = 1 } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
@@ -65,7 +62,7 @@ export class SiteController {
         @Query(new QueryTransformPipe()) query: SiteListQueryDto,
     ) {
         const { size = 2, page = 1, authorId } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             pagination: { size, page },
             order: {
                 updatedAt: 'DESC',
@@ -87,11 +84,26 @@ export class SiteController {
         description: '项目详情',
         type: String,
     })
-    findOne(@Param('uuid') uuid: string, @User('id') userId: number) {
-        return this.siteService.findOneBy({
-            uuid,
-            userId,
-        });
+    findOne(@Param('uuid') uuid: string) {
+        const options: IOptions = {
+            where: { uuid },
+            relations: {
+                tags: true,
+                author: true,
+            },
+            select: {
+                author: {
+                    uuid: true,
+                    avatar: true,
+                    nickname: true,
+                },
+                tags: {
+                    id: true,
+                    name: true,
+                },
+            },
+        };
+        return this.siteService.findOne(options);
     }
 
     @Get()
@@ -99,7 +111,7 @@ export class SiteController {
         description: '项目列表',
         type: SiteListQueryDto,
     })
-    findAll(
+    async findAll(
         @Query(new QueryTransformPipe(['title']))
         query: SiteListQueryDto,
         @User('id') userId: number,
@@ -113,28 +125,20 @@ export class SiteController {
             order,
             authorId,
         } = query;
-        const options: IPaginationOptions = {
+        const options: IOptions = {
             relations: {
                 tags: true,
                 author: true,
             },
             select: {
                 author: {
-                    id: true,
                     uuid: true,
                     avatar: true,
-                    username: true,
                     nickname: true,
-                    email: true,
-                    phone: true,
-                    password: true,
-                    status: true,
-                    rule: true,
                 },
                 tags: {
                     id: true,
                     name: true,
-                    description: true,
                 },
             },
             pagination: { size, page },
@@ -176,6 +180,28 @@ export class SiteController {
         if (authorId) {
             options.where['authorId'] = authorId;
         }
-        return this.siteService.findList(options);
+        const site = await this.siteService.findList(options);
+
+        if (!userId) {
+            return site;
+        }
+        const siteList = site.list || [];
+        let list = [];
+        for await (const siteItem of siteList) {
+            const tool = await this.toolService.findOne({
+                siteId: siteItem.id,
+                authorId,
+            });
+            if (tool) {
+                Object.assign(siteItem, {
+                    tool,
+                });
+            }
+            list.push(siteItem);
+        }
+        return {
+            ...site,
+            list,
+        };
     }
 }
