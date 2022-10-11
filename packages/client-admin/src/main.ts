@@ -8,7 +8,7 @@ import '@vue-design/theme-2n-demands/notification/scss';
 
 const app = createApp(App);
 app.use(store);
-app.use(router);
+app.use(router as Plugin);
 app.use(http as Plugin);
 app.use(interceptors as Plugin);
 app.mount('#app');

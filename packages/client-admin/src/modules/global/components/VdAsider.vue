@@ -64,7 +64,7 @@ const handleGotoHome = () => {
 
 <style scoped lang="scss">
 .vd-asider {
-    width: 280px;
+    width: 240px;
     height: 100%;
 }
 .logo {
