@@ -10,8 +10,7 @@ import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
 import 'highlight.js/styles/vs.css';
 import 'github-markdown-css';
-import ModalAuth from '@/modules/components/ModalAuth';
-import ModalSetting from '@/modules/components/ModalSetting';
+import Global from '@/modules/components/Global';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
@@ -23,8 +22,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return (
         <>
             <Component {...pageProps} />
-            <ModalAuth />
-            <ModalSetting />
+            <Global />
         </>
     );
 };

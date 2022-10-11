@@ -20,7 +20,6 @@ export const siteApi = createApi({
     endpoints: (builder) => ({
         sites: builder.query<SiteListResponse, Record<string, any>>({
             query: (params = {}) => {
-                console.log('sites params:', params, builder);
                 return {
                     url: `${apis.SITES}?${stringify(params)}`,
                     method: 'get',

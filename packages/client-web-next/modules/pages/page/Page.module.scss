@@ -30,6 +30,8 @@
     padding: 0 24px;
     border-radius: 5px;
     overflow: hidden;
+    margin-left: 144px;
+    margin-right: 144px;
     h1 {
         font-size: 24px;
         line-height: 48px;
@@ -95,10 +97,9 @@
 
 .asider-left {
     width: 128px;
-    margin-right: 16px;
-    display: flex;
+    position: fixed;
     ul {
-        flex: 1;
+        width: 100%;
     }
     li {
         line-height: 32px;
@@ -127,7 +128,9 @@
 
 .asider-right {
     width: 128px;
-    margin-left: 16px;
+    position: fixed;
+    left: 100%;
+    margin-left: -128px;
 }
 
 .content {
