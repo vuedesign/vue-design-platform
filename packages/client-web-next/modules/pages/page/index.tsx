@@ -1,3 +1,4 @@
+import { createRef, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -69,11 +70,59 @@ export const getServerSideProps = wrapper.getServerSideProps(
     },
 );
 
+type TreeNode = {
+    text: string;
+    level: number;
+    index: number;
+    children?: TreeNode[];
+};
+
+function getHTrees(container: HTMLDivElement): TreeNode[] {
+    const h = container.querySelectorAll('h2,h3,h4,h5');
+    const minLevels = new Set<number>([]);
+    const list = Array.from(h).map((item, index) => {
+        const level = Number(item.tagName.match(/[0-9]/g));
+        minLevels.add(level);
+        return {
+            text: item.innerHTML,
+            level,
+            index,
+        };
+    });
+    const minLevel = Math.min(...Array.from(minLevels));
+    const maxLevel = Math.max(...Array.from(minLevels));
+    const offset = -Math.min(...Array.from(minLevels));
+    const result: TreeNode[] = [];
+    const levels: TreeNode[] = new Array(maxLevel - minLevel).fill({
+        children: result,
+    });
+    console.log('list', list.length);
+    list.forEach(function (o) {
+        levels[o.level + offset].children =
+            levels[o.level + offset].children || [];
+
+        levels[o.level + offset + 1] = o;
+
+        (levels[o.level + offset].children as TreeNode[]).push(o);
+    });
+
+    console.log('h2', result);
+    // console.log('h3', h3);
+    return result;
+}
+
 const Page: NextPage<PageProps> = ({ pageName }) => {
     const { data: detail } = useConfigureQuery(pageName);
     if (!detail) {
         return null;
     }
+    const ref = createRef<HTMLDivElement>();
+    useEffect(() => {
+        if (ref) {
+            console.log('ref', ref.current);
+            ref.current && getHTrees(ref.current);
+        }
+    }, []);
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
@@ -110,7 +159,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                             <header className={styles.title}>
                                 <h1>{detail.value}</h1>
                             </header>
-                            <div className={styles.content}>
+                            <div className={styles.content} ref={ref}>
                                 {detail.content && (
                                     <Viewer
                                         value={detail.content}
