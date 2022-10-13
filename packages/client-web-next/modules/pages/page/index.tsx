@@ -1,4 +1,4 @@
-import { createRef, useEffect } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -162,16 +162,36 @@ function getHTrees(container: HTMLDivElement): TreeNode[] {
     return result;
 }
 
+const TreeBar = ({ list }: { list: TreeNode[] }) => {
+    return (
+        <dl>
+            {list.map((item) => {
+                return (
+                    <>
+                        <dt>{item.text}</dt>
+                        <dd>
+                            {item.children && item.children.length && (
+                                <TreeBar list={item.children} />
+                            )}
+                        </dd>
+                    </>
+                );
+            })}
+        </dl>
+    );
+};
+
 const Page: NextPage<PageProps> = ({ pageName }) => {
     const { data: detail } = useConfigureQuery(pageName);
     if (!detail) {
         return null;
     }
     const ref = createRef<HTMLDivElement>();
+    const [tree, setTree] = useState([]);
     useEffect(() => {
-        if (ref) {
-            console.log('ref', ref.current);
-            ref.current && getHTrees(ref.current);
+        if (ref && ref.current) {
+            const treeData = getHTrees(ref.current);
+            setTree(treeData);
         }
     }, []);
     return (
@@ -222,6 +242,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                     )}
                 </article>
                 <aside className={styles['asider-right']}>
+                    <TreeBar list={tree} />
                     <ul>
                         <li>ddd</li>
                         <li>ddd</li>

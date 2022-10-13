@@ -31,7 +31,7 @@
     border-radius: 5px;
     overflow: hidden;
     margin-left: 144px;
-    margin-right: 144px;
+    margin-right: 272px;
     h1 {
         font-size: 24px;
         line-height: 48px;
@@ -127,10 +127,16 @@
 }
 
 .asider-right {
-    width: 128px;
+    width: 256px;
     position: fixed;
     left: 100%;
-    margin-left: -128px;
+    margin-left: -428px;
+    dl {
+        margin-left: 16px;
+    }
+    > dl {
+        margin-left: 0;
+    }
 }
 
 .content {
