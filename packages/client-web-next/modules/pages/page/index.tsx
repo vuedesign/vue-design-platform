@@ -17,6 +17,7 @@ import highlightSsr from '@bytemd/plugin-highlight-ssr';
 import mathSsr from '@bytemd/plugin-math-ssr';
 import mermaid from '@bytemd/plugin-mermaid';
 import { containerStyle, headerStyle } from '@/modules/utils/style';
+import AsiderNavBar from '@/modules/components/AsiderNavBar';
 
 // 编辑插件
 const plugins = [
@@ -70,130 +71,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     },
 );
 
-type TreeNode = {
-    text: string;
-    hLevel: number;
-    level: number;
-    index: number;
-    children?: TreeNode[];
-};
-
-function getHTrees(container: HTMLDivElement): TreeNode[] {
-    const h = container.querySelectorAll('h2,h3,h4,h5');
-    const list = Array.from(h).map((item, index) => {
-        const hLevel = Number(item.tagName.match(/[0-9]/g));
-        return {
-            text: item.innerHTML,
-            hLevel,
-            level: 0,
-            index,
-        };
-    });
-
-    function toTree(flatArr: TreeNode[]) {
-        const tree: TreeNode[] = [];
-        const copyArr = flatArr.map((item) => {
-            return item;
-        });
-
-        // 根据指定级别查找该级别的子孙级，并删除掉已经查找到的子孙级
-        const getChildrenByLevel = (
-            currentLevelItem: TreeNode,
-            arr: TreeNode[],
-            level: number,
-        ) => {
-            if (!currentLevelItem) {
-                return [];
-            }
-            // 将level值转成负数，再进行比较
-            const minusCurrentLevel = -currentLevelItem.hLevel;
-            const children = [];
-            for (let i = 0, len = arr.length; i < len; i++) {
-                const levelItem = arr[i];
-                if (-levelItem.hLevel < minusCurrentLevel) {
-                    children.push(levelItem);
-                } else {
-                    // 只找最近那些子孙级
-                    break;
-                }
-            }
-            // 从数组中删除已经找到的那些子孙级，以免影响到其他子孙级的查找
-            if (children.length > 0) {
-                arr.splice(0, children.length);
-            }
-            return children;
-        };
-
-        const getTree = function (
-            result: TreeNode[],
-            arr: TreeNode[],
-            level: number,
-        ) {
-            // 首先将数组第一位移除掉，并添加到结果集中
-            let currentItem = arr.shift() as TreeNode;
-            currentItem.level = level;
-            result.push(currentItem);
-            while (arr.length > 0) {
-                if (!currentItem) {
-                    return;
-                }
-                // 根据当前级别获取它的子孙级
-                const children = getChildrenByLevel(currentItem, arr, level);
-                // 如果当前级别没有子孙级则开始下一个
-                if (children.length === 0) {
-                    currentItem = arr.shift() as TreeNode;
-                    currentItem.level = level;
-                    if (currentItem) {
-                        result.push(currentItem);
-                    }
-                    continue;
-                }
-                currentItem.children = [];
-                // 查找到的子孙级继续查找子孙级
-                getTree(currentItem.children, children, level + 1);
-            }
-        };
-        getTree(tree, copyArr, 1);
-        return tree;
-    }
-
-    const result = toTree(list);
-    console.log('result h:', result);
-    return result;
-}
-
-const TreeBar = ({ list }: { list: TreeNode[] }) => {
-    return (
-        <dl>
-            {list.map((item) => {
-                return (
-                    <>
-                        <dt>{item.text}</dt>
-                        <dd>
-                            {item.children && item.children.length && (
-                                <TreeBar list={item.children} />
-                            )}
-                        </dd>
-                    </>
-                );
-            })}
-        </dl>
-    );
-};
-
 const Page: NextPage<PageProps> = ({ pageName }) => {
     const { data: detail } = useConfigureQuery(pageName);
     if (!detail) {
         return null;
     }
     const ref = createRef<HTMLDivElement>();
-    const [tree, setTree] = useState([]);
-    useEffect(() => {
-        if (ref && ref.current) {
-            const treeData = getHTrees(ref.current);
-            setTree(treeData);
-        }
-    }, []);
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
@@ -224,13 +107,13 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                         })}
                     </ul>
                 </aside>
-                <article className={styles.article}>
+                <article className={styles.article} ref={ref}>
                     {detail && (
                         <>
                             <header className={styles.title}>
                                 <h1>{detail.value}</h1>
                             </header>
-                            <div className={styles.content} ref={ref}>
+                            <div className={styles.content}>
                                 {detail.content && (
                                     <Viewer
                                         value={detail.content}
@@ -241,13 +124,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                         </>
                     )}
                 </article>
-                <aside className={styles['asider-right']}>
-                    <TreeBar list={tree} />
-                    <ul>
-                        <li>ddd</li>
-                        <li>ddd</li>
-                    </ul>
-                </aside>
+                <AsiderNavBar contentRef={ref} />
             </section>
 
             <Footer />
