@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react';
+import { createRef } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';

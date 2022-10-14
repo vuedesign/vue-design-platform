@@ -1,5 +1,9 @@
 import { useState, useEffect, RefObject } from 'react';
 import styles from './AsiderNavBar.module.scss';
+import Link from 'next/link';
+import { useRouter, NextRouter } from 'next/router';
+import { isServer } from '@/modules/utils';
+import { throttle } from 'lodash-es';
 
 type TreeNode = {
     text: string;
@@ -9,8 +13,16 @@ type TreeNode = {
     children?: TreeNode[];
 };
 
+function setHKey(h: NodeListOf<Element>) {
+    h.forEach((item, key) => {
+        item.setAttribute('data-key', `h-${key}`);
+    });
+}
+
 function getHTrees(container: HTMLDivElement): TreeNode[] {
-    const h = container.querySelectorAll('h2,h3,h4,h5');
+    const h = container.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    setHKey(h);
+
     const list = Array.from(h).map((item, index) => {
         const hLevel = Number(item.tagName.match(/[0-9]/g));
         return {
@@ -103,7 +115,9 @@ const TreeItem = ({ list }: { list: TreeNode[] }) => {
             {list.map((item, index) => {
                 return (
                     <li key={index}>
-                        <h5>{item.text}</h5>
+                        <h5 data-nav-key={`h-${item.index}`}>
+                            <Link href={`#h-${item.index}`}>{item.text}</Link>
+                        </h5>
                         {item.children && item.children.length && (
                             <TreeItem list={item.children} />
                         )}
@@ -117,18 +131,74 @@ const TreeItem = ({ list }: { list: TreeNode[] }) => {
 type AsiderNavBarProps = {
     contentRef: RefObject<HTMLDivElement>;
 };
+
+const useGotoH = (
+    router: NextRouter,
+    contentRef: RefObject<HTMLDivElement>,
+) => {
+    const handleScroll = throttle((evt: Event) => {
+        if (!contentRef.current) {
+            return;
+        }
+        const currentHList =
+            contentRef.current.querySelectorAll(`h1,h2,h3,h4,h5,h6`);
+        // console.log('currentHList', currentHList);
+
+        let hViews: Array<Element> = [];
+        currentHList.forEach((item) => {
+            const rect = item.getBoundingClientRect();
+            if (rect.top > 60 && rect.top < document.body.clientHeight - 60) {
+                // const key = item.getAttribute(`data-key`);
+                // console.log('key', key);
+                hViews.push(item);
+            }
+        });
+        console.log(hViews);
+        const currentH = hViews.shift();
+        console.log('currentH', currentH);
+        if (!currentH) {
+            return;
+        }
+        const key = currentH.getAttribute(`data-key`);
+        const currentNav = document.querySelector(`[data-nav-key=${key}]`);
+        if (!currentNav) {
+            return;
+        }
+        console.log('currentNav', currentNav);
+        // contentRef.current
+        //     .querySelectorAll(`h1,h2,h3,h4,h5,h6`)
+        //     .forEach((item) => item.setAttribute('class', ''));
+        currentNav.setAttribute('class', 'dot');
+    }, 200);
+    useEffect(() => {
+        const [, hKey] = router.asPath.split('#');
+        if (!hKey || !contentRef.current) {
+            return;
+        }
+        const currentH = contentRef.current.querySelector(`[data-key=${hKey}]`);
+        if (!currentH) {
+            return;
+        }
+        const { top } = currentH.getBoundingClientRect();
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [router]);
+};
+
 const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     const [tree, setTree] = useState<TreeNode[]>([]);
     const [style, setStyle] = useState<Record<string, string>>({});
+    const router = useRouter();
+    useGotoH(router, contentRef);
+
     useEffect(() => {
-        if (contentRef && contentRef.current) {
-            const treeData = getHTrees(contentRef.current);
-            const asiderStyle = getAsiderStyle(contentRef.current);
-            console.log('tree data: ', treeData);
-            console.log('tree left: ', asiderStyle);
-            setTree(treeData);
-            setStyle(asiderStyle);
+        if (!contentRef.current) {
+            return;
         }
+        setTree(getHTrees(contentRef.current));
+        setStyle(getAsiderStyle(contentRef.current));
     }, []);
     return (
         <aside className={styles.container} style={style}>
