@@ -109,17 +109,33 @@ function getAsiderStyle(container: HTMLDivElement) {
     };
 }
 
-const TreeItem = ({ list }: { list: TreeNode[] }) => {
+const TreeItem = ({
+    list,
+    activeClass,
+}: {
+    list: TreeNode[];
+    activeClass: string;
+}) => {
+    console.log('activeClass', activeClass);
     return (
         <ul>
             {list.map((item, index) => {
                 return (
                     <li key={index}>
-                        <h5 data-nav-key={`h-${item.index}`}>
+                        <h5
+                            data-nav-key={`h-${item.index}`}
+                            className={
+                                activeClass === `h-${item.index}`
+                                    ? styles.active
+                                    : undefined
+                            }>
                             <Link href={`#h-${item.index}`}>{item.text}</Link>
                         </h5>
                         {item.children && item.children.length && (
-                            <TreeItem list={item.children} />
+                            <TreeItem
+                                list={item.children}
+                                activeClass={activeClass}
+                            />
                         )}
                     </li>
                 );
@@ -136,6 +152,7 @@ const useGotoH = (
     router: NextRouter,
     contentRef: RefObject<HTMLDivElement>,
 ) => {
+    const [activeClass, setActiveClass] = useState('');
     const handleScroll = throttle((evt: Event) => {
         if (!contentRef.current) {
             return;
@@ -144,31 +161,31 @@ const useGotoH = (
             contentRef.current.querySelectorAll(`h1,h2,h3,h4,h5,h6`);
         // console.log('currentHList', currentHList);
 
-        let hViews: Array<Element> = [];
+        let currentH: Element | undefined;
         currentHList.forEach((item) => {
             const rect = item.getBoundingClientRect();
             if (rect.top > 60 && rect.top < document.body.clientHeight - 60) {
                 // const key = item.getAttribute(`data-key`);
                 // console.log('key', key);
-                hViews.push(item);
+                if (!currentH) {
+                    currentH = item;
+                }
             }
         });
-        console.log(hViews);
-        const currentH = hViews.shift();
-        console.log('currentH', currentH);
         if (!currentH) {
             return;
         }
-        const key = currentH.getAttribute(`data-key`);
-        const currentNav = document.querySelector(`[data-nav-key=${key}]`);
-        if (!currentNav) {
-            return;
-        }
-        console.log('currentNav', currentNav);
-        // contentRef.current
-        //     .querySelectorAll(`h1,h2,h3,h4,h5,h6`)
-        //     .forEach((item) => item.setAttribute('class', ''));
-        currentNav.setAttribute('class', 'dot');
+        const key = currentH.getAttribute(`data-key`) || '';
+        // const currentNav = document.querySelector(`[data-nav-key=${key}]`);
+        // if (!currentNav) {
+        //     return;
+        // }
+        setActiveClass(key);
+        // console.log('currentNav', currentNav);
+        // // contentRef.current
+        // //     .querySelectorAll(`h1,h2,h3,h4,h5,h6`)
+        // //     .forEach((item) => item.setAttribute('class', ''));
+        // currentNav.setAttribute('class', 'dot');
     }, 200);
     useEffect(() => {
         const [, hKey] = router.asPath.split('#');
@@ -185,13 +202,16 @@ const useGotoH = (
             window.removeEventListener('scroll', handleScroll);
         };
     }, [router]);
+    return {
+        activeClass,
+    };
 };
 
 const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     const [tree, setTree] = useState<TreeNode[]>([]);
     const [style, setStyle] = useState<Record<string, string>>({});
     const router = useRouter();
-    useGotoH(router, contentRef);
+    const { activeClass } = useGotoH(router, contentRef);
 
     useEffect(() => {
         if (!contentRef.current) {
@@ -202,7 +222,7 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     }, []);
     return (
         <aside className={styles.container} style={style}>
-            <TreeItem list={tree} />
+            <TreeItem list={tree} activeClass={activeClass} />
         </aside>
     );
 };

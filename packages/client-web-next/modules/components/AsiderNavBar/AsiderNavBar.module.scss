@@ -13,6 +13,19 @@
         color: #666;
         cursor: pointer;
         font-size: 14px;
+        padding: 0 6px;
+        margin-bottom: 0;
+        line-height: 2em;
+        border-radius: 3px;
+        a {
+            color: #666;
+        }
+        &.active {
+            a {
+                color: #3d7eff;
+                font-weight: 700;
+            }
+        }
     }
     ul {
         padding-left: 16px;
