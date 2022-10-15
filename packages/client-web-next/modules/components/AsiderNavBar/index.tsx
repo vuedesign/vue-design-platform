@@ -102,13 +102,6 @@ function getHTrees(container: HTMLDivElement): TreeNode[] {
     return toTree(list);
 }
 
-function getAsiderStyle(container: HTMLDivElement) {
-    console.log('container', container.offsetLeft, container.offsetWidth);
-    return {
-        marginLeft: `${container.offsetLeft + container.offsetWidth - 16}px`,
-    };
-}
-
 const TreeItem = ({
     list,
     activeClass,
@@ -168,46 +161,59 @@ function getCurrentH(contentRef: RefObject<HTMLDivElement>) {
     if (!currentH) {
         return null;
     }
-    // const key = currentH.getAttribute(`data-key`) || '';
     return currentH;
 }
 
-const getCurrentHKey = (contentRef: RefObject<HTMLDivElement>) => {
-    const item = getCurrentH(contentRef);
+const getCurrentHKey = (item: Element | null) => {
     if (!item) {
         return '';
     }
-    const key = item.getAttribute(`data-key`) || '';
-    return key;
+    return item.getAttribute(`data-key`) || '';
 };
 
-const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>) => {
-    if (!navBarRef.current) {
+const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>, key: string) => {
+    if (!navBarRef.current || !key) {
         return;
     }
-    console.log('navBarRef', navBarRef.current);
+    const currentItem = navBarRef.current.querySelector(
+        `[data-nav-key=${key}]`,
+    );
+    if (currentItem) {
+        const { top: currentItemTop } = currentItem.getBoundingClientRect();
+        const { top: navBarTop } = navBarRef.current.getBoundingClientRect();
+        const middle =
+            currentItemTop - navBarTop - navBarRef.current.clientHeight / 2;
+        if (middle > 0) {
+            console.log('下', middle);
+            navBarRef.current.scrollTop = navBarRef.current.scrollTop + middle;
+        } else {
+            console.log('上', middle);
+            navBarRef.current.scrollTop = navBarRef.current.scrollTop - middle;
+        }
+    }
+
+    console.log('clientHeight', navBarRef.current.clientHeight / 2);
+    console.log('scrollHeight', navBarRef.current.scrollHeight);
+};
+
+const useActive = (contentRef: RefObject<HTMLDivElement>) => {
+    const [activeClass, setActiveClass] = useState('');
+    useEffect(() => {
+        const item = getCurrentH(contentRef);
+        const key = getCurrentHKey(item);
+        key && setActiveClass(key);
+    }, []);
+    return {
+        activeClass,
+        setActiveClass,
+    };
 };
 
 const useGotoH = (
     router: NextRouter,
     contentRef: RefObject<HTMLDivElement>,
+    navBarRef: RefObject<HTMLDivElement>,
 ) => {
-    const [activeClass, setActiveClass] = useState('');
-    const handleScroll = throttle((evt: Event) => {
-        const key = getCurrentHKey(contentRef);
-        key && setActiveClass(key);
-        // gotoMiddle(navBarRef);
-    }, 200);
-
-    if (isClient) {
-        window.addEventListener('scroll', handleScroll);
-    }
-
-    useEffect(() => {
-        const key = getCurrentHKey(contentRef);
-        key && setActiveClass(key);
-    }, []);
-
     useEffect(() => {
         const [, hKey] = router.asPath.split('#');
         if (!hKey || !contentRef.current) {
@@ -219,38 +225,69 @@ const useGotoH = (
         }
         const { top } = currentH.getBoundingClientRect();
     }, [router]);
-    return {
-        activeClass,
-    };
 };
 
-const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
+const useTree = (contentRef: RefObject<HTMLDivElement>) => {
     const [tree, setTree] = useState<TreeNode[]>([]);
-    const [style, setStyle] = useState<Record<string, string>>({});
-    const router = useRouter();
-    // const navBarRef = createRef<HTMLDivElement>();
-    const { activeClass } = useGotoH(router, contentRef);
     useEffect(() => {
         if (!contentRef.current) {
             return;
         }
         setTree(getHTrees(contentRef.current));
-        setStyle(getAsiderStyle(contentRef.current));
     }, []);
-    // const navBarScrollChagne = (evt: any) => {
-    //     const item = getCurrentH(contentRef);
-    //     console.log('item', item, item?.getBoundingClientRect());
-    //     console.log('scrollTop', evt.target.scrollTop);
-    //     console.log('evt', evt.target.scrollHeight);
-    //     console.log('evt', evt.target.clientHeight);
-    // };
+    return { tree };
+};
+
+const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
+    const router = useRouter();
+    const navBarRef = createRef<HTMLDivElement>();
+    const { tree } = useTree(contentRef);
+    const [style, setStyle] = useState<Record<string, string>>({});
+    // const { style, setStyle } = useStyle(contentRef);
+    const { activeClass, setActiveClass } = useActive(contentRef);
+    useGotoH(router, contentRef, navBarRef);
+
+    useEffect(() => {
+        if (!contentRef.current) {
+            return;
+        }
+        const { offsetLeft, offsetWidth } = contentRef.current;
+        setStyle({
+            height: `${window.innerHeight - 64}px`,
+            marginLeft: `${offsetLeft + offsetWidth - 16}px`,
+        });
+    }, []);
+
+    const handleScroll = (evt: Event) => {
+        const item = getCurrentH(contentRef);
+        const key = getCurrentHKey(item);
+        key && setActiveClass(key);
+        gotoMiddle(navBarRef, key);
+        const navBarStyle = (() => {
+            const footer = document.getElementById('footer');
+            if (!footer) {
+                return style;
+            }
+            const { top } = footer.getBoundingClientRect();
+            const bottomHeight =
+                window.innerHeight - top > 0 ? window.innerHeight - top : 0;
+            return Object.assign({}, style, {
+                height: `${window.innerHeight - 64 - bottomHeight}px`,
+            });
+        })();
+        setStyle(navBarStyle);
+    };
+
+    if (isClient) {
+        window.addEventListener('scroll', handleScroll);
+    }
 
     return (
         <aside className={styles.container} style={style}>
             <header className={styles.header}>
                 <h4>目录</h4>
             </header>
-            <section className={styles.content}>
+            <section className={styles.content} ref={navBarRef}>
                 <TreeItem list={tree} activeClass={activeClass} />
             </section>
         </aside>

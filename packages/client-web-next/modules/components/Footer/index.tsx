@@ -14,7 +14,7 @@ const Footer = () => {
     const FOOTER_HUB = data.FOOTER_HUB as PropItem[];
     const FOOTER_NAV = data.FOOTER_NAV as PropItem[];
     return (
-        <footer className={styles.container}>
+        <footer id="footer" className={styles.container}>
             <div className={styles.inner}>
                 <div className={styles.about}>
                     <div className={styles.logo}>
