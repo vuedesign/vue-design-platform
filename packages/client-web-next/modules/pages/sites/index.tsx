@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import List from '@/modules/components/List';
-import Top from '@/modules/components/Top';
+import Header from '@/modules/components/Header';
 import Footer from '@/modules/components/Footer';
 import Nav from '@/modules/components/Nav';
 import { wrapper } from '@/modules/store';
@@ -42,15 +42,13 @@ const Sites: NextPage<SitesProps> = ({ params }: SitesProps) => {
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
-                <title>发现 - vue.design</title>
+                <title>{'发现 - vue.design'}</title>
                 <meta
                     name="description"
                     content="一个能一键分享前端资源（网站、代码、工具、文章）、发现前端资源的导航平台。"
                 />
             </Head>
-            <header className={styles.header} style={headerStyle}>
-                <Top />
-            </header>
+            <Header headerStyle={headerStyle} />
             <section className={styles.main}>
                 <Nav />
             </section>

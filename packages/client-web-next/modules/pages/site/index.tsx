@@ -5,7 +5,7 @@ import { GithubOne, Home, TagOne } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
 import { site, useSiteQuery, sitesAssociate } from '@/modules/services/siteApi';
 import { count } from '@/modules/services/countApi';
-import Top from '@/modules/components/Top';
+import Header from '@/modules/components/Header';
 import Footer from '@/modules/components/Footer';
 import Tools from '@/modules/components/Tools';
 import { getParamsByContext } from '@/modules/utils';
@@ -46,12 +46,10 @@ const Site: NextPage<SiteProps> = ({ uuid }: SiteProps) => {
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
-                <title>{detail.title} - vue.design</title>
+                <title>{`${detail.title} - vue.design`}</title>
                 <meta name="description" content={detail.description} />
             </Head>
-            <header className={styles.header} style={headerStyle}>
-                <Top />
-            </header>
+            <Header headerStyle={headerStyle} />
             <section className={styles.main}>
                 <Asider
                     uuid={detail.uuid}

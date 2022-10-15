@@ -1,8 +1,8 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, RefObject, createRef } from 'react';
 import styles from './AsiderNavBar.module.scss';
 import Link from 'next/link';
 import { useRouter, NextRouter } from 'next/router';
-import { isServer } from '@/modules/utils';
+import { isClient } from '@/modules/utils';
 import { throttle } from 'lodash-es';
 
 type TreeNode = {
@@ -105,7 +105,7 @@ function getHTrees(container: HTMLDivElement): TreeNode[] {
 function getAsiderStyle(container: HTMLDivElement) {
     console.log('container', container.offsetLeft, container.offsetWidth);
     return {
-        marginLeft: `${container.offsetLeft + container.offsetWidth - 32}px`,
+        marginLeft: `${container.offsetLeft + container.offsetWidth - 16}px`,
     };
 }
 
@@ -116,7 +116,6 @@ const TreeItem = ({
     list: TreeNode[];
     activeClass: string;
 }) => {
-    console.log('activeClass', activeClass);
     return (
         <ul>
             {list.map((item, index) => {
@@ -148,45 +147,67 @@ type AsiderNavBarProps = {
     contentRef: RefObject<HTMLDivElement>;
 };
 
+function getCurrentH(contentRef: RefObject<HTMLDivElement>) {
+    if (!contentRef.current) {
+        return null;
+    }
+    const currentHList =
+        contentRef.current.querySelectorAll(`h1,h2,h3,h4,h5,h6`);
+
+    let currentH: Element | undefined;
+    currentHList.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        if (
+            rect.top > 60 &&
+            rect.top < document.body.clientHeight - 60 &&
+            !currentH
+        ) {
+            currentH = item;
+        }
+    });
+    if (!currentH) {
+        return null;
+    }
+    // const key = currentH.getAttribute(`data-key`) || '';
+    return currentH;
+}
+
+const getCurrentHKey = (contentRef: RefObject<HTMLDivElement>) => {
+    const item = getCurrentH(contentRef);
+    if (!item) {
+        return '';
+    }
+    const key = item.getAttribute(`data-key`) || '';
+    return key;
+};
+
+const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>) => {
+    if (!navBarRef.current) {
+        return;
+    }
+    console.log('navBarRef', navBarRef.current);
+};
+
 const useGotoH = (
     router: NextRouter,
     contentRef: RefObject<HTMLDivElement>,
 ) => {
     const [activeClass, setActiveClass] = useState('');
     const handleScroll = throttle((evt: Event) => {
-        if (!contentRef.current) {
-            return;
-        }
-        const currentHList =
-            contentRef.current.querySelectorAll(`h1,h2,h3,h4,h5,h6`);
-        // console.log('currentHList', currentHList);
-
-        let currentH: Element | undefined;
-        currentHList.forEach((item) => {
-            const rect = item.getBoundingClientRect();
-            if (rect.top > 60 && rect.top < document.body.clientHeight - 60) {
-                // const key = item.getAttribute(`data-key`);
-                // console.log('key', key);
-                if (!currentH) {
-                    currentH = item;
-                }
-            }
-        });
-        if (!currentH) {
-            return;
-        }
-        const key = currentH.getAttribute(`data-key`) || '';
-        // const currentNav = document.querySelector(`[data-nav-key=${key}]`);
-        // if (!currentNav) {
-        //     return;
-        // }
-        setActiveClass(key);
-        // console.log('currentNav', currentNav);
-        // // contentRef.current
-        // //     .querySelectorAll(`h1,h2,h3,h4,h5,h6`)
-        // //     .forEach((item) => item.setAttribute('class', ''));
-        // currentNav.setAttribute('class', 'dot');
+        const key = getCurrentHKey(contentRef);
+        key && setActiveClass(key);
+        // gotoMiddle(navBarRef);
     }, 200);
+
+    if (isClient) {
+        window.addEventListener('scroll', handleScroll);
+    }
+
+    useEffect(() => {
+        const key = getCurrentHKey(contentRef);
+        key && setActiveClass(key);
+    }, []);
+
     useEffect(() => {
         const [, hKey] = router.asPath.split('#');
         if (!hKey || !contentRef.current) {
@@ -197,10 +218,6 @@ const useGotoH = (
             return;
         }
         const { top } = currentH.getBoundingClientRect();
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
     }, [router]);
     return {
         activeClass,
@@ -211,8 +228,8 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     const [tree, setTree] = useState<TreeNode[]>([]);
     const [style, setStyle] = useState<Record<string, string>>({});
     const router = useRouter();
+    // const navBarRef = createRef<HTMLDivElement>();
     const { activeClass } = useGotoH(router, contentRef);
-
     useEffect(() => {
         if (!contentRef.current) {
             return;
@@ -220,9 +237,22 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
         setTree(getHTrees(contentRef.current));
         setStyle(getAsiderStyle(contentRef.current));
     }, []);
+    // const navBarScrollChagne = (evt: any) => {
+    //     const item = getCurrentH(contentRef);
+    //     console.log('item', item, item?.getBoundingClientRect());
+    //     console.log('scrollTop', evt.target.scrollTop);
+    //     console.log('evt', evt.target.scrollHeight);
+    //     console.log('evt', evt.target.clientHeight);
+    // };
+
     return (
         <aside className={styles.container} style={style}>
-            <TreeItem list={tree} activeClass={activeClass} />
+            <header className={styles.header}>
+                <h4>目录</h4>
+            </header>
+            <section className={styles.content}>
+                <TreeItem list={tree} activeClass={activeClass} />
+            </section>
         </aside>
     );
 };

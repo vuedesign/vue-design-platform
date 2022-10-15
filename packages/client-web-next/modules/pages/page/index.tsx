@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Info, PersonalPrivacy, Connect, Help } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import Top from '@/modules/components/Top';
+import Header from '@/modules/components/Header';
 import Footer from '@/modules/components/Footer';
 import { getParamsByContext } from '@/modules/utils';
 import styles from './Page.module.scss';
@@ -80,12 +80,10 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
-                <title>{detail.value} - vue.design</title>
+                <title>{`${detail.value} - vue.design`}</title>
                 <meta name="description" content={detail.remark} />
             </Head>
-            <header className={styles.header} style={headerStyle}>
-                <Top />
-            </header>
+            <Header headerStyle={headerStyle} />
             <section className={styles.main}>
                 <aside className={styles['asider-left']}>
                     <ul>
