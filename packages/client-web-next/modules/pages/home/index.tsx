@@ -4,7 +4,7 @@ import { wrapper } from '@/modules/store';
 import { sites } from '@/modules/services/siteApi';
 import { navigations } from '@/modules/services/navigationApi';
 import { setQuery } from '@/modules/features/siteSlice';
-import Header from '@/modules/components/Header';
+import HomeHeader from '@/modules/components/HomeHeader';
 import List from '@/modules/components/List';
 import Buttom from '@/modules/components/Bottom';
 import Footer from '@/modules/components/Footer';
@@ -38,13 +38,13 @@ const Home: NextPage<HomeProps> = ({ params }: HomeProps) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>首页 - vue.design</title>
+                <title>{'首页 - vue.design'}</title>
                 <meta
                     name="description"
                     content="一个能一键分享前端资源（网站、代码、工具、文章）、发现前端资源的导航平台。"
                 />
             </Head>
-            <Header />
+            <HomeHeader />
             <List pageType="home" params={params} />
             <Buttom />
             <Footer />

@@ -1,45 +1,30 @@
-import Top from '@/modules/components/Top';
-import { useNavigationsQuery } from '@/modules/services/navigationApi';
+import { FC } from 'react';
 import styles from './Header.module.scss';
+import Top from '../Top';
 
-const Header = () => {
-    const { data } = useNavigationsQuery();
-    const list = data?.list || [];
+type NavItem = {
+    path: string;
+    label: string;
+};
+const navList: NavItem[] = [
+    {
+        path: '/',
+        label: '首页',
+    },
+    {
+        path: '/sites',
+        label: '发现',
+    },
+];
+
+interface Props {
+    headerStyle: Record<string, string | number>;
+}
+
+const Header: FC<Props> = ({ headerStyle }) => {
     return (
-        <header className={styles.container}>
-            <div className={styles.wrapper}>
-                <Top />
-                <div className={styles.mine}>
-                    <ul className={styles['mine-sites']}>
-                        {list.map((item) => {
-                            return (
-                                <li key={item.id}>
-                                    <a
-                                        href={item.siteUrl}
-                                        target="_blank"
-                                        rel="noreferrer">
-                                        <dl>
-                                            <dt>
-                                                <span
-                                                    style={{
-                                                        backgroundImage: `url(${item.iconUrl})`,
-                                                    }}></span>
-                                            </dt>
-                                            <dd>
-                                                <h4>{item.title}</h4>
-                                                <p>{item.description}</p>
-                                            </dd>
-                                        </dl>
-                                    </a>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            </div>
-            <div
-                className={styles.bg}
-                style={{ backgroundImage: `url(/images/header_bg.png)` }}></div>
+        <header className={styles.container} style={headerStyle}>
+            <Top />
         </header>
     );
 };

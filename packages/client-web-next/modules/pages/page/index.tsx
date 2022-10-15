@@ -1,9 +1,10 @@
+import { createRef } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Info, PersonalPrivacy, Connect, Help } from '@icon-park/react';
 import { wrapper } from '@/modules/store';
-import Top from '@/modules/components/Top';
+import Header from '@/modules/components/Header';
 import Footer from '@/modules/components/Footer';
 import { getParamsByContext } from '@/modules/utils';
 import styles from './Page.module.scss';
@@ -16,6 +17,7 @@ import highlightSsr from '@bytemd/plugin-highlight-ssr';
 import mathSsr from '@bytemd/plugin-math-ssr';
 import mermaid from '@bytemd/plugin-mermaid';
 import { containerStyle, headerStyle } from '@/modules/utils/style';
+import AsiderNavBar from '@/modules/components/AsiderNavBar';
 
 // 编辑插件
 const plugins = [
@@ -74,15 +76,14 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
     if (!detail) {
         return null;
     }
+    const ref = createRef<HTMLDivElement>();
     return (
         <div className={styles.container} style={containerStyle}>
             <Head>
-                <title>{detail.value} - vue.design</title>
+                <title>{`${detail.value} - vue.design`}</title>
                 <meta name="description" content={detail.remark} />
             </Head>
-            <header className={styles.header} style={headerStyle}>
-                <Top />
-            </header>
+            <Header headerStyle={headerStyle} />
             <section className={styles.main}>
                 <aside className={styles['asider-left']}>
                     <ul>
@@ -104,7 +105,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                         })}
                     </ul>
                 </aside>
-                <article className={styles.article}>
+                <article className={styles.article} ref={ref}>
                     {detail && (
                         <>
                             <header className={styles.title}>
@@ -121,12 +122,7 @@ const Page: NextPage<PageProps> = ({ pageName }) => {
                         </>
                     )}
                 </article>
-                <aside className={styles['asider-right']}>
-                    <ul>
-                        <li>ddd</li>
-                        <li>ddd</li>
-                    </ul>
-                </aside>
+                <AsiderNavBar contentRef={ref} />
             </section>
 
             <Footer />
