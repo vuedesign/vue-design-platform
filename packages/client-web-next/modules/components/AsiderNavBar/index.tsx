@@ -183,17 +183,8 @@ const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>, key: string) => {
         const { top: navBarTop } = navBarRef.current.getBoundingClientRect();
         const middle =
             currentItemTop - navBarTop - navBarRef.current.clientHeight / 2;
-        if (middle > 0) {
-            console.log('下', middle);
-            navBarRef.current.scrollTop = navBarRef.current.scrollTop + middle;
-        } else {
-            console.log('上', middle);
-            navBarRef.current.scrollTop = navBarRef.current.scrollTop - middle;
-        }
+        navBarRef.current.scrollTop = navBarRef.current.scrollTop + middle;
     }
-
-    console.log('clientHeight', navBarRef.current.clientHeight / 2);
-    console.log('scrollHeight', navBarRef.current.scrollHeight);
 };
 
 const useActive = (contentRef: RefObject<HTMLDivElement>) => {
@@ -223,7 +214,13 @@ const useGotoH = (
         if (!currentH) {
             return;
         }
-        const { top } = currentH.getBoundingClientRect();
+        const rect = currentH.getBoundingClientRect();
+        const scrollTop =
+            document.body.scrollTop || document.documentElement.scrollTop;
+        if (isClient) {
+            document.body.scrollTop = document.documentElement.scrollTop =
+                scrollTop + rect.top - 64;
+        }
     }, [router]);
 };
 
@@ -243,7 +240,6 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     const navBarRef = createRef<HTMLDivElement>();
     const { tree } = useTree(contentRef);
     const [style, setStyle] = useState<Record<string, string>>({});
-    // const { style, setStyle } = useStyle(contentRef);
     const { activeClass, setActiveClass } = useActive(contentRef);
     useGotoH(router, contentRef, navBarRef);
 
@@ -259,10 +255,6 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     }, []);
 
     const handleScroll = (evt: Event) => {
-        const item = getCurrentH(contentRef);
-        const key = getCurrentHKey(item);
-        key && setActiveClass(key);
-        gotoMiddle(navBarRef, key);
         const navBarStyle = (() => {
             const footer = document.getElementById('footer');
             if (!footer) {
@@ -276,6 +268,10 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
             });
         })();
         setStyle(navBarStyle);
+        const item = getCurrentH(contentRef);
+        const key = getCurrentHKey(item);
+        key && setActiveClass(key);
+        gotoMiddle(navBarRef, key);
     };
 
     if (isClient) {
