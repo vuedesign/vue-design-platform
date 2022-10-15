@@ -19,10 +19,79 @@ function setHKey(h: NodeListOf<Element>) {
     });
 }
 
-function getHTrees(container: HTMLDivElement): TreeNode[] {
+function toTree(flatArr: TreeNode[]) {
+    const tree: TreeNode[] = [];
+    const copyArr = flatArr.map((item) => {
+        return item;
+    });
+
+    // 根据指定级别查找该级别的子孙级，并删除掉已经查找到的子孙级
+    const getChildrenByLevel = (
+        currentLevelItem: TreeNode,
+        arr: TreeNode[],
+        level: number,
+    ) => {
+        if (!currentLevelItem) {
+            return [];
+        }
+        // 将level值转成负数，再进行比较
+        const minusCurrentLevel = -currentLevelItem.hLevel;
+        const children = [];
+        for (let i = 0, len = arr.length; i < len; i++) {
+            const levelItem = arr[i];
+            if (-levelItem.hLevel < minusCurrentLevel) {
+                children.push(levelItem);
+            } else {
+                // 只找最近那些子孙级
+                break;
+            }
+        }
+        // 从数组中删除已经找到的那些子孙级，以免影响到其他子孙级的查找
+        if (children.length > 0) {
+            arr.splice(0, children.length);
+        }
+        return children;
+    };
+
+    const getTree = function (
+        result: TreeNode[],
+        arr: TreeNode[],
+        level: number,
+    ) {
+        // 首先将数组第一位移除掉，并添加到结果集中
+        let currentItem = arr.shift() as TreeNode;
+        currentItem.level = level;
+        result.push(currentItem);
+        while (arr.length > 0) {
+            if (!currentItem) {
+                return;
+            }
+            // 根据当前级别获取它的子孙级
+            const children = getChildrenByLevel(currentItem, arr, level);
+            // 如果当前级别没有子孙级则开始下一个
+            if (children.length === 0) {
+                currentItem = arr.shift() as TreeNode;
+                currentItem.level = level;
+                if (currentItem) {
+                    result.push(currentItem);
+                }
+                continue;
+            }
+            currentItem.children = [];
+            // 查找到的子孙级继续查找子孙级
+            getTree(currentItem.children, children, level + 1);
+        }
+    };
+    getTree(tree, copyArr, 1);
+    return tree;
+}
+
+function getHTrees(container: HTMLDivElement | null): TreeNode[] {
+    if (!container) {
+        return [];
+    }
     const h = container.querySelectorAll('h1,h2,h3,h4,h5,h6');
     setHKey(h);
-
     const list = Array.from(h).map((item, index) => {
         const hLevel = Number(item.tagName.match(/[0-9]/g));
         return {
@@ -32,73 +101,6 @@ function getHTrees(container: HTMLDivElement): TreeNode[] {
             index,
         };
     });
-
-    function toTree(flatArr: TreeNode[]) {
-        const tree: TreeNode[] = [];
-        const copyArr = flatArr.map((item) => {
-            return item;
-        });
-
-        // 根据指定级别查找该级别的子孙级，并删除掉已经查找到的子孙级
-        const getChildrenByLevel = (
-            currentLevelItem: TreeNode,
-            arr: TreeNode[],
-            level: number,
-        ) => {
-            if (!currentLevelItem) {
-                return [];
-            }
-            // 将level值转成负数，再进行比较
-            const minusCurrentLevel = -currentLevelItem.hLevel;
-            const children = [];
-            for (let i = 0, len = arr.length; i < len; i++) {
-                const levelItem = arr[i];
-                if (-levelItem.hLevel < minusCurrentLevel) {
-                    children.push(levelItem);
-                } else {
-                    // 只找最近那些子孙级
-                    break;
-                }
-            }
-            // 从数组中删除已经找到的那些子孙级，以免影响到其他子孙级的查找
-            if (children.length > 0) {
-                arr.splice(0, children.length);
-            }
-            return children;
-        };
-
-        const getTree = function (
-            result: TreeNode[],
-            arr: TreeNode[],
-            level: number,
-        ) {
-            // 首先将数组第一位移除掉，并添加到结果集中
-            let currentItem = arr.shift() as TreeNode;
-            currentItem.level = level;
-            result.push(currentItem);
-            while (arr.length > 0) {
-                if (!currentItem) {
-                    return;
-                }
-                // 根据当前级别获取它的子孙级
-                const children = getChildrenByLevel(currentItem, arr, level);
-                // 如果当前级别没有子孙级则开始下一个
-                if (children.length === 0) {
-                    currentItem = arr.shift() as TreeNode;
-                    currentItem.level = level;
-                    if (currentItem) {
-                        result.push(currentItem);
-                    }
-                    continue;
-                }
-                currentItem.children = [];
-                // 查找到的子孙级继续查找子孙级
-                getTree(currentItem.children, children, level + 1);
-            }
-        };
-        getTree(tree, copyArr, 1);
-        return tree;
-    }
     return toTree(list);
 }
 
@@ -140,9 +142,9 @@ type AsiderNavBarProps = {
     contentRef: RefObject<HTMLDivElement>;
 };
 
-function getCurrentH(contentRef: RefObject<HTMLDivElement>) {
+function getCurrentHKey(contentRef: RefObject<HTMLDivElement>) {
     if (!contentRef.current) {
-        return null;
+        return '';
     }
     const currentHList =
         contentRef.current.querySelectorAll(`h1,h2,h3,h4,h5,h6`);
@@ -159,17 +161,26 @@ function getCurrentH(contentRef: RefObject<HTMLDivElement>) {
         }
     });
     if (!currentH) {
-        return null;
-    }
-    return currentH;
-}
-
-const getCurrentHKey = (item: Element | null) => {
-    if (!item) {
         return '';
     }
-    return item.getAttribute(`data-key`) || '';
-};
+    return currentH.getAttribute(`data-key`) || '';
+}
+
+function getStyle(current: HTMLDivElement) {
+    if (!current) {
+        return {
+            display: 'none',
+            height: '0px',
+            marginLeft: '0px',
+        };
+    }
+    const { offsetLeft, offsetWidth } = current;
+    return {
+        display: 'block',
+        height: `${window.innerHeight - 64}px`,
+        marginLeft: `${offsetLeft + offsetWidth - 16}px`,
+    };
+}
 
 const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>, key: string) => {
     if (!navBarRef.current || !key) {
@@ -187,23 +198,9 @@ const gotoMiddle = (navBarRef: RefObject<HTMLDivElement>, key: string) => {
     }
 };
 
-const useActive = (contentRef: RefObject<HTMLDivElement>) => {
-    const [activeClass, setActiveClass] = useState('');
-    useEffect(() => {
-        const item = getCurrentH(contentRef);
-        const key = getCurrentHKey(item);
-        key && setActiveClass(key);
-    }, []);
-    return {
-        activeClass,
-        setActiveClass,
-    };
-};
-
 const useGotoH = (
     router: NextRouter,
     contentRef: RefObject<HTMLDivElement>,
-    navBarRef: RefObject<HTMLDivElement>,
 ) => {
     useEffect(() => {
         const [, hKey] = router.asPath.split('#');
@@ -224,35 +221,13 @@ const useGotoH = (
     }, [router]);
 };
 
-const useTree = (contentRef: RefObject<HTMLDivElement>) => {
-    const [tree, setTree] = useState<TreeNode[]>([]);
-    useEffect(() => {
-        if (!contentRef.current) {
-            return;
-        }
-        setTree(getHTrees(contentRef.current));
-    }, []);
-    return { tree };
-};
-
 const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
     const router = useRouter();
     const navBarRef = createRef<HTMLDivElement>();
-    const { tree } = useTree(contentRef);
     const [style, setStyle] = useState<Record<string, string>>({});
-    const { activeClass, setActiveClass } = useActive(contentRef);
-    useGotoH(router, contentRef, navBarRef);
-
-    useEffect(() => {
-        if (!contentRef.current) {
-            return;
-        }
-        const { offsetLeft, offsetWidth } = contentRef.current;
-        setStyle({
-            height: `${window.innerHeight - 64}px`,
-            marginLeft: `${offsetLeft + offsetWidth - 16}px`,
-        });
-    }, []);
+    const [activeClass, setActiveClass] = useState('');
+    const [tree, setTree] = useState<TreeNode[]>([]);
+    useGotoH(router, contentRef);
 
     const handleScroll = (evt: Event) => {
         const navBarStyle = (() => {
@@ -267,12 +242,21 @@ const AsiderNavBar = ({ contentRef }: AsiderNavBarProps) => {
                 height: `${window.innerHeight - 64 - bottomHeight}px`,
             });
         })();
+
         setStyle(navBarStyle);
-        const item = getCurrentH(contentRef);
-        const key = getCurrentHKey(item);
-        key && setActiveClass(key);
+        const key = getCurrentHKey(contentRef);
+        setActiveClass(key);
         gotoMiddle(navBarRef, key);
     };
+
+    useEffect(() => {
+        if (!contentRef.current) {
+            return;
+        }
+        setTree(getHTrees(contentRef.current));
+        setStyle(getStyle(contentRef.current));
+        setActiveClass(getCurrentHKey(contentRef));
+    }, [contentRef.current]);
 
     if (isClient) {
         window.addEventListener('scroll', handleScroll);
