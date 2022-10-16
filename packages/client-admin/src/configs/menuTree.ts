@@ -51,7 +51,7 @@ export default <MenuNode[]>[
             {
                 label: '配置管理',
                 value: 'config',
-                icon: 'Analysis',
+                icon: 'SettingTwo',
             },
         ],
     },
