@@ -32,10 +32,10 @@ export default defineConfig({
         sidebar: {
             '/guide/': [
                 {
-                    text: '介绍',
+                    text: '指导',
                     items: [
-                        { text: 'Introduction', link: '/introduction' },
-                        { text: 'Getting Started', link: '/getting-started' },
+                        { text: '介绍', link: '/guide/' },
+                        { text: '入门', link: '/guide/getting-started' },
                     ],
                 },
             ],
