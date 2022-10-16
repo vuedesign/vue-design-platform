@@ -1,3 +1,3 @@
-import Sites, { getServerSideProps } from '@/modules/pages/sites';
+import Sites, { getServerSideProps } from '@/modules/sites';
 export { getServerSideProps };
 export default Sites;

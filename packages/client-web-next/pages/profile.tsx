@@ -1,3 +1,3 @@
-import Profile, { getServerSideProps } from '@/modules/pages/profile';
+import Profile, { getServerSideProps } from '@/modules/profile';
 export { getServerSideProps };
 export default Profile;

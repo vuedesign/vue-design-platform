@@ -1,16 +1,16 @@
 import type { AppProps } from 'next/app';
 import type { IncomingMessage } from 'http';
 import App from 'next/app';
-import { wrapper } from '@/modules/store';
-import { profile } from '@/modules/services/authApi';
-import { countProfile } from '@/modules/services/countApi';
-import { setToken } from '@/modules/features/authSlice';
-import { setCookie } from '@/modules/features/globalSlice';
+import { wrapper } from '@/globals/store';
+import { profile } from '@/globals/services/authApi';
+import { countProfile } from '@/globals/services/countApi';
+import { setToken } from '@/globals/features/authSlice';
+import { setCookie } from '@/globals/features/globalSlice';
+import Global from '@/components/Global';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
 import 'highlight.js/styles/vs.css';
 import 'github-markdown-css';
-import Global from '@/modules/components/Global';
 
 interface CtxReq extends IncomingMessage {
     cookies?: {
