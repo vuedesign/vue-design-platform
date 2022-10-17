@@ -50,7 +50,7 @@ importers:
       axios: ^0.20.0
       bytemd: ^1.17.2
       core-js: ^3.20.3
-      element-plus: ^2.2.10
+      element-plus: ^2.2.17
       eslint: ^8.7.0
       eslint-config-prettier: ^8.3.0
       eslint-plugin-prettier: ^4.0.0
@@ -67,8 +67,8 @@ importers:
       unplugin-auto-import: ^0.8.8
       unplugin-vue-components: ^0.19.9
       vite: 3.0.9
-      vue: ^3.2.37
-      vue-router: ^4.1.2
+      vue: ^3.2.40
+      vue-router: ^4.1.5
     dependencies:
       '@bytemd/plugin-frontmatter': registry.npmmirror.com/@bytemd/plugin-frontmatter/1.17.2_bytemd@1.17.2
       '@bytemd/plugin-gemoji': registry.npmmirror.com/@bytemd/plugin-gemoji/1.17.2_bytemd@1.17.2

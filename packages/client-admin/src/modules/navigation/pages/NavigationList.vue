@@ -156,7 +156,7 @@
                 <dialog-navigation-adds />
             </vd-popup>
         </template>
-        <template v-if="total > filter.size" #pagination>
+        <template v-if="filter.size && total > filter.size" #pagination>
             <el-pagination
                 small
                 background
