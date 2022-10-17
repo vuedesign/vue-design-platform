@@ -8,8 +8,8 @@ export interface FormData {
 }
 
 export const formData: FormData = reactive({
-    account: '18602042482',
-    password: 'string',
+    account: '18602042484',
+    password: 'wujian',
 });
 
 export default function useAuth() {

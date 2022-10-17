@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_PREFIX = 'http://localhost:3000/api/v1';
+const API_PREFIX = 'http://localhost:3004/api/v1';
 
 const instance = axios.create({
     // headers: { 'Content-Type': 'multipart/form-data' }, //响应头部
