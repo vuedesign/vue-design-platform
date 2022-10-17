@@ -29,7 +29,9 @@ const Top = () => {
         });
     };
     const handleRecommend = () => {
-        alert(1);
+        router.push({
+            pathname: '/page/recommend',
+        });
     };
     return (
         <>

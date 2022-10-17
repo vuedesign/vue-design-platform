@@ -238,9 +238,11 @@
 
         h4 {
             color: #111;
-            //   opacity: 0.6;
             margin-bottom: 2px;
             transition: all 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }

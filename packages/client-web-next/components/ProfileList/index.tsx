@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Pagination } from 'antd';
 import { useSitesQuery } from '@/globals/services/authApi';
 import Item from '@/components/Item';
-import styles from '@/modules/components/list/List.module.scss';
+import styles from '@/components/list/List.module.scss';
 import { ReactNode } from 'react';
 
 const ProfileList = () => {

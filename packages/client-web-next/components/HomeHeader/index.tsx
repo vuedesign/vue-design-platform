@@ -5,7 +5,6 @@ import styles from './HomeHeader.module.scss';
 const HomeHeader = () => {
     const { data } = useNavigationsQuery();
     const list = data?.list || [];
-    console.log('HomeHeader');
     return (
         <header className={styles.container}>
             <div className={styles.wrapper}>
