@@ -11,7 +11,7 @@ import { useSitesAssociateQuery } from '@/globals/services/siteApi';
 import { useCountQuery } from '@/globals/services/countApi';
 import Item from '@/components/Item';
 import Associate from '@/components/Associate';
-import { User } from '@/modules/types/auth';
+import { User } from '@/globals/types/auth';
 import styles from './Asider.module.scss';
 
 type AsiderProps = {

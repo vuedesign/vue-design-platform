@@ -1,4 +1,4 @@
-import { ListPageResponse } from '@/modules/types/global';
+import { ListPageResponse } from '@/globals/types/global';
 import { User } from './auth';
 
 export type SiteType = 'site' | 'code';

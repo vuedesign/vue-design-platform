@@ -8,7 +8,7 @@ import { wrapper } from '@/globals/store';
 import { sites } from '@/globals/services/siteApi';
 import { user } from '@/globals/services/userApi';
 import { count } from '@/globals/services/countApi';
-import { User } from '@/modules/types/auth';
+import { User } from '@/globals/types/auth';
 import { getParamsByContext } from '@/globals/utils';
 import styles from './User.module.scss';
 import { setQuery } from '@/globals/features/siteSlice';

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import * as apis from '@/configs/apis.contants';
 import { baseURL } from '@/configs/globals.contants';
-import { CountItem } from '@/modules/types';
+import { CountItem } from '@/globals/types';
 import prepareHeaders from '@/globals/utils/prepareHeaders';
 
 export const countApi = createApi({

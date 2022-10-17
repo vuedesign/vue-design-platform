@@ -1,4 +1,4 @@
-import { ListPageResponse } from '@/modules/types/global';
+import { ListPageResponse } from '@/globals/types/global';
 
 export interface TagItem {
     id?: number;

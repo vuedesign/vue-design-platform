@@ -9,7 +9,7 @@ import type {
     LoginRequest,
     UserResponse,
     BufferJSON,
-} from '@/modules/types';
+} from '@/globals/types';
 import { useState } from 'react';
 import { encrypt } from '@/globals/utils';
 

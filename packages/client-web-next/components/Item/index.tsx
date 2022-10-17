@@ -1,6 +1,6 @@
 import { GithubOne, Home, Star, ThumbsUp, ThumbsDown } from '@icon-park/react';
 import Link from 'next/link';
-import type { SiteItem, Tool } from '@/modules/types/site';
+import type { SiteItem, Tool } from '@/globals/types/site';
 import styles from './Item.module.scss';
 import { typeMap } from '@/configs/globals.contants';
 

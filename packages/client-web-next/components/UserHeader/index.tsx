@@ -1,4 +1,4 @@
-import { User } from '@/modules/types/auth';
+import { User } from '@/globals/types/auth';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import { useCountQuery } from '@/globals/services/countApi';

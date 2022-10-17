@@ -13,7 +13,7 @@ import type {
     LoginRequest,
     UserResponse,
     BufferJSON,
-} from '@/modules/types';
+} from '@/globals/types';
 import { setToken, setUser } from '@/globals/features/authSlice';
 import { setLoginState } from '@/globals/features/globalSlice';
 import { useEffect, useState } from 'react';

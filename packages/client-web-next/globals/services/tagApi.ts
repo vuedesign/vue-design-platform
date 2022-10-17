@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseURL } from '@/configs/globals.contants';
 import * as apis from '@/configs/apis.contants';
-import { TagListResponse, TagItem } from '@/modules/types';
+import { TagListResponse, TagItem } from '@/globals/types';
 import { HYDRATE } from 'next-redux-wrapper';
 import prepareHeaders from '@/globals/utils/prepareHeaders';
 

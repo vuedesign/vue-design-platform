@@ -10,7 +10,7 @@ import type {
     SiteListResponse,
     LikeParam,
     BufferJSON,
-} from '@/modules/types';
+} from '@/globals/types';
 import { stringify } from 'qs';
 import { Tool } from '../types';
 import prepareHeaders from '@/globals/utils/prepareHeaders';
