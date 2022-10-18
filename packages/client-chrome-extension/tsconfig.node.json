@@ -1,15 +1,9 @@
 {
-    "compilerOptions": {
-        "composite": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "types": ["chrome", "node"]
-    },
-    "include": [
-        "vite.config.ts",
-        "src/**/*.vue",
-        "src/**/*.ts",
-        "src/modal/components/useInjectModal.ts"
-    ],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
 }

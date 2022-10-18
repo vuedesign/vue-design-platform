@@ -1,0 +1,142 @@
+.container {
+  cursor: pointer;
+}
+
+.btn-login {
+  width: auto;
+  height: 24px;
+  line-height: 24px;
+  background-color: rgba(238, 238, 238, 1);
+  border-radius: 24px;
+  color: rgba(128, 128, 128, 1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  padding: 0 10px;
+  cursor: pointer;
+  > span {
+    font-size: 12px;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    &.text {
+      margin-left: 5px;
+    }
+  }
+  &:hover {
+    background-color: #3d7eff;
+    span,
+    .btn-upload-one {
+      color: #fff;
+    }
+  }
+}
+
+.profile-popover-header {
+  margin: 0;
+  display: flex;
+  padding: 10px 0;
+  dt {
+    margin-right: 8px;
+  }
+  dd {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.popover-content {
+}
+
+.popover-content-count {
+  margin: 0;
+  display: flex;
+  width: 100%;
+
+  li {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    align-items: center;
+    > span {
+      display: inline-block;
+      height: 16px;
+      line-height: 16px;
+      vertical-align: middle;
+      &.text {
+        margin-left: 8px;
+        color: #333;
+      }
+    }
+  }
+}
+
+.popover-content-menu {
+  display: flex;
+  li {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  a {
+    color: #333;
+    &:hover {
+      color: #3d7eff;
+    }
+  }
+  span {
+    height: 16px;
+    line-height: 16px;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
+  .btn-text {
+    margin-left: 8px;
+  }
+}
+
+.popover-content-buttom {
+  display: flex;
+  margin-bottom: 0;
+  border-top: 1px solid #f0f0f0;
+  height: 32px;
+  padding-top: 4px;
+
+  dt,
+  dd {
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  dd {
+    flex: 1;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    height: 16px;
+    line-height: 16px;
+    color: #aaa;
+    &:hover {
+      color: #3d7eff;
+    }
+  }
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    height: 14px;
+    line-height: 14px;
+  }
+  .btn-text {
+    margin-left: 5px;
+    font-size: 13px;
+    line-height: 13px;
+  }
+}
