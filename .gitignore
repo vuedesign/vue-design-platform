@@ -10,5 +10,6 @@ packages/**/.nuxt
 nuxt.d.ts
 .output
 .env
-**/.DS_Store/**
 .DS_Store
+**/.DS_Store/**
+
