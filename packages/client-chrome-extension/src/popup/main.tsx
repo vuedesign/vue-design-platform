@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { store } from '../globals/store';
 import '@/assets/styles/normalize.scss';
 import 'antd/dist/antd.css';
-import Home from './Home';
+import Popup from './Popup';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
-        <Home />
+        <Popup />
     </Provider>,
 );

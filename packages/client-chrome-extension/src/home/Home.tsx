@@ -1,9 +1,10 @@
+import { FC } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import List from '../components/List';
 import Bottom from '../components/Bottom';
 import Footer from '../components/Footer';
 
-function Home() {
+const Home: FC = () => {
     const params = {
         page: 1,
         size: 20,
@@ -16,6 +17,6 @@ function Home() {
             <Footer />
         </div>
     );
-}
+};
 
 export default Home;
