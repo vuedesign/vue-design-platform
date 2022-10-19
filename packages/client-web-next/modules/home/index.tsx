@@ -6,7 +6,7 @@ import { navigations } from '@/globals/services/navigationApi';
 import { setQuery } from '@/globals/features/siteSlice';
 import HomeHeader from '@/components/HomeHeader';
 import List from '@/components/List';
-import Buttom from '@/components/Bottom';
+import Bottom from '@/components/Bottom';
 import Footer from '@/components/Footer';
 import styles from './Home.module.scss';
 
@@ -46,7 +46,7 @@ const Home: NextPage<HomeProps> = ({ params }: HomeProps) => {
             </Head>
             <HomeHeader />
             <List pageType="home" params={params} />
-            <Buttom />
+            <Bottom />
             <Footer />
         </div>
     );
