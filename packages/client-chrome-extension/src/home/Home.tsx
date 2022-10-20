@@ -3,6 +3,7 @@ import HomeHeader from '../components/HomeHeader';
 import List from '../components/List';
 import Bottom from '../components/Bottom';
 import Footer from '../components/Footer';
+import ModalAuth from '../components/ModalAuth';
 
 const Home: FC = () => {
     const params = {
@@ -15,6 +16,7 @@ const Home: FC = () => {
             <List pageType="home" params={params} />
             <Bottom />
             <Footer />
+            <ModalAuth />
         </div>
     );
 };

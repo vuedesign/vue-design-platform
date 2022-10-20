@@ -25,11 +25,6 @@ const Top = () => {
         //     pathname: '/',
         // });
     };
-    const handleRecommend = () => {
-        // router.push({
-        //     pathname: '/page/recommend',
-        // });
-    };
     return (
         <>
             <div className={styles.container}>
@@ -67,18 +62,6 @@ const Top = () => {
                   </div>
                 </template>
               </home-popper> */}
-                            </div>
-                        </li>
-                        <li>
-                            <div
-                                className={`${styles.btn} ${styles.recommend}`}
-                                onClick={handleRecommend}>
-                                <UploadOne
-                                    className="btn-upload-one"
-                                    theme="outline"
-                                    size="14"
-                                />
-                                <span className={styles.text}>我要推荐</span>
                             </div>
                         </li>
                         <li>
