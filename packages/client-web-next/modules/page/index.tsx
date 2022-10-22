@@ -1,8 +1,14 @@
-import { createRef } from 'react';
+import { createRef, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Info, PersonalPrivacy, Connect, Help } from '@icon-park/react';
+import {
+    Info,
+    PersonalPrivacy,
+    Connect,
+    Help,
+    SolarEnergy,
+} from '@icon-park/react';
 import { wrapper } from '@/globals/store';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';

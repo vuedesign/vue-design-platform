@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Pagination } from 'antd';
 import { useSitesQuery } from '@/globals/services/authApi';
 import Item from '@/components/Item';
-import styles from '@/components/list/List.module.scss';
+import styles from './ProfileList.module.scss';
 import { ReactNode } from 'react';
 
 const ProfileList = () => {
@@ -17,6 +17,7 @@ const ProfileList = () => {
             <section className={styles.main}>
                 <ul className={styles.list}>
                     {data &&
+                        data.list &&
                         data.list.map((item, index) => (
                             <li key={index}>
                                 <Item {...item}></Item>

@@ -24,6 +24,7 @@ import {
 } from '@/globals/features/globalSlice';
 import { AppDispatch } from '@/globals/store';
 import { setOpen } from '@/globals/features/globalSlice';
+import { TOKEN_KEY } from '@/configs/globals.contants';
 import styles from './Profile.module.scss';
 
 const ProfilePopoverHeader = () => {
@@ -72,6 +73,7 @@ const ProfilePopoverContent = () => {
             .then(() => {
                 message.success('退出登录');
                 setTimeout(() => {
+                    window.localStorage.removeItem(TOKEN_KEY);
                     dispatch(
                         profile.initiate(undefined, {
                             subscribe: false,

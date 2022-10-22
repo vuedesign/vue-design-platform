@@ -1,5 +1,5 @@
-import { useEffect, ReactNode, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Pagination } from 'antd';
@@ -7,7 +7,6 @@ import { isClient } from '@/globals/utils';
 import Item from '@/components/Item';
 import { useSitesQuery } from '@/globals/services/siteApi';
 import { selectLoginState } from '@/globals/features/globalSlice';
-import { selectCurrentQuery, setQuery } from '@/globals/features/siteSlice';
 import { User } from '@/globals/types/auth';
 import { stringify } from 'qs';
 import styles from './List.module.scss';
