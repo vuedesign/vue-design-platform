@@ -1,5 +1,5 @@
-export const isServer = typeof window === 'undefined';
-export const isClient = typeof window !== 'undefined';
+import JSEncrypt from 'jsencrypt';
+import { Buffer } from 'buffer';
 
 export function getUuid(uuid?: string | string[]) {
     console.log('uuid', uuid);
@@ -40,15 +40,13 @@ export type BufferJSON = {
 };
 
 export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
-    if (typeof window === 'undefined' || !publicKeyJSON) {
-        return '';
-    }
-    const JSEncrypt = require('jsencrypt').default;
+    // const JSEncrypt = require('jsencrypt').default;
+    console.log('JSEncrypt', JSEncrypt);
     const publicKey = Buffer.from(publicKeyJSON?.data || []).toString();
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);
     const encrypted = encrypt.encrypt(data);
-    return encrypted;
+    return encrypted || '';
 }
 
 export function diffObject(

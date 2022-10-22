@@ -1,8 +1,6 @@
 import { useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useRouter } from 'next/router';
 import { Pagination } from 'antd';
-import { isClient } from '@/globals/utils';
 import Item from '@/components/Item';
 import { useSitesQuery } from '@/globals/services/siteApi';
 import { selectLoginState } from '@/globals/features/globalSlice';
@@ -97,7 +95,7 @@ const List = ({
     const loginState = useSelector(selectLoginState);
 
     useEffect(() => {
-        isClient && refetch();
+        refetch();
     }, [loginState]);
     return (
         <section className={styles.container}>

@@ -16,10 +16,10 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "paths": {
-            "@": ["src"],
-            "@/*": ["src/*"]
+            "@": ["./src"],
+            "@/*": ["./src/*"]
         }
     },
-    "include": ["src"],
+    "include": ["src", "src/**/*.tsx"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

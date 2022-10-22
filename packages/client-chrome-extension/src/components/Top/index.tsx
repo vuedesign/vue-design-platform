@@ -2,6 +2,7 @@ import { UploadOne } from '@icon-park/react';
 import logoImage from '@/assets/images/logo.png';
 import styles from './Top.module.scss';
 import Profile from '../Profile';
+import { details } from '@/configs/globals.contants';
 
 type NavItem = {
     path: string;
@@ -31,20 +32,22 @@ const Top = () => {
                 <div className={styles.top}>
                     <ul className={styles.nav}>
                         <li>
-                            <h1
-                                className={styles.logo}
-                                onClick={handleGotoHome}>
-                                <img
-                                    src={logoImage}
-                                    alt=""
-                                    width={224}
-                                    height={38}
-                                />
+                            <h1 className={styles.logo}>
+                                <a href={details.url}>
+                                    <img
+                                        src={logoImage}
+                                        alt=""
+                                        width={224}
+                                        height={38}
+                                    />
+                                </a>
                             </h1>
                         </li>
                         {navList.map((item, index) => (
                             <li key={index}>
-                                <a href={item.path}>{item.label}</a>
+                                <a href={`${details.url}${item.path}`}>
+                                    {item.label}
+                                </a>
                             </li>
                         ))}
                     </ul>

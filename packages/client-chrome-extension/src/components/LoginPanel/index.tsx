@@ -1,7 +1,7 @@
 import { Divider, Form, Input, Button, Checkbox } from 'antd';
 import { User, Lock } from '@icon-park/react';
 import { useDispatch } from 'react-redux';
-import { TOKEN_KEY } from '@/configs/globals.contants';
+import { details, TOKEN_KEY } from '@/configs/globals.contants';
 import {
     useLoginMutation,
     usePublicKeyMutation,
@@ -38,16 +38,15 @@ const LoginPanel = ({ finish, register }: LoginPanelProps) => {
             password: encrypt(password, publicKeyBuffer),
         })) as DataResponse<UserResponse>;
         if (auth && auth.token) {
-            window.localStorage.setItem(TOKEN_KEY, auth.token);
             dispatch(setToken(auth.token));
             dispatch(setUser(auth.user));
-            dispatch(
-                profile.initiate(undefined, {
-                    subscribe: false,
-                    forceRefetch: true,
-                }),
-            );
             dispatch(setLoginState());
+            try {
+                chrome.cookies.set({
+                    ...details,
+                    value: auth.token,
+                });
+            } catch (error) {}
             finish && finish();
         }
     };

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '@/modules/store';
+import type { RootState } from '@/globals/store';
 import { SiteItem, SiteState, SiteQuery } from '@/globals/types/site';
 
 const initialState: SiteState = {

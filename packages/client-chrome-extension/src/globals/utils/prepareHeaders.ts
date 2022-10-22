@@ -1,18 +1,11 @@
 // import { RootState } from '@/modules/store';
-export const isServer = typeof window === 'undefined';
-import { TOKEN_KEY } from '@/configs/globals.contants';
-export default function prepareHeaders(
+import { TOKEN_KEY, details } from '@/configs/globals.contants';
+export default async function prepareHeaders(
     headers: Headers,
     { getState }: { getState: () => any },
 ) {
-    let token = '';
-    if (isServer) {
-        token = getState().auth.token || '';
-        const cookie = getState().global.cookie || '';
-        cookie && headers.set('Cookie', cookie);
-    } else {
-        token = window.localStorage.getItem(TOKEN_KEY) || '';
-    }
+    let token = getState().auth.token || '';
+    console.log('headers token:', token);
     if (token) {
         headers.set('Authorization', `Bearer ${token}`);
     }

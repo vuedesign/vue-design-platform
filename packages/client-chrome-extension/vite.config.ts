@@ -1,10 +1,26 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import inject from '@rollup/plugin-inject';
+import { Buffer } from 'buffer';
 
 // https://vitejs.dev/config/
 import { resolve } from 'path';
 export default defineConfig({
-    plugins: [react()],
+    plugins: [
+        react(),
+        // inject({
+        //     'window.Buffer': Buffer,
+        // }),
+    ],
+    build: {
+        minify: false,
+        rollupOptions: {
+            input: {
+                main: resolve(__dirname, 'index.html'),
+                popup: resolve(__dirname, 'popup.html'),
+            },
+        },
+    },
     server: {
         open: '/',
         proxy: {

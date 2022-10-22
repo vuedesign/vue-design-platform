@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Popover, message } from 'antd';
 import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import {
@@ -10,13 +10,13 @@ import {
     ShareOne,
     PreviewOpen,
 } from '@icon-park/react';
-import {
-    useProfileQuery,
-    useLogoutMutation,
-    profile,
-} from '@/globals/services/authApi';
+import { useProfileQuery, useLogoutMutation } from '@/globals/services/authApi';
 import { useCountProfileQuery } from '@/globals/services/countApi';
-import { setToken, setUser } from '@/globals/features/authSlice';
+import {
+    setToken,
+    setUser,
+    selectCurrentToken,
+} from '@/globals/features/authSlice';
 import {
     setLoginState,
     setIsSettingVisible,
@@ -24,6 +24,7 @@ import {
 import { AppDispatch } from '@/globals/store';
 import { setOpen } from '@/globals/features/globalSlice';
 import styles from './Profile.module.scss';
+import { details } from '@/configs/globals.contants';
 
 const ProfilePopoverHeader = () => {
     const { data: profile } = useProfileQuery();
@@ -69,18 +70,14 @@ const ProfilePopoverContent = () => {
     const handleLogout = () => {
         logout()
             .then(() => {
-                message.success('退出登录');
-                setTimeout(() => {
-                    dispatch(
-                        profile.initiate(undefined, {
-                            subscribe: false,
-                            forceRefetch: true,
-                        }),
-                    );
-                    dispatch(setToken(null));
-                    dispatch(setUser(null));
-                    dispatch(setLoginState());
-                }, 200);
+                chrome.cookies.remove(details, (cookie) => {
+                    message.success('退出登录');
+                    setTimeout(() => {
+                        dispatch(setToken(null));
+                        dispatch(setUser(null));
+                        dispatch(setLoginState());
+                    }, 200);
+                });
             })
             .catch(() => {
                 message.warning('退出失败');
@@ -90,20 +87,16 @@ const ProfilePopoverContent = () => {
         <div className={styles['popover-content']}>
             <ul className={styles['popover-content-menu']}>
                 <li>
-                    <Link href="/profile">
-                        <a>
-                            <Home theme="outline" size="16" />
-                            <span className={styles['btn-text']}>个人中心</span>
-                        </a>
-                    </Link>
+                    <a href={`${details.url}/profile`}>
+                        <Home theme="outline" size="16" />
+                        <span className={styles['btn-text']}>个人中心</span>
+                    </a>
                 </li>
                 <li>
-                    <Link href="/profile">
-                        <a>
-                            <UploadOne theme="outline" size="16" />
-                            <span className={styles['btn-text']}>我的推荐</span>
-                        </a>
-                    </Link>
+                    <a href={`${details.url}/profile`}>
+                        <UploadOne theme="outline" size="16" />
+                        <span className={styles['btn-text']}>我的推荐</span>
+                    </a>
                 </li>
             </ul>
             <dl className={styles['popover-content-buttom']}>
@@ -124,10 +117,19 @@ const ProfilePopoverContent = () => {
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const { data: profile } = useProfileQuery();
+    const { data: profile, refetch } = useProfileQuery();
+    const token = useSelector(selectCurrentToken);
     useEffect(() => {
-        profile && dispatch(setUser(profile));
-    });
+        refetch();
+    }, [token]);
+
+    try {
+        chrome.cookies.get(details, (cookie) => {
+            if (cookie && cookie.value) {
+                dispatch(setToken(cookie.value));
+            }
+        });
+    } catch (error) {}
 
     const handleOpenDialogLogin = () => {
         dispatch(setOpen(true));

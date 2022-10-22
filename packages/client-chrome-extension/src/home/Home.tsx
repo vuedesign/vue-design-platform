@@ -4,6 +4,7 @@ import List from '../components/List';
 import Bottom from '../components/Bottom';
 import Footer from '../components/Footer';
 import ModalAuth from '../components/ModalAuth';
+import ModalSetting from '../components/ModalSetting';
 
 const Home: FC = () => {
     const params = {
@@ -17,6 +18,7 @@ const Home: FC = () => {
             <Bottom />
             <Footer />
             <ModalAuth />
+            <ModalSetting />
         </div>
     );
 };

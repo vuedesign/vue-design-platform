@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '@/modules/store';
+import type { RootState } from '@/globals/store';
 import { AuthState, User } from '@/globals/types/auth';
+import { details } from '@/configs/globals.contants';
 
 const initialState: AuthState = { user: null, token: null };
 const slice = createSlice({
