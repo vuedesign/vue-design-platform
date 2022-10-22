@@ -5,6 +5,7 @@ import Bottom from '../components/Bottom';
 import Footer from '../components/Footer';
 import ModalAuth from '../components/ModalAuth';
 import ModalSetting from '../components/ModalSetting';
+import ModalPush from '@/components/ModalPush';
 
 const Home: FC = () => {
     const params = {
@@ -19,6 +20,7 @@ const Home: FC = () => {
             <Footer />
             <ModalAuth />
             <ModalSetting />
+            <ModalPush />
         </div>
     );
 };

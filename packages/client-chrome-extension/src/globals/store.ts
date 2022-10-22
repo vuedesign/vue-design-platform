@@ -9,6 +9,7 @@ import { configureApi } from '@/globals/services/configureApi';
 import authReducer from '@/globals/features/authSlice';
 import siteReducer from '@/globals/features/siteSlice';
 import globalReducer from '@/globals/features/globalSlice';
+import pluginReducer from '@/globals/features/pluginSlice';
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
         auth: authReducer,
         site: siteReducer,
         global: globalReducer,
+        plugin: pluginReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(

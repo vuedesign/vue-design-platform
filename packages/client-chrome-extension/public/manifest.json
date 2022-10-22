@@ -7,7 +7,7 @@
         "service_worker": "/assets/scripts/background.js"
     },
     "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"],
-    "host_permissions": ["http://localhost:3004"],
+    "host_permissions": ["http://localhost:3004/"],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {

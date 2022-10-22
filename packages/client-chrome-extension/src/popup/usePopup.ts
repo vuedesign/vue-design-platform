@@ -102,9 +102,10 @@ export default () => {
             title,
             tabId: id,
         };
+        console.log('info===', info);
         chrome.storage.local.set({ info }, () => {
             chrome.tabs.create({
-                url: Pages.HOME_URL + '#/modal-push',
+                url: Pages.HOME_URL + '?modal=push',
             });
         });
     };
