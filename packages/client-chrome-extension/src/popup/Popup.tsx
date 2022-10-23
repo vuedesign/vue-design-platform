@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import logoImage from '@/assets/images/logo.png';
 import usePopup, { MenuListItem } from './usePopup';
 import styles from './Popup.module.scss';

@@ -94,7 +94,20 @@ export default () => {
         });
     };
 
-    const handleNewTab = () => {
+    const handleNewTab = async () => {
+        const [tab] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+        });
+        if (
+            tab &&
+            tab.title === '首页 - vue.design' &&
+            tab.url &&
+            isExtension(tab.url)
+        ) {
+            window.alert('当前标签页已打开！');
+            return;
+        }
         chrome.tabs.create({
             url: Pages.HOME_URL,
         });
