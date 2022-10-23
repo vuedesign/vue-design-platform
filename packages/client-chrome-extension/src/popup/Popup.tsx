@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import logoImage from '@/assets/images/logo.png';
-import Icon, { ALL_ICON_KEYS, IconType } from '@icon-park/react/es/all';
 import usePopup, { MenuListItem } from './usePopup';
 import styles from './Popup.module.scss';
+import { TagOne, Send } from '@icon-park/react';
+import { IconRender } from '@/globals/utils/component';
 
 const Popup: FC = () => {
     const { handleNewTab, handleRecommend, menuList } = usePopup();
@@ -28,10 +29,11 @@ const Popup: FC = () => {
                 <ul>
                     {menuList.map((item) => (
                         <li key={item.key} onClick={() => hanldeCommand(item)}>
-                            <Icon
-                                type={item.icon}
+                            <IconRender
+                                map={{ TagOne, Send }}
+                                is={item.icon}
                                 theme="outline"
-                                size="18"
+                                size={18}
                                 fill="#3d7eff"
                             />
                             <span className="text">{item.title}</span>

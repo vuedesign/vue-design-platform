@@ -21,17 +21,28 @@ import {
     selectInfo,
     selectImgWrapWidth,
     selectUser,
+    setInfo,
+    selectVisible,
+    setVisible,
 } from '@/globals/features/pluginSlice';
 import ModalItem from './ModalItem';
+import { Info } from './useStore';
+import { parse } from 'qs';
 
 const ModalPush: FC = () => {
+    const dispatch = useDispatch();
     const info = useSelector(selectInfo);
+    const visible = useSelector(selectVisible);
     const imgWrapWidth = useSelector(selectImgWrapWidth);
     const user = useSelector(selectUser);
     const handleUploadFinish = () => {};
-    const handleSelectLogo = (img) => {};
+    const handleSelectLogo = (img: any) => {};
+    const handleCancel = () => {
+        dispatch(setVisible(false));
+    };
+
     return (
-        <Modal width={600} open={true}>
+        <Modal width={600} open={visible} onCancel={handleCancel}>
             <div className={styles['vue-design-modal-content']}>
                 <div className={styles['vue-design-modal-main']}>
                     <div className={styles['vue-design-modal-item']}>

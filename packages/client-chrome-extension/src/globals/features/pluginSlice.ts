@@ -30,7 +30,7 @@ export interface PluginState {
 }
 
 const initialState: PluginState = {
-    visible: true,
+    visible: false,
     loading: false,
     info: {} as Info,
     user: null,
@@ -41,6 +41,9 @@ export const slice = createSlice({
     initialState,
     reducers: {
         setVisible: (state, { payload }: PayloadAction<boolean>) => {
+            chrome.storage.local.set({
+                visible: payload,
+            });
             state.visible = payload;
         },
         setLoading: (state, { payload }: PayloadAction<boolean>) => {

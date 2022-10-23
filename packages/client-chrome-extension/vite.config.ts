@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import inject from '@rollup/plugin-inject';
-import { Buffer } from 'buffer';
 
 // https://vitejs.dev/config/
 import { resolve } from 'path';

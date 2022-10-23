@@ -1,4 +1,5 @@
 import { MessageType, ContentModal, Pages, Assets } from '@/globals/contants';
+import { IconType } from '@icon-park/react/es/all';
 
 interface InfoData {
     description: string;
@@ -16,17 +17,7 @@ interface Message {
 export interface MenuListItem {
     key: string;
     title: string;
-    icon: string;
-}
-
-function captureThumb(windowId: number): Promise<string> {
-    return new Promise((resolve) => {
-        chrome.tabs.captureVisibleTab(
-            windowId,
-            { format: Assets.CAPTURE_THUMB_FORMAT },
-            resolve,
-        );
-    });
+    icon: IconType;
 }
 
 function getCurrentPageInfo(id: number): Promise<any> {
@@ -35,18 +26,6 @@ function getCurrentPageInfo(id: number): Promise<any> {
             id,
             {
                 type: MessageType.GET_INFO,
-            },
-            resolve,
-        );
-    });
-}
-
-function executeScript(tabId: number): Promise<any> {
-    return new Promise((resolve) => {
-        chrome.scripting.executeScript(
-            {
-                target: { tabId },
-                files: ContentModal.SCRIPT_FILES,
             },
             resolve,
         );
@@ -92,8 +71,13 @@ export default () => {
             window.alert('这是一个chrome 插件，不符合推荐条件！');
             return;
         }
-        await executeScript(id);
-        const thumbUrl = await captureThumb(windowId);
+        await chrome.scripting.executeScript({
+            target: { tabId: id },
+            files: ContentModal.SCRIPT_FILES,
+        });
+        const thumbUrl = await chrome.tabs.captureVisibleTab(windowId, {
+            format: Assets.CAPTURE_THUMB_FORMAT,
+        });
         const pageInfo = await getCurrentPageInfo(id);
         const info = {
             thumbUrl,
@@ -103,9 +87,9 @@ export default () => {
             tabId: id,
         };
         console.log('info===', info);
-        chrome.storage.local.set({ info }, () => {
+        chrome.storage.local.set({ info, visible: true }, () => {
             chrome.tabs.create({
-                url: Pages.HOME_URL + '?modal=push',
+                url: Pages.HOME_URL,
             });
         });
     };

@@ -56,12 +56,19 @@ export function diffObject(
     return Object.keys(data).every((key) => data[key] === cacheData[key]);
 }
 
-export function base64toFile(base64Data: string): Blob {
+export function base64toFile(base64Data: string): Blob | null {
     //去掉base64的头部信息，并转换为byte
-    let split = base64Data.split(',');
-    let bytes = window.atob(split[1]);
+    let str = base64Data.split(',');
+    let bytes = window.atob(str[1]);
+    if (!str || !str[0]) {
+        return null;
+    }
+    const m = str[0].match(/:(.*?);/);
+    if (!m || !m[1]) {
+        return null;
+    }
     //获取文件类型
-    let fileType = split[0].match(/:(.*?);/)[1];
+    let fileType = m[1];
     //处理异常,将ascii码小于0的转换为大于0
     let ab = new ArrayBuffer(bytes.length);
     let ia = new Uint8Array(ab);
