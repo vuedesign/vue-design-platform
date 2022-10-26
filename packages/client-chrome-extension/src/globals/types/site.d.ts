@@ -4,9 +4,9 @@ import { User } from './auth';
 export type SiteType = 'site' | 'code';
 
 export interface TagItem {
-    id: number;
+    id?: number;
     name: string;
-    description: string;
+    description?: string;
 }
 export type TagList = TagItem[];
 
@@ -18,7 +18,7 @@ export interface Tool {
 
 export interface SiteItem {
     id?: number;
-    uuid: string;
+    uuid?: string;
     title: string;
     thumbUrl: string;
     logoUrl: string;
@@ -26,7 +26,7 @@ export interface SiteItem {
     siteUrl: string;
     codeUrl: string;
     description: string;
-    authorId: number;
+    authorId?: number;
     tags: TagList;
     views: number;
     collections: number;
@@ -34,10 +34,11 @@ export interface SiteItem {
     down: number;
     type: SiteType;
     status: number;
-    author: User;
+    author?: User;
     createdAt?: string;
     updatedAt?: string;
     tool?: Tool;
+    tags: TagItem[];
 }
 export type SiteList = SiteItem[];
 export interface SiteListResponse extends ListPageResponse<SiteList> {}

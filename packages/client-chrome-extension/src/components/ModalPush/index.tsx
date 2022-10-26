@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Form, Input, Alert, Button } from 'antd';
+import { Modal, message, Form, Input, Alert, Button } from 'antd';
 import {
     Home,
     Star,
@@ -12,10 +12,11 @@ import {
     useProfileQuery,
     useUpdateProfileMutation,
 } from '@/globals/services/authApi';
+import { SiteItem } from '@/globals/types/site';
 import styles from './ModalPush.module.scss';
 import { useEffect, FC, useState } from 'react';
 import { debounce } from 'lodash-es';
-import { diffObject } from '@/globals/utils';
+import { diffObject, base64toFile } from '@/globals/utils';
 import UploadAvatar from '../UploadAvatar';
 import {
     selectInfo,
@@ -24,10 +25,24 @@ import {
     setInfo,
     selectVisible,
     setVisible,
+    Info,
 } from '@/globals/features/pluginSlice';
 import ModalItem from './ModalItem';
-import { Info } from './useStore';
 import { parse } from 'qs';
+
+function uploadFileData<T = FormData, R = any>(formData: FormData) {
+    return Promise.resolve(1);
+}
+
+function uploadFile(base64: string): Promise<any> {
+    const file = base64toFile(base64);
+    if (!file) {
+        return Promise.resolve(null);
+    }
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return uploadFileData<FormData, any>(formData);
+}
 
 const ModalPush: FC = () => {
     const dispatch = useDispatch();
@@ -35,14 +50,54 @@ const ModalPush: FC = () => {
     const visible = useSelector(selectVisible);
     const imgWrapWidth = useSelector(selectImgWrapWidth);
     const user = useSelector(selectUser);
+    const [loading, setLoading] = useState(false);
     const handleUploadFinish = () => {};
     const handleSelectLogo = (img: any) => {};
     const handleCancel = () => {
         dispatch(setVisible(false));
     };
 
+    const handleOk = async () => {
+        if (!user) {
+            message.warning('您未登录，请点击右上角「登录/注册」按钮！');
+            return;
+        }
+        if (!info.logoUrl && info.imgs.some((img) => !!img)) {
+            message.warning('请点击选择下面图片作为网站icon！');
+            return;
+        }
+        setLoading(true);
+        // const { createSite, findSite } = useSite();
+
+        const fileRes = await uploadFile(info.thumbUrl);
+
+        console.log('fileRes', fileRes);
+
+        const item: SiteItem = {
+            codeUrl: info.codeUrl,
+            collections: 0,
+            description: info.description,
+            down: 0,
+            iconUrl: info.favIconUrl,
+            logoUrl: info.logoUrl,
+            siteUrl: info.siteUrl,
+            tags: info.tags.map((i) => ({ name: i })),
+            thumbUrl: fileRes.path,
+            title: info.title,
+            top: 0,
+            type: info.type,
+            views: 0,
+            status: 1,
+        };
+        console.log(item);
+    };
+
     return (
-        <Modal width={600} open={visible} onCancel={handleCancel}>
+        <Modal
+            width={600}
+            open={visible}
+            onCancel={handleCancel}
+            onOk={handleOk}>
             <div className={styles['vue-design-modal-content']}>
                 <div className={styles['vue-design-modal-main']}>
                     <div className={styles['vue-design-modal-item']}>

@@ -59,51 +59,51 @@ export interface State {
 //     return uploadFileData<FormData, any>(formData);
 // }
 
-// const handleRecommend = async (): Promise<void> => {
-//     if (!state.token || !state.user) {
-//         message.warning('您未登录，请点击右上角「登录/注册」按钮！');
-//         return;
-//     }
-//     if (!state.info.logoUrl && state.info.imgs.some((img) => !!img)) {
-//         message.warning('请点击选择下面图片作为网站icon！');
-//         return;
-//     }
+const handleRecommend = async (): Promise<void> => {
+    if (!state.token || !state.user) {
+        message.warning('您未登录，请点击右上角「登录/注册」按钮！');
+        return;
+    }
+    if (!state.info.logoUrl && state.info.imgs.some((img) => !!img)) {
+        message.warning('请点击选择下面图片作为网站icon！');
+        return;
+    }
 
-//     const { createSite, findSite } = useSite();
-//     state.loading = true;
+    const { createSite, findSite } = useSite();
+    state.loading = true;
 
-//     const fileRes = await uploadFile(state.info.thumbUrl);
+    const fileRes = await uploadFile(state.info.thumbUrl);
 
-//     console.log('fileRes', fileRes);
+    console.log('fileRes', fileRes);
 
-//     const item: SiteItem = {
-//         codeUrl: state.info.codeUrl,
-//         collections: 0,
-//         description: state.info.description,
-//         down: 0,
-//         iconUrl: state.info.favIconUrl,
-//         isShow: 1,
-//         logoUrl: state.info.logoUrl,
-//         siteUrl: state.info.siteUrl,
-//         tagIds: '1,2,3',
-//         thumbUrl: fileRes.path,
-//         title: state.info.title,
-//         top: 0,
-//         type: state.info.type,
-//         views: 0,
-//     };
+    const item: SiteItem = {
+        codeUrl: state.info.codeUrl,
+        collections: 0,
+        description: state.info.description,
+        down: 0,
+        iconUrl: state.info.favIconUrl,
+        isShow: 1,
+        logoUrl: state.info.logoUrl,
+        siteUrl: state.info.siteUrl,
+        tagIds: '1,2,3',
+        thumbUrl: fileRes.path,
+        title: state.info.title,
+        top: 0,
+        type: state.info.type,
+        views: 0,
+    };
 
-//     createSite(item)
-//         .then(() => {
-//             router.push({
-//                 path: '/',
-//             });
-//             findSite();
-//         })
-//         .finally(() => {
-//             state.loading = false;
-//         });
-// };
+    createSite(item)
+        .then(() => {
+            router.push({
+                path: '/',
+            });
+            findSite();
+        })
+        .finally(() => {
+            state.loading = false;
+        });
+};
 
 // const handleCancel = (): void => {
 //     console.log('router', router);
@@ -114,7 +114,7 @@ export interface State {
 
 export default () => {
     return {
-        // handleRecommend,
+        handleRecommend,
         // handleCancel,
         // handleSelectLogo,
     };
