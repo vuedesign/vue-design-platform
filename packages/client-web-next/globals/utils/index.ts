@@ -2,7 +2,6 @@ export const isServer = typeof window === 'undefined';
 export const isClient = typeof window !== 'undefined';
 
 export function getUuid(uuid?: string | string[]) {
-    console.log('uuid', uuid);
     if (!uuid || uuid === 'string') {
         return '';
     }
@@ -39,11 +38,14 @@ export type BufferJSON = {
     data: number[];
 };
 
-export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
+export function encrypt(
+    data: string,
+    publicKeyJSON?: BufferJSON,
+): string | false {
     if (typeof window === 'undefined' || !publicKeyJSON) {
         return '';
     }
-    const JSEncrypt = require('jsencrypt').default;
+    const { JSEncrypt } = require('jsencrypt');
     const publicKey = Buffer.from(publicKeyJSON?.data || []).toString();
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);

@@ -26,6 +26,7 @@
     "deepmerge": "^4.2.2",
     "github-markdown-css": "^5.1.0",
     "highlight.js": "^11.6.0",
+    "jiti": "^1.16.0",
     "jsencrypt": "^3.2.1",
     "lodash-es": "^4.17.21",
     "next": "^12.3.1",

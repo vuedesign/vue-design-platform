@@ -8,6 +8,9 @@ module.exports = {
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
     },
+    experimental: {
+        esmExternals: 'loose',
+    },
     images: {
         // domains: ['*.(.*)'],
         domains: [
