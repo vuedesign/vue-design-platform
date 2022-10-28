@@ -63,7 +63,6 @@ export class SiteController {
         return res;
     }
 
-    @Public()
     @Get()
     @ApiQuery({
         description: '项目列表',

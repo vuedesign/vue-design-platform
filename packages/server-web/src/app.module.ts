@@ -12,6 +12,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { UserModule } from './modules/user/user.module';
 import { ToolModule } from './modules/tool/tool.module';
 import { ConfigureModule } from './modules/configure/configure.module';
+import { FileModule } from '@/modules/file/file.module';
 import microservicesConfig from '@/configs/microservices.config';
 import globalConfig from '@/configs/global.config';
 import rsaConfig from '@/configs/rsa.config';
@@ -26,8 +27,6 @@ import rsaConfig from '@/configs/rsa.config';
             isGlobal: true,
         }),
         TypeOrmModule.forRoot(typeormConfig),
-        // 微服务
-        // BaseMicroserviceModule,
         SiteModule,
         NavigationModule,
         AuthModule,
@@ -36,6 +35,7 @@ import rsaConfig from '@/configs/rsa.config';
         UserModule,
         ToolModule,
         ConfigureModule,
+        FileModule,
     ],
     providers: [
         {
