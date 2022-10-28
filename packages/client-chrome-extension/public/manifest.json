@@ -6,7 +6,8 @@
     "background": {
         "service_worker": "/assets/scripts/background.js"
     },
-    "permissions": ["storage", "activeTab", "scripting", "tabs"],
+    "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"],
+    "host_permissions": ["http://localhost:3004/"],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -24,6 +25,6 @@
     },
     "options_page": "options.html",
     "externally_connectable": {
-        "matches": ["http://localhost:3000/api/*", "https://t7.baidu.com/*"]
+        "matches": ["http://localhost:3004/api/*", "https://t7.baidu.com/*"]
     }
 }

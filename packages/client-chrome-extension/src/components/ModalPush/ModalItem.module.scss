@@ -1,0 +1,117 @@
+.vue-design-item-inner {
+    width: 256px;
+    height: 230px;
+    position: relative;
+}
+
+.vue-design-item-thumb {
+    // background
+    width: inherit;
+    height: 0;
+    padding-top: 50%;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    background-color: #cad6dc;
+    z-index: 0;
+}
+
+.vue-design-item-thumb a {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vue-design-item-info {
+    padding: 18px 8px 8px 8px;
+    height: 94px;
+    z-index: 0;
+    position: relative;
+    h5,
+    p {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: rgba(128, 128, 128, 1);
+        margin: 0;
+    }
+    h5 {
+        font-size: 14px;
+        height: 20px;
+        line-height: 20px;
+    }
+    p {
+        font-size: 12px;
+        height: 18px;
+        line-height: 18px;
+        margin-top: 1px;
+    }
+}
+
+.vue-design-item-tools {
+    height: 28px;
+    width: 100%;
+    top: 114px;
+    left: 0;
+    position: absolute;
+    padding: 0 8px;
+    z-index: 3;
+    dl {
+        display: flex;
+        justify-content: space-between;
+        width: inherit;
+        height: inherit;
+        dd,
+        dt {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #eff3f5;
+            cursor: pointer;
+        }
+        dt {
+            img {
+                display: block;
+                border-radius: 50%;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        dd {
+            > span {
+                display: flex;
+            }
+        }
+    }
+}
+
+.vue-design-item-tags {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 4px;
+    span {
+        display: inline-block;
+        height: 20px;
+        line-height: 20px;
+        padding: 0 5px;
+        background-color: #f5f6f7;
+        margin-right: 6px;
+        border-radius: 2px;
+        color: rgba(128, 128, 128, 1);
+        font-size: 12px;
+    }
+}

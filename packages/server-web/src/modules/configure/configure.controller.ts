@@ -47,7 +47,6 @@ export class ConfigureController {
         };
 
         const configureList = await this.configService.findList(options);
-        console.log('configureList', configureList);
         let config = {};
         configureList.forEach((item) => {
             const { key, value, remark, link, group } = item;
@@ -90,7 +89,6 @@ export class ConfigureController {
         @Param('id', ParseIntPipe) id: number,
         @Body() updateConfigureDto: UpdateConfigureDto,
     ) {
-        console.log('updateConfigureDto', updateConfigureDto);
         return this.configService.update(id, updateConfigureDto);
     }
 

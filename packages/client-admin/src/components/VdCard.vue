@@ -32,6 +32,7 @@ interface Props {
     isScroll?: boolean;
     padding?: boolean | string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
     isScroll: false,
     padding: false,

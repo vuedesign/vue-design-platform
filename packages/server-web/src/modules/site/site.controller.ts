@@ -5,15 +5,20 @@ import {
     Query,
     Req,
     Res,
+    Post,
+    Body,
     UnauthorizedException,
 } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { ToolService } from '../tool/tool.service';
-import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { TagService } from '../tag/tag.service';
+import { ApiTags, ApiBearerAuth, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { Like } from 'typeorm';
 import { User } from '@/core/decorators/user.decorator';
 import { QueryTransformPipe } from '@/core/pipes/queryTransform.pipe';
 import { SiteListQueryDto, IOptions } from './dto/site.dto';
+import { TagEntity } from '@/entities/tag.entity';
+import { CreateSiteDto } from './dto/create-site.dto';
 
 @Controller('sites')
 @ApiTags('站点模块')
@@ -22,7 +27,40 @@ export class SiteController {
     constructor(
         private readonly siteService: SiteService,
         private readonly toolService: ToolService,
+        private readonly tagService: TagService,
     ) {}
+
+    @Post()
+    @ApiBody({
+        description: '添加项目',
+        type: CreateSiteDto,
+    })
+    async create(
+        @Body() createSite: CreateSiteDto,
+        @User('id') authorId: number,
+    ): Promise<any> {
+        if (!authorId) {
+            return false;
+        }
+        const tags: (Promise<TagEntity> | TagEntity)[] = [];
+        for await (const item of createSite.tags) {
+            const tag = await this.tagService.findOneBy({
+                name: item.name,
+            });
+            if (tag) {
+                tags.push(tag);
+            } else {
+                tags.push(item);
+            }
+        }
+        Object.assign(createSite, {
+            authorId,
+            isShow: 1,
+            tags,
+        });
+        const res = await this.siteService.create(createSite);
+        return res;
+    }
 
     @Get('profile')
     @ApiQuery({

@@ -8,7 +8,7 @@
         :close-on-press-escape="false"
         @closed="emit('closed', false)"
     >
-        <vd-card scroll>
+        <vd-card is-scroll>
             <div class="drawer-site-update-card">
                 <el-form
                     :model="detail"

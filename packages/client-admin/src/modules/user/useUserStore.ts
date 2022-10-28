@@ -56,8 +56,6 @@ export const useUserStore = defineStore(USER_STORE_KEY, () => {
     const total = ref(0);
 
     const find = async (query?: UserListFilter) => {
-        debugger;
-        console.log('filter', filter);
         Object.assign(filter, query);
         const res = await findData(filter);
         console.log('res', res);

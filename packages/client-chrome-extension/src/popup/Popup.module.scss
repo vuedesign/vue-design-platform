@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+.vue-design-popup {
+    width: 200px;
+    min-height: 160px;
+    height: auto;
+}
+
+.vue-design-popup-header {
+    padding: 8px 16px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5eaed;
+    height: auto;
+}
+
+.vue-design-popup-header span {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+}
+
+.vue-design-popup-header img {
+    height: auto;
+    width: 100%;
+    display: block;
+}
+
+.vue-design-popup-img {
+    width: 100%;
+    height: auto;
+}
+
+.vue-design-popup-content {
+    width: 100%;
+    padding: 16px 0;
+    ul {
+        margin-bottom: 0;
+    }
+
+    li {
+        height: 32px;
+        line-height: 32px;
+        width: 100%;
+        display: block;
+        cursor: pointer;
+        padding: 0 16px;
+        .text {
+            color: #666;
+            font-size: 14px;
+        }
+        &:hover {
+            background-color: #e7efff;
+            .text {
+                color: #3d7eff;
+            }
+        }
+    }
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        height: 18px;
+        line-height: 18px;
+        + span {
+            padding-left: 5px;
+        }
+    }
+}
+
+.modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 300px;
+    height: 300px;
+    padding: 5px;
+}

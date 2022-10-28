@@ -34,7 +34,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err, user, info, context) {
-        // console.log('===xxxxxx handleRequest ===', err, user);
+        console.log('===xxxxxx handleRequest ===', err, user);
         // const token = this.getToken(context);
         // console.log('== handleRequest token === ', token);
         if (err || !user) {

@@ -1,0 +1,108 @@
+.container {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: rgba(229, 234, 237, 1);
+}
+
+.inner {
+    display: flex;
+    width: 1072px;
+    margin: 0 auto;
+    justify-content: space-around;
+    padding: 16px 0;
+}
+
+.author,
+.tags {
+    margin-bottom: 0;
+    > dt {
+        padding-bottom: 16px;
+        display: flex;
+        align-items: center;
+        > span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            &.title {
+                color: #444;
+                width: auto;
+                margin-left: 8px;
+            }
+        }
+    }
+    > dd {
+        margin-bottom: 0;
+    }
+}
+
+.author {
+    flex: 1;
+    overflow: hidden;
+
+    dd {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+.user-item {
+    width: 244px;
+    display: flex;
+    margin: 0 28px 16px 12px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    > dt {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-right: 8px;
+        background-size: contain;
+    }
+    > dd {
+        height: 40px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        > h5 {
+            height: 20px;
+            line-height: 20px;
+            margin-bottom: 0;
+        }
+    }
+    background-color: transparent;
+    transition: all 0.3s;
+    border-radius: 20px;
+    &:hover {
+        cursor: pointer;
+        background-color: #ddd;
+    }
+}
+
+.tags {
+    width: 256px;
+    height: auto;
+    dd {
+        padding: 0 12px;
+        span {
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0 10px;
+            height: 20px;
+            line-height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            margin-right: 5px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 12px;
+            &:hover {
+                background-color: #ccc;
+            }
+        }
+    }
+}

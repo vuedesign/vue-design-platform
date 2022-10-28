@@ -1,5 +1,5 @@
-import { reactive, Ref, ref } from 'vue';
-import { MessageType, ContentModal, Pages, Assets } from '../globals/contants';
+import { MessageType, ContentModal, Pages, Assets } from '@/globals/contants';
+import { IconType } from '@icon-park/react/es/all';
 
 interface InfoData {
     description: string;
@@ -14,20 +14,10 @@ interface Message {
     data?: MessageValue;
 }
 
-interface MenuListItem {
+export interface MenuListItem {
     key: string;
     title: string;
-    icon: string;
-}
-
-function captureThumb(windowId: number): Promise<string> {
-    return new Promise((resolve) => {
-        chrome.tabs.captureVisibleTab(
-            windowId,
-            { format: Assets.CAPTURE_THUMB_FORMAT },
-            resolve,
-        );
-    });
+    icon: IconType;
 }
 
 function getCurrentPageInfo(id: number): Promise<any> {
@@ -42,44 +32,32 @@ function getCurrentPageInfo(id: number): Promise<any> {
     });
 }
 
-function executeScript(tabId: number): Promise<any> {
-    return new Promise((resolve) => {
-        chrome.scripting.executeScript(
-            {
-                target: { tabId },
-                files: ContentModal.SCRIPT_FILES,
-            },
-            resolve,
-        );
-    });
-}
-
 const isExtension = (url: string) => {
     return url.indexOf('chrome-extension://') > -1;
 };
 
-const menuList: Array<MenuListItem> = reactive([
+const menuList: Array<MenuListItem> = [
     {
         key: 'new_tab',
         title: '打开新标签页',
-        icon: 'tag-one',
+        icon: 'TagOne',
     },
     {
         key: 'recommend',
         title: '推荐到vue.design',
-        icon: 'send',
+        icon: 'Send',
     },
-]);
+];
 
 interface Cache {
     thumbUrl: string;
     isExecute: boolean;
 }
 
-const cache = reactive({
+const cache = {
     thumbUrl: '',
     isExecute: false,
-});
+};
 
 export default () => {
     const handleRecommend = async () => {
@@ -87,14 +65,19 @@ export default () => {
             active: true,
             currentWindow: true,
         });
-        const { url, windowId, id, title = '', favIconUrl = '' } = tab;
+        const { url = '', windowId, id = 0, title = '', favIconUrl = '' } = tab;
         console.log('tab', tab);
         if (isExtension(url)) {
             window.alert('这是一个chrome 插件，不符合推荐条件！');
             return;
         }
-        await executeScript(id);
-        const thumbUrl = await captureThumb(windowId);
+        await chrome.scripting.executeScript({
+            target: { tabId: id },
+            files: ContentModal.SCRIPT_FILES,
+        });
+        const thumbUrl = await chrome.tabs.captureVisibleTab(windowId, {
+            format: Assets.CAPTURE_THUMB_FORMAT,
+        });
         const pageInfo = await getCurrentPageInfo(id);
         const info = {
             thumbUrl,
@@ -103,14 +86,28 @@ export default () => {
             title,
             tabId: id,
         };
-        chrome.storage.local.set({ info }, () => {
+        console.log('info===', info);
+        chrome.storage.local.set({ info, visible: true }, () => {
             chrome.tabs.create({
-                url: Pages.HOME_URL + '#/modal-push',
+                url: Pages.HOME_URL,
             });
         });
     };
 
-    const handleNewTab = () => {
+    const handleNewTab = async () => {
+        const [tab] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+        });
+        if (
+            tab &&
+            tab.title === '首页 - vue.design' &&
+            tab.url &&
+            isExtension(tab.url)
+        ) {
+            window.alert('当前标签页已打开！');
+            return;
+        }
         chrome.tabs.create({
             url: Pages.HOME_URL,
         });

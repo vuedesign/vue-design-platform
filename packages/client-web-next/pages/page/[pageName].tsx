@@ -1,3 +1,3 @@
-import Page, { getServerSideProps } from '@/modules/pages/page';
+import Page, { getServerSideProps } from '@/modules/page';
 export { getServerSideProps };
 export default Page;

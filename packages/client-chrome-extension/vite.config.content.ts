@@ -1,9 +1,5 @@
-import { defineConfig, build } from 'vite';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import viteESLint from '@ehutch79/vite-eslint';
-import Components from 'unplugin-vue-components/vite';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,19 +9,10 @@ export default defineConfig({
         },
     },
     plugins: [
-        vue(),
-        viteESLint({
-            include: ['src/**/*.vue', 'src/**/*.d.ts', 'src/**/*.ts'],
-            exclude: 'node_modules',
-        }),
-        Components({
-            resolvers: [
-                AntDesignVueResolver({
-                    importStyle: 'sass',
-                }),
-            ],
-        }),
-        ,
+        // viteESLint({
+        //     include: ['src/**/*.d.ts', 'src/**/*.ts'],
+        //     exclude: 'node_modules',
+        // }),
     ],
     build: {
         minify: false,

@@ -78,7 +78,8 @@ export class AuthController {
     }
 
     @Get('profile')
-    getProfile(@User('id') userId: number) {
+    getProfile(@User('id') userId: number): Promise<any> {
+        console.log('userId', userId);
         if (!userId) {
             return null;
         }

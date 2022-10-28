@@ -74,7 +74,7 @@ function getSiteInfo(doc: Document) {
 function getCodeTags(doc: Document) {
     return Array.from(
         doc.querySelectorAll('.BorderGrid-cell > div > div > a'),
-    ).map((item: HTMLElement) => item.innerText);
+    ).map((value: any, index: number, array: Element[]) => value.innerText);
 }
 
 function getCodeUrl(doc: Document): string {

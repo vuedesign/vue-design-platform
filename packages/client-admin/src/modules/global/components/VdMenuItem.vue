@@ -61,6 +61,8 @@ import {
     Broadcast,
     Analysis,
     TagOne,
+    SettingTwo,
+    // // <SettingTwo theme="filled" size="24" fill="#333"/>
 } from '@icon-park/vue-next';
 
 export default defineComponent({
@@ -104,6 +106,7 @@ export default defineComponent({
         Broadcast,
         Analysis,
         TagOne,
+        SettingTwo,
     },
     emits: ['toggle', 'goto'],
     setup(props, { emit }) {

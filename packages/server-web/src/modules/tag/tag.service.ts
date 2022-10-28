@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from '@/entities/tag.entity';
@@ -25,9 +25,7 @@ export class TagService extends BaseService<TagEntity> {
         return this.findListAndPage(options);
     }
 
-    findOne(id: number) {
-        this.siteRepository.findOneBy({
-            id,
-        });
+    findOneBy(where: FindOptionsWhere<TagEntity>) {
+        return this.siteRepository.findOneBy(where);
     }
 }
