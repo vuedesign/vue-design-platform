@@ -1,4 +1,3 @@
-import JSEncrypt from 'jsencrypt';
 import { Buffer } from 'buffer';
 
 export function getUuid(uuid?: string | string[]) {
@@ -40,8 +39,7 @@ export type BufferJSON = {
 };
 
 export function encrypt(data: string, publicKeyJSON?: BufferJSON): string {
-    // const JSEncrypt = require('jsencrypt').default;
-    console.log('JSEncrypt', JSEncrypt);
+    const JSEncrypt = require('jsencrypt').default;
     const publicKey = Buffer.from(publicKeyJSON?.data || []).toString();
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);

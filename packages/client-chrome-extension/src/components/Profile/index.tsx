@@ -20,6 +20,8 @@ import {
 import {
     setLoginState,
     setIsSettingVisible,
+    setCookie,
+    selectCookie,
 } from '@/globals/features/globalSlice';
 import { AppDispatch } from '@/globals/store';
 import { setOpen } from '@/globals/features/globalSlice';
@@ -118,15 +120,16 @@ const ProfilePopoverContent = () => {
 const Profile = () => {
     const dispatch = useDispatch();
     const { data: profile, refetch } = useProfileQuery();
-    const token = useSelector(selectCurrentToken);
+    const cookie = useSelector(selectCookie);
     useEffect(() => {
         refetch();
-    }, [token]);
+    }, [cookie]);
 
     try {
         chrome.cookies.get(details, (cookie) => {
             if (cookie && cookie.value) {
-                dispatch(setToken(cookie.value));
+                console.log('cookie.value===', cookie.value);
+                dispatch(setCookie(cookie.value));
             }
         });
     } catch (error) {}

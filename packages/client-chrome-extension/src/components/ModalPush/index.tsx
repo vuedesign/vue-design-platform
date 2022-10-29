@@ -27,8 +27,9 @@ import {
     setVisible,
     Info,
 } from '@/globals/features/pluginSlice';
+import { selectCookie } from '@/globals/features/globalSlice';
 import ModalItem from './ModalItem';
-import { parse } from 'qs';
+import { details } from '@/configs/globals.contants';
 
 function uploadFileData<T = FormData, R = any>(formData: FormData) {
     return Promise.resolve(1);
@@ -47,18 +48,28 @@ function uploadFile(base64: string): Promise<any> {
 const ModalPush: FC = () => {
     const dispatch = useDispatch();
     const info = useSelector(selectInfo);
+    const cookie = useSelector(selectCookie);
     const visible = useSelector(selectVisible);
     const imgWrapWidth = useSelector(selectImgWrapWidth);
-    const user = useSelector(selectUser);
     const [loading, setLoading] = useState(false);
     const handleUploadFinish = () => {};
-    const handleSelectLogo = (img: any) => {};
+
     const handleCancel = () => {
         dispatch(setVisible(false));
     };
 
+    const handleSelectLogo = (img: any) => {
+        dispatch(
+            setInfo({
+                ...info,
+                logoUrl: img,
+            }),
+        );
+    };
+
     const handleOk = async () => {
-        if (!user) {
+        console.log('cookie', cookie);
+        if (!cookie) {
             message.warning('您未登录，请点击右上角「登录/注册」按钮！');
             return;
         }
@@ -89,6 +100,9 @@ const ModalPush: FC = () => {
             views: 0,
             status: 1,
         };
+        setTimeout(() => {
+            setLoading(false);
+        }, 2000);
         console.log(item);
     };
 
@@ -97,7 +111,19 @@ const ModalPush: FC = () => {
             width={600}
             open={visible}
             onCancel={handleCancel}
-            onOk={handleOk}>
+            onOk={handleOk}
+            footer={[
+                <Button key="back" onClick={handleCancel}>
+                    取消
+                </Button>,
+                <Button
+                    key="submit"
+                    type="primary"
+                    loading={loading}
+                    onClick={handleOk}>
+                    提交
+                </Button>,
+            ]}>
             <div className={styles['vue-design-modal-content']}>
                 <div className={styles['vue-design-modal-main']}>
                     <div className={styles['vue-design-modal-item']}>
