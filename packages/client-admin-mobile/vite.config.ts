@@ -34,6 +34,7 @@ export default defineConfig({
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
         alias: {
             '@': resolve(__dirname, 'src'),
+            '@/': resolve(__dirname, 'src/'),
         },
     },
     plugins: [
