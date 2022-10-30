@@ -80,8 +80,8 @@ export default () => {
         });
         const pageInfo = await getCurrentPageInfo(id);
         const info = {
-            thumbUrl,
             ...pageInfo,
+            thumbUrl,
             favIconUrl,
             title,
             tabId: id,

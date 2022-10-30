@@ -16,7 +16,7 @@ const ModalItem: FC<Info> = (props) => {
         <div className={styles['vue-design-item-inner']}>
             <div className={styles['vue-design-item-thumb']}>
                 <a href={props.siteUrl} style={thumbStyle}>
-                    {props.siteUrl && (
+                    {!props.siteUrl && (
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -61,9 +61,7 @@ const ModalItem: FC<Info> = (props) => {
                         <ThumbsDown theme="outline" size="16" fill="#666" />
                     </dd>
                     <dt>
-                        {props.user && props.user.avatar && (
-                            <img src={props.user.avatar} />
-                        )}
+                        <img src={props.favIconUrl} />
                     </dt>
                     <dd>
                         <Like theme="outline" size="16" fill="#666" />

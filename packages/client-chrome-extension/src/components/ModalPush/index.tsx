@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, message, Form, Input, Alert, Button } from 'antd';
+import { Modal, message, Button, Input } from 'antd';
 import {
     Home,
-    Star,
+    Close,
     TagOne,
-    Github,
-    BrowserChrome,
     TipsOne,
+    Send,
+    BrowserChrome,
 } from '@icon-park/react';
 import {
     useProfileQuery,
@@ -30,6 +30,8 @@ import {
 import { selectCookie } from '@/globals/features/globalSlice';
 import ModalItem from './ModalItem';
 import { details } from '@/configs/globals.contants';
+import { CloseOutlined } from '@ant-design/icons';
+import './style.scss';
 
 function uploadFileData<T = FormData, R = any>(formData: FormData) {
     return Promise.resolve(1);
@@ -58,23 +60,10 @@ const ModalPush: FC = () => {
         dispatch(setVisible(false));
     };
 
-    const handleSelectLogo = (img: any) => {
-        dispatch(
-            setInfo({
-                ...info,
-                logoUrl: img,
-            }),
-        );
-    };
-
     const handleOk = async () => {
         console.log('cookie', cookie);
         if (!cookie) {
             message.warning('您未登录，请点击右上角「登录/注册」按钮！');
-            return;
-        }
-        if (!info.logoUrl && info.imgs.some((img) => !!img)) {
-            message.warning('请点击选择下面图片作为网站icon！');
             return;
         }
         setLoading(true);
@@ -96,29 +85,63 @@ const ModalPush: FC = () => {
             thumbUrl: fileRes.path,
             title: info.title,
             top: 0,
-            type: info.type,
+            type: info.type || 'site',
             views: 0,
             status: 1,
         };
         setTimeout(() => {
             setLoading(false);
-        }, 2000);
+        }, 10000);
         console.log(item);
     };
 
+    console.log('Modal info', info);
     return (
         <Modal
+            wrapClassName="vue-design-modal-push"
             width={600}
             open={visible}
             onCancel={handleCancel}
             onOk={handleOk}
+            title={
+                <dl className={styles['vue-design-modal-title']}>
+                    <dt>
+                        <img src={info.favIconUrl} />
+                    </dt>
+                    <dd>{info.siteUrl}</dd>
+                </dl>
+            }
             footer={[
-                <Button key="back" onClick={handleCancel}>
-                    取消
+                <Button
+                    key="back"
+                    shape="round"
+                    icon={
+                        <Close
+                            className="anticon"
+                            theme="filled"
+                            size="14"
+                            style={{
+                                height: '16px',
+                            }}
+                        />
+                    }
+                    onClick={handleCancel}>
+                    关闭
                 </Button>,
                 <Button
                     key="submit"
                     type="primary"
+                    shape="round"
+                    icon={
+                        <Send
+                            className="anticon"
+                            theme="filled"
+                            size="14"
+                            style={{
+                                height: '16px',
+                            }}
+                        />
+                    }
                     loading={loading}
                     onClick={handleOk}>
                     提交
@@ -131,44 +154,8 @@ const ModalPush: FC = () => {
                     </div>
                     <div className={styles['vue-design-modal-info']}>
                         <dl>
-                            <dt>类型</dt>
-                            {info.type === 'code' ? (
-                                <dd>
-                                    <Github
-                                        theme="outline"
-                                        size="16"
-                                        fill="#A6A6A6"
-                                    />
-                                    <span>代码</span>
-                                </dd>
-                            ) : (
-                                <dd>
-                                    <BrowserChrome
-                                        theme="outline"
-                                        size="16"
-                                        fill="#A6A6A6"
-                                    />
-                                    <span>网站</span>
-                                </dd>
-                            )}
-                        </dl>
-                        {info.star && (
-                            <dl>
-                                <dt>星星</dt>
-                                <dd>
-                                    <Star
-                                        theme="outline"
-                                        size="16"
-                                        fill="#A6A6A6"
-                                    />
-                                    <span>{info.star}</span>
-                                </dd>
-                            </dl>
-                        )}
-
-                        {info.siteUrl && (
-                            <dl>
-                                <dt>官网</dt>
+                            <dt>官网</dt>
+                            {info.siteUrl && (
                                 <dd>
                                     <Home
                                         theme="outline"
@@ -177,8 +164,21 @@ const ModalPush: FC = () => {
                                     />
                                     <a href={info.siteUrl}>{info.siteUrl}</a>
                                 </dd>
-                            </dl>
-                        )}
+                            )}
+                        </dl>
+                        <dl>
+                            <dt>标题</dt>
+                            {info.title && (
+                                <dd>
+                                    <TipsOne
+                                        theme="outline"
+                                        size="16"
+                                        fill="#A6A6A6"
+                                    />
+                                    <p>{info.title}</p>
+                                </dd>
+                            )}
+                        </dl>
                         {info.tags && info.tags.length > 0 && (
                             <dl>
                                 <dt>标签</dt>
@@ -204,42 +204,20 @@ const ModalPush: FC = () => {
                                 </dd>
                             </dl>
                         )}
-
-                        <dl>
-                            <dt>关于</dt>
-                            <dd>
-                                <TipsOne
-                                    theme="outline"
-                                    size="16"
-                                    fill="#A6A6A6"
-                                />
-                                <p>{info.description}</p>
-                            </dd>
-                        </dl>
+                        {info.description && (
+                            <dl>
+                                <dt>关于</dt>
+                                <dd>
+                                    <TipsOne
+                                        theme="outline"
+                                        size="16"
+                                        fill="#A6A6A6"
+                                    />
+                                    <p>{info.description}</p>
+                                </dd>
+                            </dl>
+                        )}
                     </div>
-                </div>
-                <div className={styles['vue-design-modal-img-list']}>
-                    <ul style={{ width: `${imgWrapWidth}px` }}>
-                        {info &&
-                            info.imgs &&
-                            info.imgs.map((img, i) => {
-                                return (
-                                    <li
-                                        className={
-                                            img === info.logoUrl
-                                                ? styles.active
-                                                : undefined
-                                        }>
-                                        <span
-                                            onClick={() =>
-                                                handleSelectLogo(img)
-                                            }>
-                                            {img && <img src={img} />}
-                                        </span>
-                                    </li>
-                                );
-                            })}
-                    </ul>
                 </div>
             </div>
         </Modal>

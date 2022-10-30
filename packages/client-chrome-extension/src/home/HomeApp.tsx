@@ -8,6 +8,7 @@ import ModalSetting from '../components/ModalSetting';
 import ModalPush from '@/components/ModalPush';
 import { useDispatch } from 'react-redux';
 import { setInfo, setVisible } from '@/globals/features/pluginSlice';
+import { localGet } from '@/globals/utils/chrome';
 
 const Home: FC = () => {
     const params = {
@@ -15,11 +16,11 @@ const Home: FC = () => {
         size: 20,
     };
     const dispatch = useDispatch();
-    chrome.storage.local.get('info', (data: Record<string, any>) => {
+    localGet('info', (data: Record<string, any>) => {
         console.log('info get', data);
         dispatch(setInfo(data.info));
     });
-    chrome.storage.local.get('visible', (data: Record<string, any>) => {
+    localGet('visible', (data: Record<string, any>) => {
         console.log('visible get', data);
         dispatch(setVisible(data.visible));
     });
